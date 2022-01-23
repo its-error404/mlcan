@@ -1,13 +1,17 @@
 import React, { FC, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
+import { AuthContext } from '../../../context/AuthContext';
 import * as appRoutes from "../../../routes/routeConstants/appRoutes";
 import RestrictAccess from "../RestrictedAccess";
-import AuthContainer from '../../../store/container/AuthContainer';
 
 const requireAuth = (Component: any, allowedRoles: any = []) => {
     const Authentication = (props: any) => {
+        const { authenticated } = AuthContext();
+        console.log(authenticated);
+        
         useEffect(() => {
-            const { authenticated, history } = props;
+            console.log(authenticated);
+            const { history } = props;
             if (!authenticated && history.location.pathname !== appRoutes.LOGIN) {
                 return history.push(appRoutes.LOGIN);
             }
@@ -19,7 +23,7 @@ const requireAuth = (Component: any, allowedRoles: any = []) => {
         }
         return <Component {...props} />
     } 
-    return withRouter(AuthContainer(Authentication));
+    return withRouter(Authentication);
 };
 
 export const isAuthenticated = (component: FC) => {

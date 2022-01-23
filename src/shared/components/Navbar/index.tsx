@@ -1,7 +1,6 @@
 import React from "react";
 import { Menu } from 'antd';
 import "./navbar.scss";
-import AuthContainer from "../../../store/container/AuthContainer";
 import Notification from "../Notification";
 import { NotificationTypes } from "../../../enums/notificationTypes";
 
@@ -9,7 +8,6 @@ const Navbar = (props: any) => {
 
   const handleClick = () => {
     Notification({ message: "Logout", description: "user loggedout successfully", type: NotificationTypes.SUCCESS })
-    return props.setUnAuthenticated();
   };
 
   return (
@@ -21,4 +19,4 @@ const Navbar = (props: any) => {
   );
 }
 
-export default AuthContainer(Navbar);
+export default Navbar;

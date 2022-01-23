@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { store } from "../store";
-import { REQUEST_LOGOUT } from "../store/definitions/authConstants";
 import {ApiRoutes} from "../routes/routeConstants/apiRoutes";
 
 export const getHeaders = (): any => {
@@ -36,7 +34,6 @@ axiosInstance.interceptors.response.use(
     (error) => {
         const { response } = error;
         if (response.status === 401) {
-            store.dispatch({ type: REQUEST_LOGOUT, payload: 'Request for logout' });
         }
         return Promise.reject(error);
     }

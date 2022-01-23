@@ -17,8 +17,7 @@ const initialValue = {
 }
 
 const LoginForm = () => {
-
-    const { user, error, loading, loginUser } = UserService();
+    const { error, loading, loginUser } = UserService();
 
     const onSubmit = (user: User) => {
         loginUser(user);

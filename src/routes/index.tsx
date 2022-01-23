@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import * as appRoutes from "./routeConstants/appRoutes";

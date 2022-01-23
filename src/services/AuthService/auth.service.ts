@@ -1,43 +1,35 @@
 import axiosInstance from "../../interceptor/axiosInstance";
 import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
-import { store } from "../../store";
-import { AUTHENTICATED } from "../../store/definitions/authConstants";
 import Notification from "../../shared/components/Notification";
 import { NotificationTypes } from "../../enums/notificationTypes";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { HOME } from "../../routes/routeConstants/appRoutes";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
+import { AuthContext } from "../../context/AuthContext";
 
 const UserService = () => {
 	const history = useHistory();
 
-	const [user, setUser] = useState<User>();
-
 	const [error, setError] = useState<Error>();
 
 	const [loading, setLoading] = useState(false);
+
+	const { setAuthenticated } = AuthContext();
 
 	const loginUser = (data: User) => {
 		setLoading(true);
 		return axiosInstance
 			.post(ApiRoutes.USER_LOGIN, data)
 			.then((response) => {
-				const userDetails = deserialize(User, response.data["user"]);
-				store.dispatch({
-					type: AUTHENTICATED,
-					payload: {
-						authenticated: true,
-						user: userDetails,
-					},
-				});
+				const user = deserialize(User, response.data["user"]);
 				Notification({
 					message: "Login",
 					description: "Logged in successfully",
 					type: NotificationTypes.SUCCESS,
 				});
-				setUser(userDetails);
+				setAuthenticated(user);
 				history.push(HOME);
 			})
 			.catch((error) => {
@@ -54,7 +46,6 @@ const UserService = () => {
 	};
 
 	return {
-		user,
 		error,
 		loading,
 		loginUser,
