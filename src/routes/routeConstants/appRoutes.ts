@@ -1,11 +1,13 @@
+export const NavigationRoutes = {
+  AUTH: "/auth",
+  REGISTER: "/auth/register",
+  LOGIN: "/auth/login",
+};
 
-/* Auth Routes */
-export const AUTH = "/auth"
-export const REGISTER = AUTH + "/register"
-export const LOGIN = AUTH + "/login"
-
-/* Home Route */
-export const HOME = "/home"
-
-/* Components */ 
-export const APP_COMPONENTS = "/app-components";
+export const AppRoutes = {
+  AUTH: "/auth/*",
+  REGISTER: "/register",
+  LOGIN: "/login",
+  APP_COMPONENTS:"/app-components",
+  HOME: "/"
+};
