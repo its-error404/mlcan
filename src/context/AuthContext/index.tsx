@@ -12,7 +12,7 @@ type AuthContentProps = [AuthState, SetAuthState];
 
 // Define the default context state
 const initialValues: AuthState = {
-  authenticated: true,
+  authenticated: false,
   user: new User(),
 };
 

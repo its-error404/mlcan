@@ -1,33 +1,33 @@
 import React, { FC, useEffect } from 'react';
-import { withRouter } from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
-import * as appRoutes from "../../../routes/routeConstants/appRoutes";
+import { NavigationRoutes } from '../../../routes/routeConstants/appRoutes';
 import RestrictAccess from "../RestrictedAccess";
 
-const requireAuth = (Component: any, allowedRoles: any = []) => {
+const RequireAuth = ({ children }: { children: JSX.Element }) => {
     const Authentication = (props: any) => {
+        const {allowedRoles} = props
         const { authenticated } = AuthContext();
-        console.log(authenticated);
-        
+        const location = useLocation();
+        const navigate = useNavigate();
         useEffect(() => {
-            console.log(authenticated);
-            const { history } = props;
-            if (!authenticated && history.location.pathname !== appRoutes.LOGIN) {
-                return history.push(appRoutes.LOGIN);
+            if (!authenticated && location.pathname !== NavigationRoutes.LOGIN) {
+                return navigate(NavigationRoutes.LOGIN);
             }
         }, [props]);
 
-        if(allowedRoles.length) {
+        if(allowedRoles?.length) {
             const { user } = props;
-            return allowedRoles.includes(user.role) ? <Component {...props} /> : <RestrictAccess />;
+            return allowedRoles.includes(user.role) ? children : <RestrictAccess />;
         }
-        return <Component {...props} />
+        return children;
     } 
-    return withRouter(Authentication);
+
+    return <Authentication/>;
 };
 
-export const isAuthenticated = (component: FC) => {
-    return requireAuth(component);
+export const isAuthenticated = (component: JSX.Element) => {
+    return RequireAuth({children: component});
 };
 
 

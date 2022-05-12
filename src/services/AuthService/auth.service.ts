@@ -4,13 +4,13 @@ import { User } from "../../models/user.model";
 import Notification from "../../shared/components/Notification";
 import { NotificationTypes } from "../../enums/notificationTypes";
 import { useState } from "react";
-import { useHistory } from "react-router";
-import { HOME } from "../../routes/routeConstants/appRoutes";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../routes/routeConstants/appRoutes";
 
 const UserService = () => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [error, setError] = useState<Error>();
 
@@ -30,7 +30,7 @@ const UserService = () => {
 					type: NotificationTypes.SUCCESS,
 				});
 				setAuthenticated(user);
-				history.push(HOME);
+				navigate(AppRoutes.HOME);
 			})
 			.catch((error) => {
 				Notification({
@@ -38,6 +38,7 @@ const UserService = () => {
 					description: "incorrect email or password",
 					type: NotificationTypes.ERROR,
 				});
+			
 				setError(error);
 			})
 			.finally(() => {
