@@ -8,6 +8,30 @@ body {
   color: $primary-black;
 }
 
-body, h1, h2, h3, h4, h5, button, input {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+button,
+input {
   font-family: 'Roboto', sans-serif !important;
+}
+
+.network-status-wrapper {
+  .offline {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    z-index: 3;
+
+    &__text {
+      font-size: 28px;
+    }
+  }
 }
