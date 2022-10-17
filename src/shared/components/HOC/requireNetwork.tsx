@@ -6,13 +6,13 @@ interface RequireNetworkProps {}
 const RequireNetwork = ({
   children,
 }: PropsWithChildren<RequireNetworkProps>) => {
-  const { networkStatus } = useNetwork();
-
-  const { onLine } = networkStatus;
+  const {
+    networkStatus: { isOnline },
+  } = useNetwork();
 
   return (
     <div className="network-status-wrapper">
-      {!onLine && (
+      {!isOnline && (
         <div className="offline">
           <span className="text-white offline__text">
             No internet connection. Connect internet to proceed

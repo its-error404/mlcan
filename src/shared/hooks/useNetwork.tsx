@@ -3,13 +3,13 @@ import { NetworkStatus } from "../../enums/networkStatusTypes";
 
 export const useNetwork = () => {
   const [networkStatus, setNetworkStatus] = useState({
-    onLine: navigator.onLine,
+    isOnline: navigator.onLine,
   });
 
   const handleNetworkStatusChange = ({ type }: Event) =>
     setNetworkStatus((prevStatus) => ({
       ...prevStatus,
-      onLine: type === NetworkStatus.ONLINE,
+      isOnline: type === NetworkStatus.ONLINE,
     }));
 
   useEffect(() => {
