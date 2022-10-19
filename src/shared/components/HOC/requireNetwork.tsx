@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { useNetwork } from "../../hooks/useNetwork";
+import Offline from "../Offline";
 
 interface RequireNetworkProps {}
 
@@ -12,13 +13,7 @@ const RequireNetwork = ({
 
   return (
     <div className="network-status-wrapper">
-      {!isOnline && (
-        <div className="offline">
-          <span className="text-white offline__text">
-            No internet connection. Connect internet to proceed
-          </span>
-        </div>
-      )}
+      <Offline isOffline={!isOnline} />
       {children}
     </div>
   );
