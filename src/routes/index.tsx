@@ -23,7 +23,7 @@ const AppRouter = () => {
   if (Boolean(process.env.REACT_APP_UNDER_DEVELOPMENT)) {
     routes.push({
       path: AppRoutes.APP_COMPONENTS,
-      component: AppComponents,
+      component: <AppComponents />,
     });
   }
 
