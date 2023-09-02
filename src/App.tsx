@@ -1,18 +1,18 @@
-import React from "react";
-import AppRoutes from "./routes";
-import { AuthProvider } from "./context/AuthContext";
-import "antd/dist/antd.css";
-import "./styles/_main.scss";
-import RequireNetwork from "./shared/components/HOC/requireNetwork";
+import React from 'react'
+import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import LoginForm from './views/Auth/LoginForm'
+import Home from './views/Home'
 
 const App = () => {
   return (
-    <RequireNetwork>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </RequireNetwork>
-  );
-};
+    <Router>
+        <Routes>
+          <Route path='/' element={<LoginForm />}/>
+          <Route path='/containers' element={<Home/>}/>
+        </Routes>
+    </Router>
+  )
+}
 
-export default App;
+export default App
