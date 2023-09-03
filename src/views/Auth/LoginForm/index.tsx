@@ -59,7 +59,11 @@ const LoginForm = () => {
         <div className="mlcan-logo">
           <img src={Logo} alt="Logo" width={400} />
         </div>
-        <div className={`login-box ${isForgotPassword ? 'forgot-password-mode' : ''}`}>
+        <div
+          className={`login-box ${
+            isForgotPassword ? "forgot-password-mode" : ""
+          }`}
+        >
           <h2>
             {isForgotPassword ? "Forgot Password" : "Login into Admin Portal"}
           </h2>
