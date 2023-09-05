@@ -1,0 +1,150 @@
+body{
+    width: 90vw;
+}
+
+.all-containers{
+    display: flex;
+    flex-flow: flex column nowrap;
+
+}
+
+.plus-icon{
+    filter: brightness(0) saturate(100%) invert(48%) sepia(31%) saturate(781%) hue-rotate(119deg) brightness(97%) contrast(87%);
+}
+
+.containers-header{
+    margin-left: 40px;
+    margin-top: 50px;
+    display: flex;
+    gap: 20px;
+}
+
+.options{
+    margin-left: 40px;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 50px;
+    color: gray;
+    margin-top: 10px;
+}
+
+
+.container-details{
+    background-color: #F8FAFB;
+    width: 84.6vw;
+    height: 80vh;
+    border-top: 1px solid rgb(234, 229, 229);
+}
+
+.search-container{
+    position: relative;
+    display: flex;
+    gap: 30px;
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+.search-icon{
+    position: absolute;
+    top: 30%;
+    left: 10px;
+    filter: brightness(0) saturate(100%) invert(48%) sepia(31%) saturate(781%) hue-rotate(119deg) brightness(97%) contrast(87%);
+}
+
+.search-container input{
+    width: 15vw;
+    height: 4vh;
+    border: 1px solid gainsboro;
+    border-radius: 8px;
+}
+
+.search-box:focus{
+    border: 1px solid #319583;
+}
+
+::placeholder{
+    font-size: 14px;
+}
+
+.search-box{
+    padding-left: 35px;
+}
+
+.container-box__header{
+    margin-top: 40px;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 100px;
+    border: 1px solid red;
+    border-radius: 10px;
+    margin-left: 35px;
+    width: 80vw;
+    height: 70vh;
+    padding-top: 25px;
+}
+
+.container-box__header p{
+    padding-left: 30px;
+}
+
+.containers-section{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 30px;
+}
+
+.filter-button{
+    position: relative;
+    padding-left: 40px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid gainsboro;
+    border-radius: 7px;
+    background-color: white;
+    color: gray;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.filter-icon{
+    position: absolute;
+    left: 10px;
+    filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
+.filter-menu{
+    position: absolute;
+    height: 30vh;
+    width: 30vw;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.filter-menu__header{
+    padding-top: 20px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.filter-menu__filters h3{
+    padding-left: 20px;
+    font-weight: 500;
+}
+
+.filter-menu__options{
+    display: flex;
+    gap: 20px;
+    padding-right: 20px;
+}
+
+.filter-menu__options p:first-child{
+    color: gray;
+}
+
+.filter-menu__options p:nth-child(2){
+    color: #319583;
+    font-weight: 500;
+}
+

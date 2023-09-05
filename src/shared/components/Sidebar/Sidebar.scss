@@ -1,0 +1,94 @@
+
+.side-bar{
+    width: 300px;
+    background-color: #252936;
+    height: 100vh;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.active{
+    border: 1px transparent;
+    border-left: solid #43C8B0;
+    border-width: 6px;
+    background-color: #303645;
+    font-size: 16px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.active span{
+    filter: brightness(0) saturate(100%) invert(48%) sepia(31%) saturate(781%) hue-rotate(119deg) brightness(97%) contrast(87%);
+}
+
+.user-info{
+    padding: 25px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    margin-left: 5px;
+}
+
+.user-info p:nth-child(1){
+    color: white;
+}
+
+.user-info p:nth-child(2){
+    color: gray;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.logo{
+    margin-left: 40px;
+    margin-top: 40px;
+}
+
+.side-bar__options{
+    margin-top: -330px;
+}
+
+.side-bar__options-text{
+    display: flex;
+    flex-flow: column nowrap;
+    text-decoration: none;
+}
+
+.side-bar__options-text a{
+    text-decoration: none;
+    color: #919AA4;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 40px;
+
+    &.active {
+        color: white;
+    }
+}
+
+.side-bar__options-text span{
+    margin-right: 24px;
+}
+
+.customer-icon{
+    filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
+.user-arrow{
+    margin-top: 10px;
+    margin-right: 20px;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(355deg) brightness(104%) contrast(101%);
+}
+
+.user-info{
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background-color: #303645;
+    height: 80px;
+    opacity: 0.9;
+    width: 270px;
+    padding-top: 20px;
+    margin-left: 10px;
+}

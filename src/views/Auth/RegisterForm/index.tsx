@@ -7,6 +7,7 @@ import Logo from '../../../assets/Logo/PNG/MLCAN logo.png'
 import RegisterSchema, { RegisterFormValues } from './RegisterValidation'
 import * as Yup from 'yup'
 import './RegisterForm.scss'
+
 import { Link } from 'react-router-dom'
 
 const initialValues: RegisterFormValues = {
@@ -30,13 +31,14 @@ const validateForm = (values: RegisterFormValues) => {
   }
 }
 const RegisterForm = () => {
+
   const onSubmit = () => {
     console.log('Registered')
   }
 
   const formik = useFormik({
     initialValues,
-    onSubmit,
+    onSubmit: onSubmit,
     validate: validateForm
   })
 

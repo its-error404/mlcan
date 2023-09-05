@@ -15,6 +15,7 @@ import { ReactComponent as LockIcon } from "../../../assets/single color icons -
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+// import Cookies from 'js-cookie'
 
 const initialValues: LoginFormValues = {
   email: "",
@@ -29,19 +30,25 @@ const LoginForm = () => {
     console.log(values);
     try {
       const response = await Axios.post(
-        "https://bcb0c878-9e76-4de6-a365-0880817cf153.mock.pstmn.io/api/v1/users",
+        "https://9a0197ff-2ab2-44d5-95bd-1362628595c2.mock.pstmn.io/auth/login",
 
         {
-          grant_type: "password",
-          client_id: "rDxi3yoY3uz8pJ1ANxUXkv0Q1n245d_RSvlXEuJJFXg",
-          client_secret: "EFb19pka46ccvU9PfCD6VpvjkmVwFJukL2SoFTk1Zq0",
           email: values.email,
           password: values.password,
         }
       );
 
       console.log("Response:", response);
-      navigate("/containers");
+
+      if(values.email === "root.user@user.com" && values.password === "URoot%78"){
+        // Cookies.set('authenticated', 'true')
+        navigate("/containers");
+
+    } else {
+      formik.errors.email = "Email not Registered !"
+      formik.errors.password = "Check your password and try again !"
+    }
+
     } catch (error) {
       console.log("Error", error);
     }
@@ -97,7 +104,7 @@ const LoginForm = () => {
               </div>
             ) : (
               <div className="login-logic">
-                <div className="login-container">
+                <div className="email-container">
                   <label htmlFor="email">Email</label>
                   <br></br>
                   <br></br>

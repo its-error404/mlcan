@@ -39,7 +39,7 @@
 .login-box {
     position: absolute;
     background-color: white;
-    height: 480px;
+    height: 450px;
     width: 630px;
     padding: 20px;
     border-radius: 10px;
@@ -55,7 +55,7 @@
 
 .login-box h2 {
     font-size: 24px;
-    margin-left: 10px;
+    margin-left: 20px;
     padding-top: 20px;
 }
 
@@ -63,10 +63,16 @@
     color: rgb(208, 202, 202);
 }
 
+.email-container{
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: -20px;
+}
+
 .email-input {
     border: 1px solid rgb(230, 220, 220);
     border-radius: 10px;
-    width: 550px;
+    width: 520px;
     height: 40px;
     box-sizing: border-box;
     padding-left: 40px;
@@ -77,7 +83,7 @@
 .password-input {
     border: 1px solid rgb(230, 220, 220);
     border-radius: 10px;
-    width: 550px;
+    width: 520px;
     height: 40px;
     box-sizing: border-box;
     padding-left: 40px;
@@ -94,14 +100,14 @@
     background-color: #309582;
     border: 1px solid;
     border-radius: 10px;
-    width: 550px;
+    width: 525px;
     color: white;
     height: 40px;
     margin-top: 15px;
     cursor: pointer;
     font-size: 15px;
     font-weight: 500;
-    margin-right: 50px;
+    margin-right: 40px;
 }
 
 .login-form {
@@ -164,9 +170,10 @@ label {
 }
 
 .password-container {
-    margin-top: 5px;
+    margin-left: 10px;
 }
 
 .fp-container {
     margin-top: 20px;
+    margin-left: 10px;
 }
