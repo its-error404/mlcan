@@ -1,11 +1,3 @@
-// import InputField from "../../../shared/components/InputField";
-// import { validationSchema } from "./LoginValidation";
-// import { Button } from "antd";
-// import UserService from "../../../services/AuthService/auth.service";
-// import { useNavigate } from "react-router-dom";
-// import { AppRoutes } from "../../../routes/routeConstants/appRoutes";
-// import { AuthContext } from "../../../context/AuthContext";
-
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import "./LoginForm.scss";
@@ -13,42 +5,40 @@ import validateLogin, { LoginFormValues } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
-import Axios from "axios";
-import { useNavigate } from "react-router-dom";
-// import Cookies from 'js-cookie'
+import UserService from "../../../services/AuthService/auth.service";
+import { AuthContext } from "../../../context/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const initialValues: LoginFormValues = {
   email: "",
   password: "",
 };
 
-const LoginForm = () => {
+const LoginForm:React.FC = () => {
+
   const [isForgotPassword, setForgotPassword] = useState(false);
-  const navigate = useNavigate();
+  const { setAuthenticated } = AuthContext()
+  const navigate = useNavigate()
 
   const onSubmit = async (values: typeof initialValues) => {
     console.log(values);
+  
     try {
-      const response = await Axios.post(
-        "https://9a0197ff-2ab2-44d5-95bd-1362628595c2.mock.pstmn.io/auth/login",
+      const userService = UserService();
+      // await userService.handleLogin({
+      const success = await userService.handleLogin({
+        email: values.email,
+        password: values.password,
+      });
 
-        {
-          email: values.email,
-          password: values.password,
-        }
-      );
-
-      console.log("Response:", response);
-
-      if(values.email === "root.user@user.com" && values.password === "URoot%78"){
-        // Cookies.set('authenticated', 'true')
-        navigate("/containers");
-
-    } else {
-      formik.errors.email = "Email not Registered !"
-      formik.errors.password = "Check your password and try again !"
-    }
-
+      if (success) {
+        localStorage.getItem("access_token", userService.getAccessToken())
+        setAuthenticated();
+        navigate('/containers')
+      } else {
+        formik.errors.email = "Email not Registered !";
+        formik.errors.password = "Check your password and try again !";
+      }
     } catch (error) {
       console.log("Error", error);
     }

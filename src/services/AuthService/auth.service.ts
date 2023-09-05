@@ -8,49 +8,60 @@ import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../routes/routeConstants/appRoutes";
+import { setAuthToken, removeAuthToken } from "./authToken";
 
 const UserService = () => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [error, setError] = useState<Error | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { setAuthenticated } = AuthContext();
 
-	const [error, setError] = useState<Error>();
+  const loginUser = async (data: User) => {
+    
+      setLoading(true);
+     return axiosInstance
+	 .post(ApiRoutes.USER_LOGIN, data)
+	 .then((response) => {
+		const user = deserialize(User, response.data["user"])
+		setAuthToken(response.data.data.tokens.access_token)
+		setAuthenticated(user);
+		return true;
+	 })
+     
+     .catch ((error) => {
+	  	setError(error);
+      	return false;
+    })
+  };
 
-	const [loading, setLoading] = useState(false);
+  const logoutUser = () =>{
+	removeAuthToken()
+  }
 
-	const { setAuthenticated } = AuthContext();
+  const handleLogin = async (data: User) => {
+    const success = await loginUser(data);
+    if (success) {
+      Notification({
+        message: "Login",
+        description: "Logged in successfully",
+        type: NotificationTypes.SUCCESS,
+      });
+      navigate(AppRoutes.CONTAINERS);
+    } else {
+      Notification({
+        message: "Login failed",
+        description: "incorrect email or password",
+        type: NotificationTypes.ERROR,
+      });
+    }
+  };
 
-	const loginUser = (data: User) => {
-		setLoading(true);
-		return axiosInstance
-			.post(ApiRoutes.USER_LOGIN, data)
-			.then((response) => {
-				const user = deserialize(User, response.data["user"]);
-				Notification({
-					message: "Login",
-					description: "Logged in successfully",
-					type: NotificationTypes.SUCCESS,
-				});
-				setAuthenticated(user);
-				navigate(AppRoutes.HOME);
-			})
-			.catch((error) => {
-				Notification({
-					message: "Login failed",
-					description: "incorrect email or password",
-					type: NotificationTypes.ERROR,
-				});
-			
-				setError(error);
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	};
-
-	return {
-		error,
-		loading,
-		loginUser,
-	};
+  return {
+    error,
+    loading,
+    handleLogin,
+	logoutUser
+  };
 };
 
 export default UserService;

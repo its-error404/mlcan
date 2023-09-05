@@ -1,14 +1,17 @@
 import axios from 'axios';
 import {ApiRoutes} from "../routes/routeConstants/apiRoutes";
 
+let accessToken = ''
+
 export const getHeaders = (): any => {
     let headers, user;
     if (localStorage.getItem('user')) {
         user = JSON.parse(localStorage.getItem('user') || '');
+        accessToken = user.tokens.access_token;
     }
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${(user && user.adminAuthToken) ? user.adminAuthToken : ''}`,
+        'Authorization': `Bearer ${accessToken}`,
     };
     return headers;
 };
@@ -19,6 +22,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(function (config) {
+    
     config.headers = getHeaders();
     return config;
 });

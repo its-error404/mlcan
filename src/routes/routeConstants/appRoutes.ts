@@ -9,5 +9,6 @@ export const AppRoutes = {
   REGISTER: "/register",
   LOGIN: "/login",
   APP_COMPONENTS:"/",
-  HOME: "/home"
+  HOME: "/home",
+  CONTAINERS: "/containers"
 };
