@@ -38,5 +38,4 @@ export const isAuthenticated = () => {
 export const logoutUser = () => {
   removeAuthToken();
 
-
 };

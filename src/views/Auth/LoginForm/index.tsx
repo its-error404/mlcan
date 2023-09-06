@@ -7,6 +7,8 @@ import { ReactComponent as LockIcon } from "../../../assets/single color icons -
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { removeAuthToken } from "../../../services/AuthService/authToken";
+import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
 
 
 const initialValues: LoginFormValues = {
@@ -24,7 +26,7 @@ const LoginForm: React.FC = () => {
       try {
         const success = await login(values.email, values.password);
         if (success) {
-          navigate('/containers')
+          navigate(ApiRoutes.CONTAINERS)
         } else {
          formik.errors.email = "Check your Email and try again !"
          formik.errors.password = "Check your password and Try again !"
@@ -50,6 +52,7 @@ const LoginForm: React.FC = () => {
           <h2>
             {isForgotPassword ? "Forgot Password" : "Login into Admin Portal"}
           </h2>
+          <button onClick={()=> removeAuthToken}>LOGOUT</button>
           <br></br>
           <form className="login-form" onSubmit={formik.handleSubmit}>
             {isForgotPassword ? (
