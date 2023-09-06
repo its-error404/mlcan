@@ -5,8 +5,6 @@ import validateLogin, { LoginFormValues } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
-import { AuthContext } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import useUserService from "../../../services/AuthService/auth.service";
 
 
@@ -18,28 +16,19 @@ const initialValues: LoginFormValues = {
 const LoginForm:React.FC = () => {
 
   const [isForgotPassword, setForgotPassword] = useState(false);
-  const { setAuthenticated } = AuthContext()
-  const navigate = useNavigate()
 
   const useService = useUserService()
 
   const onSubmit = async (values: typeof initialValues) => {
   
     try {
-      // const success = await useService.handleLogin({
-        await useService.handleLogin({
+      await useService.performLogin({
         email: values.email,
         password: values.password,
       });
 
-      // if (success) {
-        setAuthenticated();
-        navigate('/containers')
-      // } else {
-      //   formik.errors.email = "Email not Registered !";
-      //   formik.errors.password = "Check your password and try again !";
-      // }
     } catch (error) {
+      formik.errors.password = "Check your password"
       console.log("Error", error);
     }
   };

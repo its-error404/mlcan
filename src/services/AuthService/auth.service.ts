@@ -21,46 +21,48 @@ const useUserService = (): UserService => {
     setLoading(true);
     try {
       const response = await axiosInstance.post(ApiRoutes.USER_LOGIN, data);
-      const user = deserialize(User, response.data["user"]);
-      setAuthToken(response.data.data.tokens.access_token);
-      setAuthenticated(user);
-      return true;
-    } 
-    
-    catch (error) {
+  
+      if (response.status === 200 && response.data && response.data.success) {
+        const user = deserialize(User, response.data["user"]);
+        if (data.email === 'root.user@user.com' && data.password === 'URoot%78') {
+          setAuthToken(response.data.data.tokens.access_token);
+          setAuthenticated(user);
+          console.log(response)
+          console.log("Authentication successful");
+          return true;
+        } else {
+          console.log("Authentication failed");
+          return false;
+        }
+      } else {
+        console.log("Authentication failed - Server response not successful");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
       // setError(error);
       return false;
     }
   };
-
-  const logoutUser = () => {
-    removeAuthToken();
-  };
-
+  
   const handleLogin = async (data: User) => {
     const success = await loginUser(data);
+    return success;
+  };
+
+  const performLogin = async (data: User) => {
+    const success = await handleLogin(data);
     if (success) {
-      Notification({
-        message: "Login",
-        description: "Logged in successfully",
-        type: NotificationTypes.SUCCESS,
-      });
       navigate(AppRoutes.CONTAINERS);
-    } else {
-      Notification({
-        message: "Login failed",
-        description: "incorrect email or password",
-        type: NotificationTypes.ERROR,
-      });
     }
+    return success;
   };
 
   return {
     error,
     loading,
-    handleLogin,
-    // logoutUser,
+    performLogin,
   };
 };
 
-export default useUserService;
+export default useUserService
