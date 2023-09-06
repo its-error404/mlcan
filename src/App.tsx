@@ -5,6 +5,7 @@ import LoginForm from './views/Auth/LoginForm'
 import RegisterForm from './views/Auth/RegisterForm'
 import AllContainers from './views/AppComponents/Containers'
 import RepairList from './views/AppComponents/RepairList'
+import AddRepairEntry from './views/AppComponents/RepairList/AddRepair'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path='/register' element={<RegisterForm/>}/>
           <Route path='/containers' element={<AllContainers/>}/>
           <Route path='/repair-list' element={<RepairList/>}/>
+          <Route path='/add' element={<AddRepairEntry/>}/>
         </Routes>
     </Router>
   )

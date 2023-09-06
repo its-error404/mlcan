@@ -1,0 +1,75 @@
+.repair-list{
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 10px;
+    width: 100vw;
+    background-color: #F9FBFB;
+}
+
+.header-text{
+    padding-top: 60px;
+}
+
+.header{
+    display: flex;
+    flex-flow: column
+}
+
+.repairs-section{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 30px;
+}
+
+.repairs-header{
+    margin-left: 40px;
+    margin-top: 50px;
+    display: flex;
+    gap: 20px;
+}
+
+.repair-search-container{
+    position: relative;
+    display: flex;
+    gap: 30px;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+
+.repair-search-container input {
+    width: 15vw;
+    height: 4vh;
+    border: 1px solid gainsboro;
+    border-radius: 8px;
+}
+
+.repair-box__header{
+    margin-top: 40px;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 60px;
+    border: 1px solid red;
+    border-radius: 10px;
+    margin-left: 35px;
+    width: 80vw;
+    height: 70vh;
+    padding-top: 25px;
+    padding-left: 25px;
+}
+
+.repair-id__even {
+    margin-top: 30px;
+    background-color: red;
+}
+
+.repair-id__odd {
+    margin-top: 30px;
+}
+
+// .repair-box-headings {
+//     padding: 10px;
+// }
+
+.repair-box__header > div:nth-child(4) *:not(h4){
+    // margin-top: 30px;
+}
