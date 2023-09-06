@@ -9,34 +9,33 @@ import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../routes/routeConstants/appRoutes";
 import { setAuthToken, removeAuthToken } from "./authToken";
+import { UserService } from "./UserServiceTypes";
 
-const UserService = () => {
+const useUserService = (): UserService => {
   const navigate = useNavigate();
   const [error, setError] = useState<Error | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const { setAuthenticated } = AuthContext();
 
   const loginUser = async (data: User) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post(ApiRoutes.USER_LOGIN, data);
+      const user = deserialize(User, response.data["user"]);
+      setAuthToken(response.data.data.tokens.access_token);
+      setAuthenticated(user);
+      return true;
+    } 
     
-      setLoading(true);
-     return axiosInstance
-	 .post(ApiRoutes.USER_LOGIN, data)
-	 .then((response) => {
-		const user = deserialize(User, response.data["user"])
-		setAuthToken(response.data.data.tokens.access_token)
-		setAuthenticated(user);
-		return true;
-	 })
-     
-     .catch ((error) => {
-	  	setError(error);
-      	return false;
-    })
+    catch (error) {
+      // setError(error);
+      return false;
+    }
   };
 
-  const logoutUser = () =>{
-	removeAuthToken()
-  }
+  const logoutUser = () => {
+    removeAuthToken();
+  };
 
   const handleLogin = async (data: User) => {
     const success = await loginUser(data);
@@ -60,8 +59,8 @@ const UserService = () => {
     error,
     loading,
     handleLogin,
-	logoutUser
+    // logoutUser,
   };
 };
 
-export default UserService;
+export default useUserService;

@@ -5,9 +5,10 @@ import validateLogin, { LoginFormValues } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
-import UserService from "../../../services/AuthService/auth.service";
 import { AuthContext } from "../../../context/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useUserService from "../../../services/AuthService/auth.service";
+
 
 const initialValues: LoginFormValues = {
   email: "",
@@ -20,25 +21,24 @@ const LoginForm:React.FC = () => {
   const { setAuthenticated } = AuthContext()
   const navigate = useNavigate()
 
+  const useService = useUserService()
+
   const onSubmit = async (values: typeof initialValues) => {
-    console.log(values);
   
     try {
-      const userService = UserService();
-      // await userService.handleLogin({
-      const success = await userService.handleLogin({
+      // const success = await useService.handleLogin({
+        await useService.handleLogin({
         email: values.email,
         password: values.password,
       });
 
-      if (success) {
-        localStorage.getItem("access_token", userService.getAccessToken())
+      // if (success) {
         setAuthenticated();
         navigate('/containers')
-      } else {
-        formik.errors.email = "Email not Registered !";
-        formik.errors.password = "Check your password and try again !";
-      }
+      // } else {
+      //   formik.errors.email = "Email not Registered !";
+      //   formik.errors.password = "Check your password and try again !";
+      // }
     } catch (error) {
       console.log("Error", error);
     }
