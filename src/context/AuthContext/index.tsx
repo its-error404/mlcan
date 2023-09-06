@@ -1,55 +1,48 @@
-import React, { useContext, createContext, useMemo, useState, Dispatch, SetStateAction } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { loginUser, logoutUser } from "../../services/AuthService/auth.service";
 import { User } from "../../models/user.model";
 
-export interface AuthState {
-  authenticated?: boolean;
-  user?: User;
-  accessToken?: string;
-}
+const AuthContext = createContext<{
+  user: User | undefined;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  loading: boolean;
+} | null>(null);
 
-type SetAuthState = Dispatch<SetStateAction<AuthState>>;
-
-type AuthContentProps = [AuthState, SetAuthState];
-
-// Define the default context state
-const initialValues: AuthState = {
-  authenticated: false,
-  user: new User(),
-  accessToken: ""
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
 
-// Create the context
-const AuthContent: any = createContext({});
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
 
-// Create method to use context
-const AuthContext = () => {
-  const context = useContext<AuthContentProps>(AuthContent);
-  if (!context) {
-    throw new Error(`useMeContext must be used within a MeContextProvider`);
-  }
-  const [auth, setAuth] = context;
-  
-  const setAuthenticated = (user?: User, accessToken?: string) => {
-    setAuth((auth) => ({
-      ...auth,
-      authenticated: true,
-      user,
-      accessToken
-    }));
-    return true
+  const login = async (email: string, password: string) => {
+    setLoading(true);
+    const {
+      success,
+      user: authenticatedUser,
+      error,
+    } = await loginUser(email, password);
+    setLoading(false);
+
+    if (success) {
+      setUser(authenticatedUser);
+    } else {
+      console.error("Login error:", error);
+    }
+
+    return success;
   };
 
-  return {
-    ...auth,
-    setAuthenticated
+  const logout = () => {
+    logoutUser();
+    setUser(undefined);
   };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
-
-// Create the context provider
-const AuthProvider = (ownProps: any) => {
-  const [auth, setAuth] = useState<AuthState>(initialValues);
-  const value = useMemo(() => [auth, setAuth], [auth]);
-  return <AuthContent.Provider value={value} {...ownProps} />;
-}
-
-export { AuthProvider, AuthContext };

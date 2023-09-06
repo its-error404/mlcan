@@ -10,5 +10,6 @@ export const AppRoutes = {
   LOGIN: "/login",
   APP_COMPONENTS:"/",
   HOME: "/home",
-  CONTAINERS: "/containers"
+  CONTAINERS: "/containers",
+  REPAIR_LIST: "/repair-list"
 };

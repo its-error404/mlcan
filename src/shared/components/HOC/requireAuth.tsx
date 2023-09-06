@@ -1,34 +1,24 @@
-import React, { FC, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../context/AuthContext';
-import { NavigationRoutes } from '../../../routes/routeConstants/appRoutes';
-import RestrictAccess from "../RestrictedAccess";
+import React from "react";
+import { Navigate, RouteProps, Route } from "react-router-dom";
+import { isAuthenticated } from "../../../services/AuthService/auth.service";
 
-const RequireAuth = ({ children }: { children: JSX.Element }) => {
-    const Authentication = (props: any) => {
-        const {allowedRoles} = props
-        const { authenticated } = AuthContext();
-        const location = useLocation();
-        const navigate = useNavigate();
-        useEffect(() => {
-            if (!authenticated && location.pathname !== NavigationRoutes.LOGIN) {
-                return navigate(NavigationRoutes.LOGIN);
-            }
-        }, [props]);
+interface PrivateRouteProps extends RouteProps {
+  component: React.ComponentType<RouteProps>;
+}
 
-        if(allowedRoles?.length) {
-            const { user } = props;
-            return allowedRoles.includes(user.role) ? children : <RestrictAccess />;
-        }
-        return children;
-    } 
-
-    return <Authentication/>;
+const PrivateRoute = ({ component: Component, ...rest }: PrivateRouteProps) => {
+  return (
+    <Route
+      {...rest}
+      element={
+        isAuthenticated() ? (
+          <Component {...rest} />
+        ) : (
+          <Navigate to="/login" replace />
+        )
+      }
+    />
+  );
 };
 
-export const isAuthenticated = (component: JSX.Element) => {
-    return RequireAuth({children: component});
-};
-
-
-export default isAuthenticated;
+export default PrivateRoute;

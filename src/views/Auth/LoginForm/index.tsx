@@ -5,7 +5,8 @@ import validateLogin, { LoginFormValues } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
-import useUserService from "../../../services/AuthService/auth.service";
+import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const initialValues: LoginFormValues = {
@@ -13,32 +14,28 @@ const initialValues: LoginFormValues = {
   password: "",
 };
 
-const LoginForm:React.FC = () => {
-
+const LoginForm: React.FC = () => {
   const [isForgotPassword, setForgotPassword] = useState(false);
-
-  const useService = useUserService()
-
-  const onSubmit = async (values: typeof initialValues) => {
-  
-    try {
-      await useService.performLogin({
-        email: values.email,
-        password: values.password,
-      });
-
-    } catch (error) {
-      formik.errors.password = "Check your password"
-      console.log("Error", error);
-    }
-  };
-
+  const { login, loading } = useAuth()!;
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues,
-    onSubmit,
+    onSubmit: async (values) => {
+      try {
+        const success = await login(values.email, values.password);
+        if (success) {
+          navigate('/containers')
+        } else {
+         formik.errors.email = "Check your Email and try again !"
+         formik.errors.password = "Check your password and Try again !"
+        }
+      } catch (error) {
+        console.log("Error", error);
+      }
+    },
     validate: validateLogin,
   });
-
+  
   return (
     <div className="login">
       <div className="background">

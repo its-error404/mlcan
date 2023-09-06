@@ -1,22 +1,21 @@
-import React, { FC } from "react";
+import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import RegisterForm from "../../views/Auth/RegisterForm";
 import LoginForm from "../../views/Auth/LoginForm";
-import { RouterProps } from "../../shared/types/route.type";
 import { AppRoutes, NavigationRoutes } from "../../routes/routeConstants/appRoutes";
 
 const authRouter = () => {
-  const routes: RouterProps[] = [
-    { path: AppRoutes.REGISTER, component: <RegisterForm/> },
-    { path: AppRoutes.LOGIN, component: <LoginForm/> },
+  const routes = [
+    { path: AppRoutes.REGISTER, element: <RegisterForm /> },
+    { path: AppRoutes.LOGIN, element: <LoginForm /> },
   ];
 
   return (
     <Routes>
-      {routes.map(({ component, ...routerProps }) => (
-        <Route {...routerProps} element={component} />
+      {routes.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
       ))}
-      <Route  path="*" element={<Navigate to={NavigationRoutes.LOGIN}/>} />
+      <Route path="*" element={<Navigate to={NavigationRoutes.LOGIN} />} />
     </Routes>
   );
 };

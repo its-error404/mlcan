@@ -1,7 +1,7 @@
-import { FC, ReactElement, ComponentClass } from "react";
+import { ReactNode } from "react";
 
 export interface RouterProps {
     path: string,
-    component: FC | ReactElement  | ComponentClass
+    element: ReactNode
 }
 

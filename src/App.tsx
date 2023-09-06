@@ -1,24 +1,13 @@
-import React from 'react'
-import './App.css'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import LoginForm from './views/Auth/LoginForm'
-import RegisterForm from './views/Auth/RegisterForm'
-import AllContainers from './views/AppComponents/Containers'
-import RepairList from './views/AppComponents/RepairList'
-import AddRepairEntry from './views/AppComponents/RepairList/AddRepair'
+import React from 'react';
+import './App.css';
+import AppRouter from './routes/index';
 
 const App = () => {
   return (
-    <Router>
-        <Routes>
-          <Route path='/' element={<LoginForm />}/>
-          <Route path='/register' element={<RegisterForm/>}/>
-          <Route path='/containers' element={<AllContainers/>}/>
-          <Route path='/repair-list' element={<RepairList/>}/>
-          <Route path='/add' element={<AddRepairEntry/>}/>
-        </Routes>
-    </Router>
-  )
+    <div>
+      <AppRouter />
+    </div>
+  );
 }
 
-export default App
+export default App;
