@@ -3,6 +3,9 @@ import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
 import { setAuthToken, removeAuthToken } from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
+import { Navigate, useNavigate } from "react-router-dom";
+
+
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -40,7 +43,8 @@ export const isAuthenticated = () => {
   }
 };
 
+
+
 export const logoutUser = () => {
   removeAuthToken();
-
 };

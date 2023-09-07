@@ -80,6 +80,7 @@
     margin-top: 10px;
     margin-right: 20px;
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(355deg) brightness(104%) contrast(101%);
+    transition: transform 0.3ms;
 }
 
 .user-info{
@@ -91,4 +92,29 @@
     width: 270px;
     padding-top: 20px;
     margin-left: 10px;
+    position: relative;
+}
+
+.user-dropdown {
+    position: absolute;
+    // border: 1px solid red;
+    bottom: 90px;
+    right: 20px;
+    transition: all 0.9ms;
+    // width: 100px;
+    // height: 60px;
+}
+
+.user-dropdown button {
+    padding-left: 20px;
+    border: 0;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #43C8B0;
+    color: white;
+}
+
+.drop-active {
+    transform: rotate(180deg);
 }

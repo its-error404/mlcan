@@ -43,33 +43,102 @@
     border-radius: 8px;
 }
 
-.repair-box__header{
-    margin-top: 40px;
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 60px;
-    border: 1px solid red;
+.bulk-upload-button {
+    position: absolute;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    background-color: #309582;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    color: white;
+    font-weight: 600;
+    right: 0;
+    font-size: 14px;
+}
+
+.repair-box__container{
+
+    border: 1px solid gainsboro;
     border-radius: 10px;
     margin-left: 35px;
     width: 80vw;
     height: 70vh;
-    padding-top: 25px;
-    padding-left: 25px;
 }
 
-.repair-id__even {
-    margin-top: 30px;
-    background-color: red;
+.repair-box__table {
+    width: 100%;
 }
 
-.repair-id__odd {
-    margin-top: 30px;
+.repair-box__rows{
+    background-color: #ECF1F4;
+}
+.repair-box__rows th {
+    padding: 15px;
 }
 
-// .repair-box-headings {
-//     padding: 10px;
-// }
-
-.repair-box__header > div:nth-child(4) *:not(h4){
-    // margin-top: 30px;
+.repair-box__rows span {
+    padding-left: 10px;
 }
+
+.repair-id__even td {
+    padding-left: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: white;
+    border: 1px solid transparent;
+}
+
+.repair-id__odd td{
+    padding-left: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #ECF1F4;
+    border: 1px solid transparent;
+}
+
+.repair-id__odd td:nth-last-child(-n+2) {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.repair-id__even td:nth-last-child(-n+2) {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.down-icon {
+    position: absolute;
+    right: 6px;
+}
+
+.repair-filter-icon {
+    position: absolute;
+    left: 10px;
+    bottom: 4px;
+    filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
+.repair-first-icon {
+    position: absolute;
+    left: 10px;
+    bottom: 8px;
+    filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
+.version-button {
+    position: relative;
+    padding-left: 40px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid gainsboro;
+    border-radius: 7px;
+    background-color: white;
+    color: gray;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+

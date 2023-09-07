@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { ReactComponent as ContainerIcon } from "../../../assets/single color icons - SVG/container.svg";
 import { ReactComponent as CustomersIcon } from "../../../assets/single color icons - SVG/customer.svg";
@@ -8,11 +8,26 @@ import { ReactComponent as RepairListIcon } from "../../../assets/single color i
 import { ReactComponent as UsersIcon } from "../../../assets/single color icons - SVG/user management.svg";
 import { ReactComponent as CustomerIcon } from "../../../assets/single color icons - SVG/customer.svg";
 import { ReactComponent as AccordingOpenIcon } from "../../../assets/single color icons - SVG/accordion open.svg";
+import { Button } from "antd";
+import { logoutUser } from "../../../services/AuthService/auth.service";
 
 const Sidebar = () => {
     const location = useLocation();
     const { pathname } = location;
     const splitLocation = pathname.split("/");
+
+    const [dropDown, setDropDown] = useState(false)
+
+    const toggleDropdown = () =>{
+        setDropDown(!dropDown)
+    }
+
+    const navigate = useNavigate()
+
+    const logout = ()=>{
+        logoutUser()
+        navigate('/auth/login')
+    }
 
     return (
             <div className="side-bar">
@@ -66,9 +81,16 @@ const Sidebar = () => {
                         <p>Admin</p>
                     </div>
 
-                    <div className="user-arrow">
+                    <div className={`user-arrow ${dropDown ? "drop-active" : ""}`}
+ onClick={toggleDropdown}>
                         <AccordingOpenIcon width={10} />
                     </div>
+
+                    {dropDown && (
+          <div className="user-dropdown">
+            <Button onClick={logout}>Logout</Button>
+          </div>
+        )}
                 </div>
             </div>
     );

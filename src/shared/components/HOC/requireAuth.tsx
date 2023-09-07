@@ -1,12 +1,12 @@
 import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { isAuthenticated } from "../../../services/AuthService/auth.service";
-import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
+import RestrictAccess from "../RestrictedAccess";
 
 const RequireAuth = () => {
 
   const auth = isAuthenticated()
-  return auth ? <Outlet /> : <Navigate to={ApiRoutes.USER_LOGIN} />;
+  return auth ? <Outlet /> : <RestrictAccess />;
 }
 
 export default RequireAuth

@@ -52,7 +52,6 @@ const LoginForm: React.FC = () => {
           <h2>
             {isForgotPassword ? "Forgot Password" : "Login into Admin Portal"}
           </h2>
-          <button onClick={()=> removeAuthToken()}>LOGOUT</button>
           <br></br>
           <form className="login-form" onSubmit={formik.handleSubmit}>
             {isForgotPassword ? (
