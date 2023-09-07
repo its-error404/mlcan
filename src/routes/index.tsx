@@ -6,25 +6,23 @@ import RepairList from "../views/AppComponents/RepairList";
 import { AppRoutes } from "./routeConstants/appRoutes";
 import RequireAuth from "../shared/components/HOC/requireAuth";
 
-
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.AUTH} element={<AuthWrapper />} />
-        {/* <Route path={AppRoutes.CONTAINERS} element={<PrivateRoute component={AllContainers} />} /> */}
+        <Route path={AppRoutes.CONTAINERS} element={<AllContainers/>}/>
+        <Route path={AppRoutes.REPAIR_LIST} element={<RepairList />} />
+
+        {/* Protected Routes */}
+
         <Route element={<RequireAuth/>}>
           <Route path={AppRoutes.CONTAINERS} element={<AllContainers/>}/>
           <Route path={AppRoutes.REPAIR_LIST} element={<RepairList />} />
         </Route>
-        {/* <PrivateRoute path={AppRoutes.CONTAINERS} element={<AllContainers/>} auth={isAuthenticated()}/> */}
-        {/* <Route
-          path={AppRoutes.CONTAINERS}
-          element={
-            <PrivateRoute
-              element={<AllContainers />}
-              auth={isAuthenticated()}
-            />}/> */}
+
+        {/*End of Protected Routes */ }
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,11 +1,8 @@
 import axiosInstance from "../../interceptor/axiosInstance";
 import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
-import { setAuthToken, removeAuthToken } from "./authToken";
+import { setAuthToken, removeAuthToken, setUserInfo, IS_ADMIN } from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
-import { Navigate, useNavigate } from "react-router-dom";
-
-
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -14,7 +11,7 @@ export const loginUser = async (email: string, password: string) => {
       email,
       password,
     });
-
+    
     if (response.status === 200 && response.data && response.data.success && email === "root.user@user.com" && password === "URoot%78") {
 
       const user = deserialize(User, response.data.data.user);
@@ -22,6 +19,17 @@ export const loginUser = async (email: string, password: string) => {
       if (response.data.data.tokens.access_token)
 
         setAuthToken(response.data.data.tokens.access_token);
+
+        const isAdmin = localStorage.getItem(IS_ADMIN) === "true";
+                if (isAdmin) {
+
+                    response.data.data.user.admin = "User";
+                } else {
+                    response.data.data.user.admin = "Admin";
+                }
+
+        setUserInfo(response.data.data.user.uid, response.data.data.user.email, response.data.data.user.phone, response.data.data.user.admin)
+        
 
       return { success: true, user };
     } else {
@@ -42,8 +50,6 @@ export const isAuthenticated = () => {
     return false
   }
 };
-
-
 
 export const logoutUser = () => {
   removeAuthToken();

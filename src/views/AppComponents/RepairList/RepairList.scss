@@ -3,7 +3,7 @@
     flex-flow: row nowrap;
     gap: 10px;
     width: 100vw;
-    background-color: #F9FBFB;
+    background-color: #F7F9F9;
 }
 
 .header-text{
@@ -69,6 +69,7 @@
 
 .repair-box__table {
     width: 100%;
+    border-collapse: collapse;
 }
 
 .repair-box__rows{
@@ -76,6 +77,8 @@
 }
 .repair-box__rows th {
     padding: 15px;
+    font-weight: 700;
+    font-size: 14px;
 }
 
 .repair-box__rows span {

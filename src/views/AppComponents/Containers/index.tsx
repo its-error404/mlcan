@@ -90,13 +90,18 @@ const AllContainers = () => {
               </div>
 
               <div className="container-box__header">
-                <p>Container Number</p>
-                <p>Yard</p>
-                <p>Customer</p>
-                <p>Owner Name</p>
-                <p>Current Activity</p>
-                <p>Activity Date</p>
-                <p>Status</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Container Number</th>
+                      <th>Yard</th>
+                      <th>Customer</th>
+                      <th>Owner Name</th>
+                      <th>Current Activity</th>
+                      <th>Satus</th>
+                    </tr>  
+                  </thead>  
+                </table>
               </div>
 
             </div>

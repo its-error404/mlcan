@@ -7,7 +7,6 @@ import { ReactComponent as LockIcon } from "../../../assets/single color icons -
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { removeAuthToken } from "../../../services/AuthService/authToken";
 import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
 
 
