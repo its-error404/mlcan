@@ -1,26 +1,12 @@
 import React from "react";
-import { Navigate, RouteProps, Route } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { isAuthenticated } from "../../../services/AuthService/auth.service";
+import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
 
-interface PrivateRouteProps extends RouteProps {
+const RequireAuth = () => {
 
-  auth: string
-  element: React.ReactNode
+  const auth = isAuthenticated()
+  return auth ? <Outlet /> : <Navigate to={ApiRoutes.USER_LOGIN} />;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ element, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      element={
-        rest.auth ? (
-          element
-        ) : (
-          <Navigate to="/auth/login" replace />
-        )
-      }
-    />
-  );
-};
-
-export default PrivateRoute;
+export default RequireAuth

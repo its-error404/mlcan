@@ -32,7 +32,12 @@ export const loginUser = async (email: string, password: string) => {
 
 export const isAuthenticated = () => {
   const accessToken = localStorage.getItem("access_token");
-  return !!accessToken;
+  if(accessToken) {
+    return true
+  }
+  else {
+    return false
+  }
 };
 
 export const logoutUser = () => {
