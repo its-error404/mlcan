@@ -43,6 +43,7 @@ export interface Data {
 
 const RepairList = () => {
   const [data, setData] = useState<Data | null> (null)
+  const [total, setTotal] = useState<Data | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +51,7 @@ const RepairList = () => {
         const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS)
         setData(response.data)
         console.log(data)
-        // console.log(response.data.data.docs)
+        setTotal(response.data.data.docs.length)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -111,8 +112,8 @@ const RepairList = () => {
     ))}
   </table>
 </div>
-
-<Pagination defaultCurrent={1} total={50} />
+<p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {total} </span> Records</p>
+{/* <Pagination defaultCurrent={1} total={4} /> */}
       </div>
     </div>
   )

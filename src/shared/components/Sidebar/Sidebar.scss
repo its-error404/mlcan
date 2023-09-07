@@ -35,7 +35,7 @@
 }
 
 .user-info p:nth-child(2){
-    color: gray;
+    color: #757c85;
     margin-top: 10px;
     font-size: 13px;
     font-weight: 300;
@@ -97,12 +97,15 @@
 
 .user-dropdown {
     position: absolute;
-    // border: 1px solid red;
+    border: 1px solid transparent;
+    border-radius: 8px;
     bottom: 90px;
-    right: 20px;
+    right: -50px;
     transition: all 0.9ms;
-    // width: 100px;
-    // height: 60px;
+    width: 300px;
+    // inset: 3;
+    height: 200px;
+    background-color: #303744;
 }
 
 .user-dropdown button {
@@ -117,4 +120,27 @@
 
 .drop-active {
     transform: rotate(180deg);
+}
+
+.designation-flex {
+    display: flex;
+    gap: 20px;
+    color: #757c85;
+    font-size: 12px;
+    padding-top: 10px;
+}
+
+.user-role {
+    color: #303744;
+}
+
+.user-email, .user-number{
+    color: #f1f4f8 !important;
+    font-size: 16px !important;
+}
+
+.mail-container, .number-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
