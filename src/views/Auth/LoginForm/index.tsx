@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import "./LoginForm.scss";
-import validateLoginSchema, { LoginFormValues } from "./LoginValidation";
+import { LoginFormValues, onSubmit } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
-import * as yup from 'yup';
 
 const initialValues: LoginFormValues = {
   email: "",
@@ -42,18 +40,8 @@ const LoginForm: React.FC = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      try {
-        const success = await login(values.email, values.password);
-        if (success) {
-          navigate(ApiRoutes.CONTAINERS)
-        } else {
-         formik.errors.password = "Check your password and Try again !"
-        }
-      } catch (error) {
-        console.log("Error", error);
-      }
-    },
-    validate: validateLogin,
+      await onSubmit(values, login, navigate, formik)
+    }
   });
   
   return (

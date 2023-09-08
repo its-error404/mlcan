@@ -1,75 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './RepairList.scss'
-import Sidebar from '../../../shared/components/Sidebar'
-import axiosInstance from '../../../interceptor/axiosInstance'
-import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes'
-import { ReactComponent as PlusIcon } from '../../../assets/single color icons - SVG/add.svg'
-import { ReactComponent as SearchIcon } from '../../../assets/single color icons - SVG/search.svg'
-import { ReactComponent as FilterIcon } from '../../../assets/single color icons - SVG/filter.svg'
+import Sidebar from '../../shared/components/Sidebar/index'
+import { ReactComponent as PlusIcon } from '../../assets/single color icons - SVG/add.svg'
+import { ReactComponent as SearchIcon } from '../../assets/single color icons - SVG/search.svg'
+import { ReactComponent as FilterIcon } from '../../assets/single color icons - SVG/filter.svg'
 import { Button } from 'antd'
-import { ReactComponent as ToggleIcon } from '../../../assets/Multicolor icons - SVG/sort default.svg'
-import { ReactComponent as EditIcon } from '../../../assets/single color icons - SVG/edit.svg'
-import { ReactComponent as DeleteIcon } from '../../../assets/single color icons - SVG/delete.svg'
-import { ReactComponent as ExportIcon } from '../../../assets/single color icons - SVG/export.svg'
-import { ReactComponent as VersionIcon } from '../../../assets/single color icons - SVG/version.svg'
-import { ReactComponent as DownIcon } from '../../../assets/single color icons - SVG/accordion open.svg'
-
-export interface Repair {
-  uid: string;
-  category: string;
-  created_at: string;
-  deleted: boolean;
-  dmg_area: string;
-  id: string;
-  merc: {
-    max_mat_cost: number;
-    unit_mat_hours: number;
-    unit_hours: number;
-    max_pcs: number;
-    unit: string;
-
-  };
-  nmaersk: any;
-  rep_area: string;
-  type: string;
-  updated_at: string;
-}
-
-export interface Data {
-  data: {
-    docs: Repair[]
-  }
-}
+import { ReactComponent as ToggleIcon } from '../../assets/Multicolor icons - SVG/sort default.svg'
+import { ReactComponent as EditIcon } from '../../assets/single color icons - SVG/edit.svg'
+import { ReactComponent as DeleteIcon } from '../../assets/single color icons - SVG/delete.svg'
+import { ReactComponent as ExportIcon } from '../../assets/single color icons - SVG/export.svg'
+import { ReactComponent as VersionIcon } from '../../assets/single color icons - SVG/version.svg'
+import { ReactComponent as DownIcon } from '../../assets/single color icons - SVG/accordion open.svg'
+import { useFetchData, useRowClick, useSectionClick } from '../../services/RepairListService/repairlist.service'
 
 const RepairList = () => {
-  const [data, setData] = useState<Data | null>(null)
-  const [total, setTotal] = useState<Data | null>(null)
-  const [searchData, setSearchData] = useState()
-  const [selectedEntry, setSelectedEntry] = useState<Repair | null>(null)
+  const [searchData, setSearchData] = useState('')
+  const { repairListData, totalEntries } = useFetchData()
+  const { selectedEntry, handleRowClick } = useRowClick();
+  const handleSectionClick = useSectionClick()
   const [sectionIndex, setSectionIndex] = useState<number>(0)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS)
-        setData(response.data)
-        setTotal(response.data.data.docs.length)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-  
-  const handleRowClick = (index: number) => {
-    setSelectedEntry(data?.data?.docs[index] || null);
-    setSectionIndex(0);
-  };
-
-  const handleSectionClick = (index: number) => {
-    setSectionIndex(index);
-  };
 
   return (
     <div className='repair-list'>
@@ -112,8 +61,8 @@ const RepairList = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.data?.docs.map((doc, index) => (
-              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={() => handleRowClick(index)}>
+            {repairListData?.data?.docs.map((doc, index) => (
+              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={() => handleRowClick(doc)}>
                 <td>{doc.uid}</td>
                 <td>{doc.rep_area}</td>
                 <td>{doc.dmg_area}</td>
@@ -129,7 +78,7 @@ const RepairList = () => {
             </tbody>
           </table>
         </div>
-        <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {total} </span></p>
+        <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {totalEntries} </span></p>
       </div>
       {/* {selectedEntry && ( */}
         <div className="overlay-box">
@@ -137,14 +86,14 @@ const RepairList = () => {
             <h3>{} - Top Rails and Headers</h3>
           </div>
           <div className="overlay-header">
-            <span className={sectionIndex === 0 ? 'column-active' : ''} onClick={() => handleSectionClick(0)}>
-              Repair Details
+            <span className={sectionIndex === 0 ? 'active' : ''} onClick={() => handleSectionClick(0, setSectionIndex)}>
+              Section 1
             </span>
-            <span className={sectionIndex === 1 ? 'column-active' : ''} onClick={() => handleSectionClick(1)}>
-              Non-Maersk Details
+            <span className={sectionIndex === 1 ? 'active' : ''} onClick={() => handleSectionClick(1, setSectionIndex)}>
+              Section 2
             </span>
-            <span className={sectionIndex === 2 ? 'column-active' : ''} onClick={() => handleSectionClick(2)}>
-              Merc+ Details
+            <span className={sectionIndex === 2 ? 'active' : ''} onClick={() => handleSectionClick(2, setSectionIndex)}>
+              Section 3
             </span>
           </div>
           <div className="overlay-content">

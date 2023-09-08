@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import AuthWrapper from "../views/Auth/AuthWrapper";
-import AllContainers from "../views/AppComponents/Containers";
-import RepairList from "../views/AppComponents/RepairList";
 import { AppRoutes } from "./routeConstants/appRoutes";
 import RequireAuth from "../shared/components/HOC/requireAuth";
+import AllContainers from "../views/Containers";
+import RepairList from "../views/RepairList";
 
 const AppRouter = () => {
   return (

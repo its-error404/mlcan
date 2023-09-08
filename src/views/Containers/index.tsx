@@ -1,9 +1,9 @@
 import React from "react";
 import "./Containers.scss";
-import Sidebar from "../../../shared/components/Sidebar";
-import { ReactComponent as PlusIcon } from "../../../assets/single color icons - SVG/add.svg";
-import {ReactComponent as SearchIcon} from '../../../assets/single color icons - SVG/search.svg'
-import {ReactComponent as FilterIcon} from '../../../assets/single color icons - SVG/filter.svg'
+import Sidebar from "../../shared/components/Sidebar/index";
+import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
+import {ReactComponent as SearchIcon} from '../../assets/single color icons - SVG/search.svg'
+import {ReactComponent as FilterIcon} from '../../assets/single color icons - SVG/filter.svg'
 import { Button } from "antd";
 
 const AllContainers = () => {
