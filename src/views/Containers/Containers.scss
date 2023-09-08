@@ -11,7 +11,7 @@
 }
 
 .plus-icon{
-    filter: brightness(0) saturate(100%) invert(48%) sepia(31%) saturate(781%) hue-rotate(119deg) brightness(97%) contrast(87%);
+    filter: $plus-icon;
 }
 
 .containers-header{

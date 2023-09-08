@@ -20,7 +20,7 @@
 }
 
 .active span{
-    filter: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
+    filter: $sidebar-span !important;
 }
 
 .user-information p:first-child {
@@ -94,13 +94,13 @@
 }
 
 .customer-icon, .logout-icon{
-    filter: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
+    filter: $icon-background;
 }
 
 .user-arrow{
     margin-top: 10px;
     margin-left: 20px;
-    filter: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
+    filter: $arrow-svg;
     transition: transform 0.3s;
 }
 

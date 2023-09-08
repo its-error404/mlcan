@@ -31,6 +31,8 @@ $user-info-child-tertiary: #f1f4f8;
 $initials: rgb(51,68,80); 
 $dropdown-button: white;
 $logout-text: white;
+$sidebar-span: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%);
+$icon-background: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
 
 /* Input Field */
 $input-border-color: rgba(0, 0, 0, 0.164);
@@ -41,6 +43,8 @@ $container-input: gainsboro;
 $search-input: #E7EAEC;
 $email-input: rgb(230, 220, 220);
 $password-input: rgb(230, 220, 220);
+$arrow-svg: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
+$plus-icon: brightness(0) saturate(100%) invert(48%) sepia(31%) saturate(781%) hue-rotate(119deg) brightness(97%) contrast(87%);
 
 /* Default Button */
 $button-default-border-color: $primary-color;
