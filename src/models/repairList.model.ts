@@ -26,6 +26,13 @@ export class Repair {
     unit_hours: number;
     max_pcs: number;
     unit: string;
+    desc: string;
+    id:string;
+    unit_mat_cost: string;
+    rep_mode:number;
+    mode_num:number;
+    rep_code:string;
+    combined:string;
   };
 
   @serializable(alias('nmaersk', primitive()))

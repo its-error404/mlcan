@@ -11,6 +11,7 @@ import { ReactComponent as DeleteIcon } from '../../assets/single color icons - 
 import { ReactComponent as ExportIcon } from '../../assets/single color icons - SVG/export.svg'
 import { ReactComponent as VersionIcon } from '../../assets/single color icons - SVG/version.svg'
 import { ReactComponent as DownIcon } from '../../assets/single color icons - SVG/accordion open.svg'
+import { ReactComponent as CloseIcon } from '../../assets/single color icons - SVG/close.svg'
 import { useFetchData, useRowClick, useSectionClick } from '../../services/RepairListService/repairlist.service'
 
 const RepairList = () => {
@@ -19,9 +20,18 @@ const RepairList = () => {
   const { selectedEntry, handleRowClick } = useRowClick();
   const handleSectionClick = useSectionClick()
   const [sectionIndex, setSectionIndex] = useState<number>(0)
+  const [overlayOpen, setOverlayOpen] = useState<boolean>(false)
+
+  const openOverlay = () => {
+    setOverlayOpen(true)
+  }
+
+  const closeOverlay = () => {
+    setOverlayOpen(false)
+  }
 
   return (
-    <div className='repair-list'>
+    <div className={`repair-list ${overlayOpen ? 'overlay-active' : ''}`}>
       <Sidebar />
       <div className='repairs-section'>
         <div className='repairs-header'>
@@ -62,7 +72,7 @@ const RepairList = () => {
           </thead>
           <tbody>
             {repairListData?.data?.docs.map((doc, index) => (
-              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={() => handleRowClick(doc)}>
+              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={() =>  { handleRowClick(doc); openOverlay()}}>
                 <td>{doc.uid}</td>
                 <td>{doc.rep_area}</td>
                 <td>{doc.dmg_area}</td>
@@ -80,36 +90,37 @@ const RepairList = () => {
         </div>
         <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {totalEntries} </span></p>
       </div>
-      {/* {selectedEntry && ( */}
+      {selectedEntry && overlayOpen && (
         <div className="overlay-box">
           <div className='entry-header'>
-            <h3>{} - Top Rails and Headers</h3>
+            <h3>{selectedEntry.uid} - Top Rails and Headers</h3>
+            <CloseIcon width={15} className='close-icon' onClick={closeOverlay}/>
           </div>
           <div className="overlay-header">
-            <span className={sectionIndex === 0 ? 'active' : ''} onClick={() => handleSectionClick(0, setSectionIndex)}>
-              Section 1
+            <span className={sectionIndex === 0 ? 'column-active' : ''} onClick={() => handleSectionClick(0, setSectionIndex)}>
+              Repair Details
             </span>
-            <span className={sectionIndex === 1 ? 'active' : ''} onClick={() => handleSectionClick(1, setSectionIndex)}>
-              Section 2
+            <span className={sectionIndex === 1 ? 'column-active' : ''} onClick={() => handleSectionClick(1, setSectionIndex)}>
+              Non-Maersk Details
             </span>
-            <span className={sectionIndex === 2 ? 'active' : ''} onClick={() => handleSectionClick(2, setSectionIndex)}>
-              Section 3
+            <span className={sectionIndex === 2 ? 'column-active' : ''} onClick={() => handleSectionClick(2, setSectionIndex)}>
+              Merc+ Details
             </span>
           </div>
           <div className="overlay-content">
             {sectionIndex === 0 && (
-              <div className="section-1">
-                <div className='section-1__headings'>
+              <div className="repair-details">
+                <div className='repair-details__headings'>
                   <p>Repair ID</p>
                   <p>Container Repair Area</p>
                   <p>Container Damaged Area</p>
                   <p>Repair Type</p>
                 </div>
-                <div className='section-1__data'>
-                  <p>{selectedEntry?.uid}h</p>
-                  <p>{selectedEntry?.rep_area}h</p>
-                  <p>{selectedEntry?.dmg_area}h</p>
-                  <p>{selectedEntry?.type}h</p>
+                <div className='repair-details__data'>
+                  <p>{selectedEntry?.uid}</p>
+                  <p>{selectedEntry?.rep_area}</p>
+                  <p>{selectedEntry?.dmg_area}</p>
+                  <p>{selectedEntry?.type}</p>
                 </div>
               </div>
             )}
@@ -123,7 +134,7 @@ const RepairList = () => {
                     </div>
                     <div className='non-maersk__cost-details-content'>
                       <p>{selectedEntry?.nmaersk}sample</p>
-                      <p>{selectedEntry?.merc?.max_mat_cost}sample</p>
+                      <p>{selectedEntry?.merc?.max_mat_cost}</p>
                     </div>
                 </div>
                 <h5>Non-Maersk Customer Related Details</h5>
@@ -144,7 +155,10 @@ const RepairList = () => {
                         <p>ID Source</p>
                     </div>
                     <div className='non-maersk__customer-details-content'>
-                        <p>{selectedEntry?.rep_area}sample</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.type}</p>
+                        <p>{selectedEntry?.merc?.desc}</p>
                         <p>{selectedEntry?.rep_area}</p>
                         <p>{selectedEntry?.rep_area}</p>
                         <p>{selectedEntry?.rep_area}</p>
@@ -153,10 +167,7 @@ const RepairList = () => {
                         <p>{selectedEntry?.rep_area}</p>
                         <p>{selectedEntry?.rep_area}</p>
                         <p>{selectedEntry?.rep_area}</p>
-                        <p>{selectedEntry?.rep_area}</p>
-                        <p>{selectedEntry?.rep_area}</p>
-                        <p>{selectedEntry?.rep_area}</p>
-                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.merc?.id}</p>
                     </div>
                 </div>
               </div>
@@ -173,11 +184,11 @@ const RepairList = () => {
                     <p>Units</p>
                   </div>
                   <div className='merc-plus__cost-details-content'>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
+                      <p>{selectedEntry.merc?.max_mat_cost}</p>
+                      <p>sample</p>
+                      <p>{selectedEntry.merc?.unit_hours}</p>
+                      <p>{selectedEntry.merc?.max_pcs}</p>
+                      <p>{selectedEntry.merc?.unit}</p>
                   </div>
                 </div>
                 <h5>Merc+ Customer Related Details</h5>
@@ -191,19 +202,19 @@ const RepairList = () => {
                       <p>ID Source</p>
                   </div>
                   <div className='merc-plus-customer__details-content'>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
-                      <p>Sample</p>
+                      <p>{selectedEntry.merc?.rep_mode}</p>
+                      <p>{selectedEntry.merc?.mode_num}</p>
+                      <p>{selectedEntry.merc?.rep_code}</p>
+                      <p>{selectedEntry.merc?.combined}</p>
+                      <p>{selectedEntry.merc?.desc}</p>
+                      <p>{selectedEntry.merc?.id}</p>
                   </div>
                 </div>
               </div>
             )}
           </div>
         </div>
-      {/* )} */}
+       )}
     </div>
   );
 };

@@ -7,7 +7,6 @@ export const useFetchData = () => {
   const [repairListData, setRepairListData] = useState<RepairData | null>(null);
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   
-
   useEffect(() => {
     const fetchData = async () => {
       try {
