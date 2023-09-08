@@ -3,6 +3,7 @@ import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
 import { setAuthToken, removeAuthToken, setUserInfo, IS_ADMIN } from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
+import Notification from "../../shared/components/Notification";
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -12,7 +13,7 @@ export const loginUser = async (email: string, password: string) => {
       password,
     });
     
-    if (response.status === 200 && response.data && response.data.success && email === "root.user@user.com" && password === "URoot%78") {
+    if (response.status === 200) {
 
       const user = deserialize(User, response.data.data.user);
 

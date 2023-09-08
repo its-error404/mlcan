@@ -60,8 +60,8 @@ const RepairList = () => {
     }
 
     fetchData()
-  }, [data])
-
+  }, [])
+  
   const handleRowClick = (index: number) => {
     setSelectedEntry(data?.data?.docs[index] || null);
     setSectionIndex(0);
@@ -131,44 +131,130 @@ const RepairList = () => {
         </div>
         <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {total} </span></p>
       </div>
-      {selectedEntry && (
+      {/* {selectedEntry && ( */}
         <div className="overlay-box">
+          <div className='entry-header'>
+            <h3>{} - Top Rails and Headers</h3>
+          </div>
           <div className="overlay-header">
-            <span className={sectionIndex === 0 ? 'active' : ''} onClick={() => handleSectionClick(0)}>
-              Section 1
+            <span className={sectionIndex === 0 ? 'column-active' : ''} onClick={() => handleSectionClick(0)}>
+              Repair Details
             </span>
-            <span className={sectionIndex === 1 ? 'active' : ''} onClick={() => handleSectionClick(1)}>
-              Section 2
+            <span className={sectionIndex === 1 ? 'column-active' : ''} onClick={() => handleSectionClick(1)}>
+              Non-Maersk Details
             </span>
-            <span className={sectionIndex === 2 ? 'active' : ''} onClick={() => handleSectionClick(2)}>
-              Section 3
+            <span className={sectionIndex === 2 ? 'column-active' : ''} onClick={() => handleSectionClick(2)}>
+              Merc+ Details
             </span>
           </div>
           <div className="overlay-content">
             {sectionIndex === 0 && (
-              <div className="section1">
-                {/* Content for Section 1 */}
-                <h2>Section 1</h2>
-                {/* Display the details you want for Section 1 */}
+              <div className="section-1">
+                <div className='section-1__headings'>
+                  <p>Repair ID</p>
+                  <p>Container Repair Area</p>
+                  <p>Container Damaged Area</p>
+                  <p>Repair Type</p>
+                </div>
+                <div className='section-1__data'>
+                  <p>{selectedEntry?.uid}h</p>
+                  <p>{selectedEntry?.rep_area}h</p>
+                  <p>{selectedEntry?.dmg_area}h</p>
+                  <p>{selectedEntry?.type}h</p>
+                </div>
               </div>
             )}
             {sectionIndex === 1 && (
-              <div className="section2">
-                {/* Content for Section 2 */}
-                <h2>Section 2</h2>
-                {/* Display the details you want for Section 2 */}
+              <div className="non-maersk-details">
+                <h5>Non-Maersk Cost Details</h5>
+                <div className='non-maersk__cost-details'>
+                    <div className='non-maersk__cost-details-header'>
+                      <p>Hours</p>
+                      <p>Material Cost</p>
+                    </div>
+                    <div className='non-maersk__cost-details-content'>
+                      <p>{selectedEntry?.nmaersk}sample</p>
+                      <p>{selectedEntry?.merc?.max_mat_cost}sample</p>
+                    </div>
+                </div>
+                <h5>Non-Maersk Customer Related Details</h5>
+                <div className='non-maersk__customer-details'>
+                    <div className='non-maersk__customer-details-header'>
+                        <p>Container Section</p>
+                        <p>Damaged Area</p>
+                        <p>Repair Type</p>
+                        <p>Description</p>
+                        <p>COMP</p>
+                        <p>DAM</p>
+                        <p>REP</p>
+                        <p>Component</p>
+                        <p>Event</p>
+                        <p>Location</p>
+                        <p>LGTH/QTY/AREA</p>
+                        <p>LGTH/QTY/AREA2</p>
+                        <p>ID Source</p>
+                    </div>
+                    <div className='non-maersk__customer-details-content'>
+                        <p>{selectedEntry?.rep_area}sample</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                        <p>{selectedEntry?.rep_area}</p>
+                    </div>
+                </div>
               </div>
             )}
             {sectionIndex === 2 && (
-              <div className="section3">
-                {/* Content for Section 3 */}
-                <h2>Section 3</h2>
-                {/* Display the details you want for Section 3 */}
+              <div className="merc-plus__details">
+                <h5>Merc+ Cost Details</h5>
+                <div className='merc-plus__cost-details'>
+                  <div className='merc-plus__cost-details-header'>
+                    <p>Max Mat. Cost</p>
+                    <p>Unit Mat. Cost</p>
+                    <p>Hours Per Unit</p>
+                    <p>Max Pieces</p>
+                    <p>Units</p>
+                  </div>
+                  <div className='merc-plus__cost-details-content'>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                  </div>
+                </div>
+                <h5>Merc+ Customer Related Details</h5>
+                <div className='merc-plus-customer__details'>
+                  <div className='merc-plus-customer__details-header'>
+                      <p>Repair Mode</p>
+                      <p>Mode Number</p>
+                      <p>Repair Code</p>
+                      <p>Combined</p>
+                      <p>Description</p>
+                      <p>ID Source</p>
+                  </div>
+                  <div className='merc-plus-customer__details-content'>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                      <p>Sample</p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 };

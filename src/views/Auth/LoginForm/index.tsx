@@ -1,18 +1,38 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import "./LoginForm.scss";
-import validateLogin, { LoginFormValues } from "./LoginValidation";
+import validateLoginSchema, { LoginFormValues } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
-
+import * as yup from 'yup';
 
 const initialValues: LoginFormValues = {
   email: "",
   password: "",
+};
+
+const validateLogin = async (values: LoginFormValues) => {
+  try {
+    await validateLoginSchema.validate(values, { abortEarly: false });
+    return {}; 
+  } catch (validationErrors) {
+    if (validationErrors instanceof yup.ValidationError) {
+    
+      const errors: Record<string, string> = {};
+      validationErrors.inner.forEach((error) => {
+        if (error.path) {
+          errors[error.path] = error.message;
+        }
+      });
+      return errors;
+    }
+    console.error("Validation error:", validationErrors);
+    return {};
+  }
 };
 
 const LoginForm: React.FC = () => {
@@ -27,7 +47,6 @@ const LoginForm: React.FC = () => {
         if (success) {
           navigate(ApiRoutes.CONTAINERS)
         } else {
-        //  formik.errors.email = "Check your Email and try again !"
          formik.errors.password = "Check your password and Try again !"
         }
       } catch (error) {
