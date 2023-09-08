@@ -10,20 +10,9 @@ $dark-grey: #8898AA;
 $success-color: green;
 $danger-color: #FE0000;
 $warning-color: #F3B21B;
-$body-bg: #F7F9F9;
+$body-bg: #F5F8FA;
 $table-bg: #F7FAFC;
 $input-bg: #F8FBFC;
-$container-bg: #EDF0F4;
-$sidebar-bg: #242937;
-$active-bg: #303645;
-$active-border: #43C8B0;
-$user-info-child: #757c85;
-$sidebar-options: #919AA4;
-$dropdown-bg: #303744;
-$primary-green: #43C8B0;
-$dropdown-child: #f1f4f8;
-$search-input: #dcdcdc;
-$row-color-first: #ECF1F4;
 
 /* Component colors */
 
@@ -32,7 +21,6 @@ $input-border-color: rgba(0, 0, 0, 0.164);
 $input-border-color-hover: $primary-color;
 $input-border-box-shadow: 0 0 0 2px rgba($color: $primary-color, $alpha: 0.2);
 $input-border-radius: 4px;
-
 
 /* Default Button */
 $button-default-border-color: $primary-color;
@@ -69,7 +57,3 @@ $secondary-shadow: 0px 3px 6px #2C28281C;
 /* Spacer variables */
 $spacer-x : 1rem;
 $spacer-y : 1rem;
-
-
-$horizontal-line: rgba(145, 142, 142, 0.998);
-$initial: rgb(51,68,80);
