@@ -1,24 +1,52 @@
+import * as yup from 'yup'
+import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes'
 export interface LoginFormValues {
   email: string
   password: string
 }
 
-export const validateLogin = (values: LoginFormValues) => {
-  const errors: Record<string, string> = {}
+const loginSchema = yup.object().shape({
+  email: yup.string().required('Email is required').email('Invalid Email Address'),
+  password: yup.string().required('Password is required !')
+})
 
-  if (!values.email) {
-    errors.email = 'An Email-Address is required!'
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid Email Address!'
+
+export const validateForm = async (values: LoginFormValues) => {
+  try {
+    await loginSchema.validate(values, { abortEarly: false });
+    return {}; 
+  } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      const errors: { [key: string]: string } = {};
+      error.inner.forEach((e) => {
+        errors[e.path] = e.message;
+      });
+      return errors;
+    }
+    throw error;
   }
+};
 
-  if (!values.password) {
-    errors.password = 'Password is required!'
+export const onSubmit = async (
+  values: LoginFormValues,
+  login: (email: string, password: string) => Promise<boolean>,
+  navigate: (route: string) => void,
+  formik: any
+) => {
+  try {
+
+    await validateForm(values);
+    const success = await login(values.email, values.password);
+    if (success) {
+      navigate(ApiRoutes.CONTAINERS);
+    } else {
+
+      formik.setErrors({ password: "Check your password and try again!" });
+    }
+  } catch (error) {
+    console.log("Error", error);
   }
+};
+ 
 
-  return errors
-
-  
-}
-
-export default validateLogin
+export default loginSchema

@@ -15,6 +15,16 @@ $table-bg: #F7FAFC;
 $input-bg: #F8FBFC;
 
 /* Component colors */
+$sidebar-bg: #242937;
+$turkish-green: #43C8B0;
+$sidebar-active-bg: #303645;
+$sidebar-active-text: white;
+$userinfo-bg: #303645;
+$user-dropdown-bg: #303744;
+$user-info-child-primary: white;
+$user-info-child-secondary: #757c85;
+$user-info-child-tertiary: #f1f4f8;
+$initials: rgb(51,68,80); 
 
 /* Input Field */
 $input-border-color: rgba(0, 0, 0, 0.164);
@@ -57,3 +67,6 @@ $secondary-shadow: 0px 3px 6px #2C28281C;
 /* Spacer variables */
 $spacer-x : 1rem;
 $spacer-y : 1rem;
+
+/* Border */
+$user-contact-border: rgba(145, 142, 142, 0.998);
