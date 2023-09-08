@@ -15,6 +15,7 @@ $table-bg: #F7FAFC;
 $input-bg: #F8FBFC;
 $gray: gray;
 
+
 /* Component colors */
 $sidebar-bg: #242937;
 $turkish-green: #43C8B0;
@@ -36,6 +37,7 @@ $input-border-color-hover: $primary-color;
 $input-border-box-shadow: 0 0 0 2px rgba($color: $primary-color, $alpha: 0.2);
 $input-border-radius: 4px;
 $container-input: gainsboro;
+$search-input: #E7EAEC;
 
 /* Default Button */
 $button-default-border-color: $primary-color;
@@ -78,9 +80,10 @@ $user-contact-border: rgba(145, 142, 142, 0.998);
 $container-border-top: rgb(234, 229, 229);
 
 /* Containers */
-$container-options: gray;
+$container-options: #959EA8;
 $filter-button-border: gainsboro;
 $filter-button-bg: white;
 $filter-button-text: gray;
 $filter-menu-border:black;
 $filter-menu-bg: white;
+$row-color-first: white;
