@@ -79,7 +79,7 @@
 
 .side-bar__options-text a{
     text-decoration: none;
-    color: #919AA4;
+    color: $sidebar-text;
     padding-top: 25px;
     padding-bottom: 25px;
     padding-left: 40px;
@@ -136,7 +136,7 @@
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: $turkish-green;
-    color: white;
+    color: $dropdown-button;
 }
 
 .drop-active {
@@ -207,7 +207,7 @@
 .logout-text {
     padding-left: 20px;
     margin-top: -2px !important;
-    color: white !important;
+    color: $logout-text !important;
     font-weight: 500 !important;
 }
 
