@@ -11,8 +11,6 @@ const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.AUTH} element={<AuthWrapper />} />
-        <Route path={AppRoutes.CONTAINERS} element={<AllContainers/>}/>
-        <Route path={AppRoutes.REPAIR_LIST} element={<RepairList />} />
 
         {/* Protected Routes */}
 

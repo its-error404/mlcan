@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import "./LoginForm.scss";
-import { LoginFormValues, onSubmit } from "./LoginValidation";
+import { LoginFormValues, onSubmit, validateForm } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
@@ -13,26 +13,6 @@ const initialValues: LoginFormValues = {
   password: "",
 };
 
-const validateLogin = async (values: LoginFormValues) => {
-  try {
-    await validateLoginSchema.validate(values, { abortEarly: false });
-    return {}; 
-  } catch (validationErrors) {
-    if (validationErrors instanceof yup.ValidationError) {
-    
-      const errors: Record<string, string> = {};
-      validationErrors.inner.forEach((error) => {
-        if (error.path) {
-          errors[error.path] = error.message;
-        }
-      });
-      return errors;
-    }
-    console.error("Validation error:", validationErrors);
-    return {};
-  }
-};
-
 const LoginForm: React.FC = () => {
   const [isForgotPassword, setForgotPassword] = useState(false);
   const { login } = useAuth()!;
@@ -41,7 +21,8 @@ const LoginForm: React.FC = () => {
     initialValues,
     onSubmit: async (values) => {
       await onSubmit(values, login, navigate, formik)
-    }
+    },
+    validate: validateForm
   });
   
   return (
