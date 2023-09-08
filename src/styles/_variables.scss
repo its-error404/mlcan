@@ -14,6 +14,7 @@ $body-bg: #F5F8FA;
 $table-bg: #F7FAFC;
 $input-bg: #F8FBFC;
 $gray: gray;
+$error-color: red;
 
 
 /* Component colors */
@@ -38,6 +39,8 @@ $input-border-box-shadow: 0 0 0 2px rgba($color: $primary-color, $alpha: 0.2);
 $input-border-radius: 4px;
 $container-input: gainsboro;
 $search-input: #E7EAEC;
+$email-input: rgb(230, 220, 220);
+$password-input: rgb(230, 220, 220);
 
 /* Default Button */
 $button-default-border-color: $primary-color;
@@ -87,3 +90,12 @@ $filter-button-text: gray;
 $filter-menu-border:black;
 $filter-menu-bg: white;
 $row-color-first: white;
+
+/* Background */
+$background-hover: rgba(0, 0, 0, 0.5);
+
+/* Login */
+$login-box-bg: white;
+$login-box-shadow: rgba(0, 0, 0, 0.2);
+$label: gray;
+$placeholder: rgb(208, 202, 202);
