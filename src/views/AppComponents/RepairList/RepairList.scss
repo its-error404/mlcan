@@ -1,9 +1,12 @@
+@import '../../../styles/variables';
+
 .repair-list{
     display: flex;
     flex-flow: row nowrap;
     gap: 10px;
     width: 100vw;
-    background-color: #F7F9F9;
+    background-color: $body-bg;
+    position: relative;
 }
 
 .header-text{
@@ -39,7 +42,7 @@
 .repair-search-container input {
     width: 15vw;
     height: 4vh;
-    border: 1px solid gainsboro;
+    border: 1px solid $search-input;
     border-radius: 8px;
 }
 
@@ -49,7 +52,7 @@
     padding-right: 18px;
     padding-top: 13px;
     padding-bottom: 13px;
-    background-color: #309582;
+    background-color: $primary-green;
     border-radius: 8px;
     border: 1px solid transparent;
     color: white;
@@ -60,7 +63,7 @@
 
 .repair-box__container{
 
-    border: 1px solid gainsboro;
+    border: 1px solid $search-input;
     border-radius: 10px;
     margin-left: 35px;
     width: 80vw;
@@ -73,7 +76,7 @@
 }
 
 .repair-box__rows{
-    background-color: #ECF1F4;
+    background-color: $row-color-first;
 }
 .repair-box__rows th {
     padding: 15px;
@@ -97,7 +100,7 @@
     padding-left: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
-    background-color: #ECF1F4;
+    background-color: $row-color-first;
     border: 1px solid transparent;
 }
 
@@ -136,7 +139,7 @@
     padding-right: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
-    border: 1px solid gainsboro;
+    border: 1px solid $row-color-first;
     border-radius: 7px;
     background-color: white;
     color: gray;
@@ -156,4 +159,152 @@
     font-weight: 600;
 }
 
+.overlay-box {
+    position: absolute;
+    left: 800px;
+    background-color: white;
+    min-width: 630px;
+    min-height: 400px;
+    padding-top: 25px;
+}
 
+.column-active {
+    padding-bottom: 10px !important;
+    border-bottom: 2px solid $primary-green;
+}
+
+.overlay-header {
+    margin-top: 30px;
+    background-color: $row-color-first;
+    padding-top: 25px;
+    padding-left: 30px;
+    display: flex;
+    gap: 55px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 2rem;
+}
+
+.overlay-header span {
+    margin-top: -10px;
+}
+
+.entry-header {
+    padding-top: 20px;
+    padding-left: 30px;
+}
+
+.entry-header h3 {
+    margin-left: 100px;
+    font-size: 22px;
+}
+
+.section-1 {
+    background-color:  $row-color-first;
+    margin-top: 40px;
+    margin-left: 52px;
+    max-width: 500px;
+    min-height: 150px ;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 30px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+}
+
+.section-1__headings {
+    padding: 20px;
+    line-height: 30px;
+}
+
+.section-1__data {
+    padding: 20px;
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.non-maersk__customer-details-header {
+    padding: 25px;
+    line-height: 32px;
+}
+
+.non-maersk__customer-details-content {
+    padding-top: 25px;
+    margin-right: -25px;
+    line-height: 32px;
+    font-weight: 500;
+}
+
+.non-maersk__cost-details {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 100px;
+    width: 550px;
+    background-color: $row-color-first;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-left: 35px;
+}
+
+.non-maersk__customer-details {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 92px;
+    width: 550px;
+    background-color: $row-color-first;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    margin-top: 30px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    margin-left: 35px;
+}
+
+.non-maersk__cost-details-header {
+    padding: 25px;
+    line-height: 32px;
+}
+
+.non-maersk__cost-details-content {
+    padding: 25px;
+    line-height: 32px;
+    font-weight: 600;
+}
+
+.non-maersk-details h5, .merc-plus__details h5 {
+    color: gray;
+    font-size: 17px;
+    font-weight: 400;
+    margin-left: 35px;
+    margin-top: 20px;
+    margin-bottom: -10px;
+}
+
+.non-maersk-details, .merc-plus__details h5:first-child {
+    margin-top: 40px;
+}
+
+.merc-plus__cost-details, .merc-plus-customer__details {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 100px;
+    width: 550px;
+    margin-left: 30px;
+    background-color: $row-color-first;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.merc-plus__cost-details-header, .merc-plus-customer__details-header {
+    padding: 25px;
+    line-height: 32px;
+}
+
+.merc-plus__cost-details-content, .merc-plus-customer__details-content {
+    padding: 25px;
+    line-height: 32px;
+    font-weight: 600;
+}
