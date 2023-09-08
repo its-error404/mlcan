@@ -27,7 +27,7 @@ const LoginForm: React.FC = () => {
         if (success) {
           navigate(ApiRoutes.CONTAINERS)
         } else {
-         formik.errors.email = "Check your Email and try again !"
+        //  formik.errors.email = "Check your Email and try again !"
          formik.errors.password = "Check your password and Try again !"
         }
       } catch (error) {

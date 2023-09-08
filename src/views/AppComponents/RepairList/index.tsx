@@ -44,13 +44,15 @@ export interface Data {
 const RepairList = () => {
   const [data, setData] = useState<Data | null>(null)
   const [total, setTotal] = useState<Data | null>(null)
+  const [searchData, setSearchData] = useState()
+  const [selectedEntry, setSelectedEntry] = useState<Repair | null>(null)
+  const [sectionIndex, setSectionIndex] = useState<number>(0)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS)
         setData(response.data)
-        console.log(data)
         setTotal(response.data.data.docs.length)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -59,6 +61,16 @@ const RepairList = () => {
 
     fetchData()
   }, [data])
+
+  const handleRowClick = (index: number) => {
+    setSelectedEntry(data?.data?.docs[index] || null);
+    setSectionIndex(0);
+  };
+
+  const handleSectionClick = (index: number) => {
+    setSectionIndex(index);
+  };
+
   return (
     <div className='repair-list'>
       <Sidebar />
@@ -75,6 +87,7 @@ const RepairList = () => {
             type='text'
             className='search-box'
             placeholder='Search by repair id'
+            value={searchData}
           ></input>
           <Button className="filter-button"><span className="repair-first-icon"><FilterIcon width={20} /></span>Filters</Button>
           <Button className="filter-button"><span className="repair-filter-icon"><ExportIcon width={20} /></span>Export</Button>
@@ -100,7 +113,7 @@ const RepairList = () => {
           </thead>
           <tbody>
             {data?.data?.docs.map((doc, index) => (
-              <tr className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid}>
+              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={() => handleRowClick(index)}>
                 <td>{doc.uid}</td>
                 <td>{doc.rep_area}</td>
                 <td>{doc.dmg_area}</td>
@@ -118,8 +131,46 @@ const RepairList = () => {
         </div>
         <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {total} </span></p>
       </div>
+      {selectedEntry && (
+        <div className="overlay-box">
+          <div className="overlay-header">
+            <span className={sectionIndex === 0 ? 'active' : ''} onClick={() => handleSectionClick(0)}>
+              Section 1
+            </span>
+            <span className={sectionIndex === 1 ? 'active' : ''} onClick={() => handleSectionClick(1)}>
+              Section 2
+            </span>
+            <span className={sectionIndex === 2 ? 'active' : ''} onClick={() => handleSectionClick(2)}>
+              Section 3
+            </span>
+          </div>
+          <div className="overlay-content">
+            {sectionIndex === 0 && (
+              <div className="section1">
+                {/* Content for Section 1 */}
+                <h2>Section 1</h2>
+                {/* Display the details you want for Section 1 */}
+              </div>
+            )}
+            {sectionIndex === 1 && (
+              <div className="section2">
+                {/* Content for Section 2 */}
+                <h2>Section 2</h2>
+                {/* Display the details you want for Section 2 */}
+              </div>
+            )}
+            {sectionIndex === 2 && (
+              <div className="section3">
+                {/* Content for Section 3 */}
+                <h2>Section 3</h2>
+                {/* Display the details you want for Section 3 */}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default RepairList
