@@ -37,7 +37,6 @@ export const useRowClick = () => {
   const handleRowClick = (selectedRow: Repair | null) => {
     setSelectedEntry(selectedRow);
   };
-
   return { selectedEntry, handleRowClick}
 };
 

@@ -17,6 +17,8 @@ import {
   useRowClick,
   useSectionClick,
 } from "../../services/RepairListService/repairlist.service";
+import AddRepair from "./AddRepair";
+import EditRepair from "./EditRepair";
 
 const RepairList = () => {
   const [searchData, setSearchData] = useState("");
@@ -25,6 +27,18 @@ const RepairList = () => {
   const handleSectionClick = useSectionClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
+  const [addRepair, setAddRepair] = useState<boolean>(false)
+  const [editMode, setEditMode] = useState(false);
+  const [editedData, setEditedData] = useState<any>(null)
+
+
+ const toggleAddRepair =() => {
+  setAddRepair(!addRepair)
+ }
+
+ const closeAddRepair =() => {
+  setAddRepair(false)
+ }
 
   const openOverlay = () => {
     setOverlayOpen(true);
@@ -34,15 +48,46 @@ const RepairList = () => {
     setOverlayOpen(false);
   };
 
+  const handleEditClick = (doc:any) => {
+    setEditedData(doc);
+    setEditMode(true);
+  };
+
   return (
-    // <div className={`repair-list ${overlayOpen ? 'overlay-active' : ''}`}>
-    <div className="repair-list">
+    <div className={`repair-list ${overlayOpen ? 'overlay-content-open' : ''}`}>
       <Sidebar />
       <div className="repairs-section">
         <div className="repairs-header">
           <h1>Repair List</h1>
-          <PlusIcon width={25} className="plus-icon" />
+          <PlusIcon
+                  width={25}
+                  className="plus-icon"
+                  onClick={(event: React.MouseEvent<SVGSVGElement, MouseEvent>) => toggleAddRepair()}
+                  />
         </div>
+
+        {addRepair && (
+    <div className="overlay-backdrop"></div>
+  )}
+        {addRepair && (
+      <div className="addrepair-overlay-container">
+        <div className="addrepair-overlay-content">
+          <AddRepair onclose={closeAddRepair} />
+        </div>
+      </div>
+    )}
+
+{editMode && (
+    <div className="overlay-backdrop"></div>
+  )}
+
+    {editMode &&(
+      <div className="addrepair-overlay-container">
+        <div className="addrepair-overlay-content">
+        <EditRepair onClose={() => setEditMode(false)} data={editedData} id={editedData.id} />
+        </div>
+      </div>
+    )}
         <div className="repair-search-container">
           <span className="search-icon">
             <SearchIcon width={17} />
@@ -134,12 +179,11 @@ const RepairList = () => {
                     index % 2 === 0 ? "repair-id__even" : "repair-id__odd"
                   }
                   key={doc.uid}
-                  onClick={() => {
+                >
+                  <td align="left" onClick={() => {
                     handleRowClick(doc);
                     openOverlay();
-                  }}
-                >
-                  <td align="left">{doc.uid}</td>
+                  }}>{doc.uid}</td>
                   <td align="justify">{doc.rep_area}</td>
                   <td align="justify">{doc.dmg_area}</td>
                   <td align="justify">{doc.type}</td>
@@ -154,7 +198,7 @@ const RepairList = () => {
                       : ""}
                   </td>
                   <td align="center">
-                    <EditIcon width={20} />
+                    <EditIcon width={20} onClick={()=> handleEditClick(doc)} />
                   </td>
                   <td align="center">
                     <DeleteIcon width={20} />
@@ -169,8 +213,13 @@ const RepairList = () => {
           <span className="total-range"> {totalEntries} </span>
         </p>
       </div>
+
+      {overlayOpen && (
+        <div className="overlay-backdrop"></div>
+      )} 
+
       {selectedEntry && overlayOpen && (
-        <div className="overlay-box">
+        <div className={`overlay-box ${overlayOpen ? 'overlay-open' : ''}`}>  
           <div className="entry-header">
             <h3>{selectedEntry.uid} - Top Rails and Headers</h3>
             <CloseIcon

@@ -1,19 +1,22 @@
-import { useFormik } from "formik";
-import React, { useState } from "react";
-import {
-    MercPlusDetails,
-    NonMaerskDetails,
-    RepairDetails,
-} from "../../../models/repairForm.model";
-import repairDetailsSchema from "./FormValidation";
-import { Button, Checkbox } from "antd";
-import "./AddRepair.scss";
+import { useFormik } from 'formik'
+import React, { useEffect, useState } from 'react'
+import { editRepairEntry } from '../../../services/RepairListService/editrepair.service'
 import { ReactComponent as TickIcon } from '../../../assets/single color icons - SVG/done.svg'
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
+import { Button, Checkbox } from "antd";
 import '../../../styles/_variables.scss'
-import { addRepairRequest } from "../../../services/RepairListService/addrepair.service";
+import { MercPlusDetails, NonMaerskDetails, RepairDetails } from '../../../models/repairForm.model';
+import repairDetailsSchema from './EditFormValidation';
 
-const AddRepair = ({ onclose }: { onclose: () => void , }) => {
+interface EditRepairProps {
+    data: any; 
+    onClose: () => void;
+    id:string
+  }
+
+const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
+
+
     const initialRepairFormValues = {
         ...new RepairDetails(),
         ...new MercPlusDetails(),
@@ -21,9 +24,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
     };
 
     const [sectionIndex, setSectionIndex] = useState<number | null>(0)
-    const [checkboxCheck, setCheckboxCheck] = useState<boolean>(false)
-
-    
+ 
     const sections = [
         {
             name: "Repair Details",
@@ -43,14 +44,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
         setSectionIndex(index === sectionIndex ? null : index)
     }
 
-    const moveToNextSection = () => {
-        if (sectionIndex != null && sectionIndex < sections.length - 1) {
-            setSectionIndex(sectionIndex + 1)
-        }
-    }
-
     const isSectionFilled = (index: number) => {
-
         return true;
     };
 
@@ -59,18 +53,20 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
         validationSchema: repairDetailsSchema,
         onSubmit: async (values) => {
             try {
-                await addRepairRequest(values)
+                await editRepairEntry(values, id)
             } catch(err) {
                 console.log(err)
             }
     }});
 
-    return (
-        <div className="repair-details-form">
+
+  return (
+    <div>
+      <div className="repair-details-form">
             <div className="form-wrapper">
                 <div className="form-header">
-                    <h2>Add Repair Part</h2>
-                    <CloseIcon width={15} onClick={onclose} />
+                    <h2>Edit Repair Part</h2>
+                    <CloseIcon width={15} onClick={onClose} />
                 </div>
                 <div className="section-buttons">
                     {sections.map((section, index) => (
@@ -622,7 +618,8 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    </div>
+  )
+}
 
-export default AddRepair;
+export default EditRepair

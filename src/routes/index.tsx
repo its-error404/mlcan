@@ -5,14 +5,12 @@ import { AppRoutes } from "./routeConstants/appRoutes";
 import RequireAuth from "../shared/components/HOC/requireAuth";
 import AllContainers from "../views/Containers";
 import RepairList from "../views/RepairList";
-import AddRepair from "../views/RepairList/AddRepair";
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.AUTH} element={<AuthWrapper />} />
-        <Route path="/repair-form" element={<AddRepair />} />
 
         {/* Protected Routes */}
 
