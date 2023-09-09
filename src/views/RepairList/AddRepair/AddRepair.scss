@@ -1,0 +1,123 @@
+@import '../../../styles/variables';
+
+.repair-details__first-col {
+    display: flex;
+    flex-direction: row nowrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.form-wrapper {
+    border: 1px solid $user-contact-border;
+    border-radius: 7px;
+    margin-top: 30px;
+    margin-left: 30px;
+    max-width: 920px;
+    padding: 20px;
+    background-color: white;
+}
+
+.repaid-id__input input{
+    background-color: $filled-input !important;
+}
+
+.repair-details__first-col input {
+    margin-top: 10px;
+    border: 1px solid $gray;
+    border-radius: 5px;
+    height: 30px;
+    width: 400px;
+    padding-left: 20px;
+    background-color: $white-bg;
+}
+
+.repair-details__second-col {
+    display: flex;
+    gap: 30px;
+}
+
+.container-damaged-area select {
+    border: 1px solid $gray;
+    border-radius: 5px;
+    height: 30px;
+    width: 400px;
+    margin-top: 10px;
+    background-color: $white-bg;
+}
+
+.repair-details__second-col select {
+    border: 1px solid $gray;
+    border-radius: 5px;
+    height: 30px;
+    width: 400px;
+    margin-top: 10px;
+    background-color: $white-bg;
+}
+
+.no-input-box {
+    color: $primary-black;
+    font-weight: 700;
+}
+
+.button-container {
+    margin-top: 30px;
+    margin-right: 90px;
+    justify-content: end;
+    display: flex;
+    gap: 30px;
+}
+
+.button-container button:first-child {
+    color: $text-black;
+    background-color: $light-gray;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+.button-container button:last-child {
+    color: $white-bg;
+    background-color: $primary-black;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+::placeholder {
+    color: $placeholder !important;
+}
+
+.location-div {
+    margin-top: -2px;
+}
+
+.final-buttons:last-child {
+    background-color: $turkish-green !important;
+}
+
+.form-active {
+    padding-bottom: 20px;
+    border-bottom: 2px solid $turkish-green;
+}
+
+.section-buttons {
+    display: flex;
+    gap: 70px;
+    padding-top: 15px;
+    background-color: $section-header;
+    margin-top: 20px;
+    margin-left: -20px;
+    padding-left: 40px;
+    font-weight: 600;
+    width: 918px;
+}
+
+.section-header-text {
+    margin-left: 10px;
+}
+
+hr {
+    border-top: 1px solid $light-gray;
+}
