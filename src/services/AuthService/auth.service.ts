@@ -3,8 +3,8 @@ import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
 import { setAuthToken, removeAuthToken, setUserInfo, IS_ADMIN } from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
-import Notification from "../../shared/components/Notification";
-
+import { notification } from "antd";
+import '../../views/Auth/LoginForm/LoginForm.scss'
 export const loginUser = async (email: string, password: string) => {
   try {
 
@@ -30,7 +30,15 @@ export const loginUser = async (email: string, password: string) => {
                 }
 
         setUserInfo(response.data.data.user.uid, response.data.data.user.email, response.data.data.user.phone, response.data.data.user.admin)
-        
+        notification.success({
+          message: "Login Successful",
+          description: "Welcome to the application!",
+          className: "custom-notification-placement",
+        });
+
+        setTimeout(() => {
+          notification.destroy();
+        }, 3000);
 
       return { success: true, user };
     } else {
@@ -54,4 +62,13 @@ export const isAuthenticated = () => {
 
 export const logoutUser = () => {
   removeAuthToken();
+  notification.success({
+    message: "Logout Successful",
+    description: "Visit again !",
+    className: "custom-notification-placement",
+  });
+
+  setTimeout(() => {
+    notification.destroy(); 
+  }, 3000);
 };

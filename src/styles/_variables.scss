@@ -11,6 +11,7 @@ $success-color: green;
 $danger-color: #FE0000;
 $warning-color: #F3B21B;
 $white-bg: white;
+$bg-white: white;
 $body-bg: #F5F8FA;
 $table-bg: #F7FAFC;
 $input-bg: #F8FBFC;
@@ -21,7 +22,7 @@ $light-gray: #CED5DB;
 $filled-input: #F0F2F3;
 $placeholder: #E4E6E9;
 $section-header: #F3F4F8;
-
+$overlay: rgba(0, 0, 0, 0.5); 
 /* Component colors */
 $sidebar-bg: #242937;
 $turkish-green: #489482;

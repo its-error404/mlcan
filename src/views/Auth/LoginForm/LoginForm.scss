@@ -15,6 +15,23 @@
         sans-serif;
 }
 
+.custom-notification-placement {
+    position: absolute;
+    top: 24px; 
+    right: 24px; 
+    background-color: $bg-white;
+    border: 1px solid $turkish-green;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  .custom-notification-placement .ant-notification-notice-close {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+  }
+
 .background {
     position: relative;
     background: url(../../../assets/Images/download.jpeg);
