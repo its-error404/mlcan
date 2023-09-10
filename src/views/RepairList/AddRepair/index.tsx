@@ -170,12 +170,12 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                 </div>
                                 <br></br>
                                 </div><div className="button-container">
-                                    <Button type="primary">Discard</Button>
+                                    <Button type="primary" onClick={onclose}>Discard</Button>
                                     <Button type="primary">Proceed</Button>
                                 </div></>
                         )}
                         {sectionIndex === 1 && (
-                            <div className="Non-maersk-details-section">
+                             <div className={`Non-maersk-details-section ${formik.values.na_1 ? 'disabled' : ''}`}>
                                 <br></br>
                                 <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
                                 <br></br>
@@ -425,7 +425,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                 </div>
                                 <br></br>
                                 <div className="button-container">
-                                    <Button type="primary">Discard</Button>
+                                <Button type="primary" onClick={onclose}>Discard</Button>
                                     <Button type="primary">Proceed</Button>
                                 </div>
                             </div>
@@ -611,7 +611,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                     </div>
                                 </div>
                                 <div className="button-container ">
-                                    <Button type="primary">Discard</Button>
+                                <Button type="primary" onClick={onclose}>Discard</Button>
                                     <button type="submit" className="final-buttons">Add Repair</button>
                                 </div>
                                 <br></br>

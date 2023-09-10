@@ -19,6 +19,7 @@ import {
 } from "../../services/RepairListService/repairlist.service";
 import AddRepair from "./AddRepair";
 import EditRepair from "./EditRepair";
+import { deleteRepairEntry } from "../../services/RepairListService/deleterepair.service";
 
 const RepairList = () => {
   const [searchData, setSearchData] = useState("");
@@ -30,7 +31,6 @@ const RepairList = () => {
   const [addRepair, setAddRepair] = useState<boolean>(false)
   const [editMode, setEditMode] = useState(false);
   const [editedData, setEditedData] = useState<any>(null)
-
 
  const toggleAddRepair =() => {
   setAddRepair(!addRepair)
@@ -52,6 +52,11 @@ const RepairList = () => {
     setEditedData(doc);
     setEditMode(true);
   };
+
+  const deleteEntry = (doc:any) => {
+    console.log(doc);
+    deleteRepairEntry(doc)
+  }
 
   return (
     <div className={`repair-list ${overlayOpen ? 'overlay-content-open' : ''}`}>
@@ -84,7 +89,7 @@ const RepairList = () => {
     {editMode &&(
       <div className="addrepair-overlay-container">
         <div className="addrepair-overlay-content">
-        <EditRepair onClose={() => setEditMode(false)} data={editedData} id={editedData.id} />
+        <EditRepair onClose={() => setEditMode(false)} data={editedData} id={editedData?.merc?.id} />
         </div>
       </div>
     )}
@@ -201,7 +206,7 @@ const RepairList = () => {
                     <EditIcon width={20} onClick={()=> handleEditClick(doc)} />
                   </td>
                   <td align="center">
-                    <DeleteIcon width={20} />
+                    <DeleteIcon width={20} onClick={deleteEntry}/>
                   </td>
                 </tr>
               ))}

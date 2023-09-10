@@ -12,6 +12,7 @@ export class RepairDetails {
 
     @serializable(alias('Repair Type', primitive()))
     type?:string
+
 }
 
 export class NonMaerskDetails {
@@ -60,6 +61,9 @@ export class NonMaerskDetails {
 
     @serializable(alias('ID Source', primitive()))
     id?: string
+
+    @serializable(alias('N/A', primitive()))
+    na_1?: boolean
 }
 
 export class MercPlusDetails {
@@ -95,6 +99,9 @@ export class MercPlusDetails {
 
     @serializable(alias('ID Source', primitive()))
     id?: string
+ 
+    @serializable(alias('N/A', primitive()))
+    na_1?: boolean
 }
 
 export const initialRepairFormValues = {
