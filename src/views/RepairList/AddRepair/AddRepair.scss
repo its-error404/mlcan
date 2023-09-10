@@ -46,16 +46,31 @@
     gap: 30px;
 }
 
-
-.container-damaged-area select {
-    border: 1px solid $gray;
-    border-radius: 5px;
-    height: 30px;
-    width: 400px;
-    margin-top: 10px;
-    background-color: $white-bg;
+.select-fields label {
+    padding-top: 20px;
+    margin-top: 30px !important;
 }
 
+.filter-menu select {
+    border: 1px solid $gray;
+    border-radius: 5px;
+    margin-top: 10px;
+    height: 30px;
+    width: 350px;
+    margin-top: 10px;
+    background-color: $white-bg;
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+
+.filter-menu label {
+    margin-top: 12px;
+    margin-left: 30px;
+}
+
+.filter-menu label:nth-child(3) {
+    margin-top: 10px;
+}
 .field-1 {
     position: relative;
 }
