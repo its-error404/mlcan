@@ -69,7 +69,7 @@ class Repair {
   type?: string;
 
   @serializable(alias('nmaersk', primitive()))
-  nmaersk?: any;
+  nmaersk?: string;
 
   @serializable(alias('merc', object(Merc)))
   merc?: Merc;
