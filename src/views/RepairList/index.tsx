@@ -28,9 +28,11 @@ const RepairList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { response, totalEntries } = await fetchRepairData();
-        setRepairListData(response.data); 
-        setTotalEntries(totalEntries);
+        const { deserializedData, totalEntries } = await fetchRepairData();
+        console.log(deserializedData)
+        setRepairListData(deserializedData)
+        // setTotalEntries(totalEntries);
+        console.log(repairListData?.docs)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -39,11 +41,9 @@ const RepairList = () => {
     fetchData();
   }, []);
 
-  const filteredEntries = repairListData?.data?.docs.filter((doc) => (
+  const filteredEntries = repairListData?.docs?.filter((doc) => (
     doc.uid?.toLowerCase().includes(searchData.toLowerCase())
   ))
-  
-  console.log(filteredEntries)
 
   return (
     <div className='repair-list'>
@@ -87,15 +87,15 @@ const RepairList = () => {
           </thead>
           <tbody>
           {filteredEntries?.map((doc, index) => (
-              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={() => handleRowClick(doc)}>
+              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={handleRowClick(doc)}>
                 <td>{doc.uid}</td>
-                <td>{doc.rep_area}</td>
-                <td>{doc.dmg_area}</td>
+                <td>{doc.repArea}</td>
+                <td>{doc.dmgArea}</td>
                 <td>{doc.type}</td>
                 <td>{doc.nmaersk}</td>
-                <td>{doc.merc?.max_mat_cost}</td>
-                <td>{doc.merc?.unit_hours}</td>
-                <td>{doc.merc?.unit_mat_hours}</td>
+                <td>{doc.merc?.maxMatCost}</td>
+                <td>{doc.merc?.unitHours}</td>
+                <td>{doc.merc?.unitMatCost}</td>
                 <td><EditIcon width={20} /></td>
                 <td><DeleteIcon width={20} /></td>
               </tr>

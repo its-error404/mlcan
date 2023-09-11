@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Repair } from "../../models/repairList.model";
+import { RepairData } from "../../models/repairList.model";
 
 export const useRowClick = () => {
-    const [selectedEntry, setSelectedEntry] = useState<Repair | null>(null)
-    const handleRowClick = (selectedRow: Repair | null) => {
+    const [selectedEntry, setSelectedEntry] = useState<RepairData | null>(null)
+    const handleRowClick = (selectedRow: RepairData | null) => {
       setSelectedEntry(selectedRow);
     };
   
