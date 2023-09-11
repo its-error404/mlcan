@@ -14,6 +14,7 @@ import {
 } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
+import { Link, Navigate } from "react-router-dom";
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
@@ -56,10 +57,30 @@ const AllContainers = () => {
   };
 
   const filterContainers = (section: string) => {
-    return containersData?.data?.docs.filter((doc) =>
-      section === "All" ? true : doc?.activity_status === section
-    );
-  };
+    if (!containersData?.data?.docs) {
+      return [];
+    }
+  
+    if (section === "All") {
+      return containersData.data.docs;
+    } else if (section === "Draft") {
+      return containersData.data.docs.filter((docs) => {
+        return docs.activity_status === "draft"
+      })
+    } else if (section === "Admin Review Pending") {
+      return containersData.data.docs.filter((docs) => {
+        return docs.activity_status === "billing"
+      })
+    } else if (section === "Pending Customer Approval") {
+      return containersData.data.docs.filter((docs) => {
+        return docs.activity_status === "pending"
+      })
+  } else if (section === "Quotes Approved by Customer") {
+      return containersData.data.docs.filter((docs) => {
+        return docs.activity_status === "approved"
+      })
+  }
+}
 
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
@@ -117,7 +138,7 @@ const AllContainers = () => {
                 onChange={(e) => setSearchData(e.target.value)}
               ></input>
               <div className="filters-container" onClick={toggleFilterMenu}>
-                <Button className="filter-button">
+                <Button className={`filter-button ${filterMenu ? 'change-button' : ''}`}>
                   <span className="filter-icon">
                     <FilterIcon width={20} />
                   </span>
@@ -214,7 +235,7 @@ const AllContainers = () => {
                 </thead>
                 <tbody className="container-list__entries">
                   {(filterContainers(sections[sectionIndex]) ?? []).map((doc, index) => (
-                    <tr
+                  <tr
                       className={
                         index % 2 === 0
                           ? "container-id__even"
@@ -222,12 +243,15 @@ const AllContainers = () => {
                       }
                       key={doc.uid}
                     >
-                      <td>{doc.uid}</td>
+                      <td className="container-id">
+                      <Link to={`/containers/${doc.uid}`}>{doc.uid}</Link>
+                      </td>
                       <td>{doc.yard}</td>
-                      <td>{doc.customer_name}</td>
-                      <td>{doc.owner}</td>
-                      <td>{doc.activity_type}</td>
-                      <td>{formatDate(doc.activity_date)}</td>
+                      <td>{doc.customer_name || 'N/A'}</td>
+                      <td>{doc.owner || 'N/A'}</td>
+                      <td>{doc.activity_type || 'N/A'}</td>
+                      {sectionIndex === 1 && <td>{doc.activity_uid || 'N/A'}</td>}
+                      <td>{formatDate(doc.activity_date) || 'N/A'}</td>
                       <td>
                         <div
                           className={`activity-text ${doc.activity_status === "billing"
@@ -240,7 +264,7 @@ const AllContainers = () => {
                           {doc.activity_status || 'N/A'}
                         </div>
                       </td>
-                      {sectionIndex === 1 && <td>{doc.activity_id || 'N/A'}</td>}
+                      
                     </tr>
                   ))}
                 </tbody>

@@ -1,0 +1,17 @@
+.view-container {
+    width: 100vw;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 30px;
+}
+
+.page-content {
+    margin-top: 50px;
+    width: 100%;
+
+}
+
+.go-to-containers {
+    display: flex;
+    gap: 10px;
+}
