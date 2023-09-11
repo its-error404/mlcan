@@ -6,20 +6,16 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button, DatePicker, Space } from "antd";
-import {
-  useFetchData,
-  useRowClick,
-  useSectionClick,
-} from "../../services/ContainersService/containers.service";
+import { Button} from "antd";
+import { useFetchData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useSectionClick } from "../../shared/hooks/useSectionClick";
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const { containersData } = useFetchData(searchData);
-  const { selectedEntry, handleRowClick } = useRowClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addContainer, setAddContainer] = useState<boolean>(false);
@@ -65,19 +61,19 @@ const AllContainers = () => {
       return containersData.data.docs;
     } else if (section === "Draft") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "draft"
+        return docs.activityStatus === "draft"
       })
     } else if (section === "Admin Review Pending") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "billing"
+        return docs.activityStatus === "billing"
       })
     } else if (section === "Pending Customer Approval") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "pending"
+        return docs.activityStatus === "pending"
       })
   } else if (section === "Quotes Approved by Customer") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "approved"
+        return docs.activityStatus === "approved"
       })
   }
 }
@@ -210,6 +206,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
+              
               <table className="container-box__table">
                 <thead>
                   <tr className="container-box__rows">
@@ -242,26 +239,26 @@ const AllContainers = () => {
                           : "container-id__odd"
                       }
                       key={doc.uid}
-                    >
+                    > {console.log(doc)}
                       <td className="container-id">
                       <Link to={`/containers/${doc.uid}`}>{doc.uid}</Link>
                       </td>
                       <td>{doc.yard}</td>
-                      <td>{doc.customer_name || 'N/A'}</td>
+                      <td>{doc.customerName || 'N/A'}</td>
                       <td>{doc.owner || 'N/A'}</td>
-                      <td>{doc.activity_type || 'N/A'}</td>
-                      {sectionIndex === 1 && <td>{doc.activity_uid || 'N/A'}</td>}
-                      <td>{formatDate(doc.activity_date) || 'N/A'}</td>
+                      <td>{doc.activityType || 'N/A'}</td>
+                      {sectionIndex === 1 && <td>{doc.activityUid || 'N/A'}</td>}
+                      <td>{formatDate(doc.activityDate) || 'N/A'}</td>
                       <td>
                         <div
-                          className={`activity-text ${doc.activity_status === "billing"
+                          className={`activity-text ${doc.activityStatus === "billing"
                               ? "billing-style"
-                              : doc.activity_status === "draft"
+                              : doc.activityStatus === "draft"
                                 ? "draft-style"
                                 : "default-style"
                             }`}
                         >
-                          {doc.activity_status || 'N/A'}
+                          {doc.activityStatus || 'N/A'}
                         </div>
                       </td>
                       

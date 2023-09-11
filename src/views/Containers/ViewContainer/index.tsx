@@ -8,7 +8,7 @@ import { SingleContainerData } from "../../../models/singlecontainer.model";
 
 const ViewContainer = () => {
   const { id } = useParams();
-  const containerData: SingleContainerData | null = addContainerRequest(id)
+  // const containerData: SingleContainerData | null = addContainerRequest(id)
 
   return (
     <div className="view-container">
@@ -21,7 +21,7 @@ const ViewContainer = () => {
         <div>
     <div>
       <h1>Container Details</h1>
-      <p>{containerData?.id}</p>
+      {/* <p>{containerData?.id}</p> */}
       
 
     </div>

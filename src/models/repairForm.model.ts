@@ -1,30 +1,30 @@
 import { serializable, alias, primitive } from "serializr";
 
 export class RepairDetails {
-    @serializable(alias('repair_id', primitive()))
-    uid?: string
+    @serializable(alias('uid', primitive()))
+    repairId?: string
 
-    @serializable(alias('Container_Repair_Area', primitive()))
-    rep_area?:string
+    @serializable(alias('rep_area', primitive()))
+    repairArea?:string
 
-    @serializable(alias('Container_Damaged_Area', primitive()))
-    dmg_area?:string
+    @serializable(alias('dmg_area', primitive()))
+    damagedArea?:string
 
-    @serializable(alias('Repair Type', primitive()))
+    @serializable(alias('type', primitive()))
     type?:string
 
 }
 
 export class NonMaerskDetails {
 
-    @serializable(alias('Hours', primitive()))
+    @serializable(alias('hours', primitive()))
     hours?: string
 
-    @serializable(alias('Material Cost', primitive()))
-    mat_cost?: string
+    @serializable(alias('mat_cost', primitive()))
+    materialCost?: string
 
-    @serializable(alias('Container Section', primitive()))
-    cont_section?: string
+    @serializable(alias('cont_section', primitive()))
+    containerSection?: string
 
     @serializable(alias('Damaged Area', primitive()))
     dmg_area?: string

@@ -100,7 +100,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                         id="uid"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.uid} />
+                                        value={formik.values.} />
                                         {formik.touched.uid && formik.errors.uid ? (
                                             <div className="field-1-error-message">{formik.errors.uid}</div>
                                         ) : null}
