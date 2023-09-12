@@ -13,6 +13,56 @@
   }
 }
 
+.edit-icon {
+  max-width: 0;
+  padding-left: 0 !important;
+  
+}
+
+.delete-icon {
+  max-width: 0;
+}
+
+.ant-pagination {
+  display: none;
+}
+.ant-table table {
+  // border-spacing: 50px 30px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.ant-table-tbody > .ant-table-row td{
+  padding-left: 50px;  
+}
+
+.ant-table-thead th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.even-row td {
+  padding-left: 20px;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  background-color: $bg-white;
+}
+
+.ant-table-cell {
+  margin-left: 20px !important;
+}
+
+.odd-row td{
+  padding-left: 20px;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  background-color: $row-color-first;
+}
+.antd-table-repair.ant-table {
+  border: none;
+  border-collapse: collapse;
+}
+
 /* Button */
 
 .ant-btn {
@@ -89,10 +139,10 @@
     box-shadow: $select-focus-box-shadow !important;
   }
   .ant-select-selector {
-      border-color: $select-border-color !important;
-      &:hover {
-          border-color: $select-hover-border-color !important;
-      }
+    border-color: $select-border-color !important;
+    &:hover {
+      border-color: $select-hover-border-color !important;
+    }
   }
 
   &.ant-select-open {
