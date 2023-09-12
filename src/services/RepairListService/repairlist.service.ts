@@ -7,13 +7,10 @@ export const fetchRepairData = async () => {
   try {
     const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS);
     const jsonData = response.data.data.docs;
-    console.log(jsonData)
-    console.log(response.data.data.offset)
 
     const deserializedData = deserialize(RepairData, { docs: jsonData });
 
     const totalEntries = deserializedData?.docs?.length
-  
     return { deserializedData, totalEntries };
   } catch (error) {
     console.error('Error fetching data:', error);
