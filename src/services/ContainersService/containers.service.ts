@@ -30,18 +30,3 @@ export const useFetchData = (searchQuery='') => {
     return { containersData, totalEntries }
 }
 
-export const useRowClick = () => {
-  const [selectedEntry, setSelectedEntry] = useState<AllContainersData | null>(null)
-  const handleRowClick = () => (selectedRow: AllContainersData | null) => {
-    setSelectedEntry(selectedRow)
-  }
-  return {selectedEntry, handleRowClick}
-}
-
-export const useSectionClick = () => {
-  const handleSectionClick = (index: number, setSectionIndex: React.Dispatch<React.SetStateAction<number>>) => {
-    setSectionIndex(index);
-  };
-
-  return handleSectionClick;
-};

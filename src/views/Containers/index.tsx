@@ -14,12 +14,12 @@ import {
 } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useSectionClick } from "../../shared/hooks/useSectionClick";
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const { containersData } = useFetchData(searchData);
-  const { selectedEntry, handleRowClick } = useRowClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addContainer, setAddContainer] = useState<boolean>(false);
@@ -65,19 +65,19 @@ const AllContainers = () => {
       return containersData.data.docs;
     } else if (section === "Draft") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "draft"
+        return docs.activityStatus === "draft"
       })
     } else if (section === "Admin Review Pending") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "billing"
+        return docs.activityStatus === "billing"
       })
     } else if (section === "Pending Customer Approval") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "pending"
+        return docs.activityStatus === "pending"
       })
   } else if (section === "Quotes Approved by Customer") {
       return containersData.data.docs.filter((docs) => {
-        return docs.activity_status === "approved"
+        return docs.activityStatus === "approved"
       })
   }
 }
@@ -271,10 +271,65 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns}
-  dataSource={filterContainers(sections[sectionIndex]) ?? []}
-  rowKey="uid"
-/>
+              <table className="container-box__table">
+                <thead>
+                  <tr className="container-box__rows">
+                    <th align="left">Container Number</th>
+                    <th>Yard </th>
+                    <th>Customer <span>
+                      <ToggleIcon width={8} />
+                    </span></th>
+                    <th>Owner Name <span>
+                      <ToggleIcon width={8} />
+                    </span></th>
+                    <th>{sectionIndex === 1 ? 'Activity' : 'Current Activity'}</th>
+                    {sectionIndex === 1 && <th>Activity ID <span>
+                      <ToggleIcon width={8} />
+                    </span></th>}
+                    <th>Activity Date <span>
+                      <ToggleIcon width={8} />
+                    </span></th>
+                    <th>Status <span>
+                      <ToggleIcon width={8} />
+                    </span></th>
+                  </tr>
+                </thead>
+                <tbody className="container-list__entries">
+                  {(filterContainers(sections[sectionIndex]) ?? []).map((doc, index) => (
+                  <tr
+                      className={
+                        index % 2 === 0
+                          ? "container-id__even"
+                          : "container-id__odd"
+                      }
+                      key={doc.uid}
+                    >
+                      <td className="container-id">
+                      <Link to={`/containers/${doc.uid}`}>{doc.uid}</Link>
+                      </td>
+                      <td>{doc.yard}</td>
+                      <td>{doc.customer_name || 'N/A'}</td>
+                      <td>{doc.owner || 'N/A'}</td>
+                      <td>{doc.activity_type || 'N/A'}</td>
+                      {sectionIndex === 1 && <td>{doc.activity_uid || 'N/A'}</td>}
+                      <td>{formatDate(doc.activity_date) || 'N/A'}</td>
+                      <td>
+                        <div
+                          className={`activity-text ${doc.activity_status === "billing"
+                              ? "billing-style"
+                              : doc.activity_status === "draft"
+                                ? "draft-style"
+                                : "default-style"
+                            }`}
+                        >
+                          {doc.activity_status || 'N/A'}
+                        </div>
+                      </td>
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

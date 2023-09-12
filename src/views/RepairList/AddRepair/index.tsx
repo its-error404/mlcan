@@ -100,9 +100,9 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                         id="uid"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.uid} />
-                                        {formik.touched.uid && formik.errors.uid ? (
-                                            <div className="field-1-error-message">{formik.errors.uid}</div>
+                                        value={formik.values.repairId} />
+                                        {formik.touched.repairId && formik.errors.repairId ? (
+                                            <div className="field-1-error-message">{formik.errors.repairId}</div>
                                         ) : null}
                                 </div>
 
@@ -116,15 +116,15 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                         id="rep_area"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.rep_area}
+                                        value={formik.values.repairArea}
                                         className="select-choices"
                                     >
                                         <option value="" className="default-select">Select</option>
                                         <option value="Option 1">Option 1</option>
                                         <option value="Option 2">Option 2</option>
                                     </select>
-                                    {formik.touched.rep_area && formik.errors.rep_area ? (
-                                        <div className="field-2-error-message">{formik.errors.rep_area}</div>
+                                    {formik.touched.repairArea && formik.errors.repairArea ? (
+                                        <div className="field-2-error-message">{formik.errors.repairArea}</div>
                                     ) : null}
                                 </div>
 
@@ -207,7 +207,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                             id="mat_cost"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            value={formik.values.mat_cost}
+                                            value={formik.values.materialCost}
                                             placeholder="0$"
                                         />
                                     </div>
@@ -227,7 +227,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
                                             id="cont_sec"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            value={formik.values.cont_section}
+                                            value={formik.values.containerSection}
                                         />
                                     </div>
                                     <br></br>

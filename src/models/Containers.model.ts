@@ -14,23 +14,23 @@ export class ContainersData {
     @serializable(alias('owner', primitive()))
     owner?: string;
 
-    @serializable(alias('customer name', primitive()))
-    customer_name?: string;
+    @serializable(alias('customer_name', primitive()))
+    customerName?: string;
 
-    @serializable(alias('activity type', primitive()))
-    activity_type?: string;
+    @serializable(alias('activity_type', primitive()))
+    activityType?: string;
 
-    @serializable(alias('activity ID', primitive()))
-    activity_id?: string;
+    @serializable(alias('activity_id', primitive()))
+    activityId?: string;
 
-    @serializable(alias('activity uid', primitive()))
-    activity_uid?: string;
+    @serializable(alias('activity_uid', primitive()))
+    activityUid?: string;
 
-    @serializable(alias('activitiy status', primitive()))
-    activity_status?: string;
+    @serializable(alias('activity_status', primitive()))
+    activityStatus?: string;
 
-    @serializable(alias('activity date', primitive()))
-    activity_date?: string;
+    @serializable(alias('activity_date', primitive()))
+    activityDate?: string;
 
 }
 
