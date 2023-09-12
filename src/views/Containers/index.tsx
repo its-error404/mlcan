@@ -6,7 +6,7 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button, DatePicker, Space, Table } from "antd";
+import { Button, Table } from "antd";
 import {
   useFetchData,
 } from "../../services/ContainersService/containers.service";
@@ -272,7 +272,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns} dataSource={filterContainers(sections[sectionIndex]) ?? []} rowKey="uid" className="container-table"/>
+            <Table columns={columns} dataSource={filterContainers(activeSection) ?? []}rowKey="uid" className="container-table"/>
             </div>
           </div>
         </div>
