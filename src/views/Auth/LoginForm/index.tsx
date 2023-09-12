@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik"; // Import Formik components
 import "./LoginForm.scss";
-import { LoginFormValues, onSubmit } from "./LoginValidation";
+import loginSchema, { LoginFormValues } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
-import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  loginUser,
+} from "../../../services/AuthService/auth.service";
+import { ApiRoutes } from "../../../routes/routeConstants/apiRoutes";
+import Notification from "../../../shared/components/Notification";
 
 const initialValues: LoginFormValues = {
   email: "",
@@ -15,8 +19,34 @@ const initialValues: LoginFormValues = {
 
 const LoginForm: React.FC = () => {
   const [isForgotPassword, setForgotPassword] = useState(false);
-  const { login } = useAuth()!;
   const navigate = useNavigate();
+
+  const handleFormSubmit = async (values: LoginFormValues) => {
+    try {
+      const { success, error } = await loginUser(
+        values.email,
+        values.password
+      );
+
+      if (success) {
+        Notification({
+          message: 'Success',
+          description: 'Login Successful !',
+          type: 'success',
+        });
+        navigate(ApiRoutes.CONTAINERS);
+      } else {
+        Notification({
+          message: 'Error',
+          description: 'Login Failed !',
+          type: 'failure',
+        });
+        console.error("Authentication failed:", error);
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  };
 
   return (
     <div className="login">
@@ -35,9 +65,10 @@ const LoginForm: React.FC = () => {
           <br></br>
           <Formik
             initialValues={initialValues}
-            onSubmit={async (values, {setErrors}) => {
-              await onSubmit(values, login, navigate, setErrors);
-            }}
+            validationSchema={loginSchema}
+            validateOnBlur={true}
+            validateOnChange={true}
+            onSubmit={handleFormSubmit}
           >
             <Form className="login-form">
               {isForgotPassword ? (
@@ -117,9 +148,7 @@ const LoginForm: React.FC = () => {
               )}
               <div className="login-items">
                 <button type="submit">
-                  {isForgotPassword
-                    ? "Send Password to Email"
-                    : "Login"}
+                  {isForgotPassword ? "Send Password to Email" : "Login"}
                 </button>
                 <p onClick={() => setForgotPassword(!isForgotPassword)}>
                   {isForgotPassword ? "Login Here" : "Forgot Password?"}

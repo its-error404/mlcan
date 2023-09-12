@@ -1,35 +1,40 @@
 import axiosInstance from "../../interceptor/axiosInstance";
 import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
-import { setAuthToken, removeAuthToken, setUserInfo, IS_ADMIN } from "./authToken";
+import {
+  setAuthToken,
+  removeAuthToken,
+  setUserInfo,
+  IS_ADMIN,
+} from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 
 export const loginUser = async (email: string, password: string) => {
   try {
-
     const response = await axiosInstance.post(ApiRoutes.USER_LOGIN, {
       email,
       password,
     });
-    
-    if (response.status === 200) {
 
+    if (response.status === 200) {
       const user = deserialize(User, response.data.data.user);
 
       if (response.data.data.tokens.access_token)
-
         setAuthToken(response.data.data.tokens.access_token);
 
-        const isAdmin = localStorage.getItem(IS_ADMIN) === "true";
-                if (isAdmin) {
+      const isAdmin = localStorage.getItem(IS_ADMIN) === "true";
+      if (isAdmin) {
+        response.data.data.user.admin = "User";
+      } else {
+        response.data.data.user.admin = "Admin";
+      }
 
-                    response.data.data.user.admin = "User";
-                } else {
-                    response.data.data.user.admin = "Admin";
-                }
-
-        setUserInfo(response.data.data.user.uid, response.data.data.user.email, response.data.data.user.phone, response.data.data.user.admin)
-        
+      setUserInfo(
+        response.data.data.user.uid,
+        response.data.data.user.email,
+        response.data.data.user.phone,
+        response.data.data.user.admin
+      );
 
       return { success: true, user };
     } else {
@@ -43,11 +48,10 @@ export const loginUser = async (email: string, password: string) => {
 
 export const isAuthenticated = () => {
   const accessToken = localStorage.getItem("access_token");
-  if(accessToken) {
-    return true
-  }
-  else {
-    return false
+  if (accessToken) {
+    return true;
+  } else {
+    return false;
   }
 };
 
