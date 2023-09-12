@@ -1,0 +1,106 @@
+/* Color palette */
+$primary-color: #0D494E;
+$secondary-color: #006FBA;
+$light-white: #FFFFFF40;
+$primary-light-color: #0D494E10;
+$primary-black: #4B4B4B;
+$dark-blue: #22509D;
+$light-grey: #00000015;
+$dark-grey: #8898AA;
+$success-color: green;
+$danger-color: #FE0000;
+$warning-color: #F3B21B;
+$body-bg: #F5F8FA;
+$table-bg: #F7FAFC;
+$input-bg: #F8FBFC;
+$gray: gray;
+$error-color: red;
+
+
+/* Component colors */
+$sidebar-bg: #242937;
+$turkish-green: #43C8B0;
+$sidebar-active-bg: #303645;
+$sidebar-text: #919AA4;
+$sidebar-active-text: white;
+$userinfo-bg: #303645;
+$user-dropdown-bg: #303744;
+$user-info-child-primary: white;
+$user-info-child-secondary: #757c85;
+$user-info-child-tertiary: #f1f4f8;
+$initials: rgb(51,68,80); 
+$dropdown-button: white;
+$logout-text: white;
+$sidebar-span: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%);
+$icon-background: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
+
+/* Input Field */
+$input-border-color: rgba(0, 0, 0, 0.164);
+$input-border-color-hover: $primary-color;
+$input-border-box-shadow: 0 0 0 2px rgba($color: $primary-color, $alpha: 0.2);
+$input-border-radius: 4px;
+$container-input: gainsboro;
+$search-input: #E7EAEC;
+$email-input: rgb(230, 220, 220);
+$password-input: rgb(230, 220, 220);
+$arrow-svg: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
+$plus-icon: brightness(0) saturate(100%) invert(48%) sepia(31%) saturate(781%) hue-rotate(119deg) brightness(97%) contrast(87%);
+
+/* Default Button */
+$button-default-border-color: $primary-color;
+$button-default-bg-color: white;
+$button-default-text-color: $primary-color;
+$button-default-border-radius: 4px;
+
+/* Primary Button */
+$button-primary-border-color: $primary-color;
+$button-primary-bg-color: $primary-color;
+$button-primary-text-color: white;
+$button-primary-border-radius: 4px;
+
+/* Checkbox */
+$checkbox-bg-color: $primary-color;
+$checkbox-hover-border-color: $primary-color;
+$checkbox-text-color: white;
+$checkbox-hover-text-color: $primary-color;
+
+/* Radio */
+$radio-border-color: rgb(202, 202, 202);
+$radio-checked-border-color: $primary-color;
+$radio-checked-bg-color: $primary-color;
+
+/* Select */
+$select-border-color: rgb(202, 202, 202);
+$select-hover-border-color: $primary-color;
+$select-focus-box-shadow: 0 0 0 2px rgba($color: $primary-color, $alpha: 0.2);
+
+/* Shadows */
+$primary-shadow: 0 8px 22px #0000001A;
+$secondary-shadow: 0px 3px 6px #2C28281C;
+
+/* Spacer variables */
+$spacer-x : 1rem;
+$spacer-y : 1rem;
+
+/* Border */
+$user-contact-border: rgba(145, 142, 142, 0.998);
+$container-border-top: rgb(234, 229, 229);
+
+/* Containers */
+$container-options: #959EA8;
+$filter-button-border: gainsboro;
+$filter-button-bg: white;
+$filter-button-text: gray;
+$filter-menu-border:black;
+$filter-menu-bg: white;
+$row-color-first: #F7F9FA;
+$bg-white: white;
+
+/* Background */
+$background-hover: rgba(0, 0, 0, 0.5);
+
+/* Login */
+$login-box-bg: white;
+$login-box-shadow: rgba(0, 0, 0, 0.2);
+$label: gray;
+$placeholder: rgb(208, 202, 202);
