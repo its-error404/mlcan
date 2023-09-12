@@ -9,17 +9,17 @@ import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons -
 import { Button, DatePicker, Space, Table } from "antd";
 import {
   useFetchData,
-  useRowClick,
-  useSectionClick,
 } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { useSectionClick } from "../../shared/hooks/useSectionClick";
+import { Link, Navigate } from "react-router-dom";
+import { useRowClick } from "../../shared/hooks/useRowClick";
+import '../../styles/_@antOverrides.scss'
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const { containersData } = useFetchData(searchData);
+  const { selectedEntry, handleRowClick } = useRowClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addContainer, setAddContainer] = useState<boolean>(false);
@@ -57,6 +57,7 @@ const AllContainers = () => {
   };
 
   const filterContainers = (section: string) => {
+    
     if (!containersData?.data?.docs) {
       return [];
     }
@@ -271,65 +272,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-              <table className="container-box__table">
-                <thead>
-                  <tr className="container-box__rows">
-                    <th align="left">Container Number</th>
-                    <th>Yard </th>
-                    <th>Customer <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Owner Name <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>{sectionIndex === 1 ? 'Activity' : 'Current Activity'}</th>
-                    {sectionIndex === 1 && <th>Activity ID <span>
-                      <ToggleIcon width={8} />
-                    </span></th>}
-                    <th>Activity Date <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Status <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                  </tr>
-                </thead>
-                <tbody className="container-list__entries">
-                  {(filterContainers(sections[sectionIndex]) ?? []).map((doc, index) => (
-                  <tr
-                      className={
-                        index % 2 === 0
-                          ? "container-id__even"
-                          : "container-id__odd"
-                      }
-                      key={doc.uid}
-                    >
-                      <td className="container-id">
-                      <Link to={`/containers/${doc.uid}`}>{doc.uid}</Link>
-                      </td>
-                      <td>{doc.yard}</td>
-                      <td>{doc.customer_name || 'N/A'}</td>
-                      <td>{doc.owner || 'N/A'}</td>
-                      <td>{doc.activity_type || 'N/A'}</td>
-                      {sectionIndex === 1 && <td>{doc.activity_uid || 'N/A'}</td>}
-                      <td>{formatDate(doc.activity_date) || 'N/A'}</td>
-                      <td>
-                        <div
-                          className={`activity-text ${doc.activity_status === "billing"
-                              ? "billing-style"
-                              : doc.activity_status === "draft"
-                                ? "draft-style"
-                                : "default-style"
-                            }`}
-                        >
-                          {doc.activity_status || 'N/A'}
-                        </div>
-                      </td>
-                      
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <Table columns={columns} dataSource={filterContainers(sections[sectionIndex]) ?? []} rowKey="uid" className="container-table"/>
             </div>
           </div>
         </div>
