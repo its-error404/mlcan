@@ -3,39 +3,6 @@ import { deserialize } from "serializr";
 import { User } from "../../models/user.model";
 import { setAuthToken, removeAuthToken, setUserInfo, IS_ADMIN } from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
-import loginSchema, { LoginFormValues } from "../../views/Auth/LoginForm/LoginValidation";
-
-
-import * as yup from 'yup';
-
-export const onSubmit = async (
-  values: LoginFormValues,
-  login: (email: string, password: string) => Promise<boolean>,
-  navigate: (route: string) => void,
-  setErrors: any
-) => {
-  try {
-    await loginSchema.validate(values, { abortEarly: false });
-
-    const success = await login(values.email, values.password);
-    if (success) {
-      navigate(ApiRoutes.CONTAINERS);
-    } else {
-      setErrors({ password: "Check your password and try again!" });
-    }
-  } catch (error) {
-    if (error instanceof yup.ValidationError) {
-      const errors: { [key: string]: string } = {};
-      error.inner.forEach((e) => {
-        errors[e.path] = e.message;
-      });
-      setErrors(errors);
-    } else {
-      console.log("Error", error);
-    }
-  }
-};
-
 
 export const loginUser = async (email: string, password: string) => {
   try {

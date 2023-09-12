@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik"; // Import Formik components
 import "./LoginForm.scss";
-import { LoginFormValues } from "./LoginValidation";
+import { LoginFormValues, onSubmit } from "./LoginValidation";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as LockIcon } from "../../../assets/single color icons - SVG/password.svg";
 import Logo from "../../../assets/Logo/PNG/MLCAN logo.png";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { onSubmit } from "../../../services/AuthService/auth.service";
 
 const initialValues: LoginFormValues = {
   email: "",

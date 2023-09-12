@@ -4,7 +4,7 @@ import Sidebar from '../../shared/components/Sidebar/index'
 import { ReactComponent as PlusIcon } from '../../assets/single color icons - SVG/add.svg'
 import { ReactComponent as SearchIcon } from '../../assets/single color icons - SVG/search.svg'
 import { ReactComponent as FilterIcon } from '../../assets/single color icons - SVG/filter.svg'
-import { Button } from 'antd'
+import { Button, Pagination } from 'antd'
 import { ReactComponent as ToggleIcon } from '../../assets/Multicolor icons - SVG/sort default.svg'
 import { ReactComponent as EditIcon } from '../../assets/single color icons - SVG/edit.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/single color icons - SVG/delete.svg'
@@ -15,6 +15,7 @@ import { fetchRepairData } from '../../services/RepairListService/repairlist.ser
 import { RepairData } from '../../models/repairList.model'
 import { useRowClick } from '../../shared/hooks/useRowClick'
 import { useSectionClick } from '../../shared/hooks/useSectionClick'
+import '../../styles/_@antOverrides.scss'
 
 const RepairList = () => {
 
@@ -23,16 +24,16 @@ const RepairList = () => {
   const handleSectionClick = useSectionClick()
   const [sectionIndex, setSectionIndex] = useState<number>(0)
   const [repairListData, setRepairListData] = useState<RepairData | null>(null);
-  const [totalEntries, setTotalEntries] = useState<number | null>(null);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1)
+  const entriesPerPage = 1
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { deserializedData, totalEntries } = await fetchRepairData();
-        console.log(deserializedData)
+        const { deserializedData } = await fetchRepairData();
         setRepairListData(deserializedData)
-        // setTotalEntries(totalEntries);
-        console.log(repairListData?.docs)
+        setTotalEntries(deserializedData.docs?.length || 0);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -44,6 +45,10 @@ const RepairList = () => {
   const filteredEntries = repairListData?.docs?.filter((doc) => (
     doc.uid?.toLowerCase().includes(searchData.toLowerCase())
   ))
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className='repair-list'>
@@ -87,7 +92,11 @@ const RepairList = () => {
           </thead>
           <tbody>
           {filteredEntries?.map((doc, index) => (
-              <tr  className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'} key={doc.uid} onClick={handleRowClick(doc)}>
+              <tr
+              className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'}
+              key={doc.uid}
+              onClick={ handleRowClick(doc as RepairData)}
+            >
                 <td>{doc.uid}</td>
                 <td>{doc.repArea}</td>
                 <td>{doc.dmgArea}</td>
@@ -103,7 +112,20 @@ const RepairList = () => {
             </tbody>
           </table>
         </div>
-        <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {totalEntries} </span></p>
+        <div className='bottom-flex'>
+        <div className="horizontal-pagination-container">
+        <div className="horizontal-pagination">
+          <Pagination
+            current={currentPage}
+            total={totalEntries}
+            pageSize={entriesPerPage}
+            onChange={handlePageChange}
+          />
+        </div>
+      </div>
+      <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {totalEntries} </span></p>
+      </div>
+       
       </div>
       {selectedEntry && (
         <div className="overlay-box">
