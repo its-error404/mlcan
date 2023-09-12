@@ -22,11 +22,12 @@ $light-gray: #CED5DB;
 $filled-input: #F0F2F3;
 $placeholder: #E4E6E9;
 $section-header: #F3F4F8;
-$overlay: rgba(0, 0, 0, 0.5); 
+$overlay-bg: rgba(0, 0, 0, 0.5); 
 $billing-bg: #FAEDF2;
 $billing-text: #E9566D;
 $draft-bg: #EDEFF3;
 $draft-text: #8E99A2;
+$lightest-border: rgb(242, 232, 232);
 
 /* Component colors */
 $sidebar-bg: #242937;
@@ -104,7 +105,7 @@ $filter-button-bg: white;
 $filter-button-text: gray;
 $filter-menu-border:black;
 $filter-menu-bg: white;
-$row-color-first: #F7F9FA;
+$row-color-first: #ECF0F5;
 $bg-white: white;
 
 /* Background */

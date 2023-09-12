@@ -13,32 +13,6 @@
     }
 }
 
-.overlay-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $overlay;
-    z-index: 99;
-  }
-
-  .overlay-box {
-    position: absolute;
-    top: 50px;
-    left: 800px;
-    background-color: $bg-white;
-    min-width: 630px;
-    min-height: 400px;
-    padding-top: 25px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    max-height: 80vh;
-    overflow-y: auto;
-    left: 35%;
-    pointer-events: auto;
-    z-index: 100;
-}
 
 .addrepair-overlay-container {
     position: absolute;

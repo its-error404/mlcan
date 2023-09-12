@@ -4,7 +4,7 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, DatePicker, Pagination, Table } from "antd";
+import { Button, Modal, Table } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
@@ -12,13 +12,14 @@ import { ReactComponent as ExportIcon } from "../../assets/single color icons - 
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
 import { fetchRepairData } from "../../services/RepairListService/repairlist.service";
-import { ReactComponent as CloseIcon } from "../../assets/single color icons - SVG/close.svg";
 import { RepairData } from "../../models/repairList.model";
 import { useRowClick } from "../../shared/hooks/useRowClick";
 import { useSectionClick } from "../../shared/hooks/useSectionClick";
 import "../../styles/_@antOverrides.scss";
 import { deleteRepairEntry } from "../../services/RepairListService/deleterepair.service";
 import AddRepair from "./AddRepair";
+import SelectedEntry from "./SelectedEntry";
+import EditRepair from "./EditRepair";
 
 const RepairList = () => {
   const [columns, setColumns] = useState([
@@ -75,6 +76,12 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskHours",
       key: "nonMaerskHours",
+      render: (text: string, record: any) => {
+        const nonMaerskHours = record.nonMaerskHours;
+        return nonMaerskHours !== undefined && nonMaerskHours !== null
+          ? nonMaerskHours
+          : "-";
+      },
       style: {
         marginLeft: "20px !important",
       },
@@ -126,19 +133,89 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string) => <EditIcon width={20} />,
+      render: (text: string, record:any) => (
+      <div onClick={()=> handleEditClick(record)}>
+      <EditIcon width={20} />
+      </div>
+      ),
       style: {
         marginRight: "-20px",
       },
     },
     {
       className: "delete-icon",
-      render: (text: string) => <DeleteIcon width={20} />,
+      render: (text: string, record: any) => (
+        <>
+          <DeleteIcon width={20} onClick={() => showDeleteConfirmationModal(record.id)} />
+          <Modal
+            title="Confirm Deletion"
+            visible={deleteConfirmationVisible && record.id === recordToDeleteId}
+            onOk={handleDeleteConfirm}
+            onCancel={handleDeleteCancel}
+          >
+            <p>Are you sure you want to delete this entry?</p>
+          </Modal>
+        </>
+      ),
     },
   ]);
 
+  const showDeleteConfirmationModal = (id:any) => {
+    setRecordToDeleteId(id);
+    setDeleteConfirmationVisible(true);
+  };
+  
+  const handleDeleteCancel = () => {
+    setRecordToDeleteId(null);
+    setDeleteConfirmationVisible(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (recordToDeleteId) {
+      try {
+        await deleteRepairEntry(recordToDeleteId);
+        setRecordToDeleteId(null);
+        setDeleteConfirmationVisible(false);
+      } catch (error) {
+        console.error("Error deleting entry:", error);
+      }
+    }
+  };
+
+  const handleRowClick = (row: any) => {
+    if (!editIconClicked) {
+    setSelectedRow(row);
+    setOverlayOpen(true);
+    }
+  };
+
+  const closeOverlay = () => {
+    setOverlayOpen(false);
+  };
+
+  const handleEditIconClick = (row: any) => {
+    if (row.uid !== null) {
+      setClickedRepairId(row.uid);
+    }
+  };
+
+  const handleDeleteClick = (id:string) => {
+
+    deleteRepairEntry(id);
+  };
+
+  const handleEditClick = (doc: any) => {
+    setEditedData(doc);
+    setEditRepairVisible(true); 
+    setEditRepairId(doc.uid)
+    closeOverlay()
+  };
+
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [recordToDeleteId, setRecordToDeleteId] = useState(null);
+  const [editIconClicked, setEditIconClicked] = useState(false);
+  const [editRepairId, setEditRepairId] = useState("");
   const [searchData, setSearchData] = useState("");
-  const { selectedEntry, handleRowClick } = useRowClick();
   const handleSectionClick = useSectionClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [repairListData, setRepairListData] = useState<RepairData | null>(null);
@@ -147,7 +224,10 @@ const RepairList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [addRepair, setAddRepair] = useState<boolean>(false);
   const [editMode, setEditMode] = useState(false);
+  const [editRepairVisible, setEditRepairVisible] = useState(false);
   const [editedData, setEditedData] = useState<any>(null);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [clickedRepairId, setClickedRepairId] = useState<string | null>(null);
   const entriesPerPage = 1;
 
   useEffect(() => {
@@ -180,19 +260,6 @@ const RepairList = () => {
     setAddRepair(false);
   };
 
-  const openOverlay = () => {
-    setOverlayOpen(true);
-  };
-
-  const closeOverlay = () => {
-    setOverlayOpen(false);
-  };
-
-  const handleEditClick = (doc: any) => {
-    setEditedData(doc);
-    setEditMode(true);
-  };
-
   const deleteEntry = (doc: any) => {
     console.log(doc);
     deleteRepairEntry(doc);
@@ -205,14 +272,38 @@ const RepairList = () => {
   return (
     <div className="repair-list">
       <Sidebar />
-
       <div className="repairs-section">
         <div className="repairs-header">
           <h1>Repair List</h1>
-          <PlusIcon width={25} className="plus-icon" onClick={toggleAddRepair} />
+          <PlusIcon
+            width={25}
+            className="plus-icon"
+            onClick={toggleAddRepair}
+          />
         </div>
-       
+        {editRepairVisible ? (
+  <EditRepair
+    editedData={editedData}
+    onClose={() => {
+      setEditIconClicked(false);
+      setClickedRepairId(null);
+    }}
+    repairId={clickedRepairId || ""}
+  />
+) : (
 
+  <SelectedEntry
+    selectedEntry={selectedRow}
+    overlayOpen={overlayOpen}
+    closeOverlay={() => {
+      setOverlayOpen(false);
+      console.log("button clicked");
+    }}
+    sectionIndex={sectionIndex}
+    handleSectionClick={(index: number) => setSectionIndex(index)}
+    setSectionIndex={setSectionIndex}
+  />
+)}
 
         <div className="repair-search-container">
           <span className="search-icon">
@@ -247,19 +338,30 @@ const RepairList = () => {
           </Button>
           <Button className="bulk-upload-button">Bulk Upload</Button>
         </div>
-        
+
         <div className="repair-box__container">
-          
-          <Table
-            className="ant-table-repair"
-            columns={columns}
-            dataSource={filteredEntries}
-            rowClassName={getRowClassName}
-            onRow={(row: any) => ({
-              onClick: () => handleRowClick(row)
-            })}
-          />
+        <Table
+  className="ant-table-repair"
+  columns={columns}
+  dataSource={filteredEntries}
+  rowClassName={getRowClassName}
+  onRow={(record: any) => {
+    return {
+      onClick: (event) => {
+        const clickedElement = event.target as HTMLElement;
+        const isExcludedColumn =
+          clickedElement.classList.contains("cls-1")
+        if (!isExcludedColumn) {
+          handleRowClick(record);
+        }
+      },
+    };
+  }}
+/>
         </div>
+        {editMode && (
+          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} />
+        )}
         <div className="bottom-flex">
           <p className="total-records">
             Showing <span className="record-range"> 1 - 5 </span> of{" "}
@@ -267,8 +369,8 @@ const RepairList = () => {
           </p>
         </div>
       </div>
-      </div>
-        );
+    </div>
+  );
 };
 
 export default RepairList;

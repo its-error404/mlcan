@@ -5,27 +5,19 @@ import { ReactComponent as TickIcon } from "../../../assets/single color icons -
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import { Button, Checkbox } from "antd";
 import "../../../styles/_variables.scss";
-import repairDetailsSchema from "./EditFormValidation";
+import repairDetailsSchema, { validateForm } from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
-
 interface EditRepairProps {
-  data: any;
+  editedData: any;
   onClose: () => void;
-  id: any;
+  repairId: string; 
 }
 
-const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
+const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }) => {
+  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(0);
+
   const [formData, setFormData] = useState<any>({});
 
-  useEffect(() => {
-    if (data) {
-      setFormData(data);
-    }
-  }, [data]);
-
-  const EditValues = {
-    ...data,
-  };
 
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
@@ -53,11 +45,12 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   };
 
   const formik = useFormik({
-    initialValues: EditValues,
-    validationSchema: repairDetailsSchema,
+    initialValues: editedData,
+    validationSchema: validateForm,
     onSubmit: async (formData) => {
       try {
-        await editRepairEntry(formData, id);
+        await editRepairEntry(formData, repairId);
+        onClose()
       } catch (err) {
         console.log(err);
       }
