@@ -6,7 +6,7 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button, DatePicker, Space } from "antd";
+import { Button, DatePicker, Space, Table } from "antd";
 import {
   useFetchData,
   useRowClick,
@@ -89,7 +89,68 @@ const AllContainers = () => {
   }
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-
+  const columns = [
+    {
+      title: "Container Number",
+      dataIndex: "uid",
+      key: "uid",
+      render: (text:string, record:any) => <Link to={`/containers/${record.uid}`}>{text}</Link>,
+    },
+    {
+      title: "Yard",
+      dataIndex: "yard",
+      key: "yard",
+    },
+    {
+      title: "Customer",
+      dataIndex: "customer_name",
+      key: "customer_name",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: "Owner Name",
+      dataIndex: "owner",
+      key: "owner",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: sectionIndex === 1 ? "Activity" : "Current Activity",
+      dataIndex: "activity_type",
+      key: "activity_type",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: sectionIndex === 1 ? "Activity ID" : "Current Activity",
+      dataIndex: "activity_uid",
+      key: "activity_uid",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: "Activity Date",
+      dataIndex: "activity_date",
+      key: "activity_date",
+      render: (text:string, record:any) => formatDate(text) || "N/A",
+    },
+    {
+      title: "Status",
+      dataIndex: "activity_status",
+      key: "activity_status",
+      render: (text:string, record:any) => (
+        <div
+          className={`activity-text ${
+            text === "billing"
+              ? "billing-style"
+              : text === "draft"
+              ? "draft-style"
+              : "default-style"
+          }`}
+        >
+          {text || "N/A"}
+        </div>
+      ),
+    },
+  ];
+  
   return (
     <div className="main">
       <div className="all-containers">
@@ -210,65 +271,10 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-              <table className="container-box__table">
-                <thead>
-                  <tr className="container-box__rows">
-                    <th align="left">Container Number</th>
-                    <th>Yard </th>
-                    <th>Customer <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Owner Name <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>{sectionIndex === 1 ? 'Activity' : 'Current Activity'}</th>
-                    {sectionIndex === 1 && <th>Activity ID <span>
-                      <ToggleIcon width={8} />
-                    </span></th>}
-                    <th>Activity Date <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Status <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                  </tr>
-                </thead>
-                <tbody className="container-list__entries">
-                  {(filterContainers(sections[sectionIndex]) ?? []).map((doc, index) => (
-                  <tr
-                      className={
-                        index % 2 === 0
-                          ? "container-id__even"
-                          : "container-id__odd"
-                      }
-                      key={doc.uid}
-                    >
-                      <td className="container-id">
-                      <Link to={`/containers/${doc.uid}`}>{doc.uid}</Link>
-                      </td>
-                      <td>{doc.yard}</td>
-                      <td>{doc.customer_name || 'N/A'}</td>
-                      <td>{doc.owner || 'N/A'}</td>
-                      <td>{doc.activity_type || 'N/A'}</td>
-                      {sectionIndex === 1 && <td>{doc.activity_uid || 'N/A'}</td>}
-                      <td>{formatDate(doc.activity_date) || 'N/A'}</td>
-                      <td>
-                        <div
-                          className={`activity-text ${doc.activity_status === "billing"
-                              ? "billing-style"
-                              : doc.activity_status === "draft"
-                                ? "draft-style"
-                                : "default-style"
-                            }`}
-                        >
-                          {doc.activity_status || 'N/A'}
-                        </div>
-                      </td>
-                      
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <Table columns={columns}
+  dataSource={filterContainers(sections[sectionIndex]) ?? []}
+  rowKey="uid"
+/>
             </div>
           </div>
         </div>
