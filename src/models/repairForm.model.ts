@@ -35,7 +35,7 @@ export class NonMaerskDetails {
     @serializable(alias('desc', primitive()))
     desc?: string
 
-    @serializable(alias('ID Source', primitive()))
+    @serializable(alias('id', primitive()))
     id?: string
 }
 
