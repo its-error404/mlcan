@@ -189,6 +189,10 @@ const RepairList = () => {
     }
   };
 
+  const openOverlay = () => {
+    setOverlayOpen(true);
+  }
+
   const closeOverlay = () => {
     setOverlayOpen(false);
   };
@@ -207,7 +211,7 @@ const RepairList = () => {
   const handleEditClick = (doc: any) => {
     setEditedData(doc);
     setEditRepairVisible(true); 
-    setEditRepairId(doc.uid)
+    setEditRepairId(doc.id)
     closeOverlay()
   };
 
@@ -289,6 +293,7 @@ const RepairList = () => {
       setClickedRepairId(null);
     }}
     repairId={clickedRepairId || ""}
+    overlayOpen={overlayOpen}
   />
 ) : (
 
@@ -297,7 +302,7 @@ const RepairList = () => {
     overlayOpen={overlayOpen}
     closeOverlay={() => {
       setOverlayOpen(false);
-      console.log("button clicked");
+      setSelectedRow(null)
     }}
     sectionIndex={sectionIndex}
     handleSectionClick={(index: number) => setSectionIndex(index)}
@@ -360,7 +365,7 @@ const RepairList = () => {
 />
         </div>
         {editMode && (
-          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} />
+          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} overlayOpen={overlayOpen}/>
         )}
         <div className="bottom-flex">
           <p className="total-records">

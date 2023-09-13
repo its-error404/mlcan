@@ -5,19 +5,27 @@ import { ReactComponent as TickIcon } from "../../../assets/single color icons -
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import { Button, Checkbox } from "antd";
 import "../../../styles/_variables.scss";
-import repairDetailsSchema, { validateForm } from "./EditFormValidation";
+import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
+import "../AddRepair/AddRepair.scss";
 interface EditRepairProps {
   editedData: any;
   onClose: () => void;
-  repairId: string; 
+  repairId: string;
+  overlayOpen: boolean;
 }
 
-const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }) => {
-  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(0);
+const EditRepair: React.FC<EditRepairProps> = ({
+  editedData,
+  onClose,
+  repairId,
+  overlayOpen,
+}) => {
+  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(
+    0
+  );
 
   const [formData, setFormData] = useState<any>({});
-
 
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
@@ -46,25 +54,40 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
 
   const formik = useFormik({
     initialValues: editedData,
-    validationSchema: validateForm,
+    validationSchema: repairDetailsSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: async (formData) => {
       try {
         await editRepairEntry(formData, repairId);
-        onClose()
+        onClose();
       } catch (err) {
         console.log(err);
       }
     },
   });
 
-
   return (
-    <div>
-      <div className="repair-details-form">
-        <div className="form-wrapper">
+    <div className="overlay">
+      <div className="overlay-content">
+        <div
+          className={`overlay-box-edit  ${overlayOpen ? "overlay-open" : ""}`}
+          style={{
+            maxHeight: "80vh",
+            overflowY: "auto",
+            position: "fixed",
+            top: "45%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           <div className="form-header">
             <h2>Edit Repair Part</h2>
-            <CloseIcon width={15} onClick={onClose} />
+            <CloseIcon
+              width={15}
+              onClick={onClose}
+              className="close-icon-edit"
+            />
           </div>
           <div className="section-buttons">
             {sections.map((section, index) => (
@@ -133,8 +156,8 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                     <br></br>
                   </div>
                   <br></br>
-                  <div className="repair-details__second-col">
-                    <div className="input__repair-id field-3">
+                  <div className="repair-details__second-col edit-repair__second-col">
+                    <div className="field-3 container-repair-area">
                       <label>Container Damaged Area</label>
                       <br></br>
                       <select
@@ -155,7 +178,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                       ) : null}
                     </div>
                     <br></br>
-                    <div className="input__repair-Area">
+                    <div className="input__repair-Area repair-type">
                       <label>Repair Type</label>
                       <br></br>
                       <select
@@ -177,7 +200,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                     </div>
                     <br></br>
                   </div>
-                  <div className="button-container">
+                  <div className="button-container section-1-button">
                     <Button type="primary" onClick={onClose}>
                       Discard
                     </Button>
@@ -185,14 +208,23 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                   </div>
                 </>
               )}
+
               {sectionIndex === 1 && (
-                  <div className="Non-maersk-details-section">
+                <div className="Non-maersk-details-section">
                   <br></br>
-                  <label>
+                  <label
+                    style={{
+                      fontWeight: "500",
+                      color: "black",
+                      fontSize: "14px",
+                    }}
+                  >
                     <input
                       type="checkbox"
                       name="na_1"
-                      onChange={(e) => formik.setFieldValue('na_1', e.target.checked)}
+                      onChange={(e) =>
+                        formik.setFieldValue("na_1", e.target.checked)
+                      }
                       onBlur={formik.handleBlur}
                       checked={formik.values.na_1}
                     />
@@ -200,270 +232,279 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                   </label>
                   <br></br>
                   <br></br>
-                  <div className={`Non-maersk-details-content ${formik.values.na_1 ? 'disabled' : ''}`}>
-                  <div className="horizontal-line">
-                    <hr></hr>
-                  </div>
                   <br></br>
-                  <h4>Cost Details</h4>
-                  <div className="repair-details__first-col">
-                    <div className="input__repair-id">
-                      <label>Hours</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="hours"
-                        id="hours"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.hours}
-                        placeholder="Enter"
-                        disabled={formik.values.na_1}
-                      />
+                  <div
+                    className={`Non-maersk-details-content ${
+                      formik.values.na_1 ? "disabled" : ""
+                    }`}
+                  >
+                    <div className="horizontal-line">
+                      <hr style={{ maxWidth: "62vw" }}></hr>
                     </div>
                     <br></br>
-                    <div className="input__repair-Area">
-                      <label>Material Cost</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="mat_cost"
-                        id="mat_cost"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.mat_cost}
-                        placeholder="0$"
-                            disabled={formik.values.na_1}
-                      />
-                    </div>
-                  </div>
-                  <br></br>
-                  <br></br>
-                  <hr></hr>
-                  <br></br>
-                  <h4>Customer Related Details</h4>
-                  <div className="repair-details__first-col repaid-id__input">
-                    <div className="input__repair-id">
-                      <label>Container Section</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="cont_sec"
-                        id="cont_sec"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.cont_section}
-                        disabled={formik.values.na_1}
-                      />
-                    </div>
-                    <br></br>
-                    <div className="input__repair-Area">
-                      <label>Damaged Area</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="dmg_area"
-                        id="dmg_area"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.dmg_area}
-                        disabled={formik.values.na_1}
-                      />
-                    </div>
-                  </div>
-                  <div className="repair-details__first-col ">
-                    <div className="input__repair-id repaid-id__input custom-margin">
-                      <label>Repair Type</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="type"
-                        id="type"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.type}
-                        disabled={formik.values.na_1}
-                      />
-                    </div>
-                    <br></br>
-                    <div className="input__repair-Area">
-                      <label>Description</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="desc"
-                        id="desc"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.desc}
-                        placeholder="Enter"
-                        disabled={formik.values.na_1}
-                      />
-                    </div>
-                  </div>
-                  <br></br>
-                  <div className="repair-details__second-col">
-                    <div className="input__repair-id">
-                      <label>COMP</label>
-                      <br></br>
-                      <select
-                        name="COMP"
-                        id="COMP"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.comp}
-                        disabled={formik.values.na_1}
-                      >
-                        <option value="">Select</option>
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                      </select>
-                    </div>
-                    <br></br>
-                    <div className="input__repair-Area">
-                      <label>DAM</label>
-                      <br></br>
-                      <select
-                        name="DAM"
-                        id="DAM"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.dam}
-                        disabled={formik.values.na_1}
-                      >
-                        <option value="">Select</option>
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                      </select>
-                    </div>
-                  </div>
-                  <br></br>
-                  <div className="repair-details__second-col">
-                    <div className="input__repair-id">
-                      <label>REP</label>
-                      <br></br>
-                      <select
-                        name="REP"
-                        id="REP"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.rep}
-                        disabled={formik.values.na_1}
-                      >
-                        <option value="">Select</option>
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                      </select>
-                    </div>
-                    <br></br>
-                    <div className="input__repair-Area">
-                      <label>Component</label>
-                      <br></br>
-                      <select
-                        name="component"
-                        id="component"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.component}
-                        disabled={formik.values.na_1}
-                      >
-                        <option value="">Select</option>
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                      </select>
-                    </div>
-                  </div>
-                  <br></br>
-                  <div className="repair-details__second-col">
-                    <div className="input__repair-id">
-                      <label>Event</label>
-                      <br></br>
-                      <select
-                        name="event"
-                        id="event"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.event}
-                        disabled={formik.values.na_1}
-                      >
-                        <option value="">Select</option>
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                      </select>
-                    </div>
-                    <br></br>
-                    <div className="repair-details__first-col location-div">
+                    <h4 style={{ marginTop: "10px", fontWeight: "500" }}>
+                      Cost Details
+                    </h4>
+                    <div className="repair-details__first-col cost-details">
                       <div className="input__repair-id">
-                        <label>Location</label>
+                        <label>Hours</label>
+                        <br></br>
                         <input
                           type="text"
-                          name="location"
-                          id="location"
+                          name="hours"
+                          id="hours"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.location}
+                          value={formik.values.hours}
+                          placeholder="Enter"
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                      <br></br>
+                      <div className="input__repair-Area">
+                        <label>Material Cost</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="mat_cost"
+                          id="mat_cost"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.mat_cost}
+                          placeholder="0$"
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <hr style={{ maxWidth: "62vw" }}></hr>
+                    <br></br>
+                    <h4 style={{ marginTop: "10px", fontWeight: "500" }}>
+                      Customer Related Details
+                    </h4>
+                    <div className="repair-details__first-col repaid-id__input customer-related-details">
+                      <div className="input__repair-id">
+                        <label>Container Section</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="cont_sec"
+                          id="cont_sec"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.cont_section}
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                      <br></br>
+                      <div className="input__repair-Area">
+                        <label>Damaged Area</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="dmg_area"
+                          id="dmg_area"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.dmg_area}
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                    </div>
+                    <div className="repair-details__first-col ">
+                      <div className="input__repair-id repaid-id__input custom-margin customer-related-details-repair-type">
+                        <label>Repair Type</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="type"
+                          id="type"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.type}
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                      <br></br>
+                      <div className="input__repair-Area customer-related-details-description">
+                        <label>Description</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="desc"
+                          id="desc"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.desc}
+                          placeholder="Enter"
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                    </div>
+                    <br></br>
+                    <div className="repair-details__second-col repair-type">
+                      <div className="input__repair-id">
+                        <label>COMP</label>
+                        <br></br>
+                        <select
+                          name="COMP"
+                          id="COMP"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.comp}
+                          disabled={formik.values.na_1}
+                        >
+                          <option value="">Select</option>
+                          <option value="Option 1">Option 1</option>
+                          <option value="Option 2">Option 2</option>
+                        </select>
+                      </div>
+                      <br></br>
+                      <div className="input__repair-Area repair-type">
+                        <label>DAM</label>
+                        <br></br>
+                        <select
+                          name="DAM"
+                          id="DAM"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.dam}
+                          disabled={formik.values.na_1}
+                        >
+                          <option value="">Select</option>
+                          <option value="Option 1">Option 1</option>
+                          <option value="Option 2">Option 2</option>
+                        </select>
+                      </div>
+                    </div>
+                    <br></br>
+                    <div className="repair-details__second-col">
+                      <div className="input__repair-id repair-type">
+                        <label>REP</label>
+                        <br></br>
+                        <select
+                          name="REP"
+                          id="REP"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.rep}
+                          disabled={formik.values.na_1}
+                        >
+                          <option value="">Select</option>
+                          <option value="Option 1">Option 1</option>
+                          <option value="Option 2">Option 2</option>
+                        </select>
+                      </div>
+                      <br></br>
+                      <div className="input__repair-Area repair-type">
+                        <label>Component</label>
+                        <br></br>
+                        <select
+                          name="component"
+                          id="component"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.component}
+                          disabled={formik.values.na_1}
+                        >
+                          <option value="">Select</option>
+                          <option value="Option 1">Option 1</option>
+                          <option value="Option 2">Option 2</option>
+                        </select>
+                      </div>
+                    </div>
+                    <br></br>
+                    <div className="repair-details__second-col">
+                      <div className="input__repair-id repair-type">
+                        <label>Event</label>
+                        <br></br>
+                        <select
+                          name="event"
+                          id="event"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.event}
+                          disabled={formik.values.na_1}
+                        >
+                          <option value="">Select</option>
+                          <option value="Option 1">Option 1</option>
+                          <option value="Option 2">Option 2</option>
+                        </select>
+                      </div>
+                      <br></br>
+                      <div className="repair-details__first-col location-div">
+                        <div className="input__repair-id location">
+                          <label>Location</label>
+                          <input
+                            type="text"
+                            name="location"
+                            id="location"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.location}
+                            placeholder="Enter"
+                            disabled={formik.values.na_1}
+                          />
+                        </div>
+                        <br></br>
+                      </div>
+
+                      <br></br>
+                    </div>
+                    <div className="repair-details__first-col">
+                      <div className="input__repair-id area1">
+                        <label>LQTH/QTY/AREA</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="area1"
+                          id="area1"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.area1}
+                          placeholder="Enter"
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
+                      <br></br>
+                      <div className="input__repair-id">
+                        <label>LQTH/QTY/AREA2</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="area2"
+                          id="area2"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.area2}
                           placeholder="Enter"
                           disabled={formik.values.na_1}
                         />
                       </div>
                       <br></br>
                     </div>
-
-                    <br></br>
-                  </div>
-                  <div className="repair-details__first-col">
-                    <div className="input__repair-id">
-                      <label>LQTH/QTY/AREA</label>
+                    <div className="repair-details__first-col">
+                      <div className="input__repair-id id-source">
+                        <label>ID Source</label>
+                        <br></br>
+                        <input
+                          type="text"
+                          name="id"
+                          id="id"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.id}
+                          placeholder="Enter"
+                          disabled={formik.values.na_1}
+                        />
+                      </div>
                       <br></br>
-                      <input
-                        type="text"
-                        name="area1"
-                        id="area1"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.area1}
-                        placeholder="Enter"
-                        disabled={formik.values.na_1}
-                      />
-                    </div>
-                    <br></br>
-                    <div className="input__repair-id">
-                      <label>LQTH/QTY/AREA2</label>
                       <br></br>
-                      <input
-                        type="text"
-                        name="area2"
-                        id="area2"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.area2}
-                        placeholder="Enter"
-                        disabled={formik.values.na_1}
-                      />
                     </div>
-                    <br></br>
-                  </div>
-                  <div className="repair-details__first-col">
-                    <div className="input__repair-id">
-                      <label>ID Source</label>
-                      <br></br>
-                      <input
-                        type="text"
-                        name="id"
-                        id="id"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.id}
-                        placeholder="Enter"
-                        disabled={formik.values.na_1}
-                      />
-                    </div>
-                    <br></br>
-                    <br></br>
-                  </div>
                   </div>
                   <br></br>
-                  <div className="button-container">
+                  <div className="button-container section-2-buttons">
                     <Button type="primary">Discard</Button>
                     <Button type="primary">Proceed</Button>
                   </div>
@@ -472,15 +513,36 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
               {sectionIndex === 2 && (
                 <div className="merc-plus-form-section">
                   <br></br>
-                  <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
+                  <br></br>
+                  <label
+                    style={{
+                      fontWeight: "500",
+                      color: "black",
+                      fontSize: "14px",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      name="na_1"
+                      onChange={(e) =>
+                        formik.setFieldValue("na_1", e.target.checked)
+                      }
+                      onBlur={formik.handleBlur}
+                      checked={formik.values.na_1}
+                    />
+                    &nbsp;&nbsp;N/A
+                  </label>
                   <br></br>
                   <br></br>
-                  <div>
+                  <br></br>
+                  <div style={{ maxWidth: "62vw" }}>
                     <hr></hr>
                   </div>
                   <br></br>
-                  <h4>Cost Details</h4>
-                  <div className="repair-details__first-col">
+                  <h4 style={{ marginTop: "10px", fontWeight: "500" }}>
+                    Cost Details
+                  </h4>
+                  <div className="repair-details__first-col merc-cost-details">
                     <div className="input__repair-id">
                       <label>Max. Mat. Cost</label>
                       <br></br>
@@ -509,7 +571,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                       />
                     </div>
                   </div>
-                  <div className="repair-details__first-col">
+                  <div className="repair-details__first-col merc-cost-details">
                     <div className="input__repair-id">
                       <label>Hours Per Unit</label>
                       <br></br>
@@ -538,7 +600,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                       />
                     </div>
                   </div>
-                  <div className="repair-details__first-col">
+                  <div className="repair-details__first-col merc-cost-details">
                     <div className="input__repair-id">
                       <label>Units</label>
                       <br></br>
@@ -556,12 +618,14 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                   </div>
                   <br></br>
                   <br></br>
-                  <hr></hr>
+                  <hr style={{ maxWidth: "62vw" }}></hr>
                   <br></br>
-                  <h4>Customer Related Details</h4>
+                  <h4 style={{ marginTop: "10px", fontWeight: "500" }}>
+                    Customer Related Details
+                  </h4>
                   <br></br>
                   <div className="repair-details__second-col">
-                    <div className="input__repair-id">
+                    <div className="input__repair-id repair-type">
                       <label>Repair Mode</label>
                       <br></br>
                       <select
@@ -577,7 +641,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                       </select>
                     </div>
                     <br></br>
-                    <div className="input__repair-Area">
+                    <div className="input__repair-Area repair-type">
                       <label>Mode Number</label>
                       <br></br>
                       <select
@@ -593,8 +657,8 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                       </select>
                     </div>
                   </div>
-                  <div className="repair-details__first-col">
-                    <div className="input__repair-id">
+                  <div className="repair-details__first-col merc-cost-details">
+                    <div className="input__repair-id ">
                       <label>Repair Code</label>
                       <br></br>
                       <input
@@ -622,7 +686,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ editedData, onClose, repairId }
                       />
                     </div>
                   </div>
-                  <div className="repair-details__first-col">
+                  <div className="repair-details__first-col merc-cost-details">
                     <div className="input__repair-id">
                       <label>Description</label>
                       <br></br>
