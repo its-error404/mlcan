@@ -11,15 +11,14 @@ import { ReactComponent as DeleteIcon } from "../../assets/single color icons - 
 import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
-import { fetchRepairData } from "../../services/RepairListService/repairlist.service";
 import { RepairData } from "../../models/repairList.model";
 import { useRowClick } from "../../shared/hooks/useRowClick";
 import { useSectionClick } from "../../shared/hooks/useSectionClick";
 import "../../styles/_@antOverrides.scss";
-import { deleteRepairEntry } from "../../services/RepairListService/deleterepair.service";
 import AddRepair from "./AddRepair";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
+import { addRepairRequest, deleteRepairEntry, editRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 
 const RepairList = () => {
   const [columns, setColumns] = useState([
