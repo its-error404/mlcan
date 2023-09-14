@@ -13,7 +13,7 @@ const access_token = getAuthToken()
 
 //Add Repair 
 
-export const addRepairRequest = async (values: any) => {
+export const addRepairRequest = async (values: RepairData) => {
     try {
         
 
