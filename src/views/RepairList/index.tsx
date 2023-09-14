@@ -12,16 +12,16 @@ import { ReactComponent as ExportIcon } from "../../assets/single color icons - 
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
 import { RepairData } from "../../models/repairList.model";
-import { useRowClick } from "../../shared/hooks/useRowClick";
-import { useSectionClick } from "../../shared/hooks/useSectionClick";
 import "../../styles/_@antOverrides.scss";
-import AddRepair from "./AddRepair";
 import SelectedEntry from "./SelectedEntry";
-import EditRepair from "./EditRepair";
-import { addRepairRequest, deleteRepairEntry, editRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
+
+import {
+  deleteRepairEntry,
+  fetchRepairData,
+} from "../../services/RepairListService/repair.service";
 
 const RepairList = () => {
-  const [columns, setColumns] = useState([
+  const [columns] = useState([
     {
       title: (
         <>
@@ -132,11 +132,7 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string, record:any) => (
-      <div onClick={()=> handleEditClick(record)}>
-      <EditIcon width={20} />
-      </div>
-      ),
+      render: (text: string, record: any) => <EditIcon width={20} />,
       style: {
         marginRight: "-20px",
       },
@@ -145,10 +141,15 @@ const RepairList = () => {
       className: "delete-icon",
       render: (text: string, record: any) => (
         <>
-          <DeleteIcon width={20} onClick={() => showDeleteConfirmationModal(record.id)} />
+          <DeleteIcon
+            width={20}
+            onClick={() => showDeleteConfirmationModal(record.id)}
+          />
           <Modal
             title="Confirm Deletion"
-            visible={deleteConfirmationVisible && record.id === recordToDeleteId}
+            visible={
+              deleteConfirmationVisible && record.id === recordToDeleteId
+            }
             onOk={handleDeleteConfirm}
             onCancel={handleDeleteCancel}
           >
@@ -159,11 +160,11 @@ const RepairList = () => {
     },
   ]);
 
-  const showDeleteConfirmationModal = (id:any) => {
+  const showDeleteConfirmationModal = (id: any) => {
     setRecordToDeleteId(id);
     setDeleteConfirmationVisible(true);
   };
-  
+
   const handleDeleteCancel = () => {
     setRecordToDeleteId(null);
     setDeleteConfirmationVisible(false);
@@ -182,52 +183,20 @@ const RepairList = () => {
   };
 
   const handleRowClick = (row: any) => {
-    if (!editIconClicked) {
     setSelectedRow(row);
     setOverlayOpen(true);
-    }
   };
 
-  const closeOverlay = () => {
-    setOverlayOpen(false);
-  };
-
-  const handleEditIconClick = (row: any) => {
-    if (row.uid !== null) {
-      setClickedRepairId(row.uid);
-    }
-  };
-
-  const handleDeleteClick = (id:string) => {
-
-    deleteRepairEntry(id);
-  };
-
-  const handleEditClick = (doc: any) => {
-    setEditedData(doc);
-    setEditRepairVisible(true); 
-    setEditRepairId(doc.uid)
-    closeOverlay()
-  };
-
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
+    useState(false);
   const [recordToDeleteId, setRecordToDeleteId] = useState(null);
-  const [editIconClicked, setEditIconClicked] = useState(false);
-  const [editRepairId, setEditRepairId] = useState("");
   const [searchData, setSearchData] = useState("");
-  const handleSectionClick = useSectionClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [repairListData, setRepairListData] = useState<RepairData | null>(null);
   const [totalEntries, setTotalEntries] = useState(0);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [addRepair, setAddRepair] = useState<boolean>(false);
-  const [editMode, setEditMode] = useState(false);
-  const [editRepairVisible, setEditRepairVisible] = useState(false);
-  const [editedData, setEditedData] = useState<any>(null);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [clickedRepairId, setClickedRepairId] = useState<string | null>(null);
-  const entriesPerPage = 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -247,21 +216,8 @@ const RepairList = () => {
     doc.uid?.toLowerCase().includes(searchData.toLowerCase())
   );
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
   const toggleAddRepair = () => {
     setAddRepair(!addRepair);
-  };
-
-  const closeAddRepair = () => {
-    setAddRepair(false);
-  };
-
-  const deleteEntry = (doc: any) => {
-    console.log(doc);
-    deleteRepairEntry(doc);
   };
 
   const getRowClassName = (record: any, index: number) => {
@@ -280,29 +236,17 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
-        {editRepairVisible ? (
-  <EditRepair
-    editedData={editedData}
-    onClose={() => {
-      setEditIconClicked(false);
-      setClickedRepairId(null);
-    }}
-    repairId={clickedRepairId || ""}
-  />
-) : (
 
-  <SelectedEntry
-    selectedEntry={selectedRow}
-    overlayOpen={overlayOpen}
-    closeOverlay={() => {
-      setOverlayOpen(false);
-      console.log("button clicked");
-    }}
-    sectionIndex={sectionIndex}
-    handleSectionClick={(index: number) => setSectionIndex(index)}
-    setSectionIndex={setSectionIndex}
-  />
-)}
+        <SelectedEntry
+          selectedEntry={selectedRow}
+          overlayOpen={overlayOpen}
+          closeOverlay={() => {
+            setOverlayOpen(false);
+          }}
+          sectionIndex={sectionIndex}
+          handleSectionClick={(index: number) => setSectionIndex(index)}
+          setSectionIndex={setSectionIndex}
+        />
 
         <div className="repair-search-container">
           <span className="search-icon">
@@ -339,28 +283,26 @@ const RepairList = () => {
         </div>
 
         <div className="repair-box__container">
-        <Table
-  className="ant-table-repair"
-  columns={columns}
-  dataSource={filteredEntries}
-  rowClassName={getRowClassName}
-  onRow={(record: any) => {
-    return {
-      onClick: (event) => {
-        const clickedElement = event.target as HTMLElement;
-        const isExcludedColumn =
-          clickedElement.classList.contains("cls-1")
-        if (!isExcludedColumn) {
-          handleRowClick(record);
-        }
-      },
-    };
-  }}
-/>
+          <Table
+            className="ant-table-repair"
+            columns={columns}
+            dataSource={filteredEntries}
+            rowClassName={getRowClassName}
+            onRow={(record: any) => {
+              return {
+                onClick: (event) => {
+                  const clickedElement = event.target as HTMLElement;
+                  const isExcludedColumn =
+                    clickedElement.classList.contains("cls-1");
+                  if (!isExcludedColumn) {
+                    handleRowClick(record);
+                  }
+                },
+              };
+            }}
+          />
         </div>
-        {editMode && (
-          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} />
-        )}
+
         <div className="bottom-flex">
           <p className="total-records">
             Showing <span className="record-range"> 1 - 5 </span> of{" "}
