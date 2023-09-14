@@ -14,11 +14,8 @@ import { ReactComponent as DownIcon } from "../../assets/single color icons - SV
 import { fetchRepairData } from "../../services/RepairListService/repairlist.service";
 import { Repair, RepairData } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
-import { deleteRepairEntry } from "../../services/RepairListService/deleterepair.service";
-import AddRepair from "./AddRepair";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
-import DeleteConfirmationOverlay from "./DeleteRepair";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -198,38 +195,6 @@ const RepairList = () => {
 
     fetchData();
   }, []);
-
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-
-const [clickedEntryId, setClickedEntryId] = useState<string | null>(null);
-
-const deleteEntry = (doc: any) => {
-  const repairId = doc.id; 
-  if (repairId) {
-    deleteRepairEntry(repairId);
-    setDeleteConfirmationVisible(true);
-  }
-
-  setClickedEntryId(doc.id); 
-  setDeleteConfirmationVisible(true);
-};
-
-  const handleConfirmDelete = () => {
-    if (clickedEntryId) {
-      
-      deleteRepairEntry(clickedEntryId);
-      setDeleteConfirmationVisible(false);
-      setClickedEntryId(null);
-    }
-  };
-  
-  const handleCancelDelete = () => {
-    setDeleteConfirmationVisible(false);
-   
-    setClickedEntryId(null);
-  };
-  
-
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -431,14 +396,6 @@ const deleteEntry = (doc: any) => {
         </div>
         {editMode && (
           <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}}/>
-        )}
-
-        {deleteMode && (
-        <DeleteConfirmationOverlay
-        isVisible={deleteConfirmationVisible}
-        onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
-      />
         )}
 
         <div className="bottom-flex">
