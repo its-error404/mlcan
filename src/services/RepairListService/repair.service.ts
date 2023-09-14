@@ -1,109 +1,95 @@
 import { notification } from "antd";
-import axiosInstance from "../../interceptor/axiosInstance";
+import axiosInstance, { getHeaders } from "../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
-import { getAuthToken } from "../AuthService/authToken";
 import { RepairData } from "../../models/repairList.model";
 import { deserialize } from "serializr";
 
-
-//Add Repair 
+//Add Repair
 
 export const addRepairRequest = async (values: any) => {
-    try {
-        const access_token = getAuthToken()
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
-        }
+  try {
+    const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values, {
+      headers: getHeaders,
+    });
+    if (response.status === 200) {
+      notification.success({
+        message: "Repair Added Successfully !",
+        description: "Click the repair entry for more information !",
+        className: "custom-notification-placement",
+      });
 
-     const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values, {headers})
-     if (response.status === 200) {
-            notification.success({
-                message: "Repair Added Successfully !",
-                description: "Click the repair entry for more information !",
-                className: "custom-notification-placement",
-              });
-      
-              setTimeout(() => {
-                notification.destroy();
-              }, 3000);
-        console.log("Repir Added", response.data)
-     } else {
-        console.log("Repair Error", response.data)
-     }
-    } catch (error) {
-        console.log(error)
+      setTimeout(() => {
+        notification.destroy();
+      }, 3000);
+      console.log("Repir Added", response.data);
+    } else {
+      console.log("Repair Error", response.data);
     }
-}
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Delete Repair Entry
 
 export const deleteRepairEntry = async (id: string) => {
-    try {
-      const access_token = getAuthToken();
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${access_token}`,
-      };
-  
-      const response = await axiosInstance.delete(
-        `${ApiRoutes.ALL_REPAIRS}/${id}`,
-        { headers }
+  try {
+    const response = await axiosInstance.delete(
+      `${ApiRoutes.ALL_REPAIRS}/${id}`,
+      { headers: getHeaders }
+    );
+
+    if (response.status === 200) {
+      console.log(`Repair Entry with ID ${id} Deleted`);
+
+      return response.data;
+    } else {
+      console.log(
+        `Error Deleting Repair Entry with ID ${id}: ${response.statusText}`
       );
-  
-      if (response.status === 200) {
-        console.log(`Repair Entry with ID ${id} Deleted`);
-  
-        return response.data;
-      } else {
-        console.log(
-          `Error Deleting Repair Entry with ID ${id}: ${response.statusText}`
-        );
-  
-        throw new Error("Failed to delete repair entry.");
-      }
-    } catch (error: any) {
-      console.error(
-        `Error Deleting Repair Entry with ID ${id}: ${error.message}`
-      );
-  
-      throw error;
+
+      throw new Error("Failed to delete repair entry.");
     }
-  };
-  
+  } catch (error: any) {
+    console.error(
+      `Error Deleting Repair Entry with ID ${id}: ${error.message}`
+    );
 
-  // Edit Repair Entry
+    throw error;
+  }
+};
 
-  export const editRepairEntry = async (values: any, id:string) => {
-    try {
-        const access_token = getAuthToken()
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
-        }
+// Edit Repair Entry
 
-        const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`, values, {headers})
-        console.log(response.data)
-    } catch (error) {
-        console.log(error)
-    }
-}
+export const editRepairEntry = async (values: any, id: string) => {
+  try {
+    const response = await axiosInstance.put(
+      `${ApiRoutes.ALL_REPAIRS}/${id}`,
+      values,
+      { headers: getHeaders }
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Fetch Repair Entry
 
 export const fetchRepairData = async () => {
-    try {
-      const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS);
-      const jsonData = response.data.data.docs;
-  
-      const deserializedData = deserialize(RepairData, { docs: jsonData });
-  
-      const totalEntries = deserializedData?.docs?.length
-  
-      return { deserializedData, totalEntries };
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
-    }
-  };
-  
+  try {
+    const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS, {
+      headers: getHeaders,
+    });
+    const jsonData = response.data.data.docs;
+
+    const deserializedData = deserialize(RepairData, { docs: jsonData });
+
+    const totalEntries = deserializedData?.docs?.length;
+
+    return { deserializedData, totalEntries };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
