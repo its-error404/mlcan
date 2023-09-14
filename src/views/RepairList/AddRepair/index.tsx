@@ -11,7 +11,7 @@ import "./AddRepair.scss";
 import { ReactComponent as TickIcon } from '../../../assets/single color icons - SVG/done.svg'
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_variables.scss'
-import { addRepairRequest } from "../../../services/RepairListService/repair.service";
+import { addRepairRequest } from "../../../services/RepairListService/addrepair.service";
 
 const AddRepair = ({ onclose }: { onclose: () => void , }) => {
     const initialRepairFormValues = {
