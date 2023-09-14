@@ -5,16 +5,17 @@ import { getAuthToken } from "../AuthService/authToken";
 import { RepairData } from "../../models/repairList.model";
 import { deserialize } from "serializr";
 
+const access_token = getAuthToken()
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
 
 //Add Repair 
 
 export const addRepairRequest = async (values: any) => {
     try {
-        const access_token = getAuthToken()
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
-        }
+        
 
      const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values, {headers})
      if (response.status === 200) {
@@ -40,11 +41,7 @@ export const addRepairRequest = async (values: any) => {
 
 export const deleteRepairEntry = async (id: string) => {
     try {
-      const access_token = getAuthToken();
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${access_token}`,
-      };
+     
   
       const response = await axiosInstance.delete(
         `${ApiRoutes.ALL_REPAIRS}/${id}`,
@@ -76,11 +73,7 @@ export const deleteRepairEntry = async (id: string) => {
 
   export const editRepairEntry = async (values: any, id:string) => {
     try {
-        const access_token = getAuthToken()
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
-        }
+        
 
         const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`, values, {headers})
         console.log(response.data)
