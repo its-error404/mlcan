@@ -1,5 +1,5 @@
 import { notification } from "antd";
-import axiosInstance, { getHeaders } from "../../interceptor/axiosInstance";
+import axiosInstance from "../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 import { RepairData } from "../../models/repairList.model";
 import { deserialize } from "serializr";
