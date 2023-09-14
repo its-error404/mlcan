@@ -9,7 +9,6 @@ import { deserialize } from "serializr";
 export const addRepairRequest = async (values: any) => {
   try {
     const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values, {
-      headers: getHeaders,
     });
     if (response.status === 200) {
       notification.success({
@@ -36,7 +35,6 @@ export const deleteRepairEntry = async (id: string) => {
   try {
     const response = await axiosInstance.delete(
       `${ApiRoutes.ALL_REPAIRS}/${id}`,
-      { headers: getHeaders }
     );
 
     if (response.status === 200) {
@@ -66,7 +64,6 @@ export const editRepairEntry = async (values: any, id: string) => {
     const response = await axiosInstance.put(
       `${ApiRoutes.ALL_REPAIRS}/${id}`,
       values,
-      { headers: getHeaders }
     );
     console.log(response.data);
   } catch (error) {
@@ -79,7 +76,6 @@ export const editRepairEntry = async (values: any, id: string) => {
 export const fetchRepairData = async () => {
   try {
     const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS, {
-      headers: getHeaders,
     });
     const jsonData = response.data.data.docs;
 
