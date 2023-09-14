@@ -198,8 +198,8 @@ const RepairList = () => {
   };
 
   const handleEditIconClick = (row: any) => {
-    if (row.uid !== null) {
-      setClickedRepairId(row.uid);
+    if (row.id !== null) {
+      setClickedRepairId(row.id);
     }
   };
 
@@ -232,6 +232,9 @@ const RepairList = () => {
   const [editedData, setEditedData] = useState<any>(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [clickedRepairId, setClickedRepairId] = useState<string | null>(null);
+  const [filterMenu, setFilterMenu] = useState<boolean>(false);
+  const [versionMenu, setVersionMenu] = useState<boolean>(false);
+  const [exportMenu, setExportMenu] = useState<boolean>(false);
   const entriesPerPage = 1;
 
   useEffect(() => {
@@ -251,6 +254,18 @@ const RepairList = () => {
   const filteredEntries = repairListData?.docs?.filter((doc) =>
     doc.uid?.toLowerCase().includes(searchData.toLowerCase())
   );
+
+  const toggleExportMenu = () => {
+    setExportMenu(!exportMenu);
+  }
+
+  const toggleFilterMenu = () => {
+    setFilterMenu(!filterMenu);
+  };
+
+  const toggleVersionMenu = () => {
+    setVersionMenu(!versionMenu);
+  }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -294,6 +309,7 @@ const RepairList = () => {
     }}
     repairId={clickedRepairId || ""}
     overlayOpen={overlayOpen}
+    closeOverlay={closeOverlay}
   />
 ) : (
 
@@ -320,18 +336,80 @@ const RepairList = () => {
             placeholder="Search by repair id"
             onChange={(e) => setSearchData(e.target.value)}
           ></input>
-          <Button className="filter-button">
-            <span className="repair-first-icon">
-              <FilterIcon width={20} />
-            </span>
-            Filters
-          </Button>
+           <div className="filters-container" onClick={toggleFilterMenu}>
+                <Button className="filter-button">
+                  <span className="filter-icon">
+                    <FilterIcon width={20} />
+                  </span>
+                  Filters
+                </Button>
+               {filterMenu &&(
+                <div className={`filter-menu repair-list-filters ${filterMenu ? 'visible' : ''}`}>
+                  <div className="filter-header__first-part">
+                    <h4>Filters</h4>
+                    <div className="filter-header__second-part">
+                      <h4>Reset</h4>
+                      <h4>Apply</h4>
+                    </div>
+                  </div>
+
+                  <div className="filter-options-flex">
+
+                  <div className="column-1">
+
+                    <div className="filter-dropdown-date option-status">
+                      <label>Repair area</label>
+                      <select>
+                        <option>Doors</option>
+                        <option>Vents</option>
+                      </select>
+                    </div>
+
+                    <div className="filter-dropdown-date option-activity">
+                      <label>Type</label>
+                      <select>
+                        <option>Insert</option>
+                        <option>Patch</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="column-2 repair-filter-column-2">
+                  <div className="filter-dropdown-date filter-dropdown-activity repair-damage">
+                    <label>Damaged area</label>
+                      <select>
+                      <option>Doors</option>
+                        <option>Vents</option>
+                      </select>
+                    </div>
+                  </div>
+                  </div>
+            
+                  </div>
+                   )}
+                </div>
+                
+          <div className="export-container" onClick={toggleExportMenu}>
           <Button className="filter-button">
             <span className="repair-filter-icon">
               <ExportIcon width={20} />
             </span>
             Export
           </Button>
+          {exportMenu && (
+            <div className={`filter-menu export-menu-box ${exportMenu ? 'visible' : ''}`}>
+              <div>
+                <p>Export as .csv</p>
+              </div>
+              
+              <div>
+                <p>Export as .xlsv</p>
+              </div>
+            </div>
+          )}
+          </div>
+          
+          <div className="versions-container" onClick={toggleVersionMenu}>
           <Button className="version-button">
             <span className="repair-filter-icon">
               <VersionIcon width={20} />
@@ -341,9 +419,17 @@ const RepairList = () => {
               <DownIcon width={10} />
             </span>
           </Button>
+          </div>
+
           <Button className="bulk-upload-button">Bulk Upload</Button>
         </div>
-
+        {versionMenu && (
+            <div className={`filter-menu version-menu-box ${versionMenu ? 'visible' : ''}`}>
+              <p>+ New Version </p>
+              <p>Version 1 - 22 Aug 2020</p>
+              <p>Version 1 - 22 Aug 2020</p>
+            </div>
+          )}
         <div className="repair-box__container">
         <Table
   className="ant-table-repair"
@@ -365,7 +451,11 @@ const RepairList = () => {
 />
         </div>
         {editMode && (
-          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} overlayOpen={overlayOpen}/>
+          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} overlayOpen={overlayOpen} 
+          closeOverlay={() => {
+      setOverlayOpen(false);
+      setSelectedRow(null)
+    }}/>
         )}
         <div className="bottom-flex">
           <p className="total-records">

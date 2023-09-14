@@ -131,10 +131,13 @@
     position: absolute;
     height: 40vh;
     width: 30vw;
-    border: 1px solid $filter-menu-border;
     background-color: $filter-menu-bg;
+    margin-top: 20px;
+    border: 1px solid $light-border;
+    border-radius: 5px;
     display: flex;
     flex-flow: column;
+
 }
 
 .filter-header__first-part {

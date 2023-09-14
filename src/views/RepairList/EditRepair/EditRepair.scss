@@ -13,14 +13,12 @@ option:first {
 }
 
 .merc-plus-form-section {
-  margin-left: 50px;
+  margin-left: 40px;
 }
 
-.Non-maersk-details-section.disabled {
-    opacity: 0.9; 
-    pointer-events: none;
-    
-  }
+.Non-maersk-details-content.disabled {
+  opacity: 0.3;
+}
 
   .Non-maersk-details-section {
 
@@ -34,7 +32,7 @@ option:first {
     top: 25%;
     left: 800px;
     background-color: $bg-white;
-    min-width: 85vw;
+    min-width: 68vw;
     padding-top: 25px;
     border: 1px solid $light-border;
     border-radius: 8px;
@@ -48,14 +46,20 @@ option:first {
     display: none !important;
   }
 
+  .section-3-buttons {
+    margin-bottom: 30px;
+    margin-right: 50px !important;
+  }
+
   .section-2-buttons {
     margin-bottom: 30px;
     margin-right: 50px !important;
   }
 
-  .section-1-button 
+  .section-1-button
   {
     margin-bottom: 30px;
+    margin-right: 50px !important;
   }
 
   .form-header {

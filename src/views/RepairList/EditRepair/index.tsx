@@ -13,6 +13,7 @@ interface EditRepairProps {
   onClose: () => void;
   repairId: string;
   overlayOpen: boolean;
+  closeOverlay: () => void;
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({
@@ -24,6 +25,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
   const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(
     0
   );
+
+  console.log(repairId)
 
   const [formData, setFormData] = useState<any>({});
 
@@ -59,6 +62,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
     validateOnBlur: true,
     onSubmit: async (formData) => {
       try {
+        console.log("Before req",'hi')
         await editRepairEntry(formData, repairId);
         onClose();
       } catch (err) {
@@ -222,22 +226,19 @@ const EditRepair: React.FC<EditRepairProps> = ({
                     <input
                       type="checkbox"
                       name="na_1"
+                      value={formik.values.na_1}
+                      checked={formik.values.na_1}
                       onChange={(e) =>
                         formik.setFieldValue("na_1", e.target.checked)
                       }
                       onBlur={formik.handleBlur}
-                      checked={formik.values.na_1}
                     />
                     &nbsp;&nbsp;N/A
                   </label>
                   <br></br>
                   <br></br>
                   <br></br>
-                  <div
-                    className={`Non-maersk-details-content ${
-                      formik.values.na_1 ? "disabled" : ""
-                    }`}
-                  >
+                  <div className={`Non-maersk-details-content ${formik.values.na_1 ? "disabled" : ""}`}>
                     <div className="horizontal-line">
                       <hr style={{ maxWidth: "62vw" }}></hr>
                     </div>
@@ -510,6 +511,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                   </div>
                 </div>
               )}
+
               {sectionIndex === 2 && (
                 <div className="merc-plus-form-section">
                   <br></br>
@@ -523,12 +525,12 @@ const EditRepair: React.FC<EditRepairProps> = ({
                   >
                     <input
                       type="checkbox"
-                      name="na_1"
+                      name="na_2"
                       onChange={(e) =>
-                        formik.setFieldValue("na_1", e.target.checked)
+                        formik.setFieldValue("na_2", e.target.checked)
                       }
                       onBlur={formik.handleBlur}
-                      checked={formik.values.na_1}
+                      checked={formik.values.na_2}
                     />
                     &nbsp;&nbsp;N/A
                   </label>
@@ -539,9 +541,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
                     <hr></hr>
                   </div>
                   <br></br>
-                  <h4 style={{ marginTop: "10px", fontWeight: "500" }}>
-                    Cost Details
-                  </h4>
+                  <div className={`Non-maersk-details-content ${formik.values.na_2 ? "disabled" : ""}`}>
+                    <h4 style={{ marginTop: "10px", fontWeight: "500" }}> Cost Details </h4>
                   <div className="repair-details__first-col merc-cost-details">
                     <div className="input__repair-id">
                       <label>Max. Mat. Cost</label>
@@ -554,6 +555,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.max_mat_cost}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                     <br></br>
@@ -568,6 +570,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.unit_mat_cost}
                         placeholder="0$"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                   </div>
@@ -583,6 +586,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.unit_hours}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                     <br></br>
@@ -597,6 +601,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.max_pcs}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                   </div>
@@ -612,6 +617,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.unit}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                     <br></br>
@@ -634,6 +640,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.rep_mode}
+                        disabled={formik.values.na_2}
                       >
                         <option value="">Select</option>
                         <option value="Option 1">Option 1</option>
@@ -650,6 +657,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.mode}
+                        disabled={formik.values.na_2}
                       >
                         <option value="">Select</option>
                         <option value="Option 1">Option 1</option>
@@ -669,6 +677,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.rep_code}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                     <br></br>
@@ -683,6 +692,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.comb}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                   </div>
@@ -698,6 +708,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.desc}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                     <br></br>
@@ -712,17 +723,20 @@ const EditRepair: React.FC<EditRepairProps> = ({
                         onBlur={formik.handleBlur}
                         value={formik.values.id}
                         placeholder="Enter"
+                        disabled={formik.values.na_2}
                       />
                     </div>
                   </div>
-                  <div className="button-container ">
+                  
+                  <br></br>
+                  <br></br>
+                </div>
+                <div className="button-container section-3-buttons">
                     <Button type="primary">Discard</Button>
                     <button type="submit" className="final-buttons">
                       Add Repair
                     </button>
                   </div>
-                  <br></br>
-                  <br></br>
                 </div>
               )}
             </form>
