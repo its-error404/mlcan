@@ -287,24 +287,17 @@ const RepairList = () => {
         </div>
 
         <div className="repair-box__container">
-          <Table
-            className="ant-table-repair"
-            columns={columns}
-            dataSource={filteredEntries}
-            rowClassName={getRowClassName}
-            onRow={(record: any) => {
-              return {
-                onClick: (event) => {
-                  const clickedElement = event.target as HTMLElement;
-                  const isExcludedColumn =
-                    clickedElement.classList.contains("cls-1");
-                  if (!isExcludedColumn) {
-                    handleRowClick(record);
-                  }
-                },
-              };
-            }}
-          />
+        <Table
+                    rowClassName={getRowClassName}
+  className="ant-table-repair"
+  columns={columns}
+  dataSource={filteredEntries}
+  onRow={(record: any) => ({
+    onClick: () => {
+      handleRowClick(record);
+    },
+  })}
+/>
         </div>
         {showDeleteConfirmation && (
       <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>

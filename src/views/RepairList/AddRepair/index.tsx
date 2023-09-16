@@ -51,7 +51,7 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
         validationSchema: repairDetailsSchema,
         validateOnBlur: true,
         validateOnMount: true,
-        onSubmit: async (values) => {
+        onSubmit: async (values: any) => {
             try {
                 await addRepairRequest(values)
             } catch (err) {

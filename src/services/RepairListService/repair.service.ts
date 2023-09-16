@@ -6,10 +6,9 @@ import { deserialize } from "serializr";
 
 //Add Repair
 
-export const addRepairRequest = async (values: any) => {
+export const addRepairRequest = async (values: RepairData) => {
   try {
-    const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values, {
-    });
+    const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values);
     if (response.status === 200) {
       notification.success({
         message: "Repair Added Successfully !",
