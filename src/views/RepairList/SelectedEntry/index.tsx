@@ -20,10 +20,11 @@ const SelectedEntry: React.FC<SelectedEntryProps> = ({
   handleSectionClick,
   overlayOpen,
 }) => {
+
   if (!selectedEntry) {
     return null;
   }
-
+  
   return (
     <div className="overlay">
       <div className="overlay-content">

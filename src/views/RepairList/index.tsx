@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./RepairList.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
@@ -134,7 +134,11 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => <EditIcon width={20} />,
+      render: (text: string, record: any) => (
+        <div onClick={() => handleEditClick(record)}>
+          <EditIcon width={20} />
+        </div>
+      ),
       style: {
         marginRight: "-20px",
       },
@@ -190,6 +194,13 @@ const RepairList = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+  const [clickedRepairId, setClickedRepairId] = useState<string | null>(null);
+  const [filterMenu, setFilterMenu] = useState<boolean>(false);
+  const [versionMenu, setVersionMenu] = useState<boolean>(false);
+  const [exportMenu, setExportMenu] = useState<boolean>(false);
+  const [repairAreaData, setRepairAreaData] = useState("");
+  const [damagedAreaData, setDamagedAreaData] = useState("");
+  const [typeData, setTypeData] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -205,16 +216,55 @@ const RepairList = () => {
     fetchData();
   }, []);
 
-  const filteredEntries = repairListData?.docs?.filter((doc) =>
+  let filterMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let handler = (e: any) => {
+      if (!filterMenuRef.current?.contains(e.target)) {
+        setFilterMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
+
+  let filteredEntries = repairListData?.docs?.filter((doc) =>
     doc.uid?.toLowerCase().includes(searchData.toLowerCase())
   );
+
+  const applyFiltersAndSort = (data: Repair) => {
+    applyFilters(repairListData?.docs || []);
+  };
+
+  const toggleExportMenu = () => {
+    setExportMenu(!exportMenu);
+  };
 
   const toggleAddRepair = () => {
     setAddRepair(!addRepair);
   };
 
+  const closeAddRepair = () => {
+    setAddRepair(false);
+  };
+
   const getRowClassName = (record: any, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
+  };
+
+  const applyFilters = (data: any) => {
+    return data.filter((doc: any) => {
+      const repairAreaMatches =
+        repairAreaData === "" || doc.repArea === repairAreaData;
+      const typeMatches = typeData === "" || doc.type === typeData;
+      const damagedAreaMatches =
+        damagedAreaData === "" || doc.dmgArea === damagedAreaData;
+
+      return repairAreaMatches && typeMatches && damagedAreaMatches;
+    });
   };
 
   return (
@@ -229,6 +279,13 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
+        {editRepairVisible ? (
+          <EditRepair editedData={editedData} onClose={() => {setEditIconClicked(false); setClickedRepairId(null);}} repairId={clickedRepairId || ""} overlayOpen={overlayOpen}
+            closeOverlay={closeOverlay}
+          />
+        ) : (
+          <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
+        )}
 
         {addRepair && (
           <div className="overlay">
@@ -262,30 +319,103 @@ const RepairList = () => {
             placeholder="Search by repair id"
             onChange={(e) => setSearchData(e.target.value)}
           ></input>
-          <Button className="filter-button">
-            <span className="repair-first-icon">
-              <FilterIcon width={20} />
-            </span>
-            Filters
-          </Button>
-          <Button className="filter-button">
-            <span className="repair-filter-icon">
-              <ExportIcon width={20} />
-            </span>
-            Export
-          </Button>
-          <Button className="version-button">
-            <span className="repair-filter-icon">
-              <VersionIcon width={20} />
-            </span>
-            Version 1 - 22 Aug 2020
-            <span className="down-icon">
-              <DownIcon width={10} />
-            </span>
-          </Button>
+
+          <div ref={filterMenuRef}>
+            <div className="filters-container" onClick={() => {setFilterMenu(!filterMenu);}}>
+              <Button className="filter-button">
+                <span className="filter-icon">
+                  <FilterIcon width={20} />
+                </span>
+                Filters
+              </Button>
+              <div className={`filter-menu repair-list-filters ${filterMenu ? "visible" : "invisible"}`} onClick={(e: any) => e.stopPropagation()}>
+                <div className="filter-header__first-part">
+                  <h4>Filters</h4>
+                  <div className="filter-header__second-part">
+                    <h4>Reset</h4>
+                    <h4 onClick={(e) => {
+                        console.log(e.target.addEventListener('click', (e:any) => e.stopPropagation()))
+                        console.log("apply");
+                        const filteredData = applyFilters(repairListData?.docs || []);
+                        filteredEntries = filteredData;
+                      }}
+                    >Apply
+                    </h4>
+                  </div>
+                </div>
+                <div className="filter-options-flex">
+                  <div className="column-1">
+                    <div className="filter-dropdown-date option-status">
+                      <label>Repair area</label>
+                      <select
+                        value={repairAreaData}
+                        onChange={(e) => setRepairAreaData(e.target.value)}>
+                        <option>Doors</option>
+                        <option>Vents</option>
+                      </select>
+                    </div>
+                    <div className="filter-dropdown-date option-activity">
+                      <label>Type</label>
+                      <select
+                        value={typeData}
+                        onChange={(e) => setTypeData(e.target.value)}>
+                        <option>INSERT</option>
+                        <option>PATCH</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="column-2 repair-filter-column-2">
+                    <div className="filter-dropdown-date filter-dropdown-activity repair-damage">
+                      <label>Damaged area</label>
+                      <select
+                        value={damagedAreaData}
+                        onChange={(e) => setDamagedAreaData(e.target.value)}>
+                        <option>Doors</option>
+                        <option>Vents</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <div className="export-container" onClick={toggleExportMenu}>
+              <Button className="filter-button">
+                <span className="repair-filter-icon">
+                  <ExportIcon width={20} />
+                </span>
+                Export
+              </Button>
+              <div className={`export-menu-box ${exportMenu ? "visible" : "invisible"}`}>
+                <div>
+                  <p>Export as .csv</p>
+                </div>
+                <div>
+                  <p>Export as .xlsv</p>
+                </div>
+              </div>
+            </div>
+          <div className="versions-container" onClick={() => setVersionMenu(!versionMenu)}>
+            <Button className="version-button">
+              <span className="repair-filter-icon">
+                <VersionIcon width={20} />
+              </span>
+              Version 1 - 22 Aug 2020
+              <span className="down-icon">
+                <DownIcon width={10} />
+              </span>
+            </Button>
+          </div>
+
           <Button className="bulk-upload-button">Bulk Upload</Button>
         </div>
-
+    
+          <div className={`version-menu-box ${versionMenu ? "visible" : "invisible"}`}>
+            <p>+ New Version </p>
+            <p>Version 1 - 22 Aug 2020</p>
+            <p>Version 1 - 22 Aug 2020</p>
+          </div>
+       
         <div className="repair-box__container">
         <Table
                     rowClassName={getRowClassName}
@@ -299,6 +429,10 @@ const RepairList = () => {
   })}
 />
         </div>
+        {editMode && (
+          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}}/>
+        )}
+
         {showDeleteConfirmation && (
       <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
         <div className="delete-confirmation-box">
@@ -317,7 +451,7 @@ const RepairList = () => {
 
         <div className="bottom-flex">
           <p className="total-records">
-            Showing <span className="record-range"> 1 - 5 </span> of{" "}
+            Showing <span className="record-range"> 1 - {totalEntries} </span> of{" "}
             <span className="total-range"> {totalEntries} </span>
           </p>
         </div>

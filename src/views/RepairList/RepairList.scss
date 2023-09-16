@@ -1,342 +1,470 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
-.repair-list{
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 10px;
-    width: 100vw;
-    background-color: $body-bg;
-    position: relative;
+.repair-list {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  width: 100vw;
+  background-color: $body-bg;
+  position: relative;
 
-    &.overlay-active {
-        background-color: $background-hover;
-    }
+  &.overlay-active {
+    background-color: $background-hover;
+  }
 }
 
+.export-menu-box {
+  position: absolute;
+  margin-top: 10px;
+  padding: 5px;
+  height: 12.5vh !important;
+  width: 7.5vw !important;
+  line-height: 50px;
+  font-weight: 500;
+  border-radius: 15px !important;
+  border: 1px solid $light-border;
+  background-color: $filter-menu-bg;
+}
+
+.export-menu-box.invisible {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.3s ease;
+}
+
+.export-menu-box.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.3s ease;
+  visibility: visible;
+}
+
+.export-menu-box div {
+  padding-left: 15px;
+  border: 1px solid transparent;
+}
+
+.export-menu-box div:hover {
+  background-color: $row-color-first;
+  border: 1px solid transparent;
+  border-radius: 15px;
+}
+
+.versions-container button,
+.filters-container button,
+.export-container button {
+  border: 1px solid $light-border;
+  border-radius: 10px !important;
+  color: $grey-text;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+
+.repair-list-filters {
+  position: absolute;
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: 20px;
+  border: 1px solid $light-border;
+  border-radius: 15px !important;
+  height: 28vh;
+  z-index: 4;
+  width: 30vw;
+  background-color: $filter-menu-bg;
+}
+
+.repair-list-filters.visible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.3s ease;
+}
+
+.repair-list-filters.invisible {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.3s ease;
+}
+
+.version-menu-box {
+  position: absolute;
+  top: 18%;
+  left: 47%;
+  margin-top: 10px;
+  background-color: $filter-menu-bg;
+  padding: 20px;
+  height: 17vh !important;
+  width: 12vw !important;
+  line-height: 50px;
+  font-weight: 500;
+  border-radius: 15px !important;
+  border: 1px solid $light-border;
+  z-index: 4;
+}
+
+.version-menu-box.visible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.3s ease;
+}
+
+.version-menu-box.invisible {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.3s ease;
+}
+
+.version-menu-box p:first-child {
+  margin-top: -20px;
+  color: $turkish-green;
+  font-weight: 500;
+}
+
+.repair-filter-column-2 {
+  margin-top: -17px;
+}
+
+.repair-list-filters select {
+  height: 30px !important;
+  border: 1px solid $light-border !important;
+  color: $gray;
+}
 
 .addrepair-overlay-container {
-    position: absolute;
-    top: 10%;
-    left: 25%;
-    max-height: 80vh;
-    overflow-y: auto;
-    z-index: 100;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 100;
 }
 
-.header-text{
-    padding-top: 60px;
+.header-text {
+  padding-top: 60px;
 }
 
-.header{
-    display: flex;
-    flex-flow: column
+.header {
+  display: flex;
+  flex-flow: column;
 }
 
-.repairs-section{
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 30px;
+.repairs-section {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 30px;
 }
 
-.repairs-header{
-    margin-left: 40px;
-    margin-top: 50px;
-    display: flex;
-    gap: 20px;
+.repairs-header {
+  margin-left: 40px;
+  margin-top: 50px;
+  display: flex;
+  gap: 20px;
 }
 
-.repair-search-container{
-    position: relative;
-    display: flex;
-    gap: 30px;
-    margin-left: 40px;
-    margin-top: 10px;
+.repair-search-container {
+  position: relative;
+  display: flex;
+  gap: 30px;
+  margin-left: 40px;
+  margin-top: 10px;
 }
 
 .repair-search-container input {
-    width: 15vw;
-    height: 4vh;
-    border: 1px solid $search-input;
-    border-radius: 8px;
+  width: 15vw;
+  height: 4vh;
+  border: 1px solid $search-input;
+  border-radius: 8px;
 }
 
 .bulk-upload-button {
-    position: absolute;
-    padding-left: 18px;
-    padding-right: 18px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    background-color: $turkish-green;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    color: $dropdown-button;
-    font-weight: 600;
-    right: 0;
-    font-size: 14px;
+  position: absolute;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  background-color: $turkish-green !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
+  color: $white-bg !important;
+  font-weight: 500;
+  right: 0;
+  font-size: 14px;
 }
 
-.repair-box__container{
-
-    border: 1px solid $search-input;
-    border-radius: 10px;
-    margin-left: 35px;
-    width: 80vw;
-    height: 70vh;
+.repair-box__container {
+  border: 1px solid $search-input;
+  border-radius: 10px;
+  margin-left: 35px;
+  width: 80vw;
+  height: 70vh;
 }
 
 .repair-box__table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .repair-box__table th {
-    border: 1px solid $search-input;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-right: 8px;
-    text-align: center;
-    width: 200px;
+  border: 1px solid $search-input;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+  text-align: center;
+  width: 200px;
 }
 
 .repair-box__table td {
-    text-align: start;
-    width: 80px;
+  text-align: start;
+  width: 80px;
 }
-.repair-box__rows{
-    background-color: $row-color-first;
+.repair-box__rows {
+  background-color: $row-color-first;
 }
 .repair-box__rows th {
-    font-weight: 700;
-    font-size: 14px;
-    background-color: $repair-list-rows;
+  font-weight: 700;
+  font-size: 14px;
+  background-color: $repair-list-rows;
 }
 
 .repair-box__rows span {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 .repair-id__even td {
-    padding-left: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: $bg-white;
-    border: 1px solid transparent;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: $bg-white;
+  border: 1px solid transparent;
 }
 
-.repair-id__odd td{
-    padding-left: 30px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: $row-color-first;
-    border: 1px solid transparent;
+.repair-id__odd td {
+  padding-left: 30px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: $row-color-first;
+  border: 1px solid transparent;
 }
 
-.repair-id__odd td:nth-last-child(-n+2) {
- width: 40px !important;
+.repair-id__odd td:nth-last-child(-n + 2) {
+  width: 40px !important;
 }
 
-.repair-id__even td:nth-last-child(-n+2) {
- width: 40px !important;
+.repair-id__even td:nth-last-child(-n + 2) {
+  width: 40px !important;
 }
 
 .down-icon {
-    position: absolute;
-    right: 6px;
+  position: absolute;
+  right: 6px;
 }
 
 .repair-filter-icon {
-    position: absolute;
-    left: 10px;
-    bottom: 4px;
-    filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%) contrast(82%);
+  position: absolute;
+  left: 10px;
+  bottom: 4px;
+  filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%)
+    hue-rotate(119deg) brightness(95%) contrast(82%);
 }
 
 .repair-first-icon {
-    position: absolute;
-    left: 10px;
-    bottom: 8px;
-    filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%) contrast(82%);
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%)
+    hue-rotate(119deg) brightness(95%) contrast(82%);
 }
 
 .version-button {
-    position: relative;
-    padding-left: 40px;
-    padding-right: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: 1px solid $row-color-first;
-    border-radius: 7px;
-    background-color: $bg-white;
-    color: $gray;
-    font-weight: 500;
-    cursor: pointer;
+  position: relative;
+  padding-left: 40px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid $row-color-first;
+  border-radius: 7px;
+  background-color: $bg-white;
+  color: $gray;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-.total-records{
-    margin-left: 30px;
+.total-records {
+  margin-left: 30px;
 }
 
 .record-range {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .total-range {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .column-active {
-    padding-bottom: 10px !important;
-    border-bottom: 2px solid $turkish-green;
+  padding-bottom: 10px !important;
+  border-bottom: 2px solid $turkish-green;
 }
 
 .overlay-header {
-    margin-top: 30px;
-    background-color: $row-color-first;
-    padding-top: 25px;
-    padding-left: 30px;
-    display: flex;
-    gap: 60px;
-    font-size: 18px;
-    font-weight: 550;
-    line-height: 2rem;
+  margin-top: 30px;
+  background-color: $row-color-first;
+  padding-top: 25px;
+  padding-left: 30px;
+  display: flex;
+  gap: 60px;
+  font-size: 18px;
+  font-weight: 550;
+  line-height: 2rem;
 }
 
 .overlay-header span {
-    margin-top: -10px;
+  margin-top: -10px;
 }
 
 .overlay-header span:first-child {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .entry-header {
-    padding-top: 20px;
-    padding-left: 40px;
-    display: flex;
-    justify-content: space-between;
+  padding-top: 20px;
+  padding-left: 40px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .close-icon {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 .entry-header h3 {
-    font-size: 24px;
-    font-weight: 750;
+  font-size: 24px;
+  font-weight: 750;
 }
 
 .repair-details {
-    background-color:  $row-color-first;
-    margin-top: 40px;
-    margin-left: 52px;
-    max-width: 500px;
-    min-height: 150px ;
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 30px;
-    border: 1px solid $row-color-first;
-    border-radius: 6px;
+  background-color: $row-color-first;
+  margin-top: 40px;
+  margin-left: 52px;
+  max-width: 500px;
+  min-height: 150px;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 30px;
+  border: 1px solid $row-color-first;
+  border-radius: 6px;
 }
 
 .repair-details__headings {
-    padding: 20px;
-    line-height: 30px;
+  padding: 20px;
+  line-height: 30px;
 }
 
 .repair-details__data {
-    padding: 20px;
-    line-height: 30px;
-    font-weight: 700;
+  padding: 20px;
+  line-height: 30px;
+  font-weight: 700;
 }
 
 .non-maersk__customer-details-header {
-    padding: 25px;
-    line-height: 32px;
+  padding: 25px;
+  line-height: 32px;
 }
 
 .non-maersk__customer-details-content {
-    padding-top: 25px;
-    margin-right: -25px;
-    line-height: 32px;
-    font-weight: 700;
+  padding-top: 25px;
+  margin-right: -25px;
+  line-height: 32px;
+  font-weight: 700;
 }
 
 .non-maersk__cost-details {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 100px;
-    width: 550px;
-    background-color: $row-color-first;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    margin-top: 30px;
-    margin-left: 35px;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 100px;
+  width: 550px;
+  background-color: $row-color-first;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-left: 35px;
 }
 
 .non-maersk__customer-details {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 92px;
-    width: 550px;
-    background-color: $row-color-first;
-    border: 1px solid $row-color-first;
-    border-radius: 8px;
-    margin-top: 30px;
-    font-weight: 500;
-    margin-bottom: 30px;
-    margin-left: 35px;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 92px;
+  width: 550px;
+  background-color: $row-color-first;
+  border: 1px solid $row-color-first;
+  border-radius: 8px;
+  margin-top: 30px;
+  font-weight: 500;
+  margin-bottom: 30px;
+  margin-left: 35px;
 }
 
 .non-maersk__cost-details-header {
-    padding: 25px;
-    line-height: 32px;
+  padding: 25px;
+  line-height: 32px;
 }
 
 .non-maersk__cost-details-content {
-    padding: 25px;
-    line-height: 32px;
-    font-weight: 600;
+  padding: 25px;
+  line-height: 32px;
+  font-weight: 600;
 }
 
-.non-maersk-details h5, .merc-plus__details h5 {
-    color: gray;
-    font-size: 17px;
-    font-weight: 400;
-    margin-left: 35px;
-    margin-top: 20px;
-    margin-bottom: -10px;
+.non-maersk-details h5,
+.merc-plus__details h5 {
+  color: gray;
+  font-size: 17px;
+  font-weight: 400;
+  margin-left: 35px;
+  margin-top: 20px;
+  margin-bottom: -10px;
 }
 
-.non-maersk-details, .merc-plus__details h5:first-child {
-    margin-top: 40px;
+.non-maersk-details,
+.merc-plus__details h5:first-child {
+  margin-top: 40px;
 }
 
-.merc-plus__cost-details, .merc-plus-customer__details {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 100px;
-    width: 550px;
-    margin-left: 30px;
-    background-color: $row-color-first;
-    border: 1px solid $row-color-first;
-    border-radius: 8px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+.merc-plus__cost-details,
+.merc-plus-customer__details {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 100px;
+  width: 550px;
+  margin-left: 30px;
+  background-color: $row-color-first;
+  border: 1px solid $row-color-first;
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
-.merc-plus__cost-details-header, .merc-plus-customer__details-header {
-    padding: 25px;
-    line-height: 32px;
+.merc-plus__cost-details-header,
+.merc-plus-customer__details-header {
+  padding: 25px;
+  line-height: 32px;
 }
 
-.merc-plus__cost-details-content, .merc-plus-customer__details-content {
-    padding: 25px;
-    line-height: 32px;
-    font-weight: 600;
+.merc-plus__cost-details-content,
+.merc-plus-customer__details-content {
+  padding: 25px;
+  line-height: 32px;
+  font-weight: 600;
 }
 
-.repair-list__entries > tr > td:nth-last-child(2), .repair-list__entries > tr > td:nth-last-child(1){
-    width: 10px;
+.repair-list__entries > tr > td:nth-last-child(2),
+.repair-list__entries > tr > td:nth-last-child(1) {
+  width: 10px;
 }
 
 .delete-confirmation-buttons {
