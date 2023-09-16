@@ -15,7 +15,7 @@ import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
 
-const AddRepair = ({ formik, onclose }: { onclose: () => void , }) => {
+const AddRepair = ({ onclose }: { onclose: () => void }) => {
     const initialRepairFormValues = {
         ...new RepairDetails(),
         ...new MercPlusDetails(),
@@ -54,10 +54,11 @@ const AddRepair = ({ formik, onclose }: { onclose: () => void , }) => {
         onSubmit: async (values) => {
             try {
                 await addRepairRequest(values)
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
             }
-    }});
+        }
+    });
 
     return (
         <div className="repair-details-form">
@@ -82,9 +83,9 @@ const AddRepair = ({ formik, onclose }: { onclose: () => void , }) => {
                 </div>
                 <div>
                     <form onSubmit={formik.handleSubmit}>
-                        {sectionIndex === 0 && (<SectionZero/>)}
-                        {sectionIndex === 1 && (<SectionOne/>)}
-                        {sectionIndex === 2 && (<SectionTwo/>)}
+                        {sectionIndex === 0 && <SectionZero formik={formik} onclose={onclose} />}
+                        {sectionIndex === 1 && <SectionOne formik={formik} onclose={onclose} />}
+                        {sectionIndex === 2 && <SectionTwo formik={formik} onclose={onclose} />}
                     </form>
                 </div>
             </div>

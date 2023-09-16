@@ -33,14 +33,13 @@ export const addRepairRequest = async (values: any) => {
 
 export const deleteRepairEntry = async (id: string) => {
   try {
-    const response = await axiosInstance.delete(
-      `${ApiRoutes.ALL_REPAIRS}/${id}`,
-    );
+    const response = await axiosInstance.delete(`${ApiRoutes.ALL_REPAIRS}/${id}`);
 
     if (response.status === 200) {
       console.log(`Repair Entry with ID ${id} Deleted`);
-
+      notification.open({message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted'});
       return response.data;
+    
     } else {
       console.log(
         `Error Deleting Repair Entry with ID ${id}: ${response.statusText}`

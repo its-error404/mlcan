@@ -339,4 +339,50 @@
     width: 10px;
 }
 
+.delete-confirmation-buttons {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 40px;
+    margin-top: 50px;
+    justify-content: center;
 
+}
+
+.delete-confirmation-buttons button {
+    min-height: 35px;
+    min-width: 250px;
+}
+
+.delete-confirmation-buttons button:first-child {
+    background-color: $cancel-button;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.delete-confirmation-buttons button:last-child {
+    background-color: $delete-button;
+    color: $white-bg;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.delete-confirmation-box span {
+    color: $blue-text;
+}
+
+.delete-text-icon {
+    margin-top: 30px;
+    margin-left: 100px;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+    align-items: center;
+    max-width: 450px;
+}
+
+.delete-text-icon p {
+    color: $text-gray;
+    font-weight: 500;
+}

@@ -4,7 +4,7 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Modal, Table } from "antd";
+import { Button, Table } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
@@ -19,6 +19,8 @@ import {
   deleteRepairEntry,
   fetchRepairData,
 } from "../../services/RepairListService/repair.service";
+import AddRepair from "./AddRepair";
+import OverlayBox from "../../shared/components/overlayBox";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -143,53 +145,42 @@ const RepairList = () => {
         <>
           <DeleteIcon
             width={20}
-            onClick={() => showDeleteConfirmationModal(record.id)}
+            onClick={() => handleDeleteClick(record.id)}
           />
-          <Modal
-            title="Confirm Deletion"
-            visible={
-              deleteConfirmationVisible && record.id === recordToDeleteId
-            }
-            onOk={handleDeleteConfirm}
-            onCancel={handleDeleteCancel}
-          >
-            <p>Are you sure you want to delete this entry?</p>
-          </Modal>
         </>
       ),
     },
   ]);
-
-  const showDeleteConfirmationModal = (id: any) => {
-    setRecordToDeleteId(id);
-    setDeleteConfirmationVisible(true);
-  };
-
-  const handleDeleteCancel = () => {
-    setRecordToDeleteId(null);
-    setDeleteConfirmationVisible(false);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (recordToDeleteId) {
-      try {
-        await deleteRepairEntry(recordToDeleteId);
-        setRecordToDeleteId(null);
-        setDeleteConfirmationVisible(false);
-      } catch (error) {
-        console.error("Error deleting entry:", error);
-      }
-    }
-  };
 
   const handleRowClick = (row: any) => {
     setSelectedRow(row);
     setOverlayOpen(true);
   };
 
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
-    useState(false);
-  const [recordToDeleteId, setRecordToDeleteId] = useState(null);
+  const handleDeleteClick = (entryId: string) => {
+    setEntryToDelete(entryId);
+    setShowDeleteConfirmation(true);
+  };
+  
+  const handleDeleteConfirmed = async () => {
+    if (entryToDelete) {
+      try {
+        await deleteRepairEntry(entryToDelete);
+        fetchRepairData(); 
+        setEntryToDelete(null);
+        setShowDeleteConfirmation(false);
+      } catch (error) {
+        console.error("Error deleting entry:", error);
+       
+      }
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setEntryToDelete(null);
+    setShowDeleteConfirmation(false);
+  };
+
   const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [repairListData, setRepairListData] = useState<RepairData | null>(null);
@@ -197,6 +188,8 @@ const RepairList = () => {
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addRepair, setAddRepair] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -237,6 +230,17 @@ const RepairList = () => {
           />
         </div>
 
+        {addRepair && (
+          <div className="overlay">
+            <div className="overlay-content">
+              <AddRepair
+                onclose={() => {
+                  setAddRepair(false); 
+                }}
+              />
+            </div>
+          </div>
+        )}
         <SelectedEntry
           selectedEntry={selectedRow}
           overlayOpen={overlayOpen}
@@ -302,6 +306,21 @@ const RepairList = () => {
             }}
           />
         </div>
+        {showDeleteConfirmation && (
+      <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
+        <div className="delete-confirmation-box">
+          <div className="delete-text-icon">
+          <DeleteIcon width={45}/>
+          <h2>Are you sure you to delete the <br/>&emsp; &emsp;Repair - <span>RID005</span>&nbsp;?</h2>
+          <p>You can't undo this action</p>
+          </div>
+          <div className="delete-confirmation-buttons">
+            <button onClick={handleDeleteCancel}>Cancel</button>
+            <button onClick={handleDeleteConfirmed}>Delete</button>
+          </div>
+        </div>
+      </OverlayBox>
+    )}
 
         <div className="bottom-flex">
           <p className="total-records">
