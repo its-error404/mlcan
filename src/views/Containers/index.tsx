@@ -12,16 +12,13 @@ import {
 } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link, Navigate } from "react-router-dom";
-import { useRowClick } from "../../shared/hooks/useRowClick";
+import { Link, } from "react-router-dom";
 import '../../styles/_@antOverrides.scss'
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const { containersData } = useFetchData(searchData);
-  const { selectedEntry, handleRowClick } = useRowClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
-  const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addContainer, setAddContainer] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState("All")
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
@@ -29,7 +26,6 @@ const AllContainers = () => {
   const toggleFilterMenu = () => {
     setFilterMenu(!filterMenu);
   };
-
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) {
@@ -46,14 +42,6 @@ const AllContainers = () => {
 
   const closeAddContainer = () => {
     setAddContainer(false);
-  };
-
-  const openOverlay = () => {
-    setOverlayOpen(true);
-  };
-
-  const closeOverlay = () => {
-    setOverlayOpen(false);
   };
 
   const filterContainers = (section: string) => {
@@ -82,12 +70,15 @@ const AllContainers = () => {
       })
   }
 }
-
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
     setSectionIndex(newIndex);
     setActiveSection(section);
   }
+
+  const getRowClassName = (record: any, index: number) => {
+    return index % 2 === 0 ? "even-row" : "odd-row";
+  };
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
   const columns = [
@@ -95,7 +86,7 @@ const AllContainers = () => {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
-      render: (text:string, record:any) => <Link to={`/containers/${record.uid}`}>{text}</Link>,
+      render: (text:string, record:any) => <Link to={`/containers/${record.id}`}>{text}</Link>,
     },
     {
       title: "Yard",
@@ -272,7 +263,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns} dataSource={filterContainers(activeSection) ?? []}rowKey="uid" className="container-table"/>
+            <Table columns={columns} dataSource={filterContainers(activeSection) ?? []}rowKey="uid" className="container-table" rowClassName={getRowClassName}/>
             </div>
           </div>
         </div>

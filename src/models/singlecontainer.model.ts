@@ -1,6 +1,6 @@
-import { serializable, alias, primitive, object } from 'serializr';
+import { alias, object, primitive, serializable } from "serializr";
 
-export class CustomerData {
+class Customer {
     @serializable(alias('name', primitive()))
     name?: string;
 
@@ -56,61 +56,15 @@ export class CustomerData {
     id?: string;
 }
 
-export class SingleContainerData {
+class leftSidePhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
 
-    @serializable(alias('uid', primitive()))
-    uid?: string;
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
 
-    @serializable(alias('yard', primitive()))
-    yard?: string;
-
-    @serializable(alias('customer', object(CustomerData)))
-    customer?: CustomerData;
-
-    @serializable(alias('owner', primitive()))
-    owner?: string;
-
-    @serializable(alias('submitter', primitive()))
-    submitter?: string;
-
-    @serializable(alias('length', primitive()))
-    length?: number;
-
-    @serializable(alias('height', primitive()))
-    height?: number;
-
-    @serializable(alias('type', primitive()))
-    type?: string;
-
-    @serializable(alias('year', primitive()))
-    year?: number;
-
-    @serializable(alias('location', primitive()))
-    location?: string;
-
-    @serializable(alias('door_photo', primitive()))
-    doorPhoto?: string;
-
-    @serializable(alias('left_side_photo', primitive()))
-    leftSidePhoto?: any;
-
-    @serializable(alias('right_side_photo', primitive()))
-    rightSidePhoto?: any;
-
-    @serializable(alias('front_side_photo', primitive()))
-    frontSidePhoto?: any;
-
-    @serializable(alias('interior_photo', primitive()))
-    interiorPhoto?: any;
-
-    @serializable(alias('under_side_photo', primitive()))
-    underSidePhoto?: any;
-
-    @serializable(alias('roof_photo', primitive()))
-    roofPhoto?: any;
-
-    @serializable(alias('plate_photo', primitive()))
-    platePhoto?: any;
+    @serializable(alias('size', primitive()))
+    size?: number;
 
     @serializable(alias('deleted', primitive()))
     deleted?: boolean;
@@ -124,3 +78,215 @@ export class SingleContainerData {
     @serializable(alias('id', primitive()))
     id?: string;
 }
+
+class rightSidePhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
+
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
+
+    @serializable(alias('size', primitive()))
+    size?: number;
+
+    @serializable(alias('deleted', primitive()))
+    deleted?: boolean;
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string;
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string;
+
+    @serializable(alias('id', primitive()))
+    id?: string;
+}
+
+class frontSidePhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
+
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
+
+    @serializable(alias('size', primitive()))
+    size?: number;
+
+    @serializable(alias('deleted', primitive()))
+    deleted?: boolean;
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string;
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string;
+
+    @serializable(alias('id', primitive()))
+    id?: string;
+}
+
+class interiorPhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
+
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
+
+    @serializable(alias('size', primitive()))
+    size?: number;
+
+    @serializable(alias('deleted', primitive()))
+    deleted?: boolean;
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string;
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string;
+
+    @serializable(alias('id', primitive()))
+    id?: string;
+}
+
+class underSidePhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
+
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
+
+    @serializable(alias('size', primitive()))
+    size?: number;
+
+    @serializable(alias('deleted', primitive()))
+    deleted?: boolean;
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string;
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string;
+
+    @serializable(alias('id', primitive()))
+    id?: string;
+}
+
+class roofPhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
+
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
+
+    @serializable(alias('size', primitive()))
+    size?: number;
+
+    @serializable(alias('deleted', primitive()))
+    deleted?: boolean;
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string;
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string;
+
+    @serializable(alias('id', primitive()))
+    id?: string;
+}
+
+class platePhoto {
+    @serializable(alias('key', primitive()))
+    key?: string;
+
+    @serializable(alias('media_type', primitive()))
+    mediaType?: string;
+
+    @serializable(alias('size', primitive()))
+    size?: number;
+
+    @serializable(alias('deleted', primitive()))
+    deleted?: boolean;
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string;
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string;
+
+    @serializable(alias('id', primitive()))
+    id?: string;
+}
+
+export class ContainerData {
+    @serializable(alias('container', primitive()))
+    container?: Container[];
+}
+
+class Container {
+    @serializable(alias('uid', primitive()))
+    uid?: string
+
+    @serializable(alias('yard', primitive()))
+    yard?: string
+
+    @serializable(alias('customer', object(Customer)))
+    customer? : Customer
+
+    @serializable(alias('owner', primitive()))
+    owner?: string
+
+    @serializable(alias('submitter', primitive()))
+    submitter?: string
+
+    @serializable(alias('height', primitive()))
+    length?: string
+
+    @serializable(alias('type', primitive()))
+    type?: string
+
+    @serializable(alias('height', primitive()))
+    height?: string
+
+    @serializable(alias('year', primitive()))
+    year?: string
+
+    @serializable(alias('location', primitive()))
+    location?: string
+
+    @serializable(alias('door_photo', primitive()))
+    doorPhoto?: string
+
+    @serializable(alias('left_side_photo', object(leftSidePhoto)))
+    leftSidePhoto?: leftSidePhoto
+
+    @serializable(alias('right_side_photo', object(rightSidePhoto)))
+    rightSidePhoto?: rightSidePhoto
+
+    @serializable(alias('front_side_photo', object(frontSidePhoto)))
+    frontSidePhoto?: frontSidePhoto
+
+    @serializable(alias('interior_photo', object(interiorPhoto)))
+    interiorPhoto?: interiorPhoto
+
+    @serializable(alias('under_side_photo', object(underSidePhoto)))
+    underSidePhoto?: underSidePhoto
+
+    @serializable(alias('roof_photo', object(roofPhoto)))
+    roofPhoto?: roofPhoto
+
+    @serializable(alias('plate_photo', object(platePhoto)))
+    platePhoto?: platePhoto
+
+    @serializable(alias('deleted', primitive()))
+    deleted? : boolean
+
+    @serializable(alias('created_at', primitive()))
+    createdAt?: string
+
+    @serializable(alias('updated_at', primitive()))
+    updatedAt?: string
+
+    @serializable(alias('id', primitive()))
+    id?: string
+}
+

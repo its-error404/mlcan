@@ -1,8 +1,11 @@
+@import '../../../styles/variables';
+
 .view-container {
     width: 100vw;
     display: flex;
     flex-flow: row nowrap;
     gap: 30px;
+    height: 100vh;
 }
 
 .page-content {
@@ -14,4 +17,91 @@
 .go-to-containers {
     display: flex;
     gap: 10px;
+}
+
+.go-to-containers a {
+    text-decoration: none;
+    color: $draft-text;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.container-header {
+    margin-top: 10px;
+    justify-content: space-between;
+    display: flex;
+    gap: 20px;
+}
+
+.container-header__first {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.container-header__second{
+    margin-top: 10px;
+    margin-right: 120px;
+    align-items: center;
+    display: flex;
+    gap: 20px;
+}
+
+.container-headlines {
+    display: flex;
+    margin-top: 30px;
+    gap: 130px;
+    font-size: 12px;
+    color: $text-gray;
+    font-weight: 500;
+}
+
+.container-data {
+    display: flex;
+    margin-top: 10px;
+    gap: 130px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.container-data p:nth-child(2) {
+    margin-left: -50px;
+}
+
+.container-data p:nth-child(3) {
+    margin-left: -55px;
+}
+
+.container-data p:nth-child(4) {
+    margin-left: 30px;
+}
+
+.container-data p:nth-child(5) {
+    margin-left: 75px;
+}
+
+.container-data p:nth-child(6) {
+    margin-left: -20px;
+}
+
+.container-data p:nth-child(7) {
+    margin-left: -20px;
+}
+
+.container-data p:nth-child(8) {
+    margin-left: 35px;
+}
+
+.container-options {
+    margin-top: 30px;
+    margin-left: 0;
+}
+
+.section-content {
+    position: relative;
+    height: 70.6vh;
+    margin-left: -30px;
+    background-color: $row-color-first;
+    // background-color: red;
 }
