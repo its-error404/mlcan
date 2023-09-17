@@ -6,18 +6,18 @@ import {
     RepairDetails,
 } from "../../../models/repairForm.model";
 import repairDetailsSchema from "./FormValidation";
-import { Button, Checkbox } from "antd";
 import "./AddRepair.scss";
 import { ReactComponent as TickIcon } from '../../../assets/single color icons - SVG/done.svg'
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_variables.scss'
-import { addRepairRequest } from "../../../services/RepairListService/repair.service";
+import { addRepairRequest } from "../../../services/RepairListService/repairlist.service";
 import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
 import {ReactComponent as CompletedIcon } from '../../../assets/Multicolor icons - SVG/completed.svg'
 
-const AddRepair = ({ onclose }: { onclose: () => void , }) => {
+
+const AddRepair = ({ onclose }: { onclose: () => void }) => {
     const initialRepairFormValues = {
         ...new RepairDetails(),
         ...new MercPlusDetails(),
@@ -25,9 +25,6 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
     };
 
     const [sectionIndex, setSectionIndex] = useState<number | null>(0)
-    const [checkboxCheck, setCheckboxCheck] = useState<boolean>(false)
-
-    
     const sections = [
         {
             name: "Repair Details",
@@ -47,14 +44,7 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
         setSectionIndex(index === sectionIndex ? null : index)
     }
 
-    const moveToNextSection = () => {
-        if (sectionIndex != null && sectionIndex < sections.length - 1) {
-            setSectionIndex(sectionIndex + 1)
-        }
-    }
-
     const isSectionFilled = (index: number) => {
-
         return true;
     };
 
@@ -73,13 +63,16 @@ const AddRepair = ({ onclose }: { onclose: () => void , }) => {
     const formik = useFormik({
         initialValues: initialRepairFormValues,
         validationSchema: repairDetailsSchema,
-        onSubmit: async (values) => {
+        validateOnBlur: true,
+        validateOnMount: true,
+        onSubmit: async (values: any) => {
             try {
                 await addRepairRequest(values)
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
             }
-    }});
+        }
+    });
 
     return (
         <div className="repair-details-form">
