@@ -70,6 +70,16 @@
     pointer-events: none;
 }
 
+.section-two.disabled > .Non-maersk-details-section {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.merc-plus-form-section.disabled > .section-three {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
 .filter-menu select {
     border: 1px solid $gray;
     border-radius: 5px;
@@ -217,7 +227,7 @@ hr {
     padding-left: 50px;
     padding-bottom: 20px;
     font-weight: 500;
-    width: 1300px;
+    max-width: 1400px;
     height: 60px;
     margin-top: 20px;
     margin-left: -20px;
@@ -226,6 +236,10 @@ hr {
     width: 918px;
 }
 
-.section-header-text {
-    margin-left: 10px;
+.first-column {
+    margin-left: 20px;
+}
+
+.merc-plus-form-section {
+    // margin-left: 40px !important ;
 }
