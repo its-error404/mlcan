@@ -5,9 +5,11 @@ import { FormikProps, FormikValues } from 'formik';
 interface SectionOneProps {
   onclose: () => void;
   formik: FormikProps<FormikValues>
+  onNextSection: () => void;
+  sectionCompleted: boolean
 }
 
-const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
+const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
@@ -17,8 +19,8 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
 
   return (
     <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
+      <input type='checkbox' className='na1-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
       <div className={`Non-maersk-details-section ${isCheckboxChecked ? 'disabled' : ''}`}>
-        <input type='checkbox' className='na1-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
         <div className="horizontal-line">
           <hr></hr>
         </div>
@@ -263,13 +265,13 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
           <br></br>
         </div>
         <br></br>
-        <div className="button-container">
+      </div>
+      <div className="button-container">
           <Button type="primary" onClick={onclose}>
             Discard
           </Button>
-          <Button type="primary">Proceed</Button>
+          <Button type="primary" onClick={onNextSection}>Proceed</Button>
         </div>
-      </div>
     </div>
   );
 };

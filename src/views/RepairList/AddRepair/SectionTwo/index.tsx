@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormikValues } from 'formik'; 
 
 interface SectionTwoProps {
@@ -9,17 +9,26 @@ interface SectionTwoProps {
     handleChange: (e: React.ChangeEvent<any>) => void;
     handleBlur: (e: React.FocusEvent<any>) => void;
   };
+  sectionCompleted: boolean
 }
 
-const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
+const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionCompleted }) => {
+
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsCheckboxChecked(!isCheckboxChecked);
+  };
+  
   return (
-    <div className="merc-plus-form-section">
+    <div className={`merc-plus-form-section ${isCheckboxChecked ? 'disabled' : ''}`}>
       <br></br>
-      <input type='checkbox' className='na1-box'/> N/A
+      <input type='checkbox' className='na2-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
       <div>
         <hr></hr>
       </div>
       <br></br>
+      <div className='section-three'>
       <h4>Cost Details</h4>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
@@ -191,6 +200,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
             placeholder="Enter"
           />
         </div>
+      </div>
       </div>
       <div className="button-container">
         <Button type="primary" onClick={onclose}>

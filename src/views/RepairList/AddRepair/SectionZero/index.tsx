@@ -6,9 +6,11 @@ import '../AddRepair.scss'
 interface SectionZeroProps {
   onclose: () => void;
   formik: FormikPropsSectionZero
+  onNextSection: () => void;
+  sectionCompleted: boolean
 }
 
-const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik }) => {
+const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {
   return (
     <div className='first-column'>
       <div className="repair-details__first-col">
@@ -99,7 +101,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik }) => {
         <Button type="primary" onClick={onclose}>
           Discard
         </Button>
-        <Button type="primary">Proceed</Button>
+        <Button type="primary" onClick={onNextSection}>Proceed</Button>
       </div>
     </div>
   );
