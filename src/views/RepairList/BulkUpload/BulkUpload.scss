@@ -1,0 +1,75 @@
+@import  '../../../styles/variables';
+
+.header {
+    margin-left: 30px;
+    display: flex;
+    gap: 10px;
+}
+.header p:first-child{
+    margin-top: -50px !important;
+}
+.header p:last-child {
+    margin-top: 20px;
+    color: $text-gray;
+    font-size: 14px;
+}
+
+.bulk-upload-box {
+    min-width: 600px !important;
+}
+
+.upload-box {
+    border: 1px solid $light-border;
+    border-radius: 10px;
+    border-style: dashed;
+    max-width: 560px;
+    min-height: 200px;
+    margin-left: 30px;
+    margin-top: 10px;
+    background-color: $upload-bg;
+}
+
+.close-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bulk-close {
+    margin-right: 30px;
+}
+
+.upload-box {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+.upload-box h3 {
+    color: $text-gray;
+    font-weight: 400;
+}
+
+.upload-icon {
+    margin-top: -20px;
+}
+
+.file-upload {
+    color: $turkish-green;
+    font-size: 12px;
+}
+
+.upload-buttons {
+    margin-top: 20px;
+}
+
+.upload-buttons button {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.upload-buttons button:last-child {
+    background-color: $turkish-green;
+}

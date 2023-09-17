@@ -5,11 +5,13 @@ interface OverlayBoxProps {
   onClose: () => void;
   children: React.ReactNode;
   maxWidth?: string; 
+  minHeight? : string
 }
 
-const OverlayBox: React.FC<OverlayBoxProps> = ({ onClose, children, maxWidth }) => {
+const OverlayBox: React.FC<OverlayBoxProps> = ({ onClose, children, maxWidth, minHeight }) => {
   const overlayStyle = {
     maxWidth: maxWidth || "400px", 
+    minHeight: minHeight || "400px"
   };
 
   return (
