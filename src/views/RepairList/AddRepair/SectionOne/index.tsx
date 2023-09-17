@@ -1,5 +1,5 @@
 import { Button, Checkbox } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 
 interface SectionOneProps {
@@ -8,19 +8,23 @@ interface SectionOneProps {
 }
 
 const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
+
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsCheckboxChecked(!isCheckboxChecked);
+  };
+
   return (
-    <div>
-      <div className="Non-maersk-details-section">
-        <br></br>
-        <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
-        <br></br>
-        <br></br>
+    <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
+      <div className={`Non-maersk-details-section ${isCheckboxChecked ? 'disabled' : ''}`}>
+        <input type='checkbox' className='na1-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
         <div className="horizontal-line">
           <hr></hr>
         </div>
         <br></br>
         <h4>Cost Details</h4>
-        <div className="repair-details__first-col">
+        <div className="repair-details__first-col cost-details">
           <div className="input__repair-id">
             <label>Hours</label>
             <br></br>
@@ -49,11 +53,8 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
             />
           </div>
         </div>
-        <br></br>
-        <br></br>
         <hr></hr>
-        <br></br>
-        <h4>Customer Related Details</h4>
+        <h4 className='customer-rel'>Customer Related Details</h4>
         <div className="repair-details__first-col repaid-id__input">
           <div className="input__repair-id">
             <label>Container Section</label>
@@ -110,7 +111,7 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
           </div>
         </div>
         <br></br>
-        <div className="repair-details__second-col">
+        <div className="repair-details__second-col container-repair-area">
           <div className="input__repair-id">
             <label>COMP</label>
             <br></br>
@@ -144,7 +145,7 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
           </div>
         </div>
         <br></br>
-        <div className="repair-details__second-col">
+        <div className="repair-details__second-col container-repair-area">
           <div className="input__repair-id">
             <label>REP</label>
             <br></br>
@@ -178,7 +179,7 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
           </div>
         </div>
         <br></br>
-        <div className="repair-details__second-col">
+        <div className="repair-details__second-col container-repair-area">
           <div className="input__repair-id">
             <label>Event</label>
             <br></br>
@@ -195,19 +196,20 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
             </select>
           </div>
           <br></br>
-          <div className="repair-details__first-col location-div">
-            <div className="input__repair-id">
-              <label>Location</label>
-              <input
-                type="text"
-                name="location"
-                id="location"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.location}
-                placeholder="Enter"
-              />
-            </div>
+          <div className="repair-details__first-col">
+          <div className="input__repair-id location-div">
+            <label>Location</label>
+            <br></br>
+            <input
+              type="text"
+              name="location"
+              id="location"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.location}
+              placeholder="Enter"
+            />
+          </div>
             <br></br>
           </div>
 

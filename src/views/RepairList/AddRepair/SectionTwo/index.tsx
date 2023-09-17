@@ -1,4 +1,4 @@
-import { Button, Checkbox } from 'antd';
+import { Button } from 'antd';
 import React from 'react';
 import { FormikValues } from 'formik'; 
 
@@ -15,9 +15,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
   return (
     <div className="merc-plus-form-section">
       <br></br>
-      <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
-      <br></br>
-      <br></br>
+      <input type='checkbox' className='na1-box'/> N/A
       <div>
         <hr></hr>
       </div>
@@ -104,7 +102,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
       <h4>Customer Related Details</h4>
       <br></br>
       <div className="repair-details__second-col">
-        <div className="input__repair-id">
+        <div className="input__repair-id container-repair-area">
           <label>Repair Mode</label>
           <br></br>
           <select
@@ -120,7 +118,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
           </select>
         </div>
         <br></br>
-        <div className="input__repair-Area">
+        <div className="input__repair-Area container-repair-area">
           <label>Mode Number</label>
           <br></br>
           <select

@@ -1,6 +1,7 @@
 import { Button } from 'antd';
 import React from 'react';
 import { FormikPropsSectionZero } from '../../../../shared/types/formikTypes';
+import '../AddRepair.scss'
 
 interface SectionZeroProps {
   onclose: () => void;
@@ -9,7 +10,7 @@ interface SectionZeroProps {
 
 const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik }) => {
   return (
-    <div>
+    <div className='first-column'>
       <div className="repair-details__first-col">
         <div className="field-1 input__repair-id repaid-id__input">
           <label>Repair ID</label>
@@ -29,7 +30,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik }) => {
 
         <br></br>
 
-        <div className="container-damaged-area field-2">
+        <div className="container-damaged-area field-2 container-repair-area">
           <label>Container Repair Area</label>
           <br></br>
           <select
@@ -54,8 +55,8 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik }) => {
         <br></br>
       </div>
       <br></br>
-      <div className="repair-details__second-col">
-        <div className="input__repair-id field-3">
+      <div className="repair-details__second-col ">
+        <div className="input__repair-id field-3 container-repair-area">
           <label>Container Damaged Area</label>
           <br></br>
           <select
@@ -74,7 +75,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik }) => {
           ) : null}
         </div>
         <br></br>
-        <div className="input__repair-Area">
+        <div className="input__repair-Area container-repair-area">
           <label>Repair Type</label>
           <br></br>
           <select

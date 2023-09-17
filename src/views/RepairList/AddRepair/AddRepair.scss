@@ -6,7 +6,7 @@ option:first {
 
 input, select {
     border-radius: 10px !important;
-    border-color: $light-border;
+    border-color: $lightest-border;
     
 }
 
@@ -35,6 +35,9 @@ input, select {
 
 .form-header {
     display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 30px !important;
     justify-content: space-between;
 }
 
@@ -64,6 +67,15 @@ input, select {
 .select-fields label {
     padding-top: 20px;
     margin-top: 30px !important;
+}
+
+.merc-plus-form-section{
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.location-div {
+    margin-top: -20px !important;
 }
 
 .filter-menu select {
@@ -183,6 +195,67 @@ input, select {
     margin-left: 10px;
 }
 
+.section-title {
+    align-items: center;
+}
+
+.Non-maersk-details-section {
+    margin-top: 30px;
+}
+
+.na1-box {
+    margin-bottom: 30px !important;
+}
+
 hr {
-    border-top: 1px solid $light-gray;
+    border-top: 1px solid $lightest-border;
+}
+
+.customer-rel {
+    margin-top: 20px;
+}
+
+.cost-details {
+    margin-bottom: 30px;
+}
+
+.section-two {
+    margin-left: 30px;
+}
+
+.section-buttons {
+    display: flex;
+    gap: 30px;
+    background-color: $row-color-first;
+    padding-top: 15px;
+    padding-left: 50px;
+    padding-bottom: 20px;
+    font-weight: 500;
+    width: 1300px;
+    height: 60px;
+    margin-top: 20px;
+    margin-right: -20px;
+    margin-left: -20px;
+}
+
+.form-active {
+    padding-bottom: 45px;
+    border-bottom: 2px solid $turkish-green;
+}
+
+.container-repair-area select {
+    border: 1px solid $lightest-border !important;
+    border-radius: 5px !important;
+    height: 40px;
+    width: 570px;
+    margin-top: 10px;
+    background-color: $white-bg;
+}
+
+.first-column {
+    margin-left: 20px;
+}
+
+.merc-plus-form-section {
+    // margin-left: 40px !important ;
 }
