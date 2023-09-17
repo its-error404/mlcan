@@ -1,4 +1,4 @@
-import { Button, Checkbox } from 'antd';
+import { Button } from 'antd';
 import React, { useState } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 

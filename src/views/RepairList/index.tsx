@@ -195,13 +195,13 @@ const RepairList = () => {
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<RepairData[]>([]);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
         setRepairListData(deserializedData);
-        console.log(deserializedData)
         // setFilteredEntries(deserializedData.docs || []);
         setTotalEntries(deserializedData.docs?.length || 0);
       } catch (error) {
@@ -273,6 +273,12 @@ const RepairList = () => {
   const handleBulkUploadClose = () => {
     setShowBulkUpload(false);
   };
+
+  const handleEditClick = (record: any) => {
+    setSelectedEntryForEdit(record);
+    setOverlayOpen(true)
+  };
+
 
   return (
     <div className="repair-list">

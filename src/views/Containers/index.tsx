@@ -70,6 +70,7 @@ const AllContainers = () => {
       })
   }
 }
+
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
     setSectionIndex(newIndex);
