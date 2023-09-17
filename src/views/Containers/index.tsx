@@ -6,16 +6,20 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button} from "antd";
-import { useFetchData } from "../../services/ContainersService/containers.service";
+import { Button, Table } from "antd";
+import {
+  useFetchData,
+} from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { useSectionClick } from "../../shared/hooks/useSectionClick";
+import { Link, Navigate } from "react-router-dom";
+import { useRowClick } from "../../shared/hooks/useRowClick";
+import '../../styles/_@antOverrides.scss'
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const { containersData } = useFetchData(searchData);
+  const { selectedEntry, handleRowClick } = useRowClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addContainer, setAddContainer] = useState<boolean>(false);
@@ -53,6 +57,7 @@ const AllContainers = () => {
   };
 
   const filterContainers = (section: string) => {
+    
     if (!containersData?.data?.docs) {
       return [];
     }
@@ -85,7 +90,68 @@ const AllContainers = () => {
   }
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-
+  const columns = [
+    {
+      title: "Container Number",
+      dataIndex: "uid",
+      key: "uid",
+      render: (text:string, record:any) => <Link to={`/containers/${record.uid}`}>{text}</Link>,
+    },
+    {
+      title: "Yard",
+      dataIndex: "yard",
+      key: "yard",
+    },
+    {
+      title: "Customer",
+      dataIndex: "customer_name",
+      key: "customer_name",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: "Owner Name",
+      dataIndex: "owner",
+      key: "owner",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: sectionIndex === 1 ? "Activity" : "Current Activity",
+      dataIndex: "activity_type",
+      key: "activity_type",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: sectionIndex === 1 ? "Activity ID" : "Current Activity",
+      dataIndex: "activity_uid",
+      key: "activity_uid",
+      render: (text:string, record:any) => text || "N/A",
+    },
+    {
+      title: "Activity Date",
+      dataIndex: "activity_date",
+      key: "activity_date",
+      render: (text:string, record:any) => formatDate(text) || "N/A",
+    },
+    {
+      title: "Status",
+      dataIndex: "activity_status",
+      key: "activity_status",
+      render: (text:string, record:any) => (
+        <div
+          className={`activity-text ${
+            text === "billing"
+              ? "billing-style"
+              : text === "draft"
+              ? "draft-style"
+              : "default-style"
+          }`}
+        >
+          {text || "N/A"}
+        </div>
+      ),
+    },
+  ];
+  
   return (
     <div className="main">
       <div className="all-containers">
@@ -206,66 +272,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-              
-              <table className="container-box__table">
-                <thead>
-                  <tr className="container-box__rows">
-                    <th align="left">Container Number</th>
-                    <th>Yard </th>
-                    <th>Customer <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Owner Name <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>{sectionIndex === 1 ? 'Activity' : 'Current Activity'}</th>
-                    {sectionIndex === 1 && <th>Activity ID <span>
-                      <ToggleIcon width={8} />
-                    </span></th>}
-                    <th>Activity Date <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Status <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                  </tr>
-                </thead>
-                <tbody className="container-list__entries">
-                  {(filterContainers(sections[sectionIndex]) ?? []).map((doc, index) => (
-                  <tr
-                      className={
-                        index % 2 === 0
-                          ? "container-id__even"
-                          : "container-id__odd"
-                      }
-                      key={doc.uid}
-                    > {console.log(doc)}
-                      <td className="container-id">
-                      <Link to={`/containers/${doc.uid}`}>{doc.uid}</Link>
-                      </td>
-                      <td>{doc.yard}</td>
-                      <td>{doc.customerName || 'N/A'}</td>
-                      <td>{doc.owner || 'N/A'}</td>
-                      <td>{doc.activityType || 'N/A'}</td>
-                      {sectionIndex === 1 && <td>{doc.activityUid || 'N/A'}</td>}
-                      <td>{formatDate(doc.activityDate) || 'N/A'}</td>
-                      <td>
-                        <div
-                          className={`activity-text ${doc.activityStatus === "billing"
-                              ? "billing-style"
-                              : doc.activityStatus === "draft"
-                                ? "draft-style"
-                                : "default-style"
-                            }`}
-                        >
-                          {doc.activityStatus || 'N/A'}
-                        </div>
-                      </td>
-                      
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <Table columns={columns} dataSource={filterContainers(activeSection) ?? []}rowKey="uid" className="container-table"/>
             </div>
           </div>
         </div>

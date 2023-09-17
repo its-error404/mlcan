@@ -4,7 +4,7 @@ import Sidebar from '../../shared/components/Sidebar/index'
 import { ReactComponent as PlusIcon } from '../../assets/single color icons - SVG/add.svg'
 import { ReactComponent as SearchIcon } from '../../assets/single color icons - SVG/search.svg'
 import { ReactComponent as FilterIcon } from '../../assets/single color icons - SVG/filter.svg'
-import { Button, Pagination } from 'antd'
+import { Button, DatePicker, Pagination, Table } from 'antd'
 import { ReactComponent as ToggleIcon } from '../../assets/Multicolor icons - SVG/sort default.svg'
 import { ReactComponent as EditIcon } from '../../assets/single color icons - SVG/edit.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/single color icons - SVG/delete.svg'
@@ -19,6 +19,119 @@ import '../../styles/_@antOverrides.scss'
 
 const RepairList = () => {
 
+  const [columns, setColumns] = useState([
+    {
+      title: (
+        <>
+          Repair ID <ToggleIcon width={8} style={{ marginLeft: 8 }} /> 
+        </>
+      ),
+      dataIndex: 'uid',
+      key: 'uid'
+    },
+    {
+      title: (
+        <>
+          Repair Area <ToggleIcon width={8} style={{ marginLeft: 8 }} /> 
+        </>
+      ),
+      dataIndex: 'repArea',
+      key: 'repArea',
+      style: {
+        marginLeft: '8px',
+        Width: 200,
+      }
+    },
+    {
+      title: (
+        <>
+          Damaged Area <ToggleIcon width={8} style={{ marginLeft: 8 }} /> 
+        </>
+      ),
+      dataIndex: 'dmgArea',
+      key: 'dmgArea'
+    },
+    {
+      title: (
+        <>
+          Type <ToggleIcon width={8} style={{ marginLeft: 8 }} /> 
+        </>
+      ),
+      dataIndex: 'type',
+      key: 'type',
+      style: {
+        marginLeft: '20px'
+      }
+    },
+    {
+      title: (
+        <>
+          Non-Maersk<br />&emsp;&emsp;&emsp;hours
+        </>
+      ),
+      dataIndex: 'nonMaerskHours',
+      key: 'nonMaerskHours',
+      style: {
+        marginLeft: '20px !important'
+      }
+    },
+    {
+      title: (
+        <>
+          Non-Maersk<br />&emsp;&emsp;mat.cost
+        </>
+      ),
+      dataIndex: 'nonMaerskMatCost',
+      key: 'nonMaerskMatCost',
+      render: (text:string,record:any) => {
+        const nonMaerskMatCost = record.nonMaerskMatCost;
+        return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
+          ? nonMaerskMatCost
+          : '-';
+      },
+    },
+    {
+      title: (
+        <>
+          &emsp;&emsp;Merc+<br />hours/unit
+        </>
+      ),
+      dataIndex:'unitHours',
+      key:'unitHours',
+      render: (text:string,record:any) => {
+        const unitHours = record.merc?.maxMatCost
+        return unitHours || '-'
+      }
+    },
+    {
+      title: (
+        <>
+         &emsp;&emsp;&emsp;Merc+ <br/> mat.cost/unit
+        </>
+      ),
+      data: 'MaxMatCost',
+      key: 'MaxMatCost',
+      render: (text:string,record:any) => {
+        const maxMatCost = record.merc?.maxMatCost
+        return maxMatCost || '-'
+      }
+    }, 
+    {
+      className: 'edit-icon',
+      render: (text:string) => (
+        <EditIcon width={20}/>
+      ),
+      style: {
+        marginRight: '-20px'
+      }
+    },
+    {
+      className: 'delete-icon',
+      render: (text:string) => (
+        <DeleteIcon width={20}/>
+      ),
+    },
+  ])
   const [searchData, setSearchData] = useState('')
   const { selectedEntry, handleRowClick } = useRowClick();
   const handleSectionClick = useSectionClick()
@@ -50,9 +163,16 @@ const RepairList = () => {
     setCurrentPage(page);
   };
 
+    const getRowClassName = (record:any, index:number) => {
+      return index % 2 === 0 ? 'even-row' : 'odd-row';
+    };
+  
   return (
+
     <div className='repair-list'>
+      
       <Sidebar />
+      
       <div className='repairs-section'>
         <div className='repairs-header'>
           <h1>Repair List</h1>
@@ -75,54 +195,11 @@ const RepairList = () => {
         </div>
 
         <div className='repair-box__container'>
-          <table className='repair-box__table'>
-          <thead>
-            <tr className='repair-box__rows'>
-              <th>Repair ID<span><ToggleIcon width={8} /></span></th>
-              <th>Repair Area<span><ToggleIcon width={8} /></span></th>
-              <th>Damaged Area<span><ToggleIcon width={8} /></span></th>
-              <th>Type<span><ToggleIcon width={8} /></span></th>
-              <th>Non-Maersk<br />&emsp;&emsp;&emsp;hours</th>
-              <th>Non-Maersk <br />&emsp;&emsp;mat.cost</th>
-              <th>&emsp;&emsp;Merc+ <br />hours/unit</th>
-              <th>&emsp;&emsp;&emsp;Merc+ <br />mat.cost/unit</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          {filteredEntries?.map((doc, index) => (
-              <tr
-              className={index % 2 === 0 ? 'repair-id__even' : 'repair-id__odd'}
-              key={doc.uid}
-              onClick={ handleRowClick(doc as RepairData)}
-            >
-                <td>{doc.uid}</td>
-                <td>{doc.repArea}</td>
-                <td>{doc.dmgArea}</td>
-                <td>{doc.type}</td>
-                <td>{doc.nmaersk}</td>
-                <td>{doc.merc?.maxMatCost}</td>
-                <td>{doc.merc?.unitHours}</td>
-                <td>{doc.merc?.unitMatCost}</td>
-                <td><EditIcon width={20} /></td>
-                <td><DeleteIcon width={20} /></td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
+
+          <Table className='ant-table-repair' columns={columns} dataSource={filteredEntries} rowClassName = {getRowClassName}/>
+          
         </div>
         <div className='bottom-flex'>
-        <div className="horizontal-pagination-container">
-        <div className="horizontal-pagination">
-          <Pagination
-            current={currentPage}
-            total={totalEntries}
-            pageSize={entriesPerPage}
-            onChange={handlePageChange}
-          />
-        </div>
-      </div>
       <p className='total-records'>Showing <span className='record-range'> 1 - 5 </span> of <span className='total-range'> {totalEntries} </span></p>
       </div>
        
