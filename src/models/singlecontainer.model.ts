@@ -1,6 +1,6 @@
 import { alias, object, primitive, serializable } from "serializr";
 
-class Customer {
+export class Customer {
     @serializable(alias('name', primitive()))
     name?: string;
 
@@ -56,7 +56,7 @@ class Customer {
     id?: string;
 }
 
-class leftSidePhoto {
+export class leftSidePhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -79,7 +79,7 @@ class leftSidePhoto {
     id?: string;
 }
 
-class rightSidePhoto {
+export class rightSidePhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -102,7 +102,7 @@ class rightSidePhoto {
     id?: string;
 }
 
-class frontSidePhoto {
+export class frontSidePhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -125,7 +125,7 @@ class frontSidePhoto {
     id?: string;
 }
 
-class interiorPhoto {
+export class interiorPhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -148,7 +148,7 @@ class interiorPhoto {
     id?: string;
 }
 
-class underSidePhoto {
+export class underSidePhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -171,7 +171,7 @@ class underSidePhoto {
     id?: string;
 }
 
-class roofPhoto {
+export class roofPhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -194,7 +194,7 @@ class roofPhoto {
     id?: string;
 }
 
-class platePhoto {
+export class platePhoto {
     @serializable(alias('key', primitive()))
     key?: string;
 
@@ -222,7 +222,7 @@ export class ContainerData {
     container?: Container[];
 }
 
-class Container {
+export class Container {
     @serializable(alias('uid', primitive()))
     uid?: string
 
@@ -290,3 +290,15 @@ class Container {
     id?: string
 }
 
+export const InitialContainerFormValues = {
+    ...Container,
+    ...ContainerData,
+    ...Customer,
+    ...frontSidePhoto,
+    ...interiorPhoto,
+    ...leftSidePhoto,
+    ...platePhoto,
+    ...rightSidePhoto,
+    ...roofPhoto,
+    ...underSidePhoto
+}

@@ -40,10 +40,6 @@ const AllContainers = () => {
     setAddContainer(!addContainer);
   };
 
-  const closeAddContainer = () => {
-    setAddContainer(false);
-  };
-
   const filterContainers = (section: string) => {
     
     if (!containersData?.data?.docs) {
@@ -160,12 +156,10 @@ const AllContainers = () => {
             />
           </div>
 
-          {addContainer && <div className="overlay-backdrop"></div>}
-
           {addContainer && (
-            <div className="addrepair-overlay-container">
-              <div className="addrepair-overlay-content">
-                <AddContainer onclose={closeAddContainer} />
+          <div className="overlay">
+            <div className="overlay-content">
+                <AddContainer onclose={()=> { setAddContainer(false)}} />
               </div>
             </div>
           )}

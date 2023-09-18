@@ -1,0 +1,26 @@
+@import "../../../styles/variables";
+
+.form-wrapper {
+    border: 1px solid $user-contact-border;
+    border-radius: 7px;
+    margin-top: 30px;
+    min-height: 400px;
+    max-height: 800px;
+    overflow-y: auto;
+    max-width: 1500px !important;
+    padding: 20px;
+    background-color: white;
+}
+
+.container-input {
+    margin-top: 10px;
+    width: 30vw;
+    height: 4vh;
+}
+
+.container-select {
+    border: 1px solid $lightest-border;
+    margin-top: 10px;
+    width: 30vw !important;
+    height: 4vh !important;
+}
