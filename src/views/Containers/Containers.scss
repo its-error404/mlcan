@@ -39,6 +39,20 @@
     margin-top: 10px;
 }
 
+.container-table tr {
+    height: 55px;
+    background-color: $table-row-bg;
+}
+
+.container-table tr > th {
+    font-weight: 500;
+}
+
+.container-table td > a {
+    text-decoration: none;
+    color: $text-black;
+}
+
 .container-details {
     line-height: 20px;
     margin-top: -30px;

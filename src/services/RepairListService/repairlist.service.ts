@@ -59,10 +59,7 @@ export const deleteRepairEntry = async (id: string) => {
 
 export const editRepairEntry = async (values: any, id: string) => {
   try {
-    const response = await axiosInstance.put(
-      `${ApiRoutes.ALL_REPAIRS}/${id}`,
-      values,
-    );
+    const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`,values);
     console.log(response.data);
   } catch (error) {
     console.log(error);
@@ -73,14 +70,10 @@ export const editRepairEntry = async (values: any, id: string) => {
 
 export const fetchRepairData = async () => {
   try {
-    const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS, {
-    });
+    const response = await axiosInstance.get(ApiRoutes.ALL_REPAIRS);
     const jsonData = response.data.data.docs;
-
     const deserializedData = deserialize(RepairData, { docs: jsonData });
-
     const totalEntries = deserializedData?.docs?.length;
-
     return { deserializedData, totalEntries };
   } catch (error) {
     console.error("Error fetching data:", error);

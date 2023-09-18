@@ -176,7 +176,7 @@ const RepairList = () => {
     setShowDeleteConfirmation(false);
   };
 
-  const [ , setSearchData] = useState("");
+  const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [repairListData, setRepairListData] = useState<RepairData | null>(null);
   const [totalEntries, setTotalEntries] = useState(0);
@@ -212,6 +212,14 @@ const RepairList = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const filteredData = applyFilters(repairListData?.docs || []).filter((record: any) =>
+      record.uid.toLowerCase().includes(searchData.toLowerCase())
+    );
+    setFilteredEntries(filteredData);
+    setDisplayedEntries(filteredData.length);
+  }, [searchData, repairListData]);
+
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -226,6 +234,7 @@ const RepairList = () => {
       document.removeEventListener("mousedown", handler);
     };
   }, []);
+
 
   const toggleExportMenu = () => {
     setExportMenu(!exportMenu);
@@ -278,12 +287,7 @@ const RepairList = () => {
   const handleEditClick = (record: any) => {
     setSelectedEntryForEdit(record);
     setOverlayOpen(true)
-
-    console.log("Selected Entry For Edit:", record.id);
-    console.log(selectedEntryForEdit)
-
   };
-
 
   return (
     <div className="repair-list">

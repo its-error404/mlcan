@@ -293,6 +293,10 @@ label {
   border-collapse: collapse;
 }
 
+.ant-table-thead {
+  background-color: $table-row-bg;
+}
+
 .repair-box__table th {
   border: 1px solid $search-input;
   padding-top: 8px;
@@ -306,9 +310,8 @@ label {
   text-align: start;
   width: 80px;
 }
-.repair-box__rows {
-  background-color: $row-color-first;
-}
+
+
 .repair-box__rows th {
   font-weight: 700;
   font-size: 14px;

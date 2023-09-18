@@ -14,8 +14,6 @@ import { addRepairRequest } from "../../../services/RepairListService/repairlist
 import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
-import {ReactComponent as CompletedIcon } from '../../../assets/Multicolor icons - SVG/completed.svg'
-
 
 const AddRepair = ({ onclose }: { onclose: () => void }) => {
     const initialRepairFormValues = {
@@ -44,17 +42,13 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
         setSectionIndex(index === sectionIndex ? null : index)
     }
 
-    const isSectionFilled = (index: number) => {
-        return true;
-    };
-
     const handleNextSection = () => {
         if (sectionIndex !== null && sectionIndex < sections.length - 1) {
           sectionCompleted[sectionIndex] = true;
           setSectionIndex(sectionIndex + 1);
         }
       };
-      const [sectionCompleted, setSectionCompleted] = useState<boolean[]>([
+      const [sectionCompleted, ] = useState<boolean[]>([
         false,
         false,
         false, 

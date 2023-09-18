@@ -63,6 +63,16 @@
   border-collapse: collapse;
 }
 
+.ant-upload-text {
+  color: $draft-text;
+  font-weight: 500;
+}
+
+.ant-upload-dragger {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
 /* Button */
 
 .ant-btn {

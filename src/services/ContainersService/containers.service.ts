@@ -6,34 +6,52 @@ import { ContainerData } from '../../models/singlecontainer.model';
 import { notification } from 'antd';
 import { deserialize } from 'serializr';
 
-export const useFetchData = (searchQuery='') => {
-    const [containersData, setContainersData] = useState<AllContainersData | null>(null)
-    const [totalEntries, setTotalEntries] = useState<number | null>(null);
+// export const useFetchData = (searchQuery='') => {
+//     const [containersData, setContainersData] = useState<AllContainersData | null>(null)
+//     const [totalEntries, setTotalEntries] = useState<number | null>(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axiosInstance.get(ApiRoutes.CONTAINERS)
-            const allData = response.data.data.docs
+//     useEffect(() => {
+//         const fetchData = async () => {
+//           try {
+//             const response = await axiosInstance.get(ApiRoutes.CONTAINERS)
+//             const allData = response.data.data.docs
 
-            const converToLowerCase = searchQuery.toLowerCase() 
-            const filteredData = allData.filter((container: ContainersData) =>
-                container.uid?.toLowerCase().includes(converToLowerCase)
-            )
+//             const converToLowerCase = searchQuery.toLowerCase() 
+//             const filteredData = allData.filter((container: ContainersData) =>
+//                 container.uid?.toLowerCase().includes(converToLowerCase)
+//             )
 
-            setContainersData({ data: {docs: filteredData}})
-            setTotalEntries(filteredData.length)
-          } catch (error) {
-            console.log(error)
-          }
-        }
-        fetchData()
-    }, [searchQuery])
+//             setContainersData({ data: {docs: filteredData}})
+//             setTotalEntries(filteredData.length)
+//           } catch (error) {
+//             console.log(error)
+//           }
+//         }
+//         fetchData()
+//     }, [searchQuery])
 
-    return { containersData, totalEntries }
+//     return { containersData, totalEntries }
+// }
+
+export const getContainersData = async () => {
+  let totalEntries = 0
+  try {
+    const response = await axiosInstance.get(ApiRoutes.CONTAINERS)
+    const jsonData = response.data.data.docs;
+    const deserializedData = deserialize(AllContainersData, { docs: jsonData  });
+    if (Array.isArray(deserializedData?.docs)) {
+      totalEntries = deserializedData.docs.length;
+    }
+    return { deserializedData, totalEntries }
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const workingLink = `${ApiRoutes.CONTAINERS}/6496b4d51725b1f902152f0b`
+
+
+//TODO: Container Api ERROR
 
 // export const GetContainer = async (docId: string) => {
 //   try {
@@ -75,7 +93,6 @@ export const addContainerRequest = async (values: any) => {
               description: "Check your container details for more information !",
               className: "custom-notification-placement",
             });
-    
             setTimeout(() => {
               notification.destroy();
             }, 3000);

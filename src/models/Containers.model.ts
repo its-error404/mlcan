@@ -1,7 +1,7 @@
-import { serializable, alias, primitive } from 'serializr';
+import { serializable, alias, primitive, list, object } from 'serializr';
 
 export class ContainersData {
-
+    
     @serializable(alias('uid', primitive()))
     uid?: string;
 
@@ -32,12 +32,32 @@ export class ContainersData {
     @serializable(alias('activity_date', primitive()))
     activityDate?: string;
 
+    static docs: never[];
 }
 
 export class AllContainersData {
-    @serializable(alias('data', primitive()))
-    data?: {
-      docs: ContainersData[];
-    };
-  }
+    @serializable(alias('docs', list(object(ContainersData))))
+    docs?: ContainersData
+
+    @serializable(alias('total_docs', primitive()))
+  totalDocs?: number;
+
+  @serializable(alias('offset', primitive()))
+  offset?: number;
+
+  @serializable(alias('limit', primitive()))
+  limit?: number;
+
+  @serializable(alias('total_pages', primitive()))
+  totalPages?: number;
+
+  @serializable(alias('page', primitive()))
+  page?: number;
+
+  @serializable(alias('paging_counter', primitive()))
+  pagingCounter?: number;
+
+  @serializable(alias('has_prev_page', primitive()))
+  hasPrevPage?: boolean;
+}
   
