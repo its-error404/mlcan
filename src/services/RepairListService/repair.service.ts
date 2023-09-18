@@ -63,7 +63,6 @@ export const editRepairEntry = async (values: any, id: string) => {
       `${ApiRoutes.ALL_REPAIRS}/${id}`,
       values,
     );
-    console.log(response.data);
   } catch (error) {
     console.log(error);
   }
