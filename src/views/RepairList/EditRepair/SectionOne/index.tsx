@@ -9,7 +9,7 @@ interface SectionOneProps {
   sectionCompleted: boolean
 }
 
-const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {
+const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik, sectionCompleted }) => {
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 

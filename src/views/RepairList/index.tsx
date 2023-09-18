@@ -11,19 +11,17 @@ import { ReactComponent as DeleteIcon } from "../../assets/single color icons - 
 import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
-import { RepairData } from "../../models/repairList.model";
+import { RepairData, Repair } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
-
-import {
-  deleteRepairEntry,
-  fetchRepairData,
-} from "../../services/RepairListService/repairlist.service";
+import EditRepair from "./EditRepair";
+import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repairlist.service";
 import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
 
 const RepairList = () => {
+  
   const [columns] = useState([
     {
       title: (
@@ -135,7 +133,7 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => <EditIcon width={20} />,
+      render: (text: string, record: any) => <EditIcon width={20} onClick={() => handleEditClick(record)} />,
       style: {
         marginRight: "-20px",
       },
@@ -194,16 +192,18 @@ const RepairList = () => {
   const [damagedAreaData, setDamagedAreaData] = useState("");
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
-  const [filteredEntries, setFilteredEntries] = useState<RepairData[]>([]);
-  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState(null);
+  const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<RepairData | null>(null);
+  const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
         setRepairListData(deserializedData);
-        // setFilteredEntries(deserializedData.docs || []);
+        setFilteredEntries(deserializedData.docs || []);
         setTotalEntries(deserializedData.docs?.length || 0);
+        setDisplayedEntries(deserializedData.docs?.length || 0)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -255,6 +255,7 @@ const RepairList = () => {
     const filteredData = applyFilters(repairListData?.docs || []);
     setFilteredEntries(filteredData);
     setFilterMenu(false);
+    setDisplayedEntries(filteredData.length)
   };
 
   const handleResetFilters = () => {
@@ -277,6 +278,10 @@ const RepairList = () => {
   const handleEditClick = (record: any) => {
     setSelectedEntryForEdit(record);
     setOverlayOpen(true)
+
+    console.log("Selected Entry For Edit:", record.id);
+    console.log(selectedEntryForEdit)
+
   };
 
 
@@ -315,6 +320,21 @@ const RepairList = () => {
           handleSectionClick={(index: number) => setSectionIndex(index)}
           setSectionIndex={setSectionIndex}
         />
+        
+        {selectedEntryForEdit !== null && selectedEntryForEdit?.docs && (
+          
+          <div className="overlay">
+          <div className="overlay-content">
+          <EditRepair
+           data={selectedEntryForEdit.docs[0]}
+           id={selectedEntryForEdit.docs[0].id || ""}
+            onClose={() => {
+              setSelectedEntryForEdit(null);
+            }}
+          />
+            </div>
+          </div>
+        )}
 
         <div className="repair-search-container">
           <div className="repair-search">
@@ -477,13 +497,15 @@ const RepairList = () => {
             </div>
           </OverlayBox>
         )}
-          <p className="total-records">
-            Showing <span className="record-range"> 1 - {totalEntries} </span>{" "}
-            of <span className="total-range"> {totalEntries} </span>
-          </p>
+            <p className="total-records">
+              Showing <span className="record-range"> 1 - {displayedEntries} </span>{" "}
+              of <span className="total-range"> {totalEntries} </span>
+            </p>
       </div>
     </div>
   );
 };
 
 export default RepairList;
+
+

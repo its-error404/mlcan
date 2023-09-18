@@ -9,7 +9,7 @@ import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
 import SectionZero from "./SectionZero";
 import SectionOne from "./SectionOne";
-import SectionTwo from "../AddRepair/SectionTwo";
+import SectionTwo from "./SectionTwo/";
 
 interface EditRepairProps {
   data: any;
@@ -109,7 +109,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
             {sectionIndex === 0 && (
       <SectionZero
         formik={formik}
-        onclose={onclose}
+        onclose={onClose}
         onNextSection={handleNextSection}
         sectionCompleted={sectionCompleted[0]}
       />
@@ -117,7 +117,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
              {sectionIndex === 1 && (
       <SectionOne
         formik={formik}
-        onclose={onclose}
+        onclose={onClose}
         onNextSection={handleNextSection}
         sectionCompleted={sectionCompleted[1]}
       />
@@ -125,7 +125,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
              {sectionIndex === 2 && (
       <SectionTwo
         formik={formik}
-        onclose={onclose}
+        onclose={onClose}
         sectionCompleted={sectionCompleted[2]}
       />
     )}

@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import React from 'react';
 import { FormikPropsSectionZero } from '../../../../shared/types/formikTypes';
-import '../AddRepair.scss'
+import '../../AddRepair/AddRepair.scss'
 
 interface SectionZeroProps {
   onclose: () => void;
