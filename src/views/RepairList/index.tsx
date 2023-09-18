@@ -11,7 +11,7 @@ import { ReactComponent as DeleteIcon } from "../../assets/single color icons - 
 import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
-import { RepairData } from "../../models/repairList.model";
+import { Repair, RepairData } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 
@@ -135,9 +135,9 @@ const RepairList = () => {
     {
       className: "edit-icon",
       render: (text: string, record: any) => (
-        <div onClick={() => handleEditClick(record)}>
+       
           <EditIcon width={20} />
-        </div>
+       
       ),
       style: {
         marginRight: "-20px",
@@ -279,13 +279,10 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
-        {editRepairVisible ? (
-          <EditRepair editedData={editedData} onClose={() => {setEditIconClicked(false); setClickedRepairId(null);}} repairId={clickedRepairId || ""} overlayOpen={overlayOpen}
-            closeOverlay={closeOverlay}
-          />
-        ) : (
+        
+       
           <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
-        )}
+       
 
         {addRepair && (
           <div className="overlay">
@@ -429,9 +426,7 @@ const RepairList = () => {
   })}
 />
         </div>
-        {editMode && (
-          <EditRepair editedData={editedData} onClose={() => setEditMode(false)} repairId={editRepairId} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}}/>
-        )}
+        
 
         {showDeleteConfirmation && (
       <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>

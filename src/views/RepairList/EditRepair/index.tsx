@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { editRepairEntry } from "../../../services/RepairListService/editrepair.service";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import { Button, Checkbox } from "antd";
@@ -8,6 +7,7 @@ import "../../../styles/_variables.scss";
 import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
 import "../AddRepair/AddRepair.scss";
+import { editRepairEntry } from "../../../services/RepairListService/repair.service";
 interface EditRepairProps {
   editedData: any;
   onClose: () => void;
