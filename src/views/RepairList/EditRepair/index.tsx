@@ -26,7 +26,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
     0
   );
 
-  console.log(repairId)
 
   const [formData, setFormData] = useState<any>({});
 
@@ -62,7 +61,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
     validateOnBlur: true,
     onSubmit: async (formData) => {
       try {
-        console.log("Before req",'hi')
         await editRepairEntry(formData, repairId);
         onClose();
       } catch (err) {
