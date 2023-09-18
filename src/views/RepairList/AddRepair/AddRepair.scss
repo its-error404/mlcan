@@ -1,0 +1,188 @@
+@import '../../../styles/variables';
+
+option:first {
+    color: $placeholder !important;
+  }
+
+input, select {
+    border-radius: 10px !important;
+    border-color: $light-border;
+    
+}
+
+.repair-details__first-col {
+    display: flex;
+    flex-direction: row nowrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.form-wrapper {
+    border: 1px solid $user-contact-border;
+    border-radius: 7px;
+    margin-top: 30px;
+    min-height: 400px;
+    max-height: 800px;
+    overflow-y: auto;
+    max-width: 1500px !important;
+    padding: 20px;
+    background-color: white;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.repaid-id__input input{
+    background-color: $filled-input !important;
+}
+
+.custom-margin {
+    margin-top: 10px !important;
+}
+
+.repair-details__first-col input {
+    margin-top: 10px;
+    border: 1px solid $lightest-border;
+    border-radius: 5px;
+    height: 40px;
+    width: 570px;
+    padding-left: 20px;
+    background-color: $bg-white !important;
+}
+
+.repair-details__second-col {
+    display: flex;
+    gap: 30px;
+}
+
+.select-fields label {
+    padding-top: 20px;
+    margin-top: 30px !important;
+}
+
+.filter-menu select {
+    border: 1px solid $gray;
+    border-radius: 5px;
+    margin-top: 10px;
+    height: 40px;
+    width: 350px;
+    margin-top: 10px;
+    background-color: $white-bg;
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+
+.filter-menu label {
+    margin-top: 12px;
+    margin-left: 30px;
+}
+
+.filter-menu label:nth-child(3) {
+    margin-top: 10px;
+}
+.field-1 {
+    position: relative;
+}
+
+.field-1-error-message {
+    position: absolute;
+    color: $error-color;
+    top: 60%;
+    left: 0;
+}
+
+.field-2 {
+    position: relative;
+}
+
+.field-2-error-message {
+    position: absolute;
+    color: $error-color;
+    top: 105%;
+    left: 0;
+    font-size: 12px;
+}
+
+.field-3-error-message {
+    color: $error-color;
+    padding-top: 10px;
+    font-size: 12px;
+}
+
+.field-4-error-message {
+    color: $error-color;
+    padding-top: 10px;
+    font-size: 12px;
+}
+
+.repair-details__second-col select {
+    border: 1px solid $gray;
+    border-radius: 5px;
+    height: 30px;
+    width: 400px;
+    margin-top: 10px;
+    background-color: $white-bg;
+}
+
+.no-input-box {
+    color: $primary-black;
+    font-weight: 700;
+}
+
+.button-container {
+    margin-top: 30px;
+    margin-right: 30px;
+    justify-content: end;
+    display: flex;
+    gap: 30px;
+}
+
+.button-container button:first-child {
+    color: $text-black;
+    background-color: $light-gray;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-weight: 500;
+}
+
+.button-container button:last-child {
+    color: $white-bg;
+    background-color: $primary-black;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-weight: 500;
+}
+
+::placeholder {
+    color: $placeholder !important;
+}
+
+.location-div {
+    margin-top: -2px;
+}
+
+.final-buttons:last-child {
+    background-color: $turkish-green !important;
+}
+
+.section-header-text {
+    margin-left: 10px;
+}
+
+hr {
+    border-top: 1px solid $light-gray;
+}

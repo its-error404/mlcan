@@ -58,7 +58,7 @@ class Merc {
   id?: string;
 }
 
-class Repair {
+export class Repair {
   @serializable(alias('rep_area', primitive()))
   repArea?: string;
 

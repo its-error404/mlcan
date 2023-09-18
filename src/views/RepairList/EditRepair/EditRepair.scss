@@ -1,0 +1,175 @@
+@import '../../../styles/variables';
+
+input, select {
+  border-radius: 10px !important;
+}
+
+option:first {
+  color: $placeholder !important;
+}
+
+.merc-cost-details {
+  margin-left: 0 !important;
+}
+
+.merc-plus-form-section {
+  margin-left: 40px;
+}
+
+.Non-maersk-details-content.disabled {
+  opacity: 0.3;
+}
+
+  .Non-maersk-details-section {
+
+    margin-top: 20px;
+    margin-left: 40px;
+    
+  }
+
+  .overlay-box-edit {
+  position: absolute;
+    top: 25%;
+    left: 800px;
+    background-color: $bg-white;
+    min-width: 68vw;
+    padding-top: 25px;
+    border: 1px solid $light-border;
+    border-radius: 8px;
+    overflow-y: auto;
+    left: 35%;
+    pointer-events: auto;
+    z-index: 100;
+  }
+
+  ::-webkit-scrollbar{
+    display: none !important;
+  }
+
+  .section-3-buttons {
+    margin-bottom: 30px;
+    margin-right: 50px !important;
+  }
+
+  .section-2-buttons {
+    margin-bottom: 30px;
+    margin-right: 50px !important;
+  }
+
+  .section-1-button
+  {
+    margin-bottom: 30px;
+    margin-right: 50px !important;
+  }
+
+  .form-header {
+    margin-left: 50px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+ .close-icon-edit {
+  margin-right: 30px;
+ }
+
+ .section-buttons {
+  display: flex;
+  gap: 70px;
+  padding-top: 20px;
+  background-color: $section-header;
+  margin-top: 40px;
+  margin-left: -20px;
+  padding-left: 40px;
+  font-weight: 500;
+  min-width: 918px;
+}
+
+.customer-related-details {
+  margin-left: -1px !important;
+}
+
+.customer-related-details-repair-type {
+  margin-left: -52px!important;
+}
+
+.customer-related-details-description {
+  margin-top: 10px;
+}
+
+.repair-type select, input {
+  border-radius: 10px !important;
+}
+
+ .section-title {
+  display: flex;
+  margin-left: 30px;
+ }
+
+.id-source {
+  margin-left: -50px !important;
+}
+
+ .area1 {
+  margin-left: -50px;
+ }
+
+ .location {
+  margin-left: -50px;
+ }
+
+ .section-title span {
+  margin-left: 20px;
+ }
+
+ .container-damaged-area select{
+  margin-top: 10px;
+  border: 1px solid $light-border;
+  border-radius: 5px;
+  height: 40px;
+  width: 570px;
+  padding-left: 20px;
+  background-color: $white-bg;
+ }
+
+ .container-repair-area select{
+  margin-top: 10px !important;
+  border: 1px solid $light-border !important;
+  border-radius: 5px !important;
+  height: 40px !important;
+  width: 570px !important;
+  padding-left: 20px !important;
+  background-color: $white-bg !important;
+ }
+
+ .repair-type select {
+  margin-top: 10px !important;
+  border: 1px solid $light-border !important;
+  border-radius: 5px !important;
+  height: 40px !important;
+  width: 570px !important;
+  padding-left: 20px !important;
+  background-color: $white-bg !important;
+ }
+
+ .form-active > .section-title{
+  border-bottom: 2px solid $turkish-green;
+  padding-bottom: 20px;
+ }
+
+ .repair-details__first-col {
+  display: flex !important;
+ }
+
+ .cost-details {
+  margin-left: -1px !important;
+ }
+
+ .repair-details__second-col {
+  display: flex;
+  gap: 30px;
+}
+
+.edit-repair__second-col {
+  margin-left: 45px;
+}

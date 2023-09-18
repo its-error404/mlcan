@@ -8,7 +8,8 @@ import {
   IS_ADMIN,
 } from "./authToken";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
-
+import { notification } from "antd";
+import '../../views/Auth/LoginForm/LoginForm.scss'
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axiosInstance.post(ApiRoutes.USER_LOGIN, {
@@ -57,4 +58,13 @@ export const isAuthenticated = () => {
 
 export const logoutUser = () => {
   removeAuthToken();
+  notification.success({
+    message: "Logout Successful",
+    description: "Visit again !",
+    className: "custom-notification-placement",
+  });
+
+  setTimeout(() => {
+    notification.destroy(); 
+  }, 3000);
 };

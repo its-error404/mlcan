@@ -1,17 +1,15 @@
 import axios from 'axios';
 import {ApiRoutes} from "../routes/routeConstants/apiRoutes";
+import { getAuthToken } from '../services/AuthService/authToken';
 
-let accessToken = ''
+const access_token = getAuthToken()
 
 export const getHeaders = (): any => {
-    let headers, user;
-    if (localStorage.getItem('user')) {
-        user = JSON.parse(localStorage.getItem('user') || '');
-        accessToken = user.tokens.access_token;
-    }
+    let headers
+    
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${access_token}`,
     };
     return headers;
 };
