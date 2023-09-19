@@ -138,7 +138,7 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => <EditIcon width={20} onClick={() => handleEditClick(record)} />,
+      render: (text: string, record: any) => <EditIcon width={20} onClick={() => {handleEditClick(record);}} />,
       style: {
         marginRight: "-20px",
       },
@@ -174,6 +174,7 @@ const RepairList = () => {
         setEntryToDeleteUid(null);
         setShowDeleteConfirmation(false);
       } catch (error) {
+        setShowDeleteConfirmation(false);
         console.error("Error deleting entry:", error);
       }
     }
@@ -297,7 +298,6 @@ const RepairList = () => {
 
   const handleEditClick = (record: any) => {
     setSelectedEntryForEdit(record);
-    setOverlayOpen(true)
   };
 
   return (
@@ -336,17 +336,15 @@ const RepairList = () => {
           setSectionIndex={setSectionIndex}
         />
         
-        {selectedEntryForEdit !== null && selectedEntryForEdit?.docs && (
+        {selectedEntryForEdit  && (
           
           <div className="overlay">
           <div className="overlay-content">
           <EditRepair
-           data={selectedEntryForEdit.docs[0]}
-           id={selectedEntryForEdit.docs[0].id || ""}
-            onClose={() => {
-              setSelectedEntryForEdit(null);
-            }}
-          />
+                data={selectedEntryForEdit}
+                onClose={() => {
+                  setSelectedEntryForEdit(null);
+                } } id={selectedEntryForEdit?.docs}/>
             </div>
           </div>
         )}

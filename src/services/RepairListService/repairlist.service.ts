@@ -3,6 +3,7 @@ import axiosInstance from "../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 import { RepairData } from "../../models/repairList.model";
 import { deserialize } from "serializr";
+import 'antd/dist/antd.css'
 
 //Add Repair
 
@@ -35,8 +36,7 @@ export const deleteRepairEntry = async (id: string) => {
     const response = await axiosInstance.delete(`${ApiRoutes.ALL_REPAIRS}/${id}`);
 
     if (response.status === 200) {
-      console.log(`Repair Entry with ID ${id} Deleted`);
-      notification.open({message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted'});
+      notification.success({message: `Repair Entry Deleted`, className: "custom-notification-placement",});
       return response.data;
     
     } else {
@@ -47,9 +47,12 @@ export const deleteRepairEntry = async (id: string) => {
       throw new Error("Failed to delete repair entry.");
     }
   } catch (error: any) {
-    console.error(
-      `Error Deleting Repair Entry with ID ${id}: ${error.message}`
-    );
+    console.error(`Error Deleting Repair Entry with ID ${id}: ${error.message}`);
+    notification.error({
+      message: "There was a error in deleting the entry !",
+      description: "Check your entry details for more information !",
+      className: "custom-notification-placement",
+    });
 
     throw error;
   }
@@ -60,8 +63,39 @@ export const deleteRepairEntry = async (id: string) => {
 export const editRepairEntry = async (values: any, id: string) => {
   try {
     const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`,values);
+    if (response.status === 200) {
+      notification.success({
+              message: "Edited Successfully !",
+              description: "Check your entry details for more information !",
+              className: "custom-notification-placement",
+            });
+
+      setTimeout(() => {
+        notification.destroy();
+      }, 3000);
+    } else {
+      notification.error({
+        message: "There was a error in editing the entry !",
+        description: "Check your entry details for more information !",
+        className: "custom-notification-placement",
+      });
+
+      setTimeout(() => {
+        notification.destroy();
+      }, 3000);
+      console.log("Repair Error", response.data);
+    }
     console.log(response.data);
   } catch (error) {
+    notification.error({
+      message: "There was a error in editing the entry !",
+      description: "Check your entry details for more information !",
+      className: "custom-notification-placement",
+    });
+
+    setTimeout(() => {
+      notification.destroy();
+    }, 3000);
     console.log(error);
   }
 };

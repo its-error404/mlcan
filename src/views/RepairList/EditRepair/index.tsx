@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { editRepairEntry } from "../../../services/RepairListService/repairlist.service";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
-import { Button, Checkbox } from "antd";
 import "../../../styles/_variables.scss";
 import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
@@ -18,7 +17,7 @@ interface EditRepairProps {
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
-  const [formData, setFormData] = useState<any>({});
+  const [, setFormData] = useState<any>({});
 
   useEffect(() => {
     if (data) {
@@ -60,14 +59,15 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
     validationSchema: repairDetailsSchema,
     onSubmit: async (formData) => {
       try {
-        await editRepairEntry(formData, id);
+        await editRepairEntry(formData, formData.id);
+        onClose()
       } catch (err) {
         console.log(err);
       }
     },
   });
 
-  const [sectionCompleted, setSectionCompleted] = useState<boolean[]>([
+  const [sectionCompleted, ] = useState<boolean[]>([
     false,
     false,
     false, 

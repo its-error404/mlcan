@@ -1,39 +1,9 @@
-import { useState, useEffect } from 'react';
 import axiosInstance from '../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../routes/routeConstants/apiRoutes';
-import { ContainersData, AllContainersData } from '../../models/Containers.model';
+import { AllContainersData } from '../../models/Containers.model';
 import { ContainerData } from '../../models/singlecontainer.model';
 import { notification } from 'antd';
 import { deserialize } from 'serializr';
-
-//TODO: container search
-
-// export const useFetchData = (searchQuery='') => {
-//     const [containersData, setContainersData] = useState<AllContainersData | null>(null)
-//     const [totalEntries, setTotalEntries] = useState<number | null>(null);
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//           try {
-//             const response = await axiosInstance.get(ApiRoutes.CONTAINERS)
-//             const allData = response.data.data.docs
-
-//             const converToLowerCase = searchQuery.toLowerCase() 
-//             const filteredData = allData.filter((container: ContainersData) =>
-//                 container.uid?.toLowerCase().includes(converToLowerCase)
-//             )
-
-//             setContainersData({ data: {docs: filteredData}})
-//             setTotalEntries(filteredData.length)
-//           } catch (error) {
-//             console.log(error)
-//           }
-//         }
-//         fetchData()
-//     }, [searchQuery])
-
-//     return { containersData, totalEntries }
-// }
 
 export const getContainersData = async () => {
   let totalEntries = 0
@@ -105,7 +75,6 @@ export const addContainerRequest = async (values: any) => {
               description: "Check your container details for more information !",
               className: "custom-notification-placement",
             });
-          console.log("Repair Error", response.data)
        }
      
    } catch (error) {
