@@ -131,20 +131,6 @@
     gap: 30px;
 }
 
-.filter-button {
-    position: relative;
-    padding-left: 40px;
-    padding-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: 1px solid $filter-button-border;
-    border-radius: 7px;
-    background-color: $filter-button-bg;
-    color: $filter-button-text;
-    font-weight: 500;
-    cursor: pointer;
-}
-
 .container-id a {
     text-decoration: none;
     color: $text-black;
@@ -166,6 +152,7 @@
     display: flex;
     flex-flow: column;
     border-radius: 6px;
+    z-index: 100;
     z-index: 100;
 }
 
@@ -216,11 +203,6 @@
     color: $gray;
 }
 
-.date-picker-container label{
-    position: absolute;
-    top: 60px;
-    left: 30px;
-}
 
 .ant-picker-dropdown {
     position: absolute;
@@ -291,27 +273,26 @@
     margin-top: 35px !important;
 }
 
-.filter-date-picker {
-    padding-left: 10px;
-    max-width: 250px;
-    max-height: 30px !important;
-    margin-top: 20px;
-    margin-left: 20px;
-    padding-right: 20px;
-}
 
-.filter-menu {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.9s ease-in-out; 
-  }
+.container-filter-button {
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    padding-right: 20px;
+    background-color: $bg-white;
+}
   
+.container-filter-icon{
+    position: absolute;
+    left: 10px !important;
+}
   .filter-menu.visible {
     display: block;
     opacity: 1;
   }
 
-  .filter-button.change-button {
+  .container-filter-button.change-button {
     background-color: $turkish-green;
     color: $white-bg;
   }
@@ -333,30 +314,15 @@
     color: #000;
 }
 
-.date-picker input {
-    margin-top: 40px;
-    height: 30px;
-    padding-left: 10px;
-    max-width: 200px;
-    margin-left: 25px;
-}
 
-.ant-picker-suffix {
-    position: absolute;
-    top: 33%;
-    left: 33%;
-    right: 0;
-}
+
 
 .filter-menu__options p:nth-child(2) {
     color: $turkish-green;
     font-weight: 500;
 }
 
-.custom-date-picker {
-    max-width: 100px;
-    max-height: 50px;
-}
+
 
 .container-box-table {
     margin-top: 20px;

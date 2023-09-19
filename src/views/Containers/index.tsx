@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Containers.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
@@ -6,14 +6,15 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button, Table } from "antd";
+import { Button, DatePicker, Table } from "antd";
 import {  getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
 import { Link, } from "react-router-dom";
 import '../../styles/_@antOverrides.scss'
-import { Container } from "../../models/singlecontainer.model";
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
+import 'antd/dist/antd.css';
+import { ColumnsType } from 'antd/lib/table';
 
 const AllContainers = () => {
 
@@ -31,8 +32,9 @@ const AllContainers = () => {
   const [allContainersData, setContainersData] = useState<AllContainersData | null>(null)
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
-  
+  const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -76,18 +78,18 @@ const AllContainers = () => {
   
     switch (section) {
       case "All":
-        return allContainersData.docs;
+        return containers;
       case "Draft":
-        return (allContainersData.docs as AllContainersData[]).filter((doc) => doc.docs?.activityStatus === "draft");
+        return containers.filter((doc) => doc.activityStatus === "draft");
       case "Admin Review Pending":
-        return (allContainersData.docs as AllContainersData[]).filter((doc) => doc.docs?.activityStatus === "billing");
+        return containers.filter((doc) => doc.activityStatus === "billing");
       case "Pending Customer Approval":
-        return (allContainersData.docs as AllContainersData[]).filter((doc) => doc.docs?.activityStatus === "pending");
-      case "Quotes Approved by Customer":
-        return (allContainersData.docs as AllContainersData[]).filter((doc) => doc.docs?.activityStatus === "approved");
+        return containers.filter((doc) => doc.activityStatus === "pending");
+      case "Quotes Approved by Customers":
+        return containers.filter((doc) => doc.activityStatus === "approved");
       default:
         return [];
-    }    
+    }
 }
 
 // useEffect(() => {
@@ -101,6 +103,7 @@ const AllContainers = () => {
     const newIndex = sections.indexOf(section);
     setSectionIndex(newIndex);
     setActiveSection(section);
+    setShowActivityUidColumn(section === "Draft");
   }
 
   const getRowClassName = (record: any, index: number) => {
@@ -113,9 +116,9 @@ const AllContainers = () => {
       const statusMatches = statusData === "" || doc.activityStatus === statusData;
       const yardMatches = yardData === "" || doc.yard === yardData;
       const customerMatches = customerData === "" || doc.customerName === customerData;
-      const dateMatches = dateData === "" || doc.activityDate === dateData;
-
-      return ActivityMatches && customerMatches && yardMatches && statusMatches && dateMatches
+      const dateMatches = dateData === null || doc.activityDate === dateData;
+  
+      return ActivityMatches && customerMatches && yardMatches && statusMatches && dateMatches;
     });
   };
   
@@ -139,7 +142,7 @@ const AllContainers = () => {
 
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-  const columns = [
+  const columns: ColumnsType<ContainersData> = [
     {
       title: "Container Number",
       dataIndex: "uid",
@@ -187,7 +190,7 @@ const AllContainers = () => {
       key: "activityType",
       render: (text:string, record:any) => text || "N/A",
     },
-    {
+    showActivityUidColumn && {
       title: (
         <>
           {sectionIndex === 1 ? "Activity ID" : ""}
@@ -196,7 +199,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityUid",
       key: "activityUid",
-      render: (text:string, record:any) => text || "N/A",
+      render: (text: string, record: any) => text || "N/A",
     },
     {
       title: (
@@ -230,9 +233,21 @@ const AllContainers = () => {
         </div>
       ),
     },
-  ];
+  ].filter(Boolean);;
+  let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
-  const filteredColumns = columns.filter((column) => column.title !== "");
+  useEffect(() => {
+    let handler = (e: any) => {
+      if (!filterMenuRef.current?.contains(e.target)) {
+        setFilterMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
 
   return (
     <div className="main">
@@ -353,7 +368,8 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={filteredColumns} dataSource={filterContainers(activeSection) as ContainersData[]} rowKey="uid" className="container-table" rowClassName={getRowClassName}/>
+            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection))} rowKey="uid" className="container-table" rowClassName={getRowClassName}         pagination={false} 
+/>
             </div>
           </div>
         </div>
