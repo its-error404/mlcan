@@ -3,9 +3,14 @@
 .activity-card {
     margin-top: 20px;
     margin-left: 30px;
-    height: 80px;
-    max-width: 80vw;
+    min-height: 80px;
+    min-width: 80vw;
     background-color: $white-bg;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.activity-card.expanded {
+    min-height: 500px;
 }
 
 .activity-status {

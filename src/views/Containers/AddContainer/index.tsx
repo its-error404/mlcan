@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Space } from 'antd'
+import { Input, Select, Space } from 'antd'
 import { useFormik } from 'formik';
 import {  InitialContainerFormValues } from '../../../models/singlecontainer.model';
 import { addContainerRequest } from '../../../services/ContainersService/containers.service';
@@ -8,6 +8,7 @@ import '../../../styles/_@antOverrides.scss'
 import './AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
+import 'antd/dist/antd.css';
 
 interface AddContainerProps {
   onclose: () => void;
@@ -38,33 +39,58 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <Space direction='vertical'>
+          <Space direction='vertical' size={20}>
             <label>Yard Name</label>
-            <select className='container-select'>
-              <option>Yard</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={[
+              { value: 'Harbour Link', label: 'Harbour Link' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+            ]}
+          />
             <label>Container Number</label>
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Customer</label>
-            <select className='container-select'>
-              <option>Krishna</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={[
+              { value: 'Krishna', label: 'Krishna' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+            ]}
+          />
             <label>Container Owner Name</label>
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Submitter Initials</label>
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Container Length</label>
-            <select className='container-select'>
-              <option>20</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={[
+              { value: '20', label: '20' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+            ]}
+          />
             <label>Container Height</label>
-            <select className='container-select'>
-              <option>20</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={[
+              { value: '20', label: '20' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+            ]}
+          />
             <label>Container Type</label>
-            <select className='container-select'>
-              <option>20</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={[
+              { value: '20', label: '20' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+            ]}
+          />
             <label>Comments</label>
             <Input className='container-input comments-add-input' placeholder='Enter'></Input>
             <label>Door photo including container number</label>

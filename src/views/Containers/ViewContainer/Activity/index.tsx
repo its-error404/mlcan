@@ -6,6 +6,7 @@ import { ReactComponent as InspectionIcon } from '../../../../assets/single colo
 import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
+import 'antd/dist/antd.css';
 
 const ActivitySection: React.FC = () => {
   
@@ -53,7 +54,7 @@ const ActivitySection: React.FC = () => {
      
       <div>Loading...</div>
     ) : (
-      <Space direction="vertical" size={100}>
+      <Space direction="vertical" size={1}>
         {repairData &&
           repairData.docs.map((data) => (
             <ActivityCard

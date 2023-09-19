@@ -278,7 +278,8 @@ const AllContainers = () => {
                 placeholder="Search container by number"
                 onChange={(e) => setSearchData(e.target.value)}
               ></input>
-              <div className="filters-container" onClick={toggleFilterMenu}>
+
+              {/* <div className="filters-container" onClick={toggleFilterMenu}>
                 <Button className={`filter-button ${filterMenu ? 'change-button' : ''}`}>
                   <span className="filter-icon">
                     <FilterIcon width={20} />
@@ -347,7 +348,8 @@ const AllContainers = () => {
             
                   </div>
                    )}
-                </div>
+                </div> */}
+                
               </div>
 
             <div className="container-box__container">

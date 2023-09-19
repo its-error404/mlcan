@@ -2,6 +2,7 @@
 
 .main {
     width: 100vw !important;
+    overflow-y: hidden;
 }
 
 .all-containers {
@@ -20,10 +21,16 @@
 }
 
 .containers-header {
-    margin-left: 40px;
-    margin-top: 50px;
+    padding-left: 40px;
+    padding-top: 40px;
     display: flex;
     gap: 20px;
+    align-items: center;
+    justify-items: center;
+}
+
+.containers-header h1 {
+    font-weight: 700 !important;
 }
 
 .containers-section {
@@ -36,7 +43,7 @@
     flex-flow: row nowrap;
     gap: 50px;
     color: $container-options;
-    margin-top: 10px;
+    margin-top: -10px;
 }
 
 .container-table tr {
@@ -45,7 +52,7 @@
 }
 
 .container-table tr > th {
-    font-weight: 500;
+    font-weight: 500 !important;
 }
 
 .container-table td > a {
@@ -53,9 +60,13 @@
     color: $text-black;
 }
 
+.container-table {
+    margin-top: -100px;
+}
+
 .container-details {
     line-height: 20px;
-    margin-top: -30px;
+    margin-top: -44px;
     background-color: $input-bg;
     width: 84.3vw;
     height: 80vh;
@@ -141,7 +152,6 @@
 
 .filter-icon {
     position: absolute;
-    left: 10px;
     filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%)
         contrast(82%);
 }
@@ -156,6 +166,7 @@
     display: flex;
     flex-flow: column;
     border-radius: 6px;
+    z-index: 100;
 }
 
 .filter-header__first-part {
