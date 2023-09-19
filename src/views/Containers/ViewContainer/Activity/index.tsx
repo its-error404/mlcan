@@ -16,6 +16,7 @@ const ActivitySection: React.FC = () => {
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
   const cardsPerPage = 5;
 
   useEffect(() => {

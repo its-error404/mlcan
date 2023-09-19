@@ -16,7 +16,7 @@ import { fetchActivityData, fetchCommentsData, fetchLogData } from "../../../ser
 
 const ViewContainer: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
-  const [, setContainerData] = useState<ContainerData | null>(null);
+  const [containerData, setContainerData] = useState<ContainerData | null>(null);
   const [activeSection, setActiveSection] = useState("Activity")
   const [, setSectionIndex] = useState<number>(0);
 
@@ -26,7 +26,8 @@ const ViewContainer: React.FC = () => {
         try {
           const response = await getWorkingContainer();
           if (response) {
-            setContainerData(response);
+            // setContainerData(response);
+            console.log(response)
           } else {
             setContainerData(null);
           }

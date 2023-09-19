@@ -83,3 +83,19 @@ export const fetchLogData = async () => {
     return []
 };
 };
+
+//Repair form call
+
+export const expandedRepairForm = async (formId: string) => {
+  try {
+    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`)
+    if(response.status === 200) {
+      const expandedRepairFormData = response.data
+      return expandedRepairFormData
+    } else {
+      console.log('ID doesnt exist')
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}

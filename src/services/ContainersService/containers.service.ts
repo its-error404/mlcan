@@ -45,9 +45,10 @@ const workingLink = `${ApiRoutes.CONTAINERS}/6496b4d51725b1f902152f0b`
 export const getWorkingContainer = async () => {
   try {
     const response = await axiosInstance.get(workingLink);
-    const jsonData = response.data;
-    const containerInstance = deserialize(ContainerData, jsonData);
-    return containerInstance;
+    const jsonData = response.data.data;
+
+    // const containerInstance = deserialize(ContainerData, jsonData);
+    return jsonData 
   } catch (err) {
     console.error("Error fetching data:", err); 
     throw err;

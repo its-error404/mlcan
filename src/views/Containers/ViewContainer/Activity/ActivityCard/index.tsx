@@ -18,6 +18,7 @@ const ActivityCard: React.FC<{
   icon: React.ReactElement;
   expanded: boolean;
   toggleExpand: () => void;
+  expandedData
 }> = ({
   formType,
   formID,
