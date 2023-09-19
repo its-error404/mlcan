@@ -11,7 +11,7 @@ import { ReactComponent as DeleteIcon } from "../../assets/single color icons - 
 import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
-import { RepairData } from "../../models/repairList.model";
+import { Repair, RepairData } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 
@@ -135,7 +135,11 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => <EditIcon width={20} />,
+      render: (text: string, record: any) => (
+       
+          <EditIcon width={20} />
+       
+      ),
       style: {
         marginRight: "-20px",
       },
@@ -287,6 +291,10 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
+        
+       
+          <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
+       
 
         {addRepair && (
           <div className="overlay">
@@ -453,6 +461,7 @@ const RepairList = () => {
             })}
           />
         </div>
+        
 
         {showDeleteConfirmation && (
           <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
