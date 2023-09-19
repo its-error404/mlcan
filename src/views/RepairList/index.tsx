@@ -31,6 +31,11 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
+      onCell: (record) => {
+        return {
+          onClick: () => handleRowClick(record)
+        };
+      },
     },
     {
       title: (
@@ -142,7 +147,8 @@ const RepairList = () => {
       className: "delete-icon",
       render: (text: string, record: any) => (
         <>
-          <DeleteIcon width={20} onClick={() => handleDeleteClick(record.id)} />
+          <DeleteIcon width={20} onClick={() => handleDeleteClick(record.id, record.uid)}
+ />
         </>
       ),
     },
@@ -153,26 +159,30 @@ const RepairList = () => {
     setOverlayOpen(true);
   };
 
-  const handleDeleteClick = (entryId: string) => {
-    setEntryToDelete(entryId);
+  const handleDeleteClick = (id: string, uid: string) => {
+    setEntryToDeleteId(id);
+    setEntryToDeleteUid(uid);
     setShowDeleteConfirmation(true);
   };
 
   const handleDeleteConfirmed = async () => {
-    if (entryToDelete) {
+    if (entryToDeleteId) {
       try {
-        await deleteRepairEntry(entryToDelete);
+        await deleteRepairEntry(entryToDeleteId);
         fetchRepairData();
-        setEntryToDelete(null);
+        setEntryToDeleteId(null);
+        setEntryToDeleteUid(null);
         setShowDeleteConfirmation(false);
       } catch (error) {
         console.error("Error deleting entry:", error);
       }
     }
   };
+  
 
   const handleDeleteCancel = () => {
-    setEntryToDelete(null);
+    setEntryToDeleteId(null);
+    setEntryToDeleteUid(null)
     setShowDeleteConfirmation(false);
   };
 
@@ -184,7 +194,8 @@ const RepairList = () => {
   const [addRepair, setAddRepair] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+  const [entryToDeleteId, setEntryToDeleteId] = useState<string | null>(null);
+  const [entryToDeleteUid, setEntryToDeleteUid] = useState<string | null>(null);  
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
   const [versionMenu, setVersionMenu] = useState<boolean>(false);
   const [exportMenu, setExportMenu] = useState<boolean>(false);
@@ -475,11 +486,6 @@ const RepairList = () => {
             className="ant-table-repair"
             columns={columns}
             dataSource={filteredEntries}
-            onRow={(record: any) => ({
-              onClick: () => {
-                handleRowClick(record);
-              },
-            })}
           />
         </div>
 
@@ -490,7 +496,7 @@ const RepairList = () => {
                 <DeleteIcon width={45} />
                 <h2>
                   Are you sure you to delete the <br />
-                  &emsp; &emsp;Repair - <span>RID005</span>&nbsp;?
+                  &emsp; &emsp;Repair - <span>{entryToDeleteUid}</span>&nbsp;?
                 </h2>
                 <p>You can't undo this action</p>
               </div>
