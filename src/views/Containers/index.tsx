@@ -69,35 +69,40 @@ const AllContainers = () => {
     setAddContainer(!addContainer);
   };
 
-  const filterContainers = (section: string) => {
+  const filterContainers = (section: string, searchQuery: string) => {
     if (!allContainersData?.docs) {
       return [];
     }
   
     const containers = allContainersData.docs as ContainersData[];
-  
-    switch (section) {
-      case "All":
-        return containers;
-      case "Draft":
-        return containers.filter((doc) => doc.activityStatus === "draft");
-      case "Admin Review Pending":
-        return containers.filter((doc) => doc.activityStatus === "billing");
-      case "Pending Customer Approval":
-        return containers.filter((doc) => doc.activityStatus === "pending");
-      case "Quotes Approved by Customers":
-        return containers.filter((doc) => doc.activityStatus === "approved");
-      default:
-        return [];
-    }
-}
+    
+    let filteredData = [];
+  switch (section) {
+    case "All":
+      filteredData = containers;
+      break;
+    case "Draft":
+      filteredData = containers.filter((doc) => doc.activityStatus === "draft");
+      break;
+    case "Admin Review Pending":
+      filteredData = containers.filter((doc) => doc.activityStatus === "billing");
+      break;
+    case "Pending Customer Approval":
+      filteredData = containers.filter((doc) => doc.activityStatus === "pending");
+      break;
+    case "Quotes Approved by Customers":
+      filteredData = containers.filter((doc) => doc.activityStatus === "approved");
+      break;
+    default:
+      filteredData = [];
+  }
 
-// useEffect(() => {
-//   const filteredData = filterContainers(activeSection).filter((container:any) =>
-//     container.uid.toLowerCase().includes(searchData.toLowerCase())
-//   );
-//   setFilteredEntries(filteredData);
-// }, [searchData, activeSection]);
+  filteredData = filteredData.filter((doc) =>
+    doc.uid.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return filteredData;
+}
 
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
@@ -368,7 +373,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection))} rowKey="uid" className="container-table" rowClassName={getRowClassName}         pagination={false} 
+            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection, searchData))} rowKey="uid" className="container-table" rowClassName={getRowClassName}         pagination={false} 
 />
             </div>
           </div>
