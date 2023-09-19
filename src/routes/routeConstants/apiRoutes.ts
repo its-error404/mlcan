@@ -3,10 +3,9 @@ export const ApiRoutes = {
     USER_LOGIN: "auth/login",
     CONTAINERS: "/containers",
     COMMENTS: "/comments",
-
-    //Repair List
-
+    CONT_PHOTO: "/photos",
+    INSPECTION_FORM: '/inspection_forms',
+    QUOTE_FORM: '/quote_forms',
+    REPAIR_FORM: '/repair_forms',
     ALL_REPAIRS: "/repairs"
-
-
 }

@@ -90,12 +90,12 @@ const AllContainers = () => {
     }    
 }
 
-useEffect(() => {
-  const filteredData = filterContainers(activeSection).filter((container:any) =>
-    container.uid.toLowerCase().includes(searchData.toLowerCase())
-  );
-  setFilteredEntries(filteredData);
-}, [searchData, activeSection]);
+// useEffect(() => {
+//   const filteredData = filterContainers(activeSection).filter((container:any) =>
+//     container.uid.toLowerCase().includes(searchData.toLowerCase())
+//   );
+//   setFilteredEntries(filteredData);
+// }, [searchData, activeSection]);
 
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
@@ -120,7 +120,7 @@ useEffect(() => {
   };
   
   const handleApplyFilters = () => {
-    const filteredData = applyFilters(allContainersData?.docs || []);
+    const filteredData = applyFilters(ContainersData?.docs || []);
     setFilteredEntries(filteredData);
     setFilterMenu(false);
     setDisplayedEntries(filteredData.length)

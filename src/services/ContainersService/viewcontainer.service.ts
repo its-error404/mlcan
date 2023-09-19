@@ -3,11 +3,42 @@ import axiosInstance from '../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../routes/routeConstants/apiRoutes';
 import { getWorkingContainer } from '../ContainersService/containers.service'
 import { CommentsData } from '../../models/comments.model';
+import { InspectionForm } from '../../models/inspectionform.model';
+import { PhotoDetails } from '../../models/photoData.model';
+import { QuoteDetails } from '../../models/quotedata.model';
+import { RepairResponseData } from '../../models/repairFormData.model';
 
 export const fetchActivityData = async () => {
+  const query = `{"container": "64a53e59c637122f8ba5421e"}`
+
+  const photoQuery = `64a63ed193c84f257a88415e`
+  const photoURL = `${ApiRoutes.CONT_PHOTO}/${photoQuery}`;
+  const inspectionForm = `${ApiRoutes.INSPECTION_FORM}`;
+  const quoteForm = `${ApiRoutes.QUOTE_FORM}`
+  const repairForm = `${ApiRoutes.REPAIR_FORM}`;
+
   try {
-    const response = await getWorkingContainer();
-    return response;
+    const photoResponse = await axiosInstance.get(photoURL)
+    const inspectionFormResponse = await axiosInstance.get(inspectionForm)
+    const quoteFormResponse = await axiosInstance.get(quoteForm)
+    const repairFormResponse = await axiosInstance.get(repairForm)
+
+    if (photoResponse.status === 200 && quoteFormResponse.status === 200 && inspectionFormResponse.status === 200 && repairFormResponse.status) {
+      const photoJsonData = photoResponse.data.data
+      const inspectionJsonData = inspectionFormResponse.data.data
+      const quoteJsonData = quoteFormResponse.data.data
+      const repairFormJsonData = repairFormResponse.data.data
+
+      // const photoData: PhotoDetails = deserialize(PhotoDetails, photoJsonData);
+      // const inspectionData: InspectionForm = deserialize(InspectionForm, inspectionJsonData);
+      // const quoteData: QuoteDetails = deserialize(QuoteDetails, quoteJsonData);
+      // const repairData: RepairResponseData = deserialize(RepairResponseData, repairFormJsonData);
+
+      return {photoJsonData, inspectionJsonData, quoteJsonData, repairFormJsonData}
+
+  } else {
+    throw new Error ("Request Failed !")
+  }
   } catch (error) {
     throw error;
   }
