@@ -360,8 +360,8 @@ const RepairList = () => {
                 setFilterMenu(!filterMenu);
               }}
             >
-              <Button className="filter-button">
-                <span className="filter-icon">
+              <Button className="repair-filter-button">
+                <span className="repair-filter-icon">
                   <FilterIcon width={20} />
                 </span>
                 Filters
