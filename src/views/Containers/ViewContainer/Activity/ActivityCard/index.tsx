@@ -7,8 +7,9 @@ import { ReactComponent as DropDownOpen } from "../../../../../assets/single col
 import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
 import "antd/dist/antd.css";
 import "./ActivityCard.scss";
+import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
 import axiosInstance from "../../../../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
 import AddItem from "./AddItem";
@@ -199,14 +200,22 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
   };
 
   const handleConfirm = async () => {
-    console.log('hefef')
     try {
       const response = await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
         option: selectedOption,
       });
-      console.log(response);    
+      notification.success({
+        message: "updated Successfully !",
+        className: "custom-notification-placement",
+      });
+      console.log(response);   
       setShowConfirmation(false);
     } catch (error) {
+      setShowConfirmation(false);
+      notification.error({
+        message: "update failed !",
+        className: "custom-notification-placement",
+      });
       console.error("Error updating status:", error);
     
     }
@@ -322,9 +331,17 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
       {showConfirmation && (
   <OverlayBox maxWidth="400px" minHeight="200px" onClose={()=> {}}>
     <div>
-      <p>Are you sure you want to update the status?</p>
-      <button onClick={handleConfirm}>Confirm</button>
-      <button onClick={handleCancel}>Cancel</button>
+     
+      <div className="delete-confirmation-box">
+              <div className="delete-text-icon">
+                <p>Are you sure you want to update the status?</p>
+              </div>
+              <div className="delete-confirmation-buttons">
+              <button onClick={handleConfirm}>Confirm</button>
+              <button onClick={handleCancel}>Cancel</button>
+              </div>
+            </div>
+    
     </div>
   </OverlayBox>
 )}
