@@ -1,6 +1,8 @@
 import { Button } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormikProps, FormikValues } from 'formik';
+import axiosInstance from '../../../../interceptor/axiosInstance';
+import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
 
 interface SectionOneProps {
   onclose: () => void;
@@ -12,6 +14,50 @@ interface SectionOneProps {
 const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik, sectionCompleted }) => {
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [compOptions, setCompOptions] = useState<string[]>([]);
+  const [damOptions, setDamOptions] = useState<string[]>([]);
+  const [repOptions, setRepOptions] = useState<string[]>([]);
+  const [componentOptions, setComponentOptions] = useState<string[]>([]);
+  const [eventOptions, setEventOptions] = useState<string[]>([]);
+
+  useEffect(()=> {
+    axiosInstance.get(`${ApiRoutes.COMP_OPTIONS}`)
+    .then(response => {
+      setCompOptions(response.data.data.values);
+    })
+    .catch(error => {
+      console.error('Error fetching repArea options:', error);
+    });
+    axiosInstance.get(`${ApiRoutes.DAM_OPTIONS}`)
+    .then(response => {
+      setDamOptions(response.data.data.values);
+    })
+    .catch(error => {
+      console.error('Error fetching repArea options:', error);
+    });
+    axiosInstance.get(`${ApiRoutes.REP_OPTIONS}`)
+    .then(response => {
+      setRepOptions(response.data.data.values);
+    })
+    .catch(error => {
+      console.error('Error fetching repArea options:', error);
+    });
+    axiosInstance.get(`${ApiRoutes.COMPONENT_OPTIONS}`)
+    .then(response => {
+      setComponentOptions(response.data.data.values);
+    })
+    .catch(error => {
+      console.error('Error fetching repArea options:', error);
+    });
+    axiosInstance.get(`${ApiRoutes.EVENT_OPTIONS}`)
+    .then(response => {
+      setEventOptions(response.data.data.values);
+    })
+    .catch(error => {
+      console.error('Error fetching repArea options:', error);
+    });
+  },[])
+
 
   const handleCheckboxChange = () => {
     setIsCheckboxChecked(!isCheckboxChecked);
@@ -124,9 +170,11 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
               onBlur={formik.handleBlur}
               value={formik.values.COMP}
             >
-              <option value="">Select</option>
-              <option value="Option 1">Option 1</option>
-              <option value="Option 2">Option 2</option>
+               {compOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
             </select>
           </div>
           <br></br>
@@ -140,9 +188,11 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
               onBlur={formik.handleBlur}
               value={formik.values.DAM}
             >
-              <option value="">Select</option>
-              <option value="Option 1">Option 1</option>
-              <option value="Option 2">Option 2</option>
+              {damOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
             </select>
           </div>
         </div>
@@ -158,9 +208,11 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
               onBlur={formik.handleBlur}
               value={formik.values.REP}
             >
-              <option value="">Select</option>
-              <option value="Option 1">Option 1</option>
-              <option value="Option 2">Option 2</option>
+               {repOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
             </select>
           </div>
           <br></br>
@@ -174,9 +226,11 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
               onBlur={formik.handleBlur}
               value={formik.values.component}
             >
-              <option value="">Select</option>
-              <option value="Option 1">Option 1</option>
-              <option value="Option 2">Option 2</option>
+               {componentOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
             </select>
           </div>
         </div>
@@ -192,9 +246,11 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
               onBlur={formik.handleBlur}
               value={formik.values.event}
             >
-              <option value="">Select</option>
-              <option value="Option 1">Option 1</option>
-              <option value="Option 2">Option 2</option>
+               {eventOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
             </select>
           </div>
           <br></br>

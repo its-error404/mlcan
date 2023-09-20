@@ -26,8 +26,6 @@ const ViewContainer: React.FC = () => {
         try {
           const response = await getWorkingContainer();
           if (response) {
-            // setContainerData(response);
-            console.log(response)
           } else {
             setContainerData(null);
           }
@@ -68,8 +66,7 @@ const ViewContainer: React.FC = () => {
       <Sidebar />
       <div className="page-content">
         <div className="go-to-containers">
-          <BackIcon width={15} />
-          <Link to="/containers">Containers</Link>
+          <Link to="/containers"><BackIcon width={15} />&emsp;Containers</Link>
         </div>
         <div className="container-header">
           <div className="container-header__first">

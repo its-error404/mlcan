@@ -64,6 +64,13 @@
     margin-top: -100px;
 }
 
+.container-date-box input {
+    margin-top: 40px;
+    margin-left: -30px;
+    width: 240px !important;
+    height: 30px !important;
+}
+
 .container-details {
     line-height: 20px;
     margin-top: -44px;
@@ -236,14 +243,13 @@
 .filter-dropdown-date {
     display: flex;
     flex-flow: column ;
-    margin-top: 10px;
-    margin-bottom: -15px;
 }
 
 .filter-dropdown-date select {
     max-width: 240px;
     outline-color: 1px solid $light-border;
 }
+
 .filter-columns {
     display: flex;
 }
@@ -257,16 +263,23 @@
     margin-bottom: -30px !important;
 }
 
+.filter-options-container select input {
+    border-radius: 8px !important;
+}
+
 .option-activity {
     margin-top: 20px;
 }
 
-.filter-options-flex {
+.container-filter-menu.visible {
+    height: 34vh !important;
+}
+.column-1 {
     display: flex;
-    justify-content: space-between;
 }
 
 .column-2 {
+    display: flex;
     margin-right: 30px;
 }
 .filter-dropdown-activity {

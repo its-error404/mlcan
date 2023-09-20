@@ -1,6 +1,8 @@
 import { Button } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormikValues } from 'formik'; 
+import axiosInstance from '../../../../interceptor/axiosInstance';
+import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
 
 interface SectionTwoProps {
   onclose: () => void;
@@ -15,10 +17,21 @@ interface SectionTwoProps {
 const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionCompleted }) => {
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [modeOptions, setModeOptions] = useState([])
 
   const handleCheckboxChange = () => {
     setIsCheckboxChecked(!isCheckboxChecked);
   };
+
+  useEffect(()=> {
+    axiosInstance.get(`${ApiRoutes.REP_CATEGORIES}`)
+    .then(response => {
+      setModeOptions(response.data.data.values);
+    })
+    .catch(error => {
+      console.error('Error fetching repArea options:', error);
+    });
+  },[])
   
   return (
     <div className={`merc-plus-form-section ${isCheckboxChecked ? 'disabled' : ''}`}>
@@ -122,8 +135,8 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionComplet
             value={formik.values.rep_mode}
           >
             <option value="">Select</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
+            <option value="Option 1">2</option>
+            <option value="Option 2">3</option>
           </select>
         </div>
         <br></br>
@@ -137,9 +150,11 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionComplet
             onBlur={formik.handleBlur}
             value={formik.values.mode}
           >
-            <option value="">Select</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
+           {modeOptions.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
         </div>
       </div>

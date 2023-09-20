@@ -2,3 +2,16 @@
     opacity: 0.9; 
     pointer-events: none;
   }
+
+  .edit-section-button {
+    margin-bottom: 50px !important;
+    margin-top: -20px;
+  }
+
+  .edit-buttons button:first-child {
+    height: 50px;
+  }
+
+  .edit-buttons button:last-child {
+    height: 50px;
+  }

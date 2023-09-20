@@ -17,6 +17,7 @@ const ActivitySection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
+  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const cardsPerPage = 5;
 
   useEffect(() => {
@@ -67,6 +68,7 @@ const ActivitySection: React.FC = () => {
               icon={<RepairIcon width={20}/>}
               expanded={false} 
               toggleExpand={() => toggleExpandCard(data.id)}
+              expandedData={expandedRepairFormData}
             />
           ))}
           {quoteData &&
@@ -80,6 +82,7 @@ const ActivitySection: React.FC = () => {
               icon={<QuoteIcon width={20}/>}
               expanded={false} 
               toggleExpand={() => toggleExpandCard(data.id)}
+              expandedData={expandedQuoteFormData}
               />
           ))}
           {/* {inspectionData &&

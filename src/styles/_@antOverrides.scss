@@ -13,6 +13,18 @@
   }
 }
 
+.ant-upload-drag-icon {
+  // margin-top: 10px;
+  position: absolute;
+  top: 33%;
+  left: 37%;
+}
+
+.ant-upload.ant-upload-drag {
+  border: 0 !important;
+  background: none !important;
+}
+
 .edit-icon {
   max-width: 0;
   padding-left: 0 !important;

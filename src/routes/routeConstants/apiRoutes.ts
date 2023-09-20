@@ -7,5 +7,15 @@ export const ApiRoutes = {
     INSPECTION_FORM: '/inspection_forms',
     QUOTE_FORM: '/quote_forms',
     REPAIR_FORM: '/repair_forms',
-    ALL_REPAIRS: "/repairs"
+    ALL_REPAIRS: "/repairs",
+    DMG_AREAS: "/meta/damage_areas",
+    REP_AREAS: "/meta/repair_areas",
+    REP_TYPES: "/meta/repair_types",
+    COMP_OPTIONS: "/meta/comps",
+    DAM_OPTIONS: "/meta/dams",
+    REP_OPTIONS: "/meta/reps",
+    COMPONENT_OPTIONS: "/meta/components",
+    EVENT_OPTIONS: "/meta/events",
+    REP_MODES: "/meta/repair_modes",
+    REP_CATEGORIES: "/meta/repair_categories",
 }

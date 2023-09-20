@@ -5,7 +5,7 @@ import { ReactComponent as TickIcon } from "../../../assets/single color icons -
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
 import repairDetailsSchema from "./EditFormValidation";
-import "../EditRepair/EditRepair.scss";
+import "./EditRepair.scss"
 import SectionZero from "./SectionZero";
 import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo/";
@@ -51,7 +51,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   };
 
   const isSectionFilled = (index: number) => {
-    return true;
+    return sectionCompleted[index]
   };
 
   const formik = useFormik({
@@ -67,11 +67,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
     },
   });
 
-  const [sectionCompleted, ] = useState<boolean[]>([
-    false,
-    false,
-    false, 
-  ]);
+  const [sectionCompleted, setSectionCompleted] = useState<boolean[]>([false,false,false]);
 
   const handleNextSection = () => {
     if (sectionIndex !== null && sectionIndex < sections.length - 1) {
@@ -88,7 +84,7 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
             <h2>Edit Repair Part</h2>
             <CloseIcon width={15} onClick={onClose} />
           </div>
-          <div className="section-buttons">
+          <div className="section-buttons edit-section-button">
             {sections.map((section, index) => (
               <div
                 key={index}
@@ -97,8 +93,12 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
                 }`}
                 onClick={() => toggleSection(index)}
               >
-                <div className="section-title">
-                  {isSectionFilled(index) && <TickIcon width={20} />}
+                 <div className="section-title">
+                  {isSectionFilled(index) ? (
+                    <TickIcon width={20} fill="#009966" />
+                  ) : (
+                    <TickIcon width={20} />
+                  )}
                   <span className="section-header-text">{section.name}</span>
                 </div>
               </div>
