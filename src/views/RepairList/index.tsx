@@ -4,7 +4,7 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Table } from "antd";
+import { Button, Table, notification } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
@@ -228,6 +228,7 @@ const RepairList = () => {
     const filteredData = applyFilters(repairListData?.docs || []).filter((record: any) =>
       record.uid.toLowerCase().includes(searchData.toLowerCase())
     );
+    
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
   }, [searchData, repairListData]);
@@ -369,12 +370,12 @@ const RepairList = () => {
                 setFilterMenu(!filterMenu);
               }}
             >
-              <Button className="repair-filter-button">
+              <button className="repair-filter-button">
                 <span className="repair-filter-icon">
                   <FilterIcon width={20} />
                 </span>
                 Filters
-              </Button>
+              </button>
               <div
                 className={`filter-menu repair-list-filters ${
                   filterMenu ? "visible" : "invisible"
@@ -429,12 +430,12 @@ const RepairList = () => {
             </div>
           </div>
           <div className="export-container" onClick={toggleExportMenu}>
-            <Button className="export-button">
+            <button className="export-button">
               <span className="export-icon">
                 <ExportIcon width={20} />
               </span>
               Export
-            </Button>
+            </button>
             <div
               className={`export-menu-box ${
                 exportMenu ? "visible" : "invisible"
@@ -452,18 +453,18 @@ const RepairList = () => {
             className="versions-container"
             onClick={() => setVersionMenu(!versionMenu)}
           >
-            <Button className="version-button">
-              <span className="repair-filter-icon">
+            <button className="version-button">
+              <span className="version-icon">
                 <VersionIcon width={20} />
               </span>
               Version 1 - 22 Aug 2020
               <span className="down-icon">
                 <DownIcon width={10} />
               </span>
-            </Button>
+            </button>
           </div>
 
-          <Button className="bulk-upload-button" onClick={handleBulkUploadClick}>Bulk Upload</Button>
+          <button className="bulk-upload-button" onClick={handleBulkUploadClick}>Bulk Upload</button>
         </div>
         {showBulkUpload && (
         <BulkUploadComponent onClose={handleBulkUploadClose} />

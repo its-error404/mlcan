@@ -4,10 +4,23 @@ import {ReactComponent as UploadIcon } from '../../../assets/single color icons 
 import {ReactComponent as CloseIcon } from '../../../assets/single color icons - SVG/close.svg'
 import {ReactComponent as AlertIcon } from '../../../assets/Multicolor icons - SVG/alert.svg'
 import './BulkUpload.scss'
-import { Upload } from "antd";
+import { Upload, notification } from "antd";
 
 interface BulkUploadComponentProps {
   onClose: () => void;
+}
+
+const onUpload = (onClose) => {
+  notification.success({
+    message: "Upload Successful !",
+    description: "Check the Table for more information !",
+    className: "custom-notification-placement",
+  });
+  setTimeout(() => {
+    notification.destroy();
+  }, 3000);
+
+  onClose()
 }
 
 const BulkUploadComponent: React.FC<BulkUploadComponentProps> = ({ onClose }) => {
@@ -28,8 +41,8 @@ const BulkUploadComponent: React.FC<BulkUploadComponentProps> = ({ onClose }) =>
             <Upload className="file-upload">or browse file </Upload>
         </div>
         <div className="delete-confirmation-buttons upload-buttons">
-                <button>Cancel</button>
-                <button>Proceed</button>
+                <button onClick={onClose}>Cancel</button>
+                <button onClick={()=>onUpload(onClose)}>Proceed</button>
         </div>
         
       </div>
