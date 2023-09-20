@@ -82,6 +82,33 @@ export const addContainerRequest = async (values: any) => {
   }
 }
 
+export const addItemRequest = async (values: any) => {
+  try {
+      const response = await axiosInstance.post(ApiRoutes.REP_ITEMS, values)
+
+      if(response.status === 200) {
+          notification.success({
+              message: "Item Added Successfully !",
+              description: "Check your Item details for more information !",
+              className: "custom-notification-placement",
+            });
+            setTimeout(() => {
+              notification.destroy();
+            }, 3000);
+      }
+      else {
+          notification.error({
+              message: "There was a error in adding the Item !",
+              description: "Check your Item details for more information !",
+              className: "custom-notification-placement",
+            });
+       }
+     
+   } catch (error) {
+      console.log(error)
+  }
+}
+
 export const editContainerRequest = async (values: any, id:string) => {
   try {
       const response = await axiosInstance.put(`${ApiRoutes.CONTAINERS}/${id}`, values)

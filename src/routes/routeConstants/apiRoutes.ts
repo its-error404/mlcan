@@ -18,4 +18,5 @@ export const ApiRoutes = {
     EVENT_OPTIONS: "/meta/events",
     REP_MODES: "/meta/repair_modes",
     REP_CATEGORIES: "/meta/repair_categories",
+    REP_ITEMS: "/repair_items/"
 }

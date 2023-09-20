@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
 import "./Comments.scss";
 import { CommentsData } from "../../../../models/comments.model";
-import { Button, Input, Pagination } from "antd";
+import { Button, Input, Pagination, notification } from "antd";
+import axiosInstance from "../../../../interceptor/axiosInstance";
+import { ApiRoutes } from "../../../../routes/routeConstants/apiRoutes";
 const CommentsComponent = () => {
   const [commentsData, setCommentsData] = useState<CommentsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -44,6 +46,32 @@ const CommentsComponent = () => {
     setCurrentPage(page);
   };
 
+  const handleAddComment = async () => {
+    const inputElement = document.querySelector(".comments-input") as HTMLInputElement;
+    const commentText = inputElement.value;
+
+    if (commentText) {
+      try {
+        
+        const response = await axiosInstance.post(`${ApiRoutes.COMMENTS}`, {
+          comment: commentText,
+        });     
+          const updatedData = await fetchCommentsData();
+          setCommentsData(updatedData as CommentsData | null);
+          notification.success({
+            message: "Comment added Successfully !",
+            className: "custom-notification-placement",
+          });
+          setTimeout(() => {
+            notification.destroy();
+          }, 3000);
+  
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
+    }
+  };
+
   return (
     <div className="comments-main">
       <div className="comments-flex">
@@ -54,7 +82,7 @@ const CommentsComponent = () => {
           size="large"
           className="comments-input"
         />
-        <Button className="comments-add">Add Comment</Button>
+        <Button className="comments-add" onClick={handleAddComment}>Add Comment</Button>
       </div>
       {isLoading ? (
         <p>Loading comments...</p>

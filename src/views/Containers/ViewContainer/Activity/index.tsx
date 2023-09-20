@@ -27,7 +27,7 @@ const ActivitySection: React.FC = () => {
     async function fetchData() {
       try {
         const response = await fetchActivityData();
-        setInspectionData(response.inspectionJsonData)
+        setInspectionData(response.inspectionJsonData.docs)
         setQuoteData(response.quoteJsonData)
         setPhotoData(response.photoJsonData)
         setRepairData(response.repairFormJsonData || { docs: [] })
@@ -41,6 +41,7 @@ const ActivitySection: React.FC = () => {
   }, []);
 
   const toggleExpandRepairCard = async (formId: string) => {
+    console.log("Toggle expand Quote Form called with formId:", formId);
     try {
       console.log('hello')
       const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
@@ -89,6 +90,7 @@ const ActivitySection: React.FC = () => {
               expanded={false} 
               toggleExpand={() => toggleExpandRepairCard(data.id)}
               expandedData={expandedRepairFormData}
+              UniqueID = {data.id}
             />
           ))}
           {quoteData &&
@@ -103,6 +105,7 @@ const ActivitySection: React.FC = () => {
               expanded={false} 
               toggleExpand={() => toggleExpandedQuoteCard(data.id)}
               expandedData={expandedQuoteFormData}
+              UniqueID={data.id}
               />
           ))}
           {/* {inspectionData &&
@@ -115,8 +118,9 @@ const ActivitySection: React.FC = () => {
               activityStatus={data.curr_status}
               icon={<InspectionIcon width={20}/>}
               expanded={false} 
-              toggleExpand={() => toggleExpandCard(data.id)}
+              toggleExpand={() => toggleExpandRepairCard(data.id)}
               expandedData={expandedInspectionFormData}
+              UniqueID={data.id}
               />
           ))} */}
       </Space>

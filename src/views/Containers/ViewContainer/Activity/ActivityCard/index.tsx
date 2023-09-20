@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as QuoteIcon } from "../../../../../assets/single color icons - SVG/quote.svg";
 import { ReactComponent as RepairIcon } from "../../../../../assets/single color icons - SVG/repair.svg";
 import { ReactComponent as InspectionIcon } from "../../../../../assets/single color icons - SVG/inspection.svg";
@@ -9,8 +9,13 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import './Dropdown.scss'
 import { Button, Dropdown, Menu, Select, Table } from "antd";
+import axiosInstance from "../../../../../interceptor/axiosInstance";
+import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
+import AddItem from "./AddItem";
+import OverlayBox from "../../../../../shared/components/overlayBox";
 
 const ActivityCard: React.FC<{
+  UniqueID: string
   formType: string;
   formID: string;
   date: string;
@@ -20,6 +25,7 @@ const ActivityCard: React.FC<{
   toggleExpand: () => void;
   expandedData
 }> = ({
+  UniqueID,
   formType,
   formID,
   date,
@@ -29,6 +35,11 @@ const ActivityCard: React.FC<{
   toggleExpand,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
+  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
+  const [addItem, setAddItem] = useState<boolean>(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [updateActivityStatus, setUpdateActivityStatus] = useState("");
 
   const getBackgroundColor = () => {
     if (icon.type === QuoteIcon) {
@@ -41,76 +52,97 @@ const ActivityCard: React.FC<{
       return "";
     }
   };
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleUpdateClick = () => {
+    if (activityStatus !== "Select") {
+      setSelectedOption(activityStatus); 
+      setShowConfirmation(true);
+    }
+  }
 
   const { Option } = Select;
 
-const columns = [
-  {
-    title: "Repair ID",
-    dataIndex: "repairID",
-    key: "repairID",
-  },
-  {
-    title: "Repair Area",
-    dataIndex: "repairArea",
-    key: "repairArea",
-  },
-  {
-    title: "Damage Area",
-    dataIndex: "damageArea",
-    key: "damageArea",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    key: "type",
-  },
-  {
-    title: "Quantity",
-    dataIndex: "quantity",
-    key: "quantity",
-  },
-  {
-    title: "Location",
-    dataIndex: "location",
-    key: "location",
-  },
-  {
-    title: "Hours",
-    dataIndex: "hours",
-    key: "hours",
-  },
-  {
-    title: "Labour Cost",
-    dataIndex: "labourCost",
-    key: "labourCost",
-  },
-  {
-    title: "Material Cost",
-    dataIndex: "materialCost",
-    key: "materialCost",
-  },
-  {
-    title: "Total Cost",
-    dataIndex: "totalCost",
-    key: "totalCost",
-  },
-];
+  const columns = [
+    {
+      title: "Repair ID",
+      dataIndex: "repairID",
+      key: "repairID",
+    },
+    {
+      title: "Repair Area",
+      dataIndex: "repairArea",
+      key: "repairArea",
+    },
+    {
+      title: "Damage Area",
+      dataIndex: "damageArea",
+      key: "damageArea",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "Hours",
+      dataIndex: "hours",
+      key: "hours",
+    },
+    {
+      title: "Labour Cost",
+      dataIndex: "labourCost",
+      key: "labourCost",
+    },
+    {
+      title: "Material Cost",
+      dataIndex: "materialCost",
+      key: "materialCost",
+    },
+    {
+      title: "Total Cost",
+      dataIndex: "totalCost",
+      key: "totalCost",
+    },
+  ]
 
-const data = [
-  {
-    repairID: "001",
-    repairArea: "Top Rails and Headers",
-    damageArea: "Top Longitudinal Rails",
-    type: "Replace",
-    quantity: '3',
-    location: "LXXX",
-    hours: 1.2,
-    labourCost: 71.5,
-    materialCost: 71.5,
-    totalCost: 71.5,
-  },
-];
+  const mapRepairDataToTableData = () => {
+    if (expandedRepairFormData) {
+      return [
+        {
+          repairID: expandedRepairFormData.uid || 'RF00001',
+          repairArea: expandedRepairFormData.repairArea || 'Top Rails and Headers',
+          damageArea: expandedRepairFormData.damageArea || 'Top Longitudinal Rails',
+          type: expandedRepairFormData.type || 'Replace',
+          quantity: expandedRepairFormData.quantity || '3',
+          location: expandedRepairFormData.location || 'LXXX',
+          hours: expandedRepairFormData.hours || 1.2,
+          labourCost: expandedRepairFormData.labourCost || 71.5,
+          materialCost: expandedRepairFormData.materialCost || 71.5,
+          totalCost: expandedRepairFormData.totalCost || 71.5,
+        },
+      ];
+    }
+    return [];
+  };
+
+const [data, setData] = useState(mapRepairDataToTableData());
+
+useEffect(() => {
+  setData(mapRepairDataToTableData());
+}, [expandedRepairFormData]);
+
+
 
 const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
     const menu = (
@@ -147,13 +179,46 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
       ? "form-type-inspection"
       : "";
 
+      const toggleExpandRepairCard = async (uniqueID: string) => {
+        try {
+          const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${UniqueID}`);
+          setExpandedRepairFormData(response.data);
+          setData(mapRepairDataToTableData());
+        } catch (error) {
+          console.error("Error fetching card details:", error);
+        }
+      };
+
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
+    toggleExpandRepairCard(UniqueID)
   };
 
+  const toggleAddItem = () => {
+    setAddItem(!addItem);
+  };
 
+  const handleConfirm = async () => {
+    console.log('hefef')
+    try {
+      const response = await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
+        option: selectedOption,
+      });
+      console.log(response);    
+      setShowConfirmation(false);
+    } catch (error) {
+      console.error("Error updating status:", error);
+    
+    }
+  };
+  
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
 
   return (
+
+    
     <div
       className={`activity-card ${formTypeClass} ${
         isExpanded ? "expanded" : ""
@@ -196,11 +261,12 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
               </div>
             </div>
             <div className="header_second">
-              <div><Button>Add Item</Button></div>
+              <div><Button onClick={()=>toggleAddItem()}>Add Item</Button></div>
               <div className="select-container">
                 <Button>Status</Button>
                 <Select
-                  value={activityStatus}
+                 onChange={(value) => setUpdateActivityStatus(value)}
+                  value={updateActivityStatus}
                   defaultValue="Select"
                   style={{ width: 150 }}
                   dropdownMatchSelectWidth={false}
@@ -230,7 +296,7 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
                   ]}
                 />
               </div>
-              <div><Button>Update</Button></div>
+              <Button onClick={handleUpdateClick}>Update</Button>
             </div>
             </div>
             <Table
@@ -252,6 +318,29 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
           />
         </div>
       )}
+
+      {showConfirmation && (
+  <OverlayBox maxWidth="400px" minHeight="200px" onClose={()=> {}}>
+    <div>
+      <p>Are you sure you want to update the status?</p>
+      <button onClick={handleConfirm}>Confirm</button>
+      <button onClick={handleCancel}>Cancel</button>
+    </div>
+  </OverlayBox>
+)}
+
+          {addItem && (
+            <div className="overlay">
+              <div className="overlay-content">
+                <AddItem
+                  onclose={() => {
+                    setAddItem
+                    (false);
+                  }}
+                />
+              </div>
+            </div>
+          )}
     </div>
   );
 };

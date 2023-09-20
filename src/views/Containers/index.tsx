@@ -76,38 +76,24 @@ const AllContainers = () => {
 
     const containers = allContainersData.docs as ContainersData[];
 
-    let filteredData = [];
-    switch (section) {
-      case "All":
-        filteredData = containers;
-        break;
-      case "Draft":
-        filteredData = containers.filter(
-          (doc) => doc.activityStatus === "draft"
-        );
-        break;
-      case "Admin Review Pending":
-        filteredData = containers.filter(
-          (doc) => doc.activityStatus === "billing"
-        );
-        break;
-      case "Pending Customer Approval":
-        filteredData = containers.filter(
-          (doc) => doc.activityStatus === "pending"
-        );
-        break;
-      case "Quotes Approved by Customers":
-        filteredData = containers.filter(
-          (doc) => doc.activityStatus === "approved"
-        );
-        break;
-      default:
-        filteredData = [];
-    }
+    let filteredData = containers.filter((doc) => {
+      const searchMatches = doc.uid.toLowerCase().includes(searchQuery.toLowerCase());
 
-    filteredData = filteredData.filter((doc) =>
-      doc.uid.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+      switch (section) {
+        case "All":
+          return searchMatches;
+        case "Draft":
+          return doc.activityStatus === "draft" && searchMatches;
+        case "Admin Review Pending":
+          return doc.activityStatus === "billing" && searchMatches;
+        case "Pending Customer Approval":
+          return doc.activityStatus === "pending" && searchMatches;
+        case "Quotes Approved by Customers":
+          return doc.activityStatus === "approved" && searchMatches;
+        default:
+          return false;
+      }
+    });
 
     return filteredData;
   };
@@ -373,11 +359,6 @@ const AllContainers = () => {
                             onChange={(date) => setDateData(date)}
                             value={dateData}
                           />
-                          {/* <DatePicker
-                            className="container-date-picker"
-                            onChange={(date) => setDateData(date)}
-                            value={dateData}
-                          /> */}
                         </div>
 
                         <div className="filter-dropdown-date choose-activity">

@@ -24,29 +24,28 @@ const ViewContainer: React.FC = () => {
   const [containerData, setContainerData] = useState<ContainerData | null>(null);
   const [activeSection, setActiveSection] = useState("Activity");
   const [, setSectionIndex] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [editContainer, setEditContainer] = useState<Container | null>(null)
   const [editContainerVisible, setEditContainerVisible] = useState(false);
 
+  const fetchData = async () => {
+    try {
+      const response = await getWorkingContainer();
+      setContainerData(response);
+    } catch (error) {
+      console.error("Error fetching container data:", error);
+      setContainerData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getWorkingContainer();
-        setContainerData(response);
-      } catch (error) {
-        console.error("Error fetching container data:", error);
-        setContainerData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [id]);
 
   useEffect(() => {
-    // console.log(containerData);
+    console.log('hello');
   }, [containerData]);
 
   const handleEditClick = (container: Container | null) => {
@@ -94,17 +93,21 @@ const ViewContainer: React.FC = () => {
             <h2>hi</h2>
             {containerData && containerData.container && (
               <>
+                {/* {console.log(containerData.container)} */}
                 <h1>{containerData.container.uid}</h1>
                 <EditIcon width={15} onClick={() => handleEditClick(containerData.container)} />
+                {/* {console.log(containerData.container)} */}
               </>
             )}
           </div>
           <div className="container-header__second">
+          {/* {console.log(containerData.container)} */}
             <p>1 of 94 </p>
             <PrevIcon width={30} />
             <NextIcon width={30} />
           </div>
         </div>
+        {/* {console.log(containerData.container)} */}
         <div className="container-headlines">
           <p>Yard name</p>
           <p>Customer</p>
@@ -115,21 +118,24 @@ const ViewContainer: React.FC = () => {
           <p>Container Type</p>
           <p>Manufacture Year</p>
         </div>
-        {/* <div className="container-data">
-         
-          {containerData && containerData.container && (
+        <div className="container-data" >
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          containerData && containerData.container && (
             <>
-              <p>Yard name: {containerData.container.yard}</p>
-              <p>Customer: {containerData.container.customer}</p>
-              <p>Owner name: {containerData.container.owner}</p>
-              <p>Submitter Initials: {containerData.container.submitter}</p>
-              <p>Length: {containerData.container.length}</p>
-              <p>Height: {containerData.container.height}</p>
-              <p>Container Type: {containerData.container.type}</p>
-              <p>Manufacture Year: {containerData.container.year}</p>
+              <p>{containerData.container.yard}</p>
+              <p>{containerData.container.customer.name}</p>
+              <p> {containerData.container.owner}</p>
+              <p>{containerData.container.submitter}</p>
+              <p>{containerData.container.length}</p>
+              <p>{containerData.container.height}</p>
+              <p>{containerData.container.type}</p>
+              <p> {containerData.container.year}</p>
             </>
-          )}
-        </div> */}
+          )
+        )}
+      </div>
     {editContainerVisible && (
       <div className="overlay">
       <div className="overlay-content">

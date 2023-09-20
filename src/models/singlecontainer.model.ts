@@ -225,7 +225,7 @@ export class Container {
     yard?: string
 
     @serializable(alias('customer', object(Customer)))
-    customer? : Customer[]
+    customer? : Customer
 
     @serializable(alias('owner', primitive()))
     owner?: string
