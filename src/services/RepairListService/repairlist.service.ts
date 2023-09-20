@@ -60,7 +60,7 @@ export const deleteRepairEntry = async (id: string) => {
 
 // Edit Repair Entry
 
-export const editRepairEntry = async (values: any, id: string) => {
+export const editRepairEntry = async (values: any, id: any) => {
   try {
     const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`,values);
     if (response.status === 200) {

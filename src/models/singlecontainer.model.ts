@@ -217,11 +217,6 @@ export class platePhoto {
     id?: string;
 }
 
-export class ContainerData {
-    @serializable(alias('container', primitive()))
-    container?: Container[];
-}
-
 export class Container {
     @serializable(alias('uid', primitive()))
     uid?: string
@@ -230,7 +225,7 @@ export class Container {
     yard?: string
 
     @serializable(alias('customer', object(Customer)))
-    customer? : Customer
+    customer? : Customer[]
 
     @serializable(alias('owner', primitive()))
     owner?: string
@@ -257,22 +252,22 @@ export class Container {
     doorPhoto?: string
 
     @serializable(alias('left_side_photo', object(leftSidePhoto)))
-    leftSidePhoto?: leftSidePhoto
+    leftSidePhoto?: leftSidePhoto[]
 
     @serializable(alias('right_side_photo', object(rightSidePhoto)))
-    rightSidePhoto?: rightSidePhoto
+    rightSidePhoto?: rightSidePhoto[]
 
     @serializable(alias('front_side_photo', object(frontSidePhoto)))
-    frontSidePhoto?: frontSidePhoto
+    frontSidePhoto?: frontSidePhoto[]
 
     @serializable(alias('interior_photo', object(interiorPhoto)))
-    interiorPhoto?: interiorPhoto
+    interiorPhoto?: interiorPhoto[]
 
     @serializable(alias('under_side_photo', object(underSidePhoto)))
-    underSidePhoto?: underSidePhoto
+    underSidePhoto?: underSidePhoto[]
 
     @serializable(alias('roof_photo', object(roofPhoto)))
-    roofPhoto?: roofPhoto
+    roofPhoto?: roofPhoto[]
 
     @serializable(alias('plate_photo', object(platePhoto)))
     platePhoto?: platePhoto
@@ -289,6 +284,13 @@ export class Container {
     @serializable(alias('id', primitive()))
     id?: string
 }
+
+
+export class ContainerData {
+    @serializable(alias('container', object(Container)))
+    container?: Container;
+}
+
 
 export const InitialContainerFormValues = {
     ...Container,

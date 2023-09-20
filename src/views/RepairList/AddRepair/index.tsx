@@ -75,7 +75,7 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
                     <h2>Add Repair Part</h2>
                     <CloseIcon width={15} onClick={onclose} />
                 </div>
-                <div className="section-buttons">
+                <div className="section-buttons add-repair-section">
                     {sections.map((section, index) => (
                         <div
                             key={index}

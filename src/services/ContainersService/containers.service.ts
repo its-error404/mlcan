@@ -46,9 +46,8 @@ export const getWorkingContainer = async () => {
   try {
     const response = await axiosInstance.get(workingLink);
     const jsonData = response.data.data;
-
-    // const containerInstance = deserialize(ContainerData, jsonData);
-    return jsonData 
+    const containerInstance = deserialize(ContainerData, jsonData);
+    return containerInstance
   } catch (err) {
     console.error("Error fetching data:", err); 
     throw err;
@@ -73,6 +72,32 @@ export const addContainerRequest = async (values: any) => {
       else {
           notification.error({
               message: "There was a error in adding the Container !",
+              description: "Check your container details for more information !",
+              className: "custom-notification-placement",
+            });
+       }
+     
+   } catch (error) {
+      console.log(error)
+  }
+}
+
+export const editContainerRequest = async (values: any, id:string) => {
+  try {
+      const response = await axiosInstance.put(`${ApiRoutes.CONTAINERS}/${id}`, values)
+      if(response.status === 200) {
+          notification.success({
+              message: "Container Edited Successfully !",
+              description: "Check your container details for more information !",
+              className: "custom-notification-placement",
+            });
+            setTimeout(() => {
+              notification.destroy();
+            }, 3000);
+      }
+      else {
+          notification.error({
+              message: "There was a error in Editing the Container !",
               description: "Check your container details for more information !",
               className: "custom-notification-placement",
             });
