@@ -29,7 +29,7 @@ const AllContainers = () => {
   const [statusData, setStatusData] = useState("");
   const [customerData, setCustomerData] = useState("");
   const [yardData, setYardData] = useState("");
-  const [dateData, setDateData] = useState(null);
+  const [dateData, setDateData] = useState("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
   const [allContainersData, setContainersData] =
     useState<AllContainersData | null>(null);
@@ -101,7 +101,10 @@ const AllContainers = () => {
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
     setSectionIndex(newIndex);
+    const sectionFilteredData = filterContainers(section, searchData);
+    setFilteredEntries(sectionFilteredData);
     setActiveSection(section);
+    setDisplayedEntries(filteredEntries.length);
     setShowActivityUidColumn(section === "Draft");
   };
 
@@ -110,16 +113,14 @@ const AllContainers = () => {
   };
 
   const applyFilters = (data: any) => {
-    return data.filter((doc: any) => {
-      const ActivityMatches =
-        activityData === "" || doc.activityType === activityData;
-      const statusMatches =
-        statusData === "" || doc.activityStatus === statusData;
+  
+    const filteredData = data.filter((doc: any) => {
+      const ActivityMatches = activityData === "" || doc.activityType === activityData;
+      const statusMatches = statusData === "" || doc.activityStatus === statusData;
       const yardMatches = yardData === "" || doc.yard === yardData;
-      const customerMatches =
-        customerData === "" || doc.customerName === customerData;
-      const dateMatches = dateData === "" || doc.activityDate === dateData;
-
+      const customerMatches = customerData === "" || doc.customerName === customerData;
+      const dateMatches = dateData === "" || formatDate(doc.activityDate) === dateData;
+    
       return (
         ActivityMatches &&
         customerMatches &&
@@ -128,13 +129,19 @@ const AllContainers = () => {
         dateMatches
       );
     });
+    
+    return filteredData;
   };
+  
 
   const handleApplyFilters = () => {
-    const filteredData = applyFilters(ContainersData?.docs || []);
-    setFilteredEntries(filteredData);
+    console.log("Filtered Data:", filteredEntries);
+    const newFilteredData = applyFilters(filteredEntries);
+    console.log(newFilteredData)
+    setFilteredEntries(newFilteredData);
+    console.log(newFilteredData)
     setFilterMenu(false);
-    setDisplayedEntries(filteredData.length);
+    setDisplayedEntries(newFilteredData.length);
   };
 
   const handleResetFilters = () => {
@@ -143,9 +150,10 @@ const AllContainers = () => {
     setYardData("");
     setStatusData("");
     setCustomerData("");
-    const filteredData = applyFilters(ContainersData?.docs || []);
-    setFilteredEntries(filteredData);
+    const newFilteredData = filterContainers(activeSection, searchData);
+    setFilteredEntries(newFilteredData);
     setFilterMenu(false);
+    setDisplayedEntries(newFilteredData.length);
   };
 
   const sections = [
@@ -356,7 +364,7 @@ const AllContainers = () => {
                           <input
                             type="date"
                             className="container-date-picker"
-                            onChange={(date) => setDateData(date)}
+                            onChange={(e) => setDateData(e.target.value)}
                             value={dateData}
                           />
                         </div>
@@ -367,8 +375,8 @@ const AllContainers = () => {
                             value={activityData}
                             onChange={(e) => setActivityData(e.target.value)}
                           >
-                            <option>Draft</option>
-                            <option>Inspection</option>
+                            <option>draft</option>
+                            <option>inspection</option>
                           </select>
                         </div>
                       </div>
@@ -380,8 +388,8 @@ const AllContainers = () => {
                             value={statusData}
                             onChange={(e) => setStatusData(e.target.value)}
                           >
-                            <option>Quote Draft</option>
-                            <option>Inspection Draft</option>
+                            <option>billing</option>
+                            <option>draft</option>
                           </select>
                         </div>
 
@@ -392,7 +400,7 @@ const AllContainers = () => {
                             onChange={(e) => setYardData(e.target.value)}
                           >
                             <option>Nordel</option>
-                            <option>Harbour Link</option>
+                            <option>Harbourlink</option>
                             <option>Aheer</option>
                           </select>
                         </div>
@@ -404,9 +412,8 @@ const AllContainers = () => {
                           value={customerData}
                           onChange={(e) => setCustomerData(e.target.value)}
                         >
-                          <option>Quote</option>
-                          <option>Repair</option>
-                          <option>Inspection</option>
+                          <option>Krishna</option>
+                          <option>Killian Darian</option>
                         </select>
                       </div>
                     </div>
@@ -418,9 +425,8 @@ const AllContainers = () => {
             <div className="container-box__container">
               <Table
                 columns={columns}
-                dataSource={applyFilters(
-                  filterContainers(activeSection, searchData)
-                )}
+                // dataSource={applyFilters(filterContainers(activeSection, searchData))}
+                dataSource={filteredEntries}
                 rowKey="uid"
                 className="container-table"
                 rowClassName={getRowClassName}

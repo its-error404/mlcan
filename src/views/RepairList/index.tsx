@@ -215,8 +215,7 @@ const RepairList = () => {
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
-  const [selectedEntryForEdit, setSelectedEntryForEdit] =
-    useState<RepairData | null>(null);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<RepairData | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
@@ -274,11 +273,9 @@ const RepairList = () => {
 
   const applyFilters = (data: any) => {
     return data.filter((doc: any) => {
-      const repairAreaMatches =
-        repairAreaData === "" || doc.repArea === repairAreaData;
+      const repairAreaMatches =  repairAreaData === "" || doc.repArea === repairAreaData;
       const typeMatches = typeData === "" || doc.type === typeData;
-      const damagedAreaMatches =
-        damagedAreaData === "" || doc.dmgArea === damagedAreaData;
+      const damagedAreaMatches = damagedAreaData === "" || doc.dmgArea === damagedAreaData;
 
       return repairAreaMatches && typeMatches && damagedAreaMatches;
     });
