@@ -60,7 +60,7 @@ const LoginForm: React.FC = () => {
           }`}
         >
           <h2>
-            {isForgotPassword ? "Forgot Password" : "Login into Admin Portal"}
+            {isForgotPassword ? "Forgot Password" : "Login to admin portal"}
           </h2>
           <br></br>
           <Formik
