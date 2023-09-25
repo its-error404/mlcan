@@ -312,6 +312,10 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
+        
+       
+          <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
+       
 
         {addRepair && (
           <div className="overlay">
