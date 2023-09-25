@@ -11,23 +11,15 @@ import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo/";
 
 interface EditRepairProps {
-  data: any;
+  editedData: any;
   onClose: () => void;
-  id: any;
+  repairId: string;
+  overlayOpen: boolean;
+  closeOverlay: () => void;
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   const [, setFormData] = useState<any>({});
-
-  useEffect(() => {
-    if (data) {
-      setFormData(data);
-    }
-  }, [data]);
-
-  const EditValues = {
-    ...data,
-  };
 
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
@@ -55,8 +47,10 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   };
 
   const formik = useFormik({
-    initialValues: EditValues,
+    initialValues: editedData,
     validationSchema: repairDetailsSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: async (formData) => {
       try {
         await editRepairEntry(formData, formData.id);
@@ -77,12 +71,26 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   };
 
   return (
-    <div>
-      <div className="repair-details-form">
-        <div className="form-wrapper">
+    <div className="overlay">
+      <div className="overlay-content">
+        <div
+          className={`overlay-box-edit  ${overlayOpen ? "overlay-open" : ""}`}
+          style={{
+            maxHeight: "80vh",
+            overflowY: "auto",
+            position: "fixed",
+            top: "45%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           <div className="form-header">
             <h2>Edit Repair Part</h2>
-            <CloseIcon width={15} onClick={onClose} />
+            <CloseIcon
+              width={15}
+              onClick={onClose}
+              className="close-icon-edit"
+            />
           </div>
           <div className="section-buttons edit-section-button">
             {sections.map((section, index) => (

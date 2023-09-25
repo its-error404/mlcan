@@ -105,7 +105,7 @@ export class MercPlusDetails {
 }
 
 export const initialRepairFormValues = {
-    ...RepairDetails,
-    ...MercPlusDetails,
-    ...NonMaerskDetails
-}
+    ...new RepairDetails(),
+    ...new MercPlusDetails(),
+    ...new NonMaerskDetails()
+};
