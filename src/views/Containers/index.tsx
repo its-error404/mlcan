@@ -244,20 +244,29 @@ const AllContainers = () => {
       ),
       dataIndex: "activityStatus",
       key: "activityStatus",
-      render: (text: string, record: any) => (
-        <div
-          className={`activity-text ${
-            text === "billing"
-              ? "billing-style"
-              : text === "draft"
-              ? "draft-style"
-              : "default-style"
-          }`}
-        >
-          {text || "N/A"}
-        </div>
-      ),
-    },
+      render: (text: string, record: any) => {
+        let displayedText = "N/A";
+        if (text === "billing") {
+          displayedText = "Ready for Billing";
+        } else if (text === "draft") {
+          displayedText = "Quote Draft";
+        }
+    
+        return (
+          <div
+            className={`activity-text ${
+              text === "billing"
+                ? "billing-style"
+                : text === "draft"
+                ? "draft-style"
+                : "default-style"
+            }`}
+          >
+            {displayedText}
+          </div>
+        );
+      },
+    },    
   ].filter(Boolean);
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -425,7 +434,6 @@ const AllContainers = () => {
             <div className="container-box__container">
               <Table
                 columns={columns}
-                // dataSource={applyFilters(filterContainers(activeSection, searchData))}
                 dataSource={filteredEntries}
                 rowKey="uid"
                 className="container-table"

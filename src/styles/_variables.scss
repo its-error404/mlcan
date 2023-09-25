@@ -47,22 +47,19 @@ $draft-grey-text: #808B99;
 $light-gray-button: #E6E9EC;
 
 /* Component colors */
-$sidebar-bg: #242937;
-<<<<<<< Updated upstream
-$turkish-green: #489482;
-=======
+$sidebar-bg: #252936;
 $turkish-green: #319583;
->>>>>>> Stashed changes
 $sidebar-active-bg: #303645;
 $sidebar-text: #919AA4;
 $sidebar-active-text: white;
 $userinfo-bg: #303645;
-$user-dropdown-bg: #303744;
+$user-dropdown-bg: #303645;
 $user-info-child-primary: white;
 $user-info-child-secondary: #757c85;
-$user-info-child-tertiary: #f1f4f8;
+$user-info-child-tertiary: #CFD5DA;
 $initials: rgb(51,68,80); 
 $dropdown-button: white;
+$table-header: #EDF1F5;
 $logout-text: white;
 $sidebar-span: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%);
 $icon-background: brightness(0) saturate(100%) invert(69%) sepia(58%) saturate(291%) hue-rotate(115deg) brightness(93%) contrast(92%) !important;
@@ -116,7 +113,7 @@ $spacer-x : 1rem;
 $spacer-y : 1rem;
 
 /* Border */
-$user-contact-border: rgba(145, 142, 142, 0.998);
+$user-contact-border: rgba(85, 79, 79, 0.998);
 $container-border-top: rgb(234, 229, 229);
 
 /* Containers */
@@ -126,7 +123,7 @@ $filter-button-bg: white;
 $filter-button-text: gray;
 $filter-menu-border:black;
 $filter-menu-bg: white;
-$row-color-first: #F7F9FA;
+$row-color-first: #F6F8FA;
 $bg-white: white;
 
 /* Background */

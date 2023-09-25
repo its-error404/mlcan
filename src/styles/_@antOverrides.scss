@@ -14,7 +14,6 @@
 }
 
 .ant-upload-drag-icon {
-  // margin-top: 10px;
   position: absolute;
   top: 33%;
   left: 37%;
@@ -39,14 +38,91 @@
   display: none;
 }
 .ant-table table {
-  // border-spacing: 50px 30px;
   border-collapse: collapse;
-  width: 100%;
+  width: 108.5% !important;
 }
 
 .ant-table-tbody > .ant-table-row td{
-  padding-left: 50px;  
+  padding-left: 20px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-right: 10px !important;  
 }
+
+.ant-table-tbody > .ant-table-row tr:nth-child(2){
+  padding-left: 10px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-right: 10px !important;
+  max-width: 40px;
+}
+
+.ant-table-thead > tr > th {
+  background-color: $table-header !important;
+}
+
+.ant-table-thead > tr > th:nth-child(2) {
+  position: relative;
+  left: -60px;
+  font-size: 14px;
+}
+
+.ant-table-tbody > tr > td:nth-child(2){
+  position: relative;
+  left: -60px;
+  font-size: 14px;
+}
+
+.ant-table-thead > tr > th:nth-child(3) {
+  position: relative;
+  left: -85px;
+}
+
+.ant-table-tbody > tr > td:nth-child(3){
+  position: relative;
+  left: -85px;
+}
+
+.ant-table-thead > tr > th:nth-child(4) {
+  position: relative;
+  left: -110px;
+}
+
+.ant-table-tbody > tr > td:nth-child(4){
+  position: relative;
+  left: -110px;
+}
+
+.ant-table-thead > tr > th:nth-child(5) {
+  position: relative;
+  left: -110px;
+}
+
+.ant-table-tbody > tr > td:nth-child(5){
+  position: relative;
+  left: -110px;
+}
+
+.ant-table-thead > tr > th:nth-child(6) {
+  position: relative;
+  left: -130px;
+}
+
+.ant-table-tbody > tr > td:nth-child(6){
+  position: relative;
+  left: -130px;
+}
+
+.ant-table-thead > tr > th:nth-child(7) {
+  position: relative;
+  left: -130px;
+}
+
+.ant-table-tbody > tr > td:nth-child(7){
+  position: relative;
+  left: -130px;
+}
+
 
 .ant-table-thead th {
   padding-top: 10px;
@@ -54,9 +130,6 @@
 }
 
 .even-row td {
-  padding-left: 20px;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
   background-color: $bg-white;
 }
 
@@ -65,9 +138,6 @@
 }
 
 .odd-row td{
-  padding-left: 20px;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
   background-color: $row-color-first;
 }
 .antd-table-repair.ant-table {
@@ -174,7 +244,6 @@
   align-items: center;
   margin-top: 20px; 
 }
-
 
 .horizontal-pagination {
   display: flex;
