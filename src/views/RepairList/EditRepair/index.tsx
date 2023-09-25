@@ -11,12 +11,24 @@ import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo/";
 
 interface EditRepairProps {
-  data: any;
+  editedData: any;
   onClose: () => void;
-  id: any;
+  repairId: string;
+  overlayOpen: boolean;
+  closeOverlay: () => void;
 }
 
-const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
+const EditRepair: React.FC<EditRepairProps> = ({
+  editedData,
+  onClose,
+  repairId,
+  overlayOpen,
+}) => {
+  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(
+    0
+  );
+
+
   const [formData, setFormData] = useState<any>({});
 
   useEffect(() => {
@@ -78,12 +90,26 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   };
 
   return (
-    <div>
-      <div className="repair-details-form">
-        <div className="form-wrapper">
+    <div className="overlay">
+      <div className="overlay-content">
+        <div
+          className={`overlay-box-edit  ${overlayOpen ? "overlay-open" : ""}`}
+          style={{
+            maxHeight: "80vh",
+            overflowY: "auto",
+            position: "fixed",
+            top: "45%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           <div className="form-header">
             <h2>Edit Repair Part</h2>
-            <CloseIcon width={15} onClick={onClose} />
+            <CloseIcon
+              width={15}
+              onClick={onClose}
+              className="close-icon-edit"
+            />
           </div>
           <div className="section-buttons edit-section-button">
             {sections.map((section, index) => (
