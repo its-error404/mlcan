@@ -133,6 +133,15 @@ const AllContainers = () => {
     return filteredData;
   };
   
+  // useEffect(() => {
+  //   const newfilteredData = applyFilters(ContainersData?.docs || []).filter(
+  //     (record: any) =>
+  //       record.uid.toLowerCase().includes(searchData.toLowerCase())
+  //   );
+
+  //   setFilteredEntries(newfilteredData);
+  //   setDisplayedEntries(newfilteredData.length);
+  // }, []);
 
   const handleApplyFilters = () => {
     const newFilteredData = applyFilters(filteredEntries);

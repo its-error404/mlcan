@@ -20,7 +20,8 @@ export const addRepairRequest = async (values: RepairData) => {
       setTimeout(() => {
         notification.destroy();
       }, 3000);
-      console.log("Repir Added", response.data);
+      
+      console.log("Repair Added", response.data);
     } else {
       console.log("Repair Error", response.data);
     }
@@ -60,7 +61,7 @@ export const deleteRepairEntry = async (id: string) => {
 
 // Edit Repair Entry
 
-export const editRepairEntry = async (values: any, id: any) => {
+export const editRepairEntry = async (values: RepairData, id:string) => {
   try {
     const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`,values);
     if (response.status === 200) {

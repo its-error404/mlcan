@@ -17,7 +17,7 @@ interface EditRepairProps {
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
-  const [, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<any>({});
 
   useEffect(() => {
     if (data) {
@@ -28,6 +28,8 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
   const EditValues = {
     ...data,
   };
+
+  console.log(formData)
 
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
@@ -56,10 +58,9 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
 
   const formik = useFormik({
     initialValues: EditValues,
-    validationSchema: repairDetailsSchema,
-    onSubmit: async (formData) => {
+    onSubmit: async (values) => {
       try {
-        await editRepairEntry(formData, formData.id);
+        await editRepairEntry(values, values.id);
         onClose()
       } catch (err) {
         console.log(err);

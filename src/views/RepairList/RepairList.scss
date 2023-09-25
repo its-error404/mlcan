@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import '../../styles/@antOverrides';
 
 .repair-list {
   display: flex;
@@ -31,11 +32,23 @@
   padding-left: 35px; 
 }
 
+.ant-table-repair > div > div> div > div> table > thead > tr {
+
+}
+
+.ant-table-repair > thead{
+  display: none;
+}
 .export-icon {
   position: absolute;
   left: 29.9%;
   filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%)
   hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
+.ant-table-repair .ant-table-thead > tr > th {
+  padding: 5px 18px !important;
+  font-weight: 600 !important;
 }
 
 .export-menu-box {
@@ -271,12 +284,17 @@ label {
   gap: 20px;
 }
 
+.repairs-header h1 {
+  font-weight: 800 !important;
+  font-size: 32px !important;
+}
+
 .repair-search-container {
   position: relative;
   display: flex;
   gap: 30px;
   margin-left: 40px;
-  margin-top: 10px;
+  margin-top: -20px;
 }
 
 .repair-search-container input {
@@ -462,6 +480,7 @@ label {
 .repair-details {
   background-color: $row-color-first;
   margin-top: 40px;
+  margin-bottom: 40px;
   margin-left: 52px;
   max-width: 500px;
   min-height: 150px;
