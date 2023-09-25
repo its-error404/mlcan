@@ -62,6 +62,7 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
         onSubmit: async (values: any) => {
             try {
                 await addRepairRequest(values)
+                onclose()
             } catch (err) {
                 console.log(err)
             }

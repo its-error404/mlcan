@@ -6,16 +6,13 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { DatePicker, Table } from "antd";
+import { Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
-import {
-  AllContainersData,
-  ContainersData,
-} from "../../models/Containers.model";
+import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import "antd/dist/antd.css";
 import { ColumnsType } from "antd/lib/table";
 
@@ -41,14 +38,10 @@ const AllContainers = () => {
     const fetchData = async () => {
       try {
         const data = await getContainersData();
-        if (data) {
           setContainersData(data.deserializedData);
-          setFilteredEntries(
-            (data.deserializedData.docs || []) as ContainersData[]
-          );
+          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
           setTotalEntries(data.totalEntries || 0);
           setDisplayedEntries(data.totalEntries || 0);
-        }
       } catch (e) {
         console.log(e);
       }
@@ -73,7 +66,7 @@ const AllContainers = () => {
     if (!allContainersData?.docs) {
       return [];
     }
-
+    
     const containers = allContainersData.docs as ContainersData[];
 
     let filteredData = containers.filter((doc) => {
@@ -111,10 +104,10 @@ const AllContainers = () => {
   const getRowClassName = (record: any, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
-
-  const applyFilters = (data: any) => {
+ 
+  const applyFilters = () => {
   
-    const filteredData = data.filter((doc: any) => {
+    const filteredData = filterContainers(activeSection, searchData).filter((doc) => {
       const ActivityMatches = activityData === "" || doc.activityType === activityData;
       const statusMatches = statusData === "" || doc.activityStatus === statusData;
       const yardMatches = yardData === "" || doc.yard === yardData;
@@ -133,22 +126,20 @@ const AllContainers = () => {
     return filteredData;
   };
   
-  // useEffect(() => {
-  //   const newfilteredData = applyFilters(ContainersData?.docs || []).filter(
-  //     (record: any) =>
-  //       record.uid.toLowerCase().includes(searchData.toLowerCase())
-  //   );
-
-  //   setFilteredEntries(newfilteredData);
-  //   setDisplayedEntries(newfilteredData.length);
-  // }, []);
-
   const handleApplyFilters = () => {
-    const newFilteredData = applyFilters(filteredEntries);
+    const newFilteredData = applyFilters();
     setFilteredEntries(newFilteredData);
     setFilterMenu(false);
     setDisplayedEntries(newFilteredData.length);
   };
+
+  console.log(filteredEntries)
+
+  let filteredData = filteredEntries.filter((doc) => {
+    const searchMatches = doc.uid.toLowerCase().includes(searchData.toLowerCase());
+    })
+
+    console.log(filteredData)
 
   const handleResetFilters = () => {
     setActivityData("");
@@ -162,13 +153,7 @@ const AllContainers = () => {
     setDisplayedEntries(newFilteredData.length);
   };
 
-  const sections = [
-    "All",
-    "Draft",
-    "Admin Review Pending",
-    "Pending Customer Approval",
-    "Quotes Approved by Customers",
-  ];
+  const sections = [ "All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
   const columns: ColumnsType<ContainersData> = [
     {
       title: "Container Number",
@@ -289,6 +274,13 @@ const AllContainers = () => {
     };
   }, []);
 
+  const SearchChange = (e: any) => {
+    const searchQuery = e.target.value;
+    console.log(searchQuery)
+    setSearchData(searchQuery);
+    console.log("searchData:", searchData);
+  }
+
   return (
     <div className="main">
       <div className="all-containers">
@@ -338,7 +330,8 @@ const AllContainers = () => {
                 type="text"
                 className="search-box"
                 placeholder="Search container by number"
-                onChange={(e) => setSearchData(e.target.value)}
+                onChange={SearchChange}
+                value={searchData}
               ></input>
 
               <div ref={filterMenuRef}>
@@ -369,7 +362,7 @@ const AllContainers = () => {
                     </div>
                     <div className="filter-header__second-part">
                       <h4 onClick={handleResetFilters}>Reset</h4>
-                      <h4 onClick={handleApplyFilters}>Apply</h4>
+                      <h4 onClick={(e)=> {e.stopPropagation(); handleApplyFilters()}}>Apply</h4>
                     </div>
 
                     <div className="filter-options-containers">
