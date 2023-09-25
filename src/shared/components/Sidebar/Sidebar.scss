@@ -83,6 +83,7 @@
 }
 
 .side-bar__options-text a > span:hover {
+    transition: filter 0.3s ease-in-out;
     filter: brightness(0) saturate(100%) invert(46%) sepia(11%) saturate(4524%) hue-rotate(127deg) brightness(99%) contrast(62%);
 }
 

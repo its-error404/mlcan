@@ -39,7 +39,7 @@
 }
 .ant-table table {
   border-collapse: collapse;
-  width: 108.5% !important;
+  width: 100% !important;
 }
 
 .ant-table-tbody > .ant-table-row td{
@@ -61,68 +61,9 @@
   background-color: $table-header !important;
 }
 
-.ant-table-thead > tr > th:nth-child(2) {
-  position: relative;
-  left: -60px;
-  font-size: 14px;
+.ant-upload.ant-upload-drag .ant-upload {
+  padding: 0 0 !important;
 }
-
-.ant-table-tbody > tr > td:nth-child(2){
-  position: relative;
-  left: -60px;
-  font-size: 14px;
-}
-
-.ant-table-thead > tr > th:nth-child(3) {
-  position: relative;
-  left: -85px;
-}
-
-.ant-table-tbody > tr > td:nth-child(3){
-  position: relative;
-  left: -85px;
-}
-
-.ant-table-thead > tr > th:nth-child(4) {
-  position: relative;
-  left: -110px;
-}
-
-.ant-table-tbody > tr > td:nth-child(4){
-  position: relative;
-  left: -110px;
-}
-
-.ant-table-thead > tr > th:nth-child(5) {
-  position: relative;
-  left: -110px;
-}
-
-.ant-table-tbody > tr > td:nth-child(5){
-  position: relative;
-  left: -110px;
-}
-
-.ant-table-thead > tr > th:nth-child(6) {
-  position: relative;
-  left: -130px;
-}
-
-.ant-table-tbody > tr > td:nth-child(6){
-  position: relative;
-  left: -130px;
-}
-
-.ant-table-thead > tr > th:nth-child(7) {
-  position: relative;
-  left: -130px;
-}
-
-.ant-table-tbody > tr > td:nth-child(7){
-  position: relative;
-  left: -130px;
-}
-
 
 .ant-table-thead th {
   padding-top: 10px;

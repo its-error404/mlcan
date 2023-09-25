@@ -120,7 +120,7 @@ const AllContainers = () => {
       const yardMatches = yardData === "" || doc.yard === yardData;
       const customerMatches = customerData === "" || doc.customerName === customerData;
       const dateMatches = dateData === "" || formatDate(doc.activityDate) === dateData;
-    
+      
       return (
         ActivityMatches &&
         customerMatches &&
@@ -135,11 +135,8 @@ const AllContainers = () => {
   
 
   const handleApplyFilters = () => {
-    console.log("Filtered Data:", filteredEntries);
     const newFilteredData = applyFilters(filteredEntries);
-    console.log(newFilteredData)
     setFilteredEntries(newFilteredData);
-    console.log(newFilteredData)
     setFilterMenu(false);
     setDisplayedEntries(newFilteredData.length);
   };
@@ -211,7 +208,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string, record: any) => <div className="activityStatusCap">{text || 'N/A'}</div> || "N/A",
     },
     showActivityUidColumn && {
       title: (
