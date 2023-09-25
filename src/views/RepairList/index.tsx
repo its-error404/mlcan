@@ -11,7 +11,7 @@ import { ReactComponent as DeleteIcon } from "../../assets/single color icons - 
 import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
-import { RepairData } from "../../models/repairList.model";
+import { Repair, RepairData } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 
