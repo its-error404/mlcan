@@ -20,7 +20,7 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
   return (
     <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
       <input type='checkbox' className='na1-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
-      <div className={`Non-maersk-details-section ${isCheckboxChecked ? 'disabled' : ''}`}>
+      <div className={`non-maersk-details-section ${isCheckboxChecked ? 'disabled' : ''}`}>
         <div className="horizontal-line">
           <hr></hr>
         </div>
