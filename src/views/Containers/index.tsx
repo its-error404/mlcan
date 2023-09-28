@@ -6,15 +6,15 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Table } from "antd";
+import { DatePicker, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
-import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import "antd/dist/antd.css";
-import { ColumnsType } from "antd/lib/table";
+import { formatDate } from "../../shared/utils/formatDate";
+import moment from "moment";
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
@@ -28,35 +28,30 @@ const AllContainers = () => {
   const [yardData, setYardData] = useState("");
   const [dateData, setDateData] = useState("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
-  const [allContainersData, setContainersData] =
-    useState<AllContainersData | null>(null);
+  const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
+  const [filteredSearchEntries, setFilteredSearchEntries] = useState<ContainersData[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getContainersData();
-          setContainersData(data.deserializedData);
-          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
-          setTotalEntries(data.totalEntries || 0);
-          setDisplayedEntries(data.totalEntries || 0);
+        if(data)
+        {
+        setContainersData(data.deserializedData);
+        setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
+        setFilteredSearchEntries((data.deserializedData.docs || []) as ContainersData[])
+        setTotalEntries(data.totalEntries || 0);
+        setDisplayedEntries(data.totalEntries || 0);
+        }
       } catch (e) {
         console.log(e);
       }
     };
     fetchData();
-  }, []);
-
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) {
-      return "";
-    }
-
-    const date = new Date(dateString);
-    return format(date, "dd MMM yyyy");
-  };
+  }, [searchData,]);
 
   const toggleAddContainer = () => {
     setAddContainer(!addContainer);
@@ -66,11 +61,11 @@ const AllContainers = () => {
     if (!allContainersData?.docs) {
       return [];
     }
-    
+
     const containers = allContainersData.docs as ContainersData[];
 
     let filteredData = containers.filter((doc) => {
-      const searchMatches = doc.uid.toLowerCase().includes(searchQuery.toLowerCase());
+      const searchMatches = doc.uid?.toLowerCase().includes(searchQuery.toLowerCase());
 
       switch (section) {
         case "All":
@@ -104,16 +99,16 @@ const AllContainers = () => {
   const getRowClassName = (record: any, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
- 
+
   const applyFilters = () => {
-  
+
     const filteredData = filterContainers(activeSection, searchData).filter((doc) => {
       const ActivityMatches = activityData === "" || doc.activityType === activityData;
       const statusMatches = statusData === "" || doc.activityStatus === statusData;
       const yardMatches = yardData === "" || doc.yard === yardData;
       const customerMatches = customerData === "" || doc.customerName === customerData;
       const dateMatches = dateData === "" || formatDate(doc.activityDate) === dateData;
-      
+
       return (
         ActivityMatches &&
         customerMatches &&
@@ -122,24 +117,24 @@ const AllContainers = () => {
         dateMatches
       );
     });
-    
+
     return filteredData;
   };
-  
+
   const handleApplyFilters = () => {
     const newFilteredData = applyFilters();
     setFilteredEntries(newFilteredData);
     setFilterMenu(false);
-    setDisplayedEntries(newFilteredData.length);
+  
+    const filteredSearchData = newFilteredData.filter((doc) => {
+      const searchMatches = doc.uid?.toLowerCase().includes(searchData.toLowerCase());
+      return searchMatches;
+    });
+  
+    setFilteredSearchEntries(filteredSearchData);
+    setDisplayedEntries(filteredSearchData.length);
   };
-
-  console.log(filteredEntries)
-
-  let filteredData = filteredEntries.filter((doc) => {
-    const searchMatches = doc.uid.toLowerCase().includes(searchData.toLowerCase());
-    })
-
-    console.log(filteredData)
+  
 
   const handleResetFilters = () => {
     setActivityData("");
@@ -153,8 +148,8 @@ const AllContainers = () => {
     setDisplayedEntries(newFilteredData.length);
   };
 
-  const sections = [ "All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-  const columns: ColumnsType<ContainersData> = [
+  const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
+  const columns = [
     {
       title: "Container Number",
       dataIndex: "uid",
@@ -171,6 +166,7 @@ const AllContainers = () => {
       ),
       dataIndex: "yard",
       key: "yard",
+      render: (text: string) => (text),
     },
     {
       title: (
@@ -180,7 +176,7 @@ const AllContainers = () => {
       ),
       dataIndex: "customerName",
       key: "customerName",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text || "N/A"),
     },
     {
       title: (
@@ -190,32 +186,29 @@ const AllContainers = () => {
       ),
       dataIndex: "owner",
       key: "owner",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text || "N/A"),
     },
-
     {
       title: (
         <>
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
         </>
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string, record: any) => <div className="activityStatusCap">{text || 'N/A'}</div> || "N/A",
+      render: (text: string) => (text || "N/A"),
     },
-    showActivityUidColumn && {
+    {
       title: (
         <>
           {sectionIndex === 1 ? "Activity ID" : ""}
-          {sectionIndex === 1 && (
-            <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-          )}
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
         </>
       ),
       dataIndex: "activityUid",
       key: "activityUid",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
     {
       title: (
@@ -225,7 +218,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityDate",
       key: "activityDate",
-      render: (text: string, record: any) => formatDate(text) || "N/A",
+      render: (text: string, record: any) => (formatDate(text) || "N/A"),
     },
     {
       title: (
@@ -259,6 +252,7 @@ const AllContainers = () => {
       },
     },    
   ].filter(Boolean);
+
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -276,9 +270,15 @@ const AllContainers = () => {
 
   const SearchChange = (e: any) => {
     const searchQuery = e.target.value;
-    console.log(searchQuery)
     setSearchData(searchQuery);
-    console.log("searchData:", searchData);
+
+    const filteredData = applyFilters();
+    const filteredSearchData = filteredData.filter((doc) => {
+      const searchMatches = doc.uid?.toLowerCase().includes(searchQuery.toLowerCase());
+      return searchMatches;
+    });
+  
+    setFilteredSearchEntries(filteredSearchData);
   }
 
   return (
@@ -326,13 +326,7 @@ const AllContainers = () => {
               <span className="search-icon">
                 <SearchIcon width={17} />
               </span>
-              <input
-                type="text"
-                className="search-box"
-                placeholder="Search container by number"
-                onChange={SearchChange}
-                value={searchData}
-              ></input>
+              <input type="text" className="search-box" placeholder="Search container by number" onChange={SearchChange} value={searchData}></input>
 
               <div ref={filterMenuRef}>
                 <div
@@ -342,9 +336,8 @@ const AllContainers = () => {
                   }}
                 >
                   <button
-                    className={`repair-filter-button ${
-                      filterMenu ? "change-button" : ""
-                    }`}
+                    className={`repair-filter-button ${filterMenu ? "change-button" : ""
+                      }`}
                   >
                     <span className="filter-icon">
                       <FilterIcon width={20} />
@@ -352,9 +345,8 @@ const AllContainers = () => {
                     Filters
                   </button>
                   <div
-                    className={`filter-menu repair-list-filters container-filter-menu ${
-                      filterMenu ? "visible" : "invisible"
-                    }`}
+                    className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"
+                      }`}
                     onClick={(e: any) => e.stopPropagation()}
                   >
                     <div className="filter-header__first-part">
@@ -362,21 +354,20 @@ const AllContainers = () => {
                     </div>
                     <div className="filter-header__second-part">
                       <h4 onClick={handleResetFilters}>Reset</h4>
-                      <h4 onClick={(e)=> {e.stopPropagation(); handleApplyFilters()}}>Apply</h4>
+                      <h4 onClick={(e) => { e.stopPropagation(); handleApplyFilters() }}>Apply</h4>
                     </div>
 
                     <div className="filter-options-containers">
                       <div className="column-1">
-                        <label>Date</label>
-                        <div className="container-date-box">
-                          <input
-                            type="date"
+                        <label style={{width: '40px'}}>Date</label>
+                        <div className="container-date-box filter-date">
+                          <DatePicker
                             className="container-date-picker"
-                            onChange={(e) => setDateData(e.target.value)}
-                            value={dateData}
+                            onChange={(date, dateString) => setDateData(dateString)}
+                            value={dateData !== "" ? moment(dateData, "DD MMM YYYY") : null}
+                            format="DD MMM YYYY"
                           />
                         </div>
-
                         <div className="filter-dropdown-date choose-activity">
                           <label>Activity</label>
                           <select
@@ -433,13 +424,17 @@ const AllContainers = () => {
             <div className="container-box__container">
               <Table
                 columns={columns}
-                dataSource={filteredEntries}
+                dataSource={filteredSearchEntries}
                 rowKey="uid"
                 className="container-table"
                 rowClassName={getRowClassName}
                 pagination={false}
               />
             </div>
+            <p className="total-records">
+              Showing <span className="record-range"> 1 - {totalEntries} </span>{" "}
+              of <span className="total-range"> {totalEntries} </span>
+            </p>
           </div>
         </div>
       </div>

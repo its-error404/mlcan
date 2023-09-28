@@ -14,6 +14,7 @@ import axiosInstance from "../../../../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
+import { ContainerData } from "../../../../../models/singlecontainer.model";
 
 const ActivityCard: React.FC<{
   UniqueID: string
@@ -24,7 +25,7 @@ const ActivityCard: React.FC<{
   icon: React.ReactElement;
   expanded: boolean;
   toggleExpand: () => void;
-  expandedData
+  expandedData: ContainerData
 }> = ({
   UniqueID,
   formType,
@@ -37,7 +38,6 @@ const ActivityCard: React.FC<{
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
-  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [addItem, setAddItem] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [updateActivityStatus, setUpdateActivityStatus] = useState("");
@@ -61,8 +61,6 @@ const ActivityCard: React.FC<{
       setShowConfirmation(true);
     }
   }
-
-  const { Option } = Select;
 
   const columns = [
     {
@@ -142,8 +140,6 @@ const [data, setData] = useState(mapRepairDataToTableData());
 useEffect(() => {
   setData(mapRepairDataToTableData());
 }, [expandedRepairFormData]);
-
-
 
 const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
     const menu = (
