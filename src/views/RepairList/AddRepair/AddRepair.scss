@@ -59,6 +59,7 @@ input, select {
 .repair-details__second-col {
     display: flex;
     gap: 30px;
+    margin-top: 20px;
 }
 
 .select-fields label {
@@ -141,6 +142,7 @@ input, select {
     justify-content: end;
     display: flex;
     gap: 30px;
+    margin-bottom: 30px !important;
 }
 
 .button-container button:first-child {
@@ -172,7 +174,7 @@ input, select {
 }
 
 .location-div {
-    margin-top: -2px;
+    margin-top: 0;
 }
 
 .final-buttons:last-child {
@@ -186,3 +188,24 @@ input, select {
 hr {
     border-top: 1px solid $light-gray;
 }
+
+.non-maersk-details-section {
+    margin-top: 20px;
+}
+
+.non-maersk-details-section h4 {
+    margin-top: 20px;
+}
+
+.merc-plus-form-section {
+    margin-top: 20px;
+}
+
+.mat-cost-div {
+    margin-bottom: 30px;
+}
+
+h4 {
+    margin-top: 30px !important;
+}
+

@@ -4,10 +4,10 @@ import { ReactComponent as TickIcon } from "../../../assets/single color icons -
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import { Button, Checkbox } from "antd";
 import "../../../styles/_variables.scss";
-import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
 import "../AddRepair/AddRepair.scss";
 import { editRepairEntry } from "../../../services/RepairListService/repair.service";
+import repairDetailsSchema from "../AddRepair/FormValidation";
 interface EditRepairProps {
   editedData: any;
   onClose: () => void;
