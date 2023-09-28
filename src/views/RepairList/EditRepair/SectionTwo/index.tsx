@@ -8,8 +8,8 @@ interface SectionTwoProps {
   onclose: () => void;
   formik: {
     values: FormikValues;
-    handleChange: (e: React.ChangeEvent<any>) => void;
-    handleBlur: (e: React.FocusEvent<any>) => void;
+    handleChange: (e: React.ChangeEvent) => void;
+    handleBlur: (e: React.FocusEvent) => void;
   };
   sectionCompleted: boolean
 }
