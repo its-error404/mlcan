@@ -200,9 +200,7 @@ const RepairList = () => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
-        setRepairListData(deserializedData);
-        console.log(deserializedData)
-        // setFilteredEntries(deserializedData.docs || []);
+        setRepairListData(deserializedData)
         setTotalEntries(deserializedData.docs?.length || 0);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -253,7 +251,6 @@ const RepairList = () => {
   
   const handleApplyFilters = () => {
     const filteredData = applyFilters(repairListData?.docs || []);
-    console.log(filteredData)
     setFilteredEntries(filteredData);
     setFilterMenu(false);
   };
