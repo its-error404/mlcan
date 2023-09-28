@@ -15,7 +15,7 @@ interface EditRepairProps {
   editedData: any;
   onClose: () => void;
   repairId: string;
-  overlayOpen: boolean;
+  overlayOpen?: boolean;
   closeOverlay: () => void;
 }
 
