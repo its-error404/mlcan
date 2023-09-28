@@ -118,8 +118,6 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
       <SectionOne
         formik={formik}
         onclose={onClose}
-        onNextSection={handleNextSection}
-        sectionCompleted={sectionCompleted[1]}
       />
     )}
              {sectionIndex === 2 && (
