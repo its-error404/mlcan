@@ -84,8 +84,8 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
                 <div>
                     <form onSubmit={formik.handleSubmit}>
                         {sectionIndex === 0 && <SectionZero formik={formik} onclose={onclose} />}
-                        {sectionIndex === 1 && <SectionOne formik={formik} onclose={onclose} />}
-                        {sectionIndex === 2 && <SectionTwo formik={formik} onclose={onclose} />}
+                        {sectionIndex === 1 && <SectionOne formik={formik} onclose={onclose}/>}
+                        {sectionIndex === 2 && <SectionTwo formik={formik} onclose={onclose}/>}
                     </form>
                 </div>
             </div>

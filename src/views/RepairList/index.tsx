@@ -4,23 +4,21 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Table } from "antd";
+import { Button, Table, notification } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
 import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
-import { Repair, RepairData } from "../../models/repairList.model";
+import { RepairData, Repair } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
-
-import {
-  deleteRepairEntry,
-  fetchRepairData,
-} from "../../services/RepairListService/repair.service";
+import EditRepair from "./EditRepair";
 import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
+import BulkUploadComponent from "./BulkUpload";
+import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -32,6 +30,11 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
+      onCell: (record:any) => {
+        return {
+          onClick: () => handleRowClick(record),
+        };
+      },
     },
     {
       title: (
@@ -135,9 +138,12 @@ const RepairList = () => {
     {
       className: "edit-icon",
       render: (text: string, record: any) => (
-       
-          <EditIcon width={20} />
-       
+        <EditIcon
+          width={20}
+          onClick={() => {
+            handleEditClick(record);
+          }}
+        />
       ),
       style: {
         marginRight: "-20px",
@@ -149,7 +155,7 @@ const RepairList = () => {
         <>
           <DeleteIcon
             width={20}
-            onClick={() => handleDeleteClick(record.id)}
+            onClick={() => handleDeleteClick(record.id, record.uid)}
           />
         </>
       ),
@@ -161,27 +167,30 @@ const RepairList = () => {
     setOverlayOpen(true);
   };
 
-  const handleDeleteClick = (entryId: string) => {
-    setEntryToDelete(entryId);
+  const handleDeleteClick = (id: string, uid: string) => {
+    setEntryToDeleteId(id);
+    setEntryToDeleteUid(uid);
     setShowDeleteConfirmation(true);
   };
-  
+
   const handleDeleteConfirmed = async () => {
-    if (entryToDelete) {
+    if (entryToDeleteId) {
       try {
-        await deleteRepairEntry(entryToDelete);
-        fetchRepairData(); 
-        setEntryToDelete(null);
+        await deleteRepairEntry(entryToDeleteId);
+        fetchRepairData();
+        setEntryToDeleteId(null);
+        setEntryToDeleteUid(null);
         setShowDeleteConfirmation(false);
       } catch (error) {
+        setShowDeleteConfirmation(false);
         console.error("Error deleting entry:", error);
-       
       }
     }
   };
 
   const handleDeleteCancel = () => {
-    setEntryToDelete(null);
+    setEntryToDeleteId(null);
+    setEntryToDeleteUid(null);
     setShowDeleteConfirmation(false);
   };
 
@@ -193,21 +202,28 @@ const RepairList = () => {
   const [addRepair, setAddRepair] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
-  const [clickedRepairId, setClickedRepairId] = useState<string | null>(null);
+  const [entryToDeleteId, setEntryToDeleteId] = useState<string | null>(null);
+  const [entryToDeleteUid, setEntryToDeleteUid] = useState<string | null>(null);
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
   const [versionMenu, setVersionMenu] = useState<boolean>(false);
   const [exportMenu, setExportMenu] = useState<boolean>(false);
   const [repairAreaData, setRepairAreaData] = useState("");
   const [damagedAreaData, setDamagedAreaData] = useState("");
   const [typeData, setTypeData] = useState("");
+  const [showBulkUpload, setShowBulkUpload] = useState(false);
+  const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] =
+    useState<Repair | null>(null);
+  const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
         setRepairListData(deserializedData);
+        setFilteredEntries(deserializedData.docs || []);
         setTotalEntries(deserializedData.docs?.length || 0);
+        setDisplayedEntries(deserializedData.docs?.length || 0);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -215,6 +231,16 @@ const RepairList = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const filteredData = applyFilters(repairListData?.docs || []).filter(
+      (record: any) =>
+        record.uid.toLowerCase().includes(searchData.toLowerCase())
+    );
+
+    setFilteredEntries(filteredData);
+    setDisplayedEntries(filteredData.length);
+  }, [searchData, repairListData]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -231,24 +257,12 @@ const RepairList = () => {
     };
   }, []);
 
-  let filteredEntries = repairListData?.docs?.filter((doc) =>
-    doc.uid?.toLowerCase().includes(searchData.toLowerCase())
-  );
-
-  const applyFiltersAndSort = (data: Repair) => {
-    applyFilters(repairListData?.docs || []);
-  };
-
   const toggleExportMenu = () => {
     setExportMenu(!exportMenu);
   };
 
   const toggleAddRepair = () => {
     setAddRepair(!addRepair);
-  };
-
-  const closeAddRepair = () => {
-    setAddRepair(false);
   };
 
   const getRowClassName = (record: any, index: number) => {
@@ -267,6 +281,36 @@ const RepairList = () => {
     });
   };
 
+  const handleApplyFilters = () => {
+    const filteredData = applyFilters(repairListData?.docs || []);
+    setFilteredEntries(filteredData);
+    setFilterMenu(false);
+    setDisplayedEntries(filteredData.length);
+  };
+
+  const handleResetFilters = () => {
+    setRepairAreaData("");
+    setDamagedAreaData("");
+    setTypeData("");
+    const filteredData = applyFilters(repairListData?.docs || []);
+    setFilteredEntries(filteredData);
+    setFilterMenu(false);
+  };
+
+  const handleBulkUploadClick = () => {
+    setShowBulkUpload(true);
+  };
+
+  const handleBulkUploadClose = () => {
+    setShowBulkUpload(false);
+  };
+
+  const handleEditClick = (record: any) => {
+    console.log(record)
+    setSelectedEntryForEdit(record);
+    console.log(record.id)
+  };
+
   return (
     <div className="repair-list">
       <Sidebar />
@@ -279,177 +323,210 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
-        
-       
-          <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
-       
 
         {addRepair && (
           <div className="overlay">
             <div className="overlay-content">
               <AddRepair
                 onclose={() => {
-                  setAddRepair(false); 
+                  setAddRepair(false);
                 }}
               />
             </div>
           </div>
         )}
+
         <SelectedEntry
           selectedEntry={selectedRow}
           overlayOpen={overlayOpen}
           closeOverlay={() => {
-            setOverlayOpen(false);
+            setSelectedRow(null);
           }}
           sectionIndex={sectionIndex}
           handleSectionClick={(index: number) => setSectionIndex(index)}
           setSectionIndex={setSectionIndex}
         />
 
+        {selectedEntryForEdit && (
+          <div className="overlay">
+            <div className="overlay-content">
+              <EditRepair
+                data={selectedEntryForEdit}
+                onClose={() => {
+                  setSelectedEntryForEdit(null);
+                }}
+                id={selectedEntryForEdit?.id}
+              />
+            </div>
+          </div>
+        )}
+
         <div className="repair-search-container">
-          <span className="search-icon">
-            <SearchIcon width={17} />
-          </span>
-          <input
-            type="text"
-            className="search-box"
-            placeholder="Search by repair id"
-            onChange={(e) => setSearchData(e.target.value)}
-          ></input>
+          <div className="repair-search">
+            <span className="search-icon">
+              <SearchIcon width={17} />
+            </span>
+            <input
+              type="text"
+              className="search-box"
+              placeholder="Search by repair id"
+              onChange={(e) => setSearchData(e.target.value)}
+            ></input>
+          </div>
 
           <div ref={filterMenuRef}>
-            <div className="filters-container" onClick={() => {setFilterMenu(!filterMenu);}}>
-              <Button className="filter-button">
-                <span className="filter-icon">
+            <div
+              className="filters-container"
+              onClick={() => {
+                setFilterMenu(!filterMenu);
+              }}
+            >
+              <button className="repair-filter-button">
+                <span className="repair-filter-icon">
                   <FilterIcon width={20} />
                 </span>
                 Filters
-              </Button>
-              <div className={`filter-menu repair-list-filters ${filterMenu ? "visible" : "invisible"}`} onClick={(e: any) => e.stopPropagation()}>
+              </button>
+              <div
+                className={`filter-menu repair-list-filters ${
+                  filterMenu ? "visible" : "invisible"
+                }`}
+                onClick={(e: any) => e.stopPropagation()}
+              >
                 <div className="filter-header__first-part">
                   <h4>Filters</h4>
-                  <div className="filter-header__second-part">
-                    <h4>Reset</h4>
-                    <h4 onClick={(e) => {
-                        console.log(e.target.addEventListener('click', (e:any) => e.stopPropagation()))
-                        console.log("apply");
-                        const filteredData = applyFilters(repairListData?.docs || []);
-                        filteredEntries = filteredData;
-                      }}
-                    >Apply
-                    </h4>
-                  </div>
+                </div>
+                <div className="filter-header__second-part">
+                  <h4 onClick={handleResetFilters}>Reset</h4>
+                  <h4 onClick={handleApplyFilters}>Apply</h4>
                 </div>
                 <div className="filter-options-flex">
-                  <div className="column-1">
-                    <div className="filter-dropdown-date option-status">
-                      <label>Repair area</label>
-                      <select
-                        value={repairAreaData}
-                        onChange={(e) => setRepairAreaData(e.target.value)}>
-                        <option>Doors</option>
-                        <option>Vents</option>
-                      </select>
-                    </div>
-                    <div className="filter-dropdown-date option-activity">
-                      <label>Type</label>
-                      <select
-                        value={typeData}
-                        onChange={(e) => setTypeData(e.target.value)}>
-                        <option>INSERT</option>
-                        <option>PATCH</option>
-                      </select>
-                    </div>
+                  <div>
+                    <br />
+                    <label>Repair area</label>
+                    <br />
+                    <select
+                      value={repairAreaData}
+                      onChange={(e) => setRepairAreaData(e.target.value)}
+                    >
+                      <option>Doors</option>
+                      <option>Vents</option>
+                    </select>
                   </div>
-                  <div className="column-2 repair-filter-column-2">
-                    <div className="filter-dropdown-date filter-dropdown-activity repair-damage">
-                      <label>Damaged area</label>
-                      <select
-                        value={damagedAreaData}
-                        onChange={(e) => setDamagedAreaData(e.target.value)}>
-                        <option>Doors</option>
-                        <option>Vents</option>
-                      </select>
-                    </div>
+                  <div className="repair-damage">
+                    <br />
+                    <label>Damaged area</label>
+                    <br />
+                    <select
+                      value={damagedAreaData}
+                      onChange={(e) => setDamagedAreaData(e.target.value)}
+                    >
+                      <option>Doors</option>
+                      <option>Vents</option>
+                    </select>
                   </div>
+                </div>
+                <div className="option-activity">
+                  <label>Type</label>
+                  <br />
+                  <select
+                    value={typeData}
+                    onChange={(e) => setTypeData(e.target.value)}
+                  >
+                    <option>INSERT</option>
+                    <option>PATCH</option>
+                  </select>
                 </div>
               </div>
             </div>
           </div>
-            <div className="export-container" onClick={toggleExportMenu}>
-              <Button className="filter-button">
-                <span className="repair-filter-icon">
-                  <ExportIcon width={20} />
-                </span>
-                Export
-              </Button>
-              <div className={`export-menu-box ${exportMenu ? "visible" : "invisible"}`}>
-                <div>
-                  <p>Export as .csv</p>
-                </div>
-                <div>
-                  <p>Export as .xlsv</p>
-                </div>
+          <div className="export-container" onClick={toggleExportMenu}>
+            <button className="export-button">
+              <span className="export-icon">
+                <ExportIcon width={20} />
+              </span>
+              Export
+            </button>
+            <div
+              className={`export-menu-box ${
+                exportMenu ? "visible" : "invisible"
+              }`}
+            >
+              <div>
+                <p>Export as .csv</p>
+              </div>
+              <div>
+                <p>Export as .xlsv</p>
               </div>
             </div>
-          <div className="versions-container" onClick={() => setVersionMenu(!versionMenu)}>
-            <Button className="version-button">
-              <span className="repair-filter-icon">
+          </div>
+          <div
+            className="versions-container"
+            onClick={() => setVersionMenu(!versionMenu)}
+          >
+            <button className="version-button">
+              <span className="version-icon">
                 <VersionIcon width={20} />
               </span>
               Version 1 - 22 Aug 2020
               <span className="down-icon">
                 <DownIcon width={10} />
               </span>
-            </Button>
+            </button>
           </div>
 
-          <Button className="bulk-upload-button">Bulk Upload</Button>
+          <button
+            className="bulk-upload-button"
+            onClick={handleBulkUploadClick}
+          >
+            Bulk Upload
+          </button>
         </div>
-    
-          <div className={`version-menu-box ${versionMenu ? "visible" : "invisible"}`}>
-            <p>+ New Version </p>
-            <p>Version 1 - 22 Aug 2020</p>
-            <p>Version 1 - 22 Aug 2020</p>
-          </div>
-       
+        {showBulkUpload && (
+          <BulkUploadComponent onClose={handleBulkUploadClose} />
+        )}
+        <div
+          className={`version-menu-box ${
+            versionMenu ? "visible" : "invisible"
+          }`}
+        >
+          <p>+ New Version </p>
+          <p>Version 1 - 22 Aug 2020</p>
+          <p>Version 1 - 22 Aug 2020</p>
+        </div>
+
         <div className="repair-box__container">
-        <Table
-                    rowClassName={getRowClassName}
-  className="ant-table-repair"
-  columns={columns}
-  dataSource={filteredEntries}
-  onRow={(record: any) => ({
-    onClick: () => {
-      handleRowClick(record);
-    },
-  })}
-/>
+          <Table
+            rowClassName={getRowClassName}
+            className="ant-table-repair"
+            columns={columns}
+            dataSource={filteredEntries}
+            pagination={false}
+          />
         </div>
-        
 
         {showDeleteConfirmation && (
-      <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
-        <div className="delete-confirmation-box">
-          <div className="delete-text-icon">
-          <DeleteIcon width={45}/>
-          <h2>Are you sure you to delete the <br/>&emsp; &emsp;Repair - <span>RID005</span>&nbsp;?</h2>
-          <p>You can't undo this action</p>
-          </div>
-          <div className="delete-confirmation-buttons">
-            <button onClick={handleDeleteCancel}>Cancel</button>
-            <button onClick={handleDeleteConfirmed}>Delete</button>
-          </div>
-        </div>
-      </OverlayBox>
-    )}
-
-        <div className="bottom-flex">
-          <p className="total-records">
-            Showing <span className="record-range"> 1 - {totalEntries} </span> of{" "}
-            <span className="total-range"> {totalEntries} </span>
-          </p>
-        </div>
+          <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
+            <div className="delete-confirmation-box">
+              <div className="delete-text-icon">
+                <DeleteIcon width={45} />
+                <h2>
+                  Are you sure you to delete the <br />
+                  &emsp; &emsp;Repair - <span>{entryToDeleteUid}</span>&nbsp;?
+                </h2>
+                <p>You can't undo this action</p>
+              </div>
+              <div className="delete-confirmation-buttons">
+                <button onClick={handleDeleteCancel}>Cancel</button>
+                <button onClick={handleDeleteConfirmed}>Delete</button>
+              </div>
+            </div>
+          </OverlayBox>
+        )}
+        <p className="total-records">
+          Showing <span className="record-range"> 1 - {displayedEntries} </span>{" "}
+          of <span className="total-range"> {totalEntries} </span>
+        </p>
       </div>
     </div>
   );
