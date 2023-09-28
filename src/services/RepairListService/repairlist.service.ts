@@ -9,7 +9,7 @@ import { deserialize } from "serializr";
 export const addRepairRequest = async (values: RepairData) => {
   try {
     const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values);
-    if (response.status === 200) {
+    if (response) {
       notification.success({
         message: "Repair Added Successfully !",
         description: "Click the repair entry for more information !",
@@ -19,9 +19,7 @@ export const addRepairRequest = async (values: RepairData) => {
       setTimeout(() => {
         notification.destroy();
       }, 3000);
-      console.log("Repir Added", response.data);
     } else {
-      console.log("Repair Error", response.data);
     }
   } catch (error) {
     console.log(error);
@@ -34,14 +32,14 @@ export const deleteRepairEntry = async (id: string) => {
   try {
     const response = await axiosInstance.delete(`${ApiRoutes.ALL_REPAIRS}/${id}`);
 
-    if (response.status === 200) {
+    if (response) {
       console.log(`Repair Entry with ID ${id} Deleted`);
       notification.open({message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted'});
       return response.data;
     
     } else {
       console.log(
-        `Error Deleting Repair Entry with ID ${id}: ${response.statusText}`
+        `Error Deleting Repair Entry with ID ${id}`
       );
 
       throw new Error("Failed to delete repair entry.");
@@ -60,7 +58,13 @@ export const deleteRepairEntry = async (id: string) => {
 export const editRepairEntry = async (values: any, id: string) => {
   try {
     const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`,values);
-    console.log(response.data);
+    if(response) {
+      notification.success({
+        message: "Repair Edited Successfully !",
+        description: "Click the repair entry for more information !",
+        className: "custom-notification-placement",
+      });
+    }
   } catch (error) {
     console.log(error);
   }
