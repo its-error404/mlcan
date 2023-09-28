@@ -4,7 +4,7 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Table, notification } from "antd";
+import { Table } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
@@ -215,7 +215,7 @@ const RepairList = () => {
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
-  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<RepairData | null>(null);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
@@ -353,11 +353,12 @@ const RepairList = () => {
           <div className="overlay">
             <div className="overlay-content">
               <EditRepair
-                data={selectedEntryForEdit}
+                editedData={selectedEntryForEdit}
                 onClose={() => {
                   setSelectedEntryForEdit(null);
                 }}
-                id={selectedEntryForEdit?.docs}
+                repairId={selectedEntryForEdit.id}
+                
               />
             </div>
           </div>

@@ -14,8 +14,8 @@ interface EditRepairProps {
   editedData: any;
   onClose: () => void;
   repairId: string;
-  overlayOpen: boolean;
-  closeOverlay: () => void;
+  overlayOpen?: boolean;
+  closeOverlay?: () => void;
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({
@@ -24,21 +24,17 @@ const EditRepair: React.FC<EditRepairProps> = ({
   repairId,
   overlayOpen,
 }) => {
-  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(
-    0
-  );
-
-
+  
   const [formData, setFormData] = useState<any>({});
 
   useEffect(() => {
-    if (data) {
-      setFormData(data);
+    if (editedData) {
+      setFormData(editedData);
     }
-  }, [data]);
+  }, [editedData]);
 
   const EditValues = {
-    ...data,
+    ...editedData,
   };
 
   console.log(formData)
@@ -101,6 +97,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
             top: "45%",
             left: "50%",
             transform: "translate(-50%, -50%)",
+            backgroundColor: 'white',
+            borderRadius: '10px'
           }}
         >
           <div className="form-header">
