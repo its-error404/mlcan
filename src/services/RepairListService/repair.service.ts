@@ -67,7 +67,7 @@ export const editRepairEntry = async (values: RepairData, id: string) => {
       `${ApiRoutes.ALL_REPAIRS}/${id}`,
       values,
     );
-    return response.data
+   console.log('Edit Successful', response.data.data.message)
   } catch (error) {
     notification.error({
       message: `Failed to Edit Repair ${id}, ${error} !`,

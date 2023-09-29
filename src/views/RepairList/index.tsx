@@ -15,13 +15,10 @@ import { RepairData, Repair } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
-import {
-  deleteRepairEntry,
-  fetchRepairData,
-} from "../../services/RepairListService/repairlist.service";
 import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
+import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -321,10 +318,6 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
-        
-       
-          <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
-       
 
         {addRepair && (
           <div className="overlay">

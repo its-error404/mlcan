@@ -1,6 +1,8 @@
 import { Button } from 'antd';
 import React, { useState } from 'react';
 import { FormikValues } from 'formik'; 
+import CustomInput from '../../../../shared/components/InputField';
+import CustomSelect from '../../../../shared/components/SelectField';
 
 interface SectionTwoProps {
   onclose: () => void;
@@ -21,184 +23,99 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionComplet
   };
   
   return (
-    <div className={`merc-plus-form-section ${isCheckboxChecked ? 'disabled' : ''}`}>
-      <br></br>
-      <input type='checkbox' className='na2-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
-      <div>
+    <div className="merc-plus-form-section">
+      <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
+      <div style={{marginTop: '20px'}}>
         <hr></hr>
       </div>
-      <br></br>
-      <div className='section-three'>
       <h4>Cost Details</h4>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
-          <label>Max. Mat. Cost</label>
-          <br></br>
-          <input
-            type="text"
-            name="max_mat_cost"
-            id="max_mat_cost"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.max_mat_cost}
-            placeholder="Enter"
-          />
+           <CustomInput name='max_mat_cost' id='max_mat_cost' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.max_mat_cost} label='Max. Mat. Cost' placeholder='Enter'></CustomInput>
         </div>
-        <br></br>
         <div className="input__repair-Area">
-          <label>Unit Mat. Cost</label>
-          <br></br>
-          <input
-            type="text"
-            name="unit_mat_cost"
-            id="unit_mat_cost"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.unit_mat_cost}
-            placeholder="0$"
-          />
+           <CustomInput name='unit_mat_cost' id='unit_mat_cost' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.unit_mat_cost} label='Unit. Mat. Cost' placeholder='Enter'></CustomInput>
         </div>
       </div>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
-          <label>Hours Per Unit</label>
-          <br></br>
-          <input
-            type="text"
-            name="unit_hours"
-            id="unit_hours"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.unit_hours}
-            placeholder="Enter"
-          />
+           <CustomInput name='unit_hours' id='unit_hours' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.unit_hours} label='Hours Per Unit' placeholder='Enter'></CustomInput>
         </div>
-        <br></br>
         <div className="input__repair-Area">
-          <label>Max Pieces</label>
-          <br></br>
-          <input
-            type="text"
-            name="max_pcs"
-            id="max_pcs"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.max_pcs}
-            placeholder="Enter"
-          />
+           <CustomInput name='max_pcs' id='max_pcs' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.max_pcs} label='Max Pieces' placeholder='Enter'></CustomInput>
         </div>
       </div>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
-          <label>Units</label>
-          <br></br>
-          <input
-            type="text"
-            name="unit"
-            id="unit"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.unit}
-            placeholder="Enter"
-          />
+           <CustomInput name='unit' id='unit' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.unit} label='Units' placeholder='Enter'></CustomInput>
         </div>
-        <br></br>
       </div>
-      <br></br>
-      <br></br>
-      <hr></hr>
-      <br></br>
+      <hr style={{marginTop: '30px'}}></hr>
       <h4>Customer Related Details</h4>
-      <br></br>
       <div className="repair-details__second-col">
-        <div className="input__repair-id container-repair-area">
-          <label>Repair Mode</label>
-          <br></br>
-          <select
-            name="rep_mode"
-            id="rep_mode"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.rep_mode}
-          >
-            <option value="">Select</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
-          </select>
+        <div className="input__repair-id">
+          <CustomSelect
+          className='select-choices'
+              label="Repair Mode"
+              name="rep_mode"
+              id="rep_mode"
+              placeholder='Select'
+              onBlur={formik.handleBlur}
+              value={formik.values.rep_mode}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
         </div>
-        <br></br>
-        <div className="input__repair-Area container-repair-area">
-          <label>Mode Number</label>
-          <br></br>
-          <select
-            name="mode"
-            id="mode"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.mode}
-          >
-            <option value="">Select</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
-          </select>
+        <div className="input__repair-Area">
+          <CustomSelect
+          className='select-choices'
+              label="Mode Number"
+              name="mode"
+              id="mode"
+              placeholder='Select'
+              onBlur={formik.handleBlur}
+              value={formik.values.mode}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
         </div>
       </div>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
-          <label>Repair Code</label>
-          <br></br>
-          <input
-            type="text"
-            name="rep_code"
-            id="rep_code"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.rep_code}
-            placeholder="Enter"
-          />
+          <CustomSelect
+          className='select-choices'
+              label="Repair Code"
+              name="rep_code"
+              id="rep_code"
+              placeholder='Select'
+              onBlur={formik.handleBlur}
+              value={formik.values.rep_code}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
         </div>
-        <br></br>
         <div className="input__repair-Area">
-          <label>Combined</label>
-          <br></br>
-          <input
-            type="text"
-            name="combined"
-            id="combined"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.combined}
-            placeholder="Enter"
-          />
+          <CustomInput name='comb' id='comb' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.comb} label='Combined' placeholder='Enter'></CustomInput>
         </div>
       </div>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
-          <label>Description</label>
-          <br></br>
-          <input
-            type="text"
-            name="desc"
-            id="desc"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.desc}
-            placeholder="Enter"
-          />
+          <CustomInput name='desc' id='desc' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.desc} label='Description' placeholder='Enter'></CustomInput>
         </div>
-        <br></br>
         <div className="input__repair-Area">
-          <label>ID Source</label>
-          <br></br>
-          <input
-            type="text"
-            name="id"
-            id="id"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.id}
-            placeholder="Enter"
-          />
+          <CustomInput name='id' id='id' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.id} label='ID Source' placeholder='Enter'></CustomInput>
         </div>
       </div>
       </div>
@@ -210,8 +127,6 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionComplet
           Add Repair
         </button>
       </div>
-      <br></br>
-      <br></br>
     </div>
   );
 };
