@@ -175,16 +175,11 @@ const RepairList = () => {
 
   const handleDeleteConfirmed = async () => {
     if (entryToDeleteId) {
-      try {
         await deleteRepairEntry(entryToDeleteId);
         fetchRepairData();
         setEntryToDeleteId(null);
         setEntryToDeleteUid(null);
         setShowDeleteConfirmation(false);
-      } catch (error) {
-        setShowDeleteConfirmation(false);
-        console.error("Error deleting entry:", error);
-      }
     }
   };
 
@@ -281,6 +276,7 @@ const RepairList = () => {
 
   const handleApplyFilters = () => {
     const filteredData = applyFilters(repairListData?.docs || []);
+    console.log(filteredData)
     setFilteredEntries(filteredData);
     setFilterMenu(false);
     setDisplayedEntries(filteredData.length);

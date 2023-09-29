@@ -55,13 +55,16 @@ const EditRepair: React.FC<EditRepairProps> = ({
     },
   ];
 
-  const toggleSection = (index: number) => {
-    setSectionIndex(index === sectionIndex ? null : index);
+  const handleNextSection = () => {
+    if (sectionIndex !== null && sectionIndex < sections.length - 1) {
+      sectionCompleted[sectionIndex] = true;
+      setSectionIndex(sectionIndex + 1);
+    }
   };
 
-  const isSectionFilled = (index: number) => {
-    return sectionCompleted[index]
-  };
+  const toggleSection = (index: number) => {
+    setSectionIndex(index === sectionIndex ? null : index)
+  }
 
   const formik = useFormik({
     initialValues: EditValues,
@@ -70,19 +73,12 @@ const EditRepair: React.FC<EditRepairProps> = ({
         await editRepairEntry(values, repairId);
         onClose()
       } catch (err) {
-        console.log(err);
+        
       }
     },
   });
 
-  const [sectionCompleted, setSectionCompleted] = useState<boolean[]>([false,false,false]);
-
-  const handleNextSection = () => {
-    if (sectionIndex !== null && sectionIndex < sections.length - 1) {
-      sectionCompleted[sectionIndex] = true;
-      setSectionIndex(sectionIndex + 1);
-    }
-  };
+  const [sectionCompleted,] = useState<boolean[]>([false,false,false]);
 
   return (
     <div className="repair-details-form">
@@ -101,8 +97,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
                 onClick={() => toggleSection(index)}
               >
                  <div className="section-title">
-                  {isSectionFilled(index) ? (
-                    <TickIcon width={20} fill="#009966" />
+                  {sectionCompleted[index] ? (
+                    <TickIcon width={20} className="tick-icon-filled" />
                   ) : (
                     <TickIcon width={20} />
                   )}

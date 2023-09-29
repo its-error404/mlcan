@@ -10,11 +10,11 @@ import "./AddRepair.scss";
 import { ReactComponent as TickIcon } from '../../../assets/single color icons - SVG/done.svg'
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_variables.scss'
-import { addRepairRequest } from "../../../services/RepairListService/repairlist.service";
 import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
 import { Repair } from "../../../models/repairList.model";
+import { addRepairRequest } from "../../../services/RepairListService/repair.service";
 
 const AddRepair = ({ onclose }: { onclose: () => void }) => {
   const initialRepairFormValues = {
@@ -83,8 +83,8 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
               onClick={() => toggleSection(index)}
             >
               <div className="section-title">
-                {sectionCompleted ? (
-                  <TickIcon width={20} />
+                {sectionCompleted[index] ? (
+                  <TickIcon width={20} className="tick-icon-filled"/>
                 ) : (
                   <TickIcon width={20} />
                 )}

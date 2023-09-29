@@ -10,6 +10,10 @@ input, select {
     
 }
 
+.tick-icon-filled {
+    filter: brightness(0) saturate(100%) invert(47%) sepia(41%) saturate(588%) hue-rotate(119deg) brightness(97%) contrast(89%);
+}
+
 .add-repair-section 
 {
     margin-bottom: 40px !important;
