@@ -30,7 +30,7 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
-      onCell: (record:any) => {
+      onCell: (record : Repair) => {
         return {
           onClick: () => handleRowClick(record),
         };
@@ -212,8 +212,7 @@ const RepairList = () => {
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
-  const [selectedEntryForEdit, setSelectedEntryForEdit] =
-    useState<Repair | null>(null);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
@@ -271,11 +270,9 @@ const RepairList = () => {
 
   const applyFilters = (data: any) => {
     return data.filter((doc: any) => {
-      const repairAreaMatches =
-        repairAreaData === "" || doc.repArea === repairAreaData;
+      const repairAreaMatches =  repairAreaData === "" || doc.repArea === repairAreaData;
       const typeMatches = typeData === "" || doc.type === typeData;
-      const damagedAreaMatches =
-        damagedAreaData === "" || doc.dmgArea === damagedAreaData;
+      const damagedAreaMatches = damagedAreaData === "" || doc.dmgArea === damagedAreaData;
 
       return repairAreaMatches && typeMatches && damagedAreaMatches;
     });
@@ -306,9 +303,7 @@ const RepairList = () => {
   };
 
   const handleEditClick = (record: any) => {
-    console.log(record)
     setSelectedEntryForEdit(record);
-    console.log(record.id)
   };
 
   return (
@@ -352,10 +347,8 @@ const RepairList = () => {
             <div className="overlay-content">
               <EditRepair
                 data={selectedEntryForEdit}
-                onClose={() => {
-                  setSelectedEntryForEdit(null);
-                }}
-                id={selectedEntryForEdit?.id}
+                onClose={() => {setSelectedEntryForEdit(null);}}
+               id={selectedEntryForEdit.id || ''}
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { Button, Checkbox } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import 'antd/dist/antd.css'
 import CustomInput from '../../../../shared/components/InputField';
@@ -8,9 +8,18 @@ import CustomSelect from '../../../../shared/components/SelectField';
 interface SectionOneProps {
   onclose: () => void;
   formik: FormikProps<FormikValues>
+  onNextSection?: () => void;
+  sectionCompleted?: boolean
 }
 
-const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
+const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {
+
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsCheckboxChecked(!isCheckboxChecked);
+  };
+
   return (
     <div>
       <div className="non-maersk-details-section">
@@ -160,9 +169,9 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik }) => {
           <Button type="primary" onClick={onclose}>
             Discard
           </Button>
-          <Button type="primary">Proceed</Button>
+          <Button type="primary" onClick={onNextSection}>Proceed</Button>
         </div>
-      </div>
+    </div>
     </div>
   );
 };

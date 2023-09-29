@@ -1,5 +1,5 @@
 import { Button, Checkbox } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormikValues } from 'formik'; 
 import CustomInput from '../../../../shared/components/InputField';
 import CustomSelect from '../../../../shared/components/SelectField';
@@ -11,9 +11,17 @@ interface SectionTwoProps {
     handleChange: (e: React.ChangeEvent<any>) => void;
     handleBlur: (e: React.FocusEvent<any>) => void;
   };
+  sectionCompleted?: boolean
 }
 
-const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
+const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionCompleted }) => {
+
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsCheckboxChecked(!isCheckboxChecked);
+  };
+  
   return (
     <div className="merc-plus-form-section">
       <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
@@ -110,6 +118,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
           <CustomInput name='id' id='id' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.id} label='ID Source' placeholder='Enter'></CustomInput>
         </div>
       </div>
+     
       <div className="button-container">
         <Button type="primary" onClick={onclose}>
           Discard
@@ -119,6 +128,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik }) => {
         </button>
       </div>
     </div>
+    
   );
 };
 

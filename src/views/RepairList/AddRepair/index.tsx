@@ -10,7 +10,7 @@ import "./AddRepair.scss";
 import { ReactComponent as TickIcon } from '../../../assets/single color icons - SVG/done.svg'
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_variables.scss'
-import { addRepairRequest } from "../../../services/RepairListService/repair.service";
+import { addRepairRequest } from "../../../services/RepairListService/repairlist.service";
 import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
@@ -42,9 +42,17 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
         setSectionIndex(index === sectionIndex ? null : index)
     }
 
-    const isSectionFilled = (index: number) => {
-        return true;
-    };
+    const handleNextSection = () => {
+        if (sectionIndex !== null && sectionIndex < sections.length - 1) {
+          sectionCompleted[sectionIndex] = true;
+          setSectionIndex(sectionIndex + 1);
+        }
+      };
+      const [sectionCompleted, ] = useState<boolean[]>([
+        false,
+        false,
+        false, 
+      ]);
 
     const formik = useFormik({
         initialValues: initialRepairFormValues,
@@ -75,7 +83,11 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
                             onClick={() => toggleSection(index)}
                         >
                             <div className="section-title">
-                                {isSectionFilled(index) && <TickIcon width={20} />}
+                            {sectionCompleted ? (
+            <TickIcon width={20} />
+          ) : (
+            <TickIcon width={20} /> 
+          )}
                                 <span className="section-header-text">{section.name}</span>
                             </div>
                         </div>
