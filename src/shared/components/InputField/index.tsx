@@ -22,7 +22,6 @@ const CustomInput: React.FC<InputProps> = ({
   return (
     <div className="input__repair-id">
       <label htmlFor={id}>{label}</label>
-      <br />
       <input
         type="text"
         name={name}

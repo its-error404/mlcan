@@ -30,7 +30,7 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
-      onCell: (record) => {
+      onCell: (record: Repair) => {
         return {
           onClick: () => handleRowClick(record),
         };
@@ -239,7 +239,7 @@ const RepairList = () => {
 
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
-  }, [searchData, repairListData]);
+  }, [displayedEntries]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -292,6 +292,7 @@ const RepairList = () => {
     const filteredData = applyFilters(repairListData?.docs || []);
     setFilteredEntries(filteredData);
     setFilterMenu(false);
+    setDisplayedEntries(filteredData.length);
   };
 
   const handleBulkUploadClick = () => {
@@ -346,11 +347,11 @@ const RepairList = () => {
           <div className="overlay">
             <div className="overlay-content">
               <EditRepair
-                editedData={selectedEntryForEdit}
+                data={selectedEntryForEdit}
                 onClose={() => {
                   setSelectedEntryForEdit(null);
                 }}
-                repairId={selectedEntryForEdit.id}
+                repairId={selectedEntryForEdit.id || ''}
                 
               />
             </div>
@@ -398,9 +399,9 @@ const RepairList = () => {
                 </div>
                 <div className="filter-options-flex">
                   <div>
-                    <br />
+                    
                     <label>Repair area</label>
-                    <br />
+                    
                     <select
                       value={repairAreaData}
                       onChange={(e) => setRepairAreaData(e.target.value)}
@@ -410,9 +411,9 @@ const RepairList = () => {
                     </select>
                   </div>
                   <div className="repair-damage">
-                    <br />
+                    
                     <label>Damaged area</label>
-                    <br />
+                    
                     <select
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
@@ -424,7 +425,7 @@ const RepairList = () => {
                 </div>
                 <div className="option-activity">
                   <label>Type</label>
-                  <br />
+                  
                   <select
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}

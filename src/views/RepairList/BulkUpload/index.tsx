@@ -10,7 +10,7 @@ interface BulkUploadComponentProps {
   onClose: () => void;
 }
 
-const onUpload = (onClose) => {
+const onUpload = (onClose: { (): void; (): void; }) => {
   notification.success({
     message: "Upload Successful !",
     description: "Check the Table for more information !",

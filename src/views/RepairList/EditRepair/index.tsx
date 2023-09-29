@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { editRepairEntry } from "../../../services/RepairListService/repairlist.service";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
@@ -20,22 +19,21 @@ interface EditRepairProps {
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({
-  editedData,
+  data,
   onClose,
   repairId,
-  overlayOpen,
 }) => {
   
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    if (editedData) {
-      setFormData(editedData);
+    if (data) {
+      setFormData(data);
     }
-  }, [editedData]);
+  }, [data]);
 
   const EditValues = {
-    ...editedData,
+    ...data,
   };
 
   console.log(formData)
@@ -69,7 +67,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
     initialValues: EditValues,
     onSubmit: async (values) => {
       try {
-        await editRepairEntry(values, values.id);
+        await editRepairEntry(values, repairId);
         onClose()
       } catch (err) {
         console.log(err);
@@ -87,21 +85,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
   };
 
   return (
-    <div className="overlay">
-      <div className="overlay-content">
-        <div
-          className={`overlay-box-edit  ${overlayOpen ? "overlay-open" : ""}`}
-          style={{
-            maxHeight: "80vh",
-            overflowY: "auto",
-            position: "fixed",
-            top: "45%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: 'white',
-            borderRadius: '10px'
-          }}
-        >
+    <div className="repair-details-form">
+    <div className="form-wrapper">
           <div className="form-header">
             <h2>Edit Repair Part</h2>
             <CloseIcon width={15} onClick={onClose} />
@@ -155,7 +140,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

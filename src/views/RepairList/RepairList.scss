@@ -171,6 +171,7 @@ label {
 .export-button {
   width: 100px;
   height: 40px;
+  background-color: $white-bg;
   padding-left: 20px;
 }
 
@@ -182,7 +183,7 @@ label {
   margin-top: 20px;
   border: 1px solid $light-border;
   border-radius: 15px !important;
-  height: 26vh;
+  height: 27.5vh !important;
   z-index: 4;
   width: 30vw;
   background-color: $filter-menu-bg;

@@ -1,234 +1,251 @@
-import { Button, Checkbox } from 'antd';
-import React from 'react';
-import { FormikValues } from 'formik'; 
-import CustomInput from '../../../../shared/components/InputField';
-import CustomSelect from '../../../../shared/components/SelectField';
+import { Button, Checkbox } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { FormikValues } from 'formik'
+import CustomInput from '../../../../shared/components/InputField'
+import CustomSelect from '../../../../shared/components/SelectField'
+import axiosInstance from '../../../../interceptor/axiosInstance'
+import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes'
 
 interface SectionTwoProps {
-  onclose: () => void;
+  onclose: () => void
   formik: {
-    values: FormikValues;
-    handleChange: (e: React.ChangeEvent) => void;
-    handleBlur: (e: React.FocusEvent) => void;
-  };
+    values: FormikValues
+    handleChange: (e: React.ChangeEvent) => void
+    handleBlur: (e: React.FocusEvent) => void
+  }
   sectionCompleted: boolean
 }
 
-const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionCompleted }) => {
-
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+const SectionTwo: React.FC<SectionTwoProps> = ({
+  onclose,
+  formik,
+  sectionCompleted
+}) => {
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
   const [modeOptions, setModeOptions] = useState([])
 
   const handleCheckboxChange = () => {
-    setIsCheckboxChecked(!isCheckboxChecked);
-  };
+    setIsCheckboxChecked(!isCheckboxChecked)
+  }
 
-  useEffect(()=> {
-    axiosInstance.get(`${ApiRoutes.REP_CATEGORIES}`)
-    .then(response => {
-      setModeOptions(response.data.data.values);
-    })
-    .catch(error => {
-      console.error('Error fetching repArea options:', error);
-    });
-  },[])
-  
+  useEffect(() => {
+    axiosInstance
+      .get(`${ApiRoutes.REP_CATEGORIES}`)
+      .then(response => {
+        setModeOptions(response.data.data.values)
+      })
+      .catch(error => {
+        console.error('Error fetching repArea options:', error)
+      })
+  }, [])
+
   return (
-    <div className={`merc-plus-form-section ${isCheckboxChecked ? 'disabled' : ''}`}>
-      <br></br>
-      <input type='checkbox' className='na2-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
-      <div>
-        <hr></hr>
+    <div>
+      <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
+        <Checkbox
+          className='no-input-box'
+          onChange={handleCheckboxChange}
+          checked={isCheckboxChecked}
+        >
+          N/A
+        </Checkbox>
+        <div
+          className={`non-maersk-details-section ${
+            isCheckboxChecked ? 'disabled' : ''
+          }`}
+        >
+          <hr></hr>
+          <h4>Cost Details</h4>
+          <div style={{ marginBottom: '30px' }}>
+            <div className='repair-details__first-col'>
+              <div className='input__repair-id'>
+                <CustomInput
+                  name='max_mat_cost'
+                  id='max_mat_cost'
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.max_mat_cost}
+                  label='Max. Mat. Cost'
+                  placeholder='Enter'
+                ></CustomInput>
+              </div>
+              <div className='input__repair-Area'>
+                <CustomInput
+                  name='unit_mat_cost'
+                  id='unit_mat_cost'
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.unit_mat_cost}
+                  label='Unit. Mat. Cost'
+                  placeholder='Enter'
+                ></CustomInput>
+              </div>
+            </div>
+            <div className='repair-details__first-col'>
+              <div className='input__repair-id'>
+                <CustomInput
+                  name='unit_hours'
+                  id='unit_hours'
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.unit_hours}
+                  label='Hours Per Unit'
+                  placeholder='Enter'
+                ></CustomInput>
+              </div>
+              <div className='input__repair-Area'>
+                <CustomInput
+                  name='max_pcs'
+                  id='max_pcs'
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.max_pcs}
+                  label='Max Pieces'
+                  placeholder='Enter'
+                ></CustomInput>
+              </div>
+            </div>
+            <div className='repair-details__first-col'>
+              <div className='input__repair-id'>
+                <CustomInput
+                  name='unit'
+                  id='unit'
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.unit}
+                  label='Units'
+                  placeholder='Enter'
+                ></CustomInput>
+              </div>
+            </div>
+          </div>
+          <hr></hr>
+          
+          <div>
+          <h4  style={{marginBottom: "30px"}}>Customer Related Details</h4>
+          
+          <div className='repair-details__second-col' >
+            <div className='input__repair-id container-repair-area' >
+              <CustomSelect
+                className='select-choices'
+                label='Repair Mode'
+                name='repMode'
+                id='repMode'
+                placeholder='Enter'
+                onBlur={formik.handleBlur}
+                value={formik.values.mode}
+                onChange={formik.handleChange}
+                options={modeOptions.map(option => ({
+                  label: option,
+                  value: option
+                }))}
+              >
+                <option value=''>Select</option>
+                {modeOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </CustomSelect>
+            </div>
+            <br></br>
+            <div className='input__repair-Area container-repair-area'>
+              <CustomSelect
+                className='select-choices'
+                label='Mode Number'
+                name='mode'
+                id='mode'
+                placeholder='Enter'
+                onBlur={formik.handleBlur}
+                value={formik.values.mode}
+                onChange={formik.handleChange}
+                options={modeOptions.map(option => ({
+                  label: option,
+                  value: option
+                }))}
+              >
+                <option value=''>Select</option>
+                {modeOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </CustomSelect>
+            </div>
+          </div>
+          </div>
+          <div className='repair-details__first-col container-repair-area'>
+            <div className='input__repair-id'>
+            <CustomSelect
+                className='select-choices'
+                label='Repair Code'
+                name='repCode'
+                id='repCode'
+                placeholder='Enter'
+                onBlur={formik.handleBlur}
+                value={formik.values.comp}
+                onChange={formik.handleChange}
+                options={modeOptions.map(option => ({
+                  label: option,
+                  value: option
+                }))}
+              >
+                <option value=''>Select</option>
+                {modeOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </CustomSelect>
+            </div>
+            <div className='input__repair-id' style={{marginLeft: '58px'}}>
+              <CustomInput
+                name='comb'
+                id='comb'
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.comb}
+                label='Combined'
+                placeholder='Enter'
+              ></CustomInput>
+            </div>
+          </div>
+          <div className='repair-details__first-col'>
+            <div className='input__repair-id'>
+              <CustomInput
+                name='desc'
+                id='desc'
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.desc}
+                label='Description'
+                placeholder='Enter'
+              ></CustomInput>
+            </div>
+            <div className='input__repair-id'  style={{marginLeft: '58px'}}>
+              <CustomInput
+                name='id'
+                id='id'
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.id}
+                label='ID Source'
+                placeholder='Enter'
+              ></CustomInput>
+            </div>
+          </div>
+        </div>
+        <div className='button-container'>
+          <Button type='primary' onClick={onclose}>
+            Discard
+          </Button>
+          <button type='submit' className='final-buttons'>
+            Edit Repair
+          </button>
+        </div>
       </div>
-      <br></br>
-      <div className='section-three'>
-      <h4>Cost Details</h4>
-      <div className="repair-details__first-col">
-        <div className="input__repair-id">
-          <label>Max. Mat. Cost</label>
-          <br></br>
-          <input
-            type="text"
-            name="max_mat_cost"
-            id="max_mat_cost"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.max_mat_cost}
-            placeholder="Enter"
-          />
-        </div>
-        <br></br>
-        <div className="input__repair-Area">
-          <label>Unit Mat. Cost</label>
-          <br></br>
-          <input
-            type="text"
-            name="unit_mat_cost"
-            id="unit_mat_cost"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.unit_mat_cost}
-            placeholder="0$"
-          />
-        </div>
-      </div>
-      <div className="repair-details__first-col">
-        <div className="input__repair-id">
-          <label>Hours Per Unit</label>
-          <br></br>
-          <input
-            type="text"
-            name="unit_hours"
-            id="unit_hours"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.unit_hours}
-            placeholder="Enter"
-          />
-        </div>
-        <br></br>
-        <div className="input__repair-Area">
-          <label>Max Pieces</label>
-          <br></br>
-          <input
-            type="text"
-            name="max_pcs"
-            id="max_pcs"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.max_pcs}
-            placeholder="Enter"
-          />
-        </div>
-      </div>
-      <div className="repair-details__first-col">
-        <div className="input__repair-id">
-          <label>Units</label>
-          <br></br>
-          <input
-            type="text"
-            name="unit"
-            id="unit"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.unit}
-            placeholder="Enter"
-          />
-        </div>
-        <br></br>
-      </div>
-      <br></br>
-      <br></br>
-      <hr></hr>
-      <br></br>
-      <h4>Customer Related Details</h4>
-      <br></br>
-      <div className="repair-details__second-col">
-        <div className="input__repair-id container-repair-area">
-          <label>Repair Mode</label>
-          <br></br>
-          <select
-            name="rep_mode"
-            id="rep_mode"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.rep_mode}
-          >
-            <option value="">Select</option>
-            <option value="Option 1">2</option>
-            <option value="Option 2">3</option>
-          </select>
-        </div>
-        <br></br>
-        <div className="input__repair-Area container-repair-area">
-          <label>Mode Number</label>
-          <br></br>
-          <select
-            name="mode"
-            id="mode"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.mode}
-          >
-           {modeOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="repair-details__first-col">
-        <div className="input__repair-id">
-          <label>Repair Code</label>
-          <br></br>
-          <input
-            type="text"
-            name="rep_code"
-            id="rep_code"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.rep_code}
-            placeholder="Enter"
-          />
-        </div>
-        <br></br>
-        <div className="input__repair-Area">
-          <label>Combined</label>
-          <br></br>
-          <input
-            type="text"
-            name="combined"
-            id="combined"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.combined}
-            placeholder="Enter"
-          />
-        </div>
-      </div>
-      <div className="repair-details__first-col">
-        <div className="input__repair-id">
-          <label>Description</label>
-          <br></br>
-          <input
-            type="text"
-            name="desc"
-            id="desc"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.desc}
-            placeholder="Enter"
-          />
-        </div>
-        <br></br>
-        <div className="input__repair-Area">
-          <label>ID Source</label>
-          <br></br>
-          <input
-            type="text"
-            name="id"
-            id="id"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.id}
-            placeholder="Enter"
-          />
-        </div>
-      </div>
-      </div>
-      <div className="button-container">
-        <Button type="primary" onClick={onclose}>
-          Discard
-        </Button>
-        <button type="submit" className="final-buttons">
-          Edit Repair
-        </button>
-      </div>
-      <br></br>
-      <br></br>
     </div>
-  );
-};
+  )
+}
 
-export default SectionTwo;
+export default SectionTwo

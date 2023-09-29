@@ -251,3 +251,6 @@
 .ant-picker-input input {
   padding-left: 10px;
 }
+.ant-checkbox-checked::after{
+  border: 0;
+}
