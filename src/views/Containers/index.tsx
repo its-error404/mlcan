@@ -42,7 +42,6 @@ const AllContainers = () => {
         {
         setContainersData(data.deserializedData);
         setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
-        setFilteredSearchEntries((data.deserializedData.docs || []) as ContainersData[])
         setTotalEntries(data.totalEntries || 0);
         setDisplayedEntries(data.totalEntries || 0);
         }
@@ -51,7 +50,7 @@ const AllContainers = () => {
       }
     };
     fetchData();
-  }, [searchData,]);
+  }, []);
 
   const toggleAddContainer = () => {
     setAddContainer(!addContainer);
@@ -143,7 +142,7 @@ const AllContainers = () => {
     setStatusData("");
     setCustomerData("");
     const newFilteredData = filterContainers(activeSection, searchData);
-    setFilteredEntries(newFilteredData);
+    setFilteredSearchEntries(newFilteredData);
     setFilterMenu(false);
     setDisplayedEntries(newFilteredData.length);
   };
@@ -424,7 +423,7 @@ const AllContainers = () => {
             <div className="container-box__container">
               <Table
                 columns={columns}
-                dataSource={filteredSearchEntries}
+                dataSource={filteredEntries}
                 rowKey="uid"
                 className="container-table"
                 rowClassName={getRowClassName}
@@ -432,7 +431,7 @@ const AllContainers = () => {
               />
             </div>
             <p className="total-records">
-              Showing <span className="record-range"> 1 - {totalEntries} </span>{" "}
+              Showing <span className="record-range"> 1 - {displayedEntries} </span>{" "}
               of <span className="total-range"> {totalEntries} </span>
             </p>
           </div>
