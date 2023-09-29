@@ -63,6 +63,16 @@
   border-collapse: collapse;
 }
 
+.ant-upload-text {
+  color: $draft-text;
+  font-weight: 500;
+}
+
+.ant-upload-dragger {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
 /* Button */
 
 .ant-btn {
@@ -150,4 +160,52 @@
       box-shadow: $select-focus-box-shadow !important;
     }
   }
+}
+
+.horizontal-pagination-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px; 
+}
+
+
+.horizontal-pagination {
+  display: flex;
+  margin-top: -30px;
+}
+
+.horizontal-pagination .ant-pagination-item {
+  display: inline-block;
+  width: 32px;
+  margin-right: 5px; 
+  border-radius: 50%; 
+  text-align: center; 
+  line-height: 32px; 
+}
+
+.horizontal-pagination .ant-pagination-prev,
+.horizontal-pagination .ant-pagination-next {
+  display: inline-block;
+  vertical-align: middle; 
+}
+
+.ant-pagination-item-active {
+  background-color: #1890ff; 
+  color: white; 
+}
+
+.ant-pagination-item-link {
+  border: 0;
+  margin-right: 10px;
+  margin-top: -20px;
+}
+
+.bottom-flex {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.container-table {
+  border-spacing: 40px 50px !important;
 }

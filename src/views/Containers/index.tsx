@@ -1,34 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Containers.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
-import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button, DatePicker, Space } from "antd";
-import {
-  useFetchData,
-  useRowClick,
-  useSectionClick,
-} from "../../services/ContainersService/containers.service";
+import { Table } from "antd";
+import {  getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
+import { Link, } from "react-router-dom";
+import '../../styles/_@antOverrides.scss'
+import { AllContainersData, ContainersData } from "../../models/Containers.model";
+import 'antd/dist/antd.css';
 
 const AllContainers = () => {
+
   const [searchData, setSearchData] = useState("");
-  const { containersData } = useFetchData(searchData);
-  const { selectedEntry, handleRowClick } = useRowClick();
   const [sectionIndex, setSectionIndex] = useState<number>(0);
-  const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [addContainer, setAddContainer] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState("All")
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
+  const [activityData, setActivityData] = useState("");
+  const [statusData, setStatusData] = useState("");
+  const [customerData, setCustomerData] = useState("");
+  const [yardData, setYardData] = useState("");
+  const [dateData, setDateData] = useState(null);
+  const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
+  const [allContainersData, setContainersData] = useState<AllContainersData | null>(null)
+  const [totalEntries, setTotalEntries] = useState<number | null>(null);
+  const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
+  const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
 
-  const toggleFilterMenu = () => {
-    setFilterMenu(!filterMenu);
-  };
-
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getContainersData();
+        if (data) {
+          setContainersData(data.deserializedData);
+          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
+          setTotalEntries(data.totalEntries || 0);
+          setDisplayedEntries(data.totalEntries || 0)
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) {
@@ -43,31 +63,198 @@ const AllContainers = () => {
     setAddContainer(!addContainer);
   };
 
-  const closeAddContainer = () => {
-    setAddContainer(false);
-  };
+  const filterContainers = (section: string, searchQuery: string) => {
+    if (!allContainersData?.docs) {
+      return [];
+    }
+  
+    const containers = allContainersData.docs as ContainersData[];
+    
+    let filteredData = [] as ContainersData[];
+  switch (section) {
+    case "All":
+      filteredData = containers;
+      break;
+    case "Draft":
+      filteredData = containers.filter((doc) => doc.activityStatus === "draft");
+      break;
+    case "Admin Review Pending":
+      filteredData = containers.filter((doc) => doc.activityStatus === "billing");
+      break;
+    case "Pending Customer Approval":
+      filteredData = containers.filter((doc) => doc.activityStatus === "pending");
+      break;
+    case "Quotes Approved by Customers":
+      filteredData = containers.filter((doc) => doc.activityStatus === "approved");
+      break;
+    default:
+      filteredData = [];
+  }
 
-  const openOverlay = () => {
-    setOverlayOpen(true);
-  };
+  filteredData = filteredData.filter((doc) =>
+  {
+  if(doc.uid) {
+    doc.uid.toLowerCase().includes(searchQuery.toLowerCase())
+  }
+}
+  );
 
-  const closeOverlay = () => {
-    setOverlayOpen(false);
-  };
-
-  const filterContainers = (section: string) => {
-    return containersData?.data?.docs.filter((doc) =>
-      section === "All" ? true : doc?.activity_status === section
-    );
-  };
+  return filteredData;
+}
 
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
     setSectionIndex(newIndex);
     setActiveSection(section);
+    setShowActivityUidColumn(section === "Draft");
   }
 
+  const getRowClassName = (record: any, index: number) => {
+    return index % 2 === 0 ? "even-row" : "odd-row";
+  };
+
+  const applyFilters = (data: any) => {
+    return data.filter((doc: any) => {
+      const ActivityMatches = activityData === "" || doc.activityType === activityData;
+      const statusMatches = statusData === "" || doc.activityStatus === statusData;
+      const yardMatches = yardData === "" || doc.yard === yardData;
+      const customerMatches = customerData === "" || doc.customerName === customerData;
+      const dateMatches = dateData === null || doc.activityDate === dateData;
+  
+      return ActivityMatches && customerMatches && yardMatches && statusMatches && dateMatches;
+    });
+  };
+  
+  const handleApplyFilters = () => {
+    const filteredData = applyFilters(allContainersData?.docs || []);
+    setFilteredEntries(filteredData);
+    setFilterMenu(false);
+    setDisplayedEntries(filteredData.length)
+  };
+
+  const handleResetFilters = () => {
+    setActivityData("");
+    setDateData(null);
+    setYardData("");
+    setStatusData("")
+    setCustomerData("")
+    const filteredData = applyFilters(ContainersData?.docs || []);
+    setFilteredEntries(filteredData);
+    setFilterMenu(false);
+  };
+
+
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
+  const columns = [
+    {
+      title: "Container Number",
+      dataIndex: "uid",
+      key: "uid",
+      render: (text: string, record: any) => (
+        <Link to={`/containers/${record.id}`}>{text}</Link>
+      ),
+    },
+    {
+      title: (
+        <>
+          Yard <AscToggleIcon width={8} style={{ marginLeft: 8 }} />
+        </>
+      ),
+      dataIndex: "yard",
+      key: "yard",
+      render: (text: string) => (showActivityUidColumn ? text : null),
+    },
+    {
+      title: (
+        <>
+          Customer <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+        </>
+      ),
+      dataIndex: "customerName",
+      key: "customerName",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+    },
+    {
+      title: (
+        <>
+          Owner Name <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+        </>
+      ),
+      dataIndex: "owner",
+      key: "owner",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+    },
+    {
+      title: (
+        <>
+          {sectionIndex === 1 ? "Activity" : "Current Activity"}
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
+        </>
+      ),
+      dataIndex: "activityType",
+      key: "activityType",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+    },
+    {
+      title: (
+        <>
+          {sectionIndex === 1 ? "Activity ID" : ""}
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
+        </>
+      ),
+      dataIndex: "activityUid",
+      key: "activityUid",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+    },
+    {
+      title: (
+        <>
+          Activity Status <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+        </>
+      ),
+      dataIndex: "activityDate",
+      key: "activityDate",
+      render: (text: string, record: any) =>
+        showActivityUidColumn ? (formatDate(text) || "N/A") : null,
+    },
+    {
+      title: (
+        <>
+          Status <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+        </>
+      ),
+      dataIndex: "activityStatus",
+      key: "activityStatus",
+      render: (text: string, record: any) => (
+        <div
+          className={`activity-text ${
+            text === "billing"
+              ? "billing-style"
+              : text === "draft"
+              ? "draft-style"
+              : "default-style"
+          }`}
+        >
+          {text || "N/A"}
+        </div>
+      ),
+    },
+  ].filter(Boolean);
+  
+  let filterMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let handler = (e: any) => {
+      if (!filterMenuRef.current?.contains(e.target)) {
+        setFilterMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
 
   return (
     <div className="main">
@@ -85,12 +272,10 @@ const AllContainers = () => {
             />
           </div>
 
-          {addContainer && <div className="overlay-backdrop"></div>}
-
           {addContainer && (
-            <div className="addrepair-overlay-container">
-              <div className="addrepair-overlay-content">
-                <AddContainer onclose={closeAddContainer} />
+          <div className="overlay">
+            <div className="overlay-content">
+                <AddContainer onclose={()=> { setAddContainer(false)}} />
               </div>
             </div>
           )}
@@ -113,138 +298,12 @@ const AllContainers = () => {
                 type="text"
                 className="search-box"
                 placeholder="Search container by number"
-                value={searchData}
                 onChange={(e) => setSearchData(e.target.value)}
               ></input>
-              <div className="filters-container" onClick={toggleFilterMenu}>
-                <Button className="filter-button">
-                  <span className="filter-icon">
-                    <FilterIcon width={20} />
-                  </span>
-                  Filters
-                </Button>
-               {filterMenu &&(
-                <div className={`filter-menu ${filterMenu ? 'visible' : ''}`}>
-                  <div className="filter-header__first-part">
-                    <h4>Filters</h4>
-                    <div className="filter-header__second-part">
-                      <h4>Reset</h4>
-                      <h4>Apply</h4>
-                    </div>
-                  </div>
-
-                  <div className="filter-options-flex">
-
-                  <div className="column-1">
-      
-                    <div className="filter-dropdown-date">
-                      <label>Date</label>
-                      <input type="date" className="filter-date-picker" placeholder="Select Date"></input>
-                    </div>
-
-                    <div className="filter-dropdown-date option-status">
-                      <label>Status</label>
-                      <select>
-                        <option>Quote Draft</option>
-                        <option>Inspection Draft</option>
-                      </select>
-                    </div>
-
-                    <div className="filter-dropdown-date filter-dropdown-activity">
-                    <label>Customer</label>
-                      <select>
-                        <option>Quote</option>
-                        <option>Repair</option>
-                        <option>Inspection</option>
-                      </select>
-                    </div>
-
-                  </div>
-
-                  <div className="column-2">
-
-                  <div className="filter-dropdown-date option-activity">
-                      <label>Activity</label>
-                      <select>
-                        <option>Draft</option>
-                        <option>Inspection</option>
-                      </select>
-                    </div>
-
-
-                    <div className="filter-dropdown-date option-yard">
-                      <label>Yard</label>
-                      <select>
-                        <option>Nordel</option>
-                        <option>Harbour Link</option>
-                        <option>Aheer</option>
-                      </select>
-                    </div>
-                  </div>
-                  </div>
-            
-                  </div>
-                   )}
-                </div>
               </div>
 
             <div className="container-box__container">
-              <table className="container-box__table">
-                <thead>
-                  <tr className="container-box__rows">
-                    <th align="left">Container Number</th>
-                    <th>Yard </th>
-                    <th>Customer <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Owner Name <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>{sectionIndex === 1 ? 'Activity' : 'Current Activity'}</th>
-                    {sectionIndex === 1 && <th>Activity ID <span>
-                      <ToggleIcon width={8} />
-                    </span></th>}
-                    <th>Activity Date <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                    <th>Status <span>
-                      <ToggleIcon width={8} />
-                    </span></th>
-                  </tr>
-                </thead>
-                <tbody className="container-list__entries">
-                  {(filterContainers(sections[sectionIndex]) ?? []).map((doc, index) => (
-                    <tr
-                      className={
-                        index % 2 === 0
-                          ? "container-id__even"
-                          : "container-id__odd"
-                      }
-                      key={doc.uid}
-                    >
-                      <td>{doc.uid}</td>
-                      <td>{doc.yard}</td>
-                      <td>{doc.customer_name}</td>
-                      <td>{doc.owner}</td>
-                      <td>{doc.activity_type}</td>
-                      <td>{formatDate(doc.activity_date)}</td>
-                      <td>
-                        <div
-                          className={`activity-text ${doc.activity_status === "billing"
-                              ? "billing-style"
-                              : doc.activity_status === "draft"
-                                ? "draft-style"
-                                : "default-style"
-                            }`}
-                        >
-                          {doc.activity_status || 'N/A'}
-                        </div>
-                      </td>
-                      {sectionIndex === 1 && <td>{doc.activity_id || 'N/A'}</td>}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection, searchData))} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
             </div>
           </div>
         </div>
