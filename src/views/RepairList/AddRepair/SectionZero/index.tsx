@@ -1,13 +1,13 @@
 import { Button } from 'antd';
 import React from 'react';
 import { FormikPropsSectionZero } from '../../../../shared/types/formikTypes';
-import '../AddRepair.scss'
+import '../../AddRepair/AddRepair.scss'
 
 interface SectionZeroProps {
   onclose: () => void;
   formik: FormikPropsSectionZero
-  onNextSection: () => void;
-  sectionCompleted: boolean
+  onNextSection?: () => void;
+  sectionCompleted?: boolean
 }
 
 const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {

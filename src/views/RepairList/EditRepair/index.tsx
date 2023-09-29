@@ -1,22 +1,17 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { editRepairEntry } from "../../../services/RepairListService/repairlist.service";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
-import { Button, Checkbox } from "antd";
 import "../../../styles/_variables.scss";
-import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
 import SectionZero from "./SectionZero";
 import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo/";
 
 interface EditRepairProps {
-  editedData: any;
+  data: any;
   onClose: () => void;
-  repairId: string;
-  overlayOpen: boolean;
-  closeOverlay: () => void;
+  id: any;
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({
@@ -31,6 +26,16 @@ const EditRepair: React.FC<EditRepairProps> = ({
 
 
   const [formData, setFormData] = useState<any>({});
+
+  useEffect(() => {
+    if (data) {
+      setFormData(data);
+    }
+  }, [data]);
+
+  const EditValues = {
+    ...data,
+  };
 
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
@@ -58,10 +63,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
   };
 
   const formik = useFormik({
-    initialValues: editedData,
+    initialValues: EditValues,
     validationSchema: repairDetailsSchema,
-    validateOnChange: true,
-    validateOnBlur: true,
     onSubmit: async (formData) => {
       try {
         await editRepairEntry(formData, repairId);
@@ -86,26 +89,12 @@ const EditRepair: React.FC<EditRepairProps> = ({
   };
 
   return (
-    <div className="overlay">
-      <div className="overlay-content">
-        <div
-          className={`overlay-box-edit  ${overlayOpen ? "overlay-open" : ""}`}
-          style={{
-            maxHeight: "80vh",
-            overflowY: "auto",
-            position: "fixed",
-            top: "45%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
+    <div>
+      <div className="repair-details-form">
+        <div className="form-wrapper">
           <div className="form-header">
             <h2>Edit Repair Part</h2>
-            <CloseIcon
-              width={15}
-              onClick={onClose}
-              className="close-icon-edit"
-            />
+            <CloseIcon width={15} onClick={onClose} />
           </div>
           <div className="section-buttons">
             {sections.map((section, index) => (
@@ -137,8 +126,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
       <SectionOne
         formik={formik}
         onclose={onClose}
-        onNextSection={handleNextSection}
-        sectionCompleted={sectionCompleted[1]}
       />
     )}
              {sectionIndex === 2 && (

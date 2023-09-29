@@ -6,35 +6,6 @@ import { ContainerData } from '../../models/singlecontainer.model';
 import { notification } from 'antd';
 import { deserialize } from 'serializr';
 
-//TODO: container search
-
-// export const useFetchData = (searchQuery='') => {
-//     const [containersData, setContainersData] = useState<AllContainersData | null>(null)
-//     const [totalEntries, setTotalEntries] = useState<number | null>(null);
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//           try {
-//             const response = await axiosInstance.get(ApiRoutes.CONTAINERS)
-//             const allData = response.data.data.docs
-
-//             const converToLowerCase = searchQuery.toLowerCase() 
-//             const filteredData = allData.filter((container: ContainersData) =>
-//                 container.uid?.toLowerCase().includes(converToLowerCase)
-//             )
-
-//             setContainersData({ data: {docs: filteredData}})
-//             setTotalEntries(filteredData.length)
-//           } catch (error) {
-//             console.log(error)
-//           }
-//         }
-//         fetchData()
-//     }, [searchQuery])
-
-//     return { containersData, totalEntries }
-// }
-
 export const getContainersData = async () => {
   let totalEntries = 0
   try {
@@ -51,26 +22,6 @@ export const getContainersData = async () => {
 }
 
 const workingLink = `${ApiRoutes.CONTAINERS}/6496b4d51725b1f902152f0b`
-
-
-//TODO: Container Api ERROR
-
-// export const GetContainer = async (docId: string) => {
-//   try {
-//     const response = await axiosInstance.get(`${ApiRoutes.CONTAINERS}/${docId}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching container data:', error);
-
-//     try {
-//       const workingResponse = await axiosInstance.get(workingLink);
-//       return workingResponse.data;
-//     } catch (err) {
-//       console.error('Error fetching data:', err);
-//       throw err; 
-//     }
-//   }
-// };
 
 export const getWorkingContainer = async () => {
   try {

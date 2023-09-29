@@ -3,10 +3,9 @@ import "./Containers.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
-import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { Button, DatePicker, Table } from "antd";
+import { Table } from "antd";
 import {  getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
@@ -14,7 +13,7 @@ import { Link, } from "react-router-dom";
 import '../../styles/_@antOverrides.scss'
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import 'antd/dist/antd.css';
-import { ColumnsType } from 'antd/lib/table';
+import { ColumnsType } from "antd/lib/table";
 
 const AllContainers = () => {
 
@@ -52,10 +51,6 @@ const AllContainers = () => {
     fetchData();
   }, []);
 
-  const toggleFilterMenu = () => {
-    setFilterMenu(!filterMenu);
-  };
-
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) {
       return "";
@@ -76,7 +71,7 @@ const AllContainers = () => {
   
     const containers = allContainersData.docs as ContainersData[];
     
-    let filteredData = [];
+    let filteredData = [] as ContainersData[];
   switch (section) {
     case "All":
       filteredData = containers;
@@ -98,7 +93,11 @@ const AllContainers = () => {
   }
 
   filteredData = filteredData.filter((doc) =>
+  {
+  if(doc.uid) {
     doc.uid.toLowerCase().includes(searchQuery.toLowerCase())
+  }
+}
   );
 
   return filteredData;
@@ -152,7 +151,9 @@ const AllContainers = () => {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
-      render: (text:string, record:any) => <Link to={`/containers/${record.id}`}>{text}</Link>,
+      render: (text: string, record: any) => (
+        <Link to={`/containers/${record.id}`}>{text}</Link>
+      ),
     },
     {
       title: (
@@ -162,6 +163,7 @@ const AllContainers = () => {
       ),
       dataIndex: "yard",
       key: "yard",
+      render: (text: string) => (showActivityUidColumn ? text : null),
     },
     {
       title: (
@@ -171,7 +173,7 @@ const AllContainers = () => {
       ),
       dataIndex: "customerName",
       key: "customerName",
-      render: (text:string, record:any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
     {
       title: (
@@ -181,19 +183,18 @@ const AllContainers = () => {
       ),
       dataIndex: "owner",
       key: "owner",
-      render: (text:string, record:any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
-    
     {
       title: (
         <>
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
         </>
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text:string, record:any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
     showActivityUidColumn && {
       title: (
@@ -214,7 +215,8 @@ const AllContainers = () => {
       ),
       dataIndex: "activityDate",
       key: "activityDate",
-      render: (text:string, record:any) => formatDate(text) || "N/A",
+      render: (text: string, record: any) =>
+        showActivityUidColumn ? (formatDate(text) || "N/A") : null,
     },
     {
       title: (
@@ -224,7 +226,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityStatus",
       key: "activityStatus",
-      render: (text:string, record:any) => (
+      render: (text: string, record: any) => (
         <div
           className={`activity-text ${
             text === "billing"
@@ -238,7 +240,7 @@ const AllContainers = () => {
         </div>
       ),
     },
-  ].filter(Boolean);;
+  ].filter(Boolean);
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -298,83 +300,10 @@ const AllContainers = () => {
                 placeholder="Search container by number"
                 onChange={(e) => setSearchData(e.target.value)}
               ></input>
-
-              {/* <div className="filters-container" onClick={toggleFilterMenu}>
-                <Button className={`filter-button ${filterMenu ? 'change-button' : ''}`}>
-                  <span className="filter-icon">
-                    <FilterIcon width={20} />
-                  </span>
-                  Filters
-                </Button>
-               {filterMenu &&(
-                <div className={`filter-menu ${filterMenu ? 'visible' : ''}`}>
-                  <div className="filter-header__first-part">
-                    <h4>Filters</h4>
-                    <div className="filter-header__second-part">
-                      <h4>Reset</h4>
-                      <h4>Apply</h4>
-                    </div>
-                  </div>
-
-                  <div className="filter-options-flex">
-
-                  <div className="column-1">
-      
-                    <div className="filter-dropdown-date">
-                      <label>Date</label>
-                      <input type="date" className="filter-date-picker" placeholder="Select Date"></input>
-                    </div>
-
-                    <div className="filter-dropdown-date option-status">
-                      <label>Status</label>
-                      <select>
-                        <option>Quote Draft</option>
-                        <option>Inspection Draft</option>
-                      </select>
-                    </div>
-
-                    <div className="filter-dropdown-date filter-dropdown-activity">
-                    <label>Customer</label>
-                      <select>
-                        <option>Quote</option>
-                        <option>Repair</option>
-                        <option>Inspection</option>
-                      </select>
-                    </div>
-
-                  </div>
-
-                  <div className="column-2">
-
-                  <div className="filter-dropdown-date option-activity">
-                      <label>Activity</label>
-                      <select>
-                        <option>Draft</option>
-                        <option>Inspection</option>
-                      </select>
-                    </div>
-
-
-                    <div className="filter-dropdown-date option-yard">
-                      <label>Yard</label>
-                      <select>
-                        <option>Nordel</option>
-                        <option>Harbour Link</option>
-                        <option>Aheer</option>
-                      </select>
-                    </div>
-                  </div>
-                  </div>
-            
-                  </div>
-                   )}
-                </div> */}
-                
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection, searchData))} rowKey="uid" className="container-table" rowClassName={getRowClassName}         pagination={false} 
-/>
+            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection, searchData))} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
             </div>
           </div>
         </div>
