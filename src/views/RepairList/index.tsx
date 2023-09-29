@@ -239,6 +239,7 @@ const RepairList = () => {
 
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData, repairListData]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
