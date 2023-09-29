@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import React, { useState } from 'react';
 import { FormikValues } from 'formik'; 
 import CustomInput from '../../../../shared/components/InputField';
@@ -11,7 +11,7 @@ interface SectionTwoProps {
     handleChange: (e: React.ChangeEvent<any>) => void;
     handleBlur: (e: React.FocusEvent<any>) => void;
   };
-  sectionCompleted: boolean
+  sectionCompleted?: boolean
 }
 
 const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionCompleted }) => {
@@ -118,7 +118,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionComplet
           <CustomInput name='id' id='id' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.id} label='ID Source' placeholder='Enter'></CustomInput>
         </div>
       </div>
-      </div>
+     
       <div className="button-container">
         <Button type="primary" onClick={onclose}>
           Discard
@@ -128,6 +128,7 @@ const SectionTwo: React.FC<SectionTwoProps> = ({ onclose, formik, sectionComplet
         </button>
       </div>
     </div>
+    
   );
 };
 

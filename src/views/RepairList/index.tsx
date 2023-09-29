@@ -346,12 +346,9 @@ const RepairList = () => {
           <div className="overlay">
             <div className="overlay-content">
               <EditRepair
-                editedData={selectedEntryForEdit}
-                onClose={() => {
-                  setSelectedEntryForEdit(null);
-                }}
-               repairId={selectedEntryForEdit.id || ''}
-               closeOverlay={()=>{}}
+                data={selectedEntryForEdit}
+                onClose={() => {setSelectedEntryForEdit(null);}}
+               id={selectedEntryForEdit.id || ''}
               />
             </div>
           </div>

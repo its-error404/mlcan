@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import React, { useState } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import 'antd/dist/antd.css'
@@ -8,8 +8,8 @@ import CustomSelect from '../../../../shared/components/SelectField';
 interface SectionOneProps {
   onclose: () => void;
   formik: FormikProps<FormikValues>
-  onNextSection: () => void;
-  sectionCompleted: boolean
+  onNextSection?: () => void;
+  sectionCompleted?: boolean
 }
 
 const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {
@@ -171,6 +171,7 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, formik, onNextSection,
           </Button>
           <Button type="primary" onClick={onNextSection}>Proceed</Button>
         </div>
+    </div>
     </div>
   );
 };
