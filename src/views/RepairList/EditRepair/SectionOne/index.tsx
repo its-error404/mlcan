@@ -1,8 +1,9 @@
-import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Checkbox } from 'antd';
+import React from 'react';
 import { FormikProps, FormikValues } from 'formik';
-import axiosInstance from '../../../../interceptor/axiosInstance';
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
+import 'antd/dist/antd.css'
+import CustomInput from '../../../../shared/components/InputField';
+import CustomSelect from '../../../../shared/components/SelectField';
 
 interface SectionOneProps {
   onclose: () => void;

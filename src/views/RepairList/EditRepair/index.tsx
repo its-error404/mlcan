@@ -5,13 +5,14 @@ import { ReactComponent as TickIcon } from "../../../assets/single color icons -
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
 import repairDetailsSchema from "./EditFormValidation";
-import "./EditRepair.scss"
+import "../EditRepair/EditRepair.scss";
 import SectionZero from "./SectionZero";
 import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo/";
+import { editRepairEntry } from "../../../services/RepairListService/repair.service";
 
 interface EditRepairProps {
-  editedData: any;
+  data: any;
   onClose: () => void;
   repairId: string;
   overlayOpen?: boolean;
@@ -103,11 +104,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
         >
           <div className="form-header">
             <h2>Edit Repair Part</h2>
-            <CloseIcon
-              width={15}
-              onClick={onClose}
-              className="close-icon-edit"
-            />
+            <CloseIcon width={15} onClick={onClose} />
           </div>
           <div className="section-buttons edit-section-button">
             {sections.map((section, index) => (

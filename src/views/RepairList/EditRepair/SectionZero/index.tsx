@@ -136,7 +136,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
         </div>
         <br></br>
       </div>
-      <div className="button-container edit-buttons">
+      <div className="button-container">
         <Button type="primary" onClick={onclose}>
           Discard
         </Button>

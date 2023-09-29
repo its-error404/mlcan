@@ -1,11 +1,11 @@
-import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { FormikPropsSectionZero } from '../../../../shared/types/formikTypes';
-import '../AddRepair.scss'
-import axiosInstance from '../../../../interceptor/axiosInstance';
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
+import { Button, Checkbox } from 'antd';
+import React from 'react';
+import { FormikProps, FormikValues } from 'formik';
+import 'antd/dist/antd.css'
+import CustomInput from '../../../../shared/components/InputField';
+import CustomSelect from '../../../../shared/components/SelectField';
 
-interface SectionZeroProps {
+interface SectionOneProps {
   onclose: () => void;
   formik: FormikPropsSectionZero
   onNextSection: () => void;
@@ -63,8 +63,51 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
             <div className="field-1-error-message">{formik.errors.uid}</div>
           ) : null}
         </div>
+        <h4>Cost Details</h4>
+        <div className="repair-details__first-col">
+          <div className="input__repair-id hours-div">
+            <CustomInput id='hours' name='hours' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Hours' placeholder='Enter' value={formik.values.hours}></CustomInput>
+          </div>
+          <div className="input__repair-Area mat-cost-div">
+            <CustomInput id='mat_cost' name='mat_cost' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Material Cost' placeholder='Enter' value={formik.values.mat_cost}></CustomInput>
+          </div>
+        </div>
+        <hr></hr>
+        <h4>Customer Related Details</h4>
+        <div className="repair-details__first-col repaid-id__input">
+          <div className="input__repair-id">
+            <CustomInput id='cont_sec' name='cont_sec' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Container Section' placeholder='Enter' value={formik.values.cont_sec}></CustomInput>
+          </div>
+          <div className="input__repair-Area dmg-area-div">
+            <CustomInput id='dmg_area' name='dmg_area' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Damaged Area' placeholder='Enter' value={formik.values.dmg_area}></CustomInput>
+          </div>
+        </div>
+        <div className="repair-details__first-col ">
+          <div className="input__repair-id repaid-id__input custom-margin">
+            <CustomInput id='type' name='type' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Repair Type' placeholder='Enter' value={formik.values.type}></CustomInput>
+          </div>
+          <div className="input__repair-Area custom-margin">
+            <CustomInput id='desc' name='desc' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Description' placeholder='Enter' value={formik.values.desc}></CustomInput>
+          </div>
+        </div>
+        <div className="repair-details__second-col">
+          <div className="input__repair-id">
 
-        <br></br>
+            <CustomSelect
+            className='select-choices'
+              label="COMP"
+              name="comp"
+              id="comp"
+              placeholder='Enter'
+              onBlur={formik.handleBlur}
+              value={formik.values.comp}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
 
         <div className="container-damaged-area field-2 container-repair-area">
           <label>Container Repair Area</label>
@@ -150,4 +193,4 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
   );
 };
 
-export default SectionZero;
+export default SectionOne;

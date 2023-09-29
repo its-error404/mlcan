@@ -1,15 +1,15 @@
-import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Checkbox } from 'antd';
+import React from 'react';
 import { FormikValues } from 'formik'; 
-import axiosInstance from '../../../../interceptor/axiosInstance';
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
+import CustomInput from '../../../../shared/components/InputField';
+import CustomSelect from '../../../../shared/components/SelectField';
 
 interface SectionTwoProps {
   onclose: () => void;
   formik: {
     values: FormikValues;
-    handleChange: (e: React.ChangeEvent<any>) => void;
-    handleBlur: (e: React.FocusEvent<any>) => void;
+    handleChange: (e: React.ChangeEvent) => void;
+    handleBlur: (e: React.FocusEvent) => void;
   };
   sectionCompleted: boolean
 }
