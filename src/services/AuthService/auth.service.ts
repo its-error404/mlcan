@@ -30,12 +30,8 @@ export const loginUser = async (email: string, password: string) => {
         response.data.data.user.admin = "Admin";
       }
 
-      setUserInfo(
-        response.data.data.user.uid,
-        response.data.data.user.email,
-        response.data.data.user.phone,
-        response.data.data.user.admin
-      );
+        setUserInfo(response.data.data.user.uid, response.data.data.user.email, response.data.data.user.phone, response.data.data.user.admin)
+        
 
       return { success: true, user };
     } else {

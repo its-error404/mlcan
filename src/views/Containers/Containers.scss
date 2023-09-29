@@ -39,9 +39,27 @@
     margin-top: 10px;
 }
 
+.container-table tr {
+    height: 55px;
+    background-color: $table-row-bg;
+}
+
+.container-table tr > th {
+    font-weight: 500;
+}
+
+.container-table td > a {
+    text-decoration: none;
+    color: $text-black;
+}
+
+.container-table {
+    margin-top: -100px;
+}
+
 .container-details {
     line-height: 20px;
-    margin-top: -30px;
+    margin-top: -43px;
     background-color: $input-bg;
     width: 84.3vw;
     height: 80vh;
@@ -106,18 +124,9 @@
     gap: 30px;
 }
 
-.filter-button {
-    position: relative;
-    padding-left: 40px;
-    padding-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: 1px solid $filter-button-border;
-    border-radius: 7px;
-    background-color: $filter-button-bg;
-    color: $filter-button-text;
-    font-weight: 500;
-    cursor: pointer;
+.container-id a {
+    text-decoration: none;
+    color: $text-black;
 }
 
 .filter-icon {
@@ -125,6 +134,19 @@
     left: 10px;
     filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%) hue-rotate(119deg) brightness(95%)
         contrast(82%);
+}
+
+.filter-menu {
+    margin-top: 10px;
+    position: absolute;
+    height: 36vh;
+    width: 30vw;
+    border: 1px solid $light-border;
+    background-color: $filter-menu-bg;
+    display: flex;
+    flex-flow: column;
+    border-radius: 6px;
+    z-index: 100;
 }
 
 .filter-header__first-part {
@@ -174,11 +196,6 @@
     color: $gray;
 }
 
-.date-picker-container label{
-    position: absolute;
-    top: 60px;
-    left: 30px;
-}
 
 .ant-picker-dropdown {
     position: absolute;
@@ -218,6 +235,7 @@
 
 .filter-dropdown-date select {
     max-width: 240px;
+    outline-color: 1px solid $light-border;
 }
 .filter-columns {
     display: flex;
@@ -248,14 +266,33 @@
     margin-top: 35px !important;
 }
 
-.filter-date-picker {
-    padding-left: 10px;
-    max-width: 250px;
-    max-height: 30px !important;
-    margin-top: 20px;
-    margin-left: 20px;
+
+.container-filter-button {
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
     padding-right: 20px;
+    background-color: $bg-white;
 }
+  
+.container-filter-icon{
+    position: absolute;
+    left: 10px !important;
+}
+  .filter-menu.visible {
+    display: block;
+    opacity: 1;
+  }
+
+  .container-filter-button.change-button {
+    background-color: $turkish-green;
+    color: $white-bg;
+  }
+
+  .filter-button.change-button span {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(340deg) brightness(105%) contrast(101%);
+  }
 
 .ant-picker-content  {
     max-width: 100px;
@@ -270,30 +307,15 @@
     color: #000;
 }
 
-.date-picker input {
-    margin-top: 40px;
-    height: 30px;
-    padding-left: 10px;
-    max-width: 200px;
-    margin-left: 25px;
-}
 
-.ant-picker-suffix {
-    position: absolute;
-    top: 33%;
-    left: 33%;
-    right: 0;
-}
+
 
 .filter-menu__options p:nth-child(2) {
     color: $turkish-green;
     font-weight: 500;
 }
 
-.custom-date-picker {
-    max-width: 100px;
-    max-height: 50px;
-}
+
 
 .container-box-table {
     margin-top: 20px;
