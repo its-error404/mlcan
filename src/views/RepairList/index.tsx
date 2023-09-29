@@ -15,13 +15,10 @@ import { RepairData, Repair } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
-import {
-  deleteRepairEntry,
-  fetchRepairData,
-} from "../../services/RepairListService/repairlist.service";
 import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
+import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -33,7 +30,7 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
-      onCell: (record) => {
+      onCell: (record : Repair) => {
         return {
           onClick: () => handleRowClick(record),
         };
@@ -140,14 +137,7 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => (
-        <EditIcon
-          width={20}
-          onClick={() => {
-            handleEditClick(record);
-          }}
-        />
-      ),
+      render: (text: string, record: any) => <EditIcon width={20} />,
       style: {
         marginRight: "-20px",
       },
@@ -215,15 +205,14 @@ const RepairList = () => {
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
-  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<RepairData | null>(null);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
-        setRepairListData(deserializedData);
-        setFilteredEntries(deserializedData.docs || []);
+        setRepairListData(deserializedData)
         setTotalEntries(deserializedData.docs?.length || 0);
         setDisplayedEntries(deserializedData.docs?.length || 0);
       } catch (error) {
@@ -321,10 +310,6 @@ const RepairList = () => {
             onClick={toggleAddRepair}
           />
         </div>
-        
-       
-          <SelectedEntry selectedEntry={selectedRow} overlayOpen={overlayOpen} closeOverlay={() => {setOverlayOpen(false); setSelectedRow(null);}} sectionIndex={sectionIndex} handleSectionClick={(index: number) => setSectionIndex(index)} setSectionIndex={setSectionIndex}/>
-       
 
         {addRepair && (
           <div className="overlay">
@@ -354,10 +339,8 @@ const RepairList = () => {
             <div className="overlay-content">
               <EditRepair
                 data={selectedEntryForEdit}
-                onClose={() => {
-                  setSelectedEntryForEdit(null);
-                }}
-                id={selectedEntryForEdit?.docs}
+                onClose={() => {setSelectedEntryForEdit(null);}}
+               id={selectedEntryForEdit.id || ''}
               />
             </div>
           </div>
