@@ -35,21 +35,7 @@ const AllContainers = () => {
   const [filteredSearchEntries, setFilteredSearchEntries] = useState<ContainersData[]>([])
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getContainersData();
-        if(data)
-        {
-        setContainersData(data.deserializedData);
-        setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
-        setTotalEntries(data.totalEntries || 0);
-        setDisplayedEntries(data.totalEntries || 0);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchData();
+    refreshData();
   }, []);
 
   const toggleAddContainer = () => {
@@ -123,15 +109,8 @@ const AllContainers = () => {
   const handleApplyFilters = () => {
     const newFilteredData = applyFilters();
     setFilteredEntries(newFilteredData);
+    setDisplayedEntries(newFilteredData.length)
     setFilterMenu(false);
-  
-    const filteredSearchData = newFilteredData.filter((doc) => {
-      const searchMatches = doc.uid?.toLowerCase().includes(searchData.toLowerCase());
-      return searchMatches;
-    });
-  
-    setFilteredSearchEntries(filteredSearchData);
-    setDisplayedEntries(filteredSearchData.length);
   };
   
 
@@ -141,11 +120,32 @@ const AllContainers = () => {
     setYardData("");
     setStatusData("");
     setCustomerData("");
-    const newFilteredData = filterContainers(activeSection, searchData);
+    setSearchData("")
+
+    const newFilteredData = applyFilters()
     setFilteredSearchEntries(newFilteredData);
-    setFilterMenu(false);
+    setFilteredEntries(newFilteredData);
     setDisplayedEntries(newFilteredData.length);
+    setFilterMenu(false);
   };
+
+  const refreshData = () => {
+    const fetchData = async () => {
+      try {
+        const data = await getContainersData();
+        if(data)
+        {
+        setContainersData(data.deserializedData);
+        setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
+        setTotalEntries(data.totalEntries || 0);
+        setDisplayedEntries(data.totalEntries || 0);
+        }
+      } catch (e) {
+      
+      }
+    };
+    fetchData();
+  }
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
   const columns = [
@@ -268,18 +268,26 @@ const AllContainers = () => {
   }, []);
 
   const SearchChange = (e: any) => {
-    const searchQuery = e.target.value;
+
+  if(searchData === "") {
+    console.log(searchData)
+    refreshData();
+  }
+  
+    let searchQuery = e.target.value;
     setSearchData(searchQuery);
 
     const filteredData = applyFilters();
-    const filteredSearchData = filteredData.filter((doc) => {
-      const searchMatches = doc.uid?.toLowerCase().includes(searchQuery.toLowerCase());
-      return searchMatches;
-    });
-  
-    setFilteredSearchEntries(filteredSearchData);
-  }
+    
+    const filteredSearchData = filteredData.filter((doc) =>
+      doc.uid?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredEntries(filteredSearchData);
+    setDisplayedEntries(filteredSearchData.length);
+    
+  };
 
+  
   return (
     <div className="main">
       <div className="all-containers">
@@ -352,7 +360,7 @@ const AllContainers = () => {
                       <h4>Filters</h4>
                     </div>
                     <div className="filter-header__second-part">
-                      <h4 onClick={handleResetFilters}>Reset</h4>
+                      <h4 onClick={(e) => {e.stopPropagation(); handleResetFilters();}}>Reset</h4>
                       <h4 onClick={(e) => { e.stopPropagation(); handleApplyFilters() }}>Apply</h4>
                     </div>
 
