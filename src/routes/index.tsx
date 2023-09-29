@@ -5,6 +5,7 @@ import { AppRoutes } from "./routeConstants/appRoutes";
 import RequireAuth from "../shared/components/HOC/requireAuth";
 import RepairList from "../views/RepairList";
 import ViewContainer from "../views/Containers/ViewContainer";
+import AllContainers from "../views/Containers";
 
 const AppRouter = () => {
   return (
@@ -15,6 +16,7 @@ const AppRouter = () => {
         {/* Protected Routes */}
 
         <Route element={<RequireAuth/>}>
+          <Route path={AppRoutes.CONTAINERS} element={<AllContainers/>}/>
           <Route path={AppRoutes.REPAIR_LIST} element={<RepairList />} />
           <Route path={AppRoutes.INDV_CONTAINER} element={<ViewContainer/>} />
         </Route>

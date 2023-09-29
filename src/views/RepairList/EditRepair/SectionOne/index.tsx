@@ -1,14 +1,13 @@
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormikProps, FormikValues } from 'formik';
 import axiosInstance from '../../../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
+import CustomInput from '../../../../shared/components/InputField';
 
 interface SectionOneProps {
   onclose: () => void;
   formik: FormikProps<FormikValues>
-  onNextSection: () => void;
-  sectionCompleted: boolean
 }
 
 const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik, sectionCompleted }) => {
@@ -64,270 +63,157 @@ const SectionOne: React.FC<SectionOneProps> = ({ onclose, onNextSection, formik,
   };
 
   return (
-    <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
-      <input type='checkbox' className='na1-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
-      <div className={`Non-maersk-details-section ${isCheckboxChecked ? 'disabled' : ''}`}>
-        <div className="horizontal-line">
+    <div>
+      <div className="non-maersk-details-section">
+        <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
+        <div className="horizontal-line" style={{ marginTop: '20px' }}>
           <hr></hr>
         </div>
-        <br></br>
         <h4>Cost Details</h4>
-        <div className="repair-details__first-col cost-details">
-          <div className="input__repair-id">
-            <label>Hours</label>
-            <br></br>
-            <input
-              type="text"
-              name="hours"
-              id="hours"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.hours}
-              placeholder="Enter"
-            />
+        <div className="repair-details__first-col">
+          <div className="input__repair-id hours-div">
+            <CustomInput id='hours' name='hours' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Hours' placeholder='Enter' value={formik.values.hours}></CustomInput>
           </div>
-          <br></br>
-          <div className="input__repair-Area">
-            <label>Material Cost</label>
-            <br></br>
-            <input
-              type="text"
-              name="mat_cost"
-              id="mat_cost"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.mat_cost}
-              placeholder="0$"
-            />
+          <div className="input__repair-Area mat-cost-div">
+            <CustomInput id='mat_cost' name='mat_cost' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Material Cost' placeholder='Enter' value={formik.values.mat_cost}></CustomInput>
           </div>
         </div>
         <hr></hr>
-        <h4 className='customer-rel'>Customer Related Details</h4>
+        <h4>Customer Related Details</h4>
         <div className="repair-details__first-col repaid-id__input">
           <div className="input__repair-id">
-            <label>Container Section</label>
-            <br></br>
-            <input
-              type="text"
-              name="cont_sec"
-              id="cont_sec"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.cont_sec}
-            />
+            <CustomInput id='cont_sec' name='cont_sec' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Container Section' placeholder='Enter' value={formik.values.cont_sec}></CustomInput>
           </div>
-          <br></br>
-          <div className="input__repair-Area">
-            <label>Damaged Area</label>
-            <br></br>
-            <input
-              type="text"
-              name="dmg_area"
-              id="dmg_area"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.dmg_area}
-            />
+          <div className="input__repair-Area dmg-area-div">
+            <CustomInput id='dmg_area' name='dmg_area' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Damaged Area' placeholder='Enter' value={formik.values.dmg_area}></CustomInput>
           </div>
         </div>
         <div className="repair-details__first-col ">
           <div className="input__repair-id repaid-id__input custom-margin">
-            <label>Repair Type</label>
-            <br></br>
-            <input
-              type="text"
-              name="type"
-              id="type"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.type}
-            />
+            <CustomInput id='type' name='type' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Repair Type' placeholder='Enter' value={formik.values.type}></CustomInput>
           </div>
-          <br></br>
-          <div className="input__repair-Area">
-            <label>Description</label>
-            <br></br>
-            <input
-              type="text"
-              name="desc"
-              id="desc"
-              onChange={formik.handleChange}
+          <div className="input__repair-Area custom-margin">
+            <CustomInput id='desc' name='desc' onChange={formik.handleChange} onBlur={formik.handleBlur} label='Description' placeholder='Enter' value={formik.values.desc}></CustomInput>
+          </div>
+        </div>
+        <div className="repair-details__second-col">
+          <div className="input__repair-id">
+
+            <CustomSelect
+            className='select-choices'
+              label="COMP"
+              name="comp"
+              id="comp"
+              placeholder='Enter'
               onBlur={formik.handleBlur}
-              value={formik.values.desc}
-              placeholder="Enter"
+              value={formik.values.comp}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
+
+          </div>
+          <div className="input__repair-Area">
+             <CustomSelect
+             className='select-choices'
+              label="DAM"
+              name="dam"
+              id="dam"
+              placeholder='Enter'
+              onBlur={formik.handleBlur}
+              value={formik.values.dam}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
             />
           </div>
         </div>
-        <br></br>
-        <div className="repair-details__second-col container-repair-area">
+        <div className="repair-details__second-col">
           <div className="input__repair-id">
-            <label>COMP</label>
-            <br></br>
-            <select
-              name="COMP"
-              id="COMP"
-              onChange={formik.handleChange}
+          <CustomSelect
+          className='select-choices'
+              label="REP"
+              name="rep"
+              id="rep"
+              placeholder='Enter'
               onBlur={formik.handleBlur}
-              value={formik.values.COMP}
-            >
-               {compOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-            </select>
+              value={formik.values.rep}
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
           </div>
-          <br></br>
           <div className="input__repair-Area">
-            <label>DAM</label>
-            <br></br>
-            <select
-              name="DAM"
-              id="DAM"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.DAM}
-            >
-              {damOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-            </select>
-          </div>
-        </div>
-        <br></br>
-        <div className="repair-details__second-col container-repair-area">
-          <div className="input__repair-id">
-            <label>REP</label>
-            <br></br>
-            <select
-              name="REP"
-              id="REP"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.REP}
-            >
-               {repOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-            </select>
-          </div>
-          <br></br>
-          <div className="input__repair-Area">
-            <label>Component</label>
-            <br></br>
-            <select
+          <CustomSelect
+          className='select-choices'
+              label="Component"
               name="component"
               id="component"
-              onChange={formik.handleChange}
+              placeholder='Enter'
               onBlur={formik.handleBlur}
               value={formik.values.component}
-            >
-               {componentOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-            </select>
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
+              onChange={formik.handleChange}
+            />
           </div>
         </div>
-        <br></br>
-        <div className="repair-details__second-col container-repair-area">
+        <div className="repair-details__second-col">
           <div className="input__repair-id">
-            <label>Event</label>
-            <br></br>
-            <select
+          <CustomSelect
+          className='select-choices'
+              label="Event"
               name="event"
               id="event"
-              onChange={formik.handleChange}
+              placeholder='Enter'
               onBlur={formik.handleBlur}
               value={formik.values.event}
-            >
-               {eventOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-            </select>
-          </div>
-          <br></br>
-          <div className="repair-details__first-col">
-          <div className="input__repair-id location-div">
-            <label>Location</label>
-            <br></br>
-            <input
-              type="text"
-              name="location"
-              id="location"
+              options={[
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
+              ]}
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.location}
-              placeholder="Enter"
             />
           </div>
-            <br></br>
+          <div className="repair-details__first-col location-div">
+            <div className="input__repair-id">
+              <CustomInput id='location' label='Location' name='location' onBlur={formik.handleBlur} onChange={formik.handleChange} placeholder='Enter' value={formik.values.location}></CustomInput>
+            </div>
           </div>
-
-          <br></br>
         </div>
         <div className="repair-details__first-col">
           <div className="input__repair-id">
-            <label>LQTH/QTY/AREA</label>
-            <br></br>
-            <input
-              type="text"
-              name="area1"
-              id="area1"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.area1}
-              placeholder="Enter"
-            />
+            <CustomInput id='area1' label='LQTH/QTY/AREA' name='area1' onBlur={formik.handleBlur} onChange={formik.handleChange} placeholder='Enter' value={formik.values.area1}></CustomInput>
           </div>
-          <br></br>
           <div className="input__repair-id">
-            <label>LQTH/QTY/AREA2</label>
-            <br></br>
-            <input
-              type="text"
-              name="area2"
-              id="area2"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.area2}
-              placeholder="Enter"
-            />
+            <CustomInput id='area2' label='LQTH/QTY/AREA2' name='area2' onBlur={formik.handleBlur} onChange={formik.handleChange} placeholder='Enter' value={formik.values.area2}></CustomInput>
           </div>
-          <br></br>
         </div>
         <div className="repair-details__first-col">
-          <div className="input__repair-id">
-            <label>ID Source</label>
-            <br></br>
-            <input
-              type="text"
-              name="id"
-              id="id"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.id}
-              placeholder="Enter"
-            />
+          <div className="input__repair-id id-div">
+            <CustomInput id='id' label='ID Source' name='id' onBlur={formik.handleBlur} onChange={formik.handleChange} placeholder='Enter' value={formik.values.id}></CustomInput>
           </div>
-          <br></br>
-          <br></br>
         </div>
-        <br></br>
-      </div>
-      <div className="button-container">
+        <div className="button-container">
           <Button type="primary" onClick={onclose}>
             Discard
           </Button>
-          <Button type="primary" onClick={onNextSection}>Proceed</Button>
+          <Button type="primary">Proceed</Button>
         </div>
+      </div>
     </div>
   );
 };

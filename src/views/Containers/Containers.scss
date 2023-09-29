@@ -64,16 +64,9 @@
     margin-top: -100px;
 }
 
-.container-date-box input {
-    margin-top: 40px;
-    margin-left: -30px;
-    width: 240px !important;
-    height: 30px !important;
-}
-
 .container-details {
     line-height: 20px;
-    margin-top: -44px;
+    margin-top: -43px;
     background-color: $input-bg;
     width: 84.3vw;
     height: 80vh;
@@ -159,7 +152,6 @@
     display: flex;
     flex-flow: column;
     border-radius: 6px;
-    z-index: 100;
     z-index: 100;
 }
 
