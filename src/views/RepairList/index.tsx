@@ -239,7 +239,7 @@ const RepairList = () => {
 
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
-  }, [displayedEntries]);
+  }, [searchData, repairListData]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 

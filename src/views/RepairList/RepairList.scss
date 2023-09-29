@@ -88,21 +88,21 @@ label {
 
 .filter-header__second-part h4:first-child {
   color: $grey-text;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .filter-header__second-part h4:last-child{
   color: $turkish-green;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .filter-header__first-part {
-  padding-top: 30px;
+  padding-top: 10px !important;
   margin-left: 30px;
 }
 
 .filter-header__second-part {
-  margin-top: -20px;
+  margin-top: -30px;
   display: flex;
   flex-flow: row;
   gap: 35px;
@@ -183,7 +183,7 @@ label {
   margin-top: 20px;
   border: 1px solid $light-border;
   border-radius: 15px !important;
-  height: 27.5vh !important;
+  height: 25.5vh !important;
   z-index: 4;
   width: 30vw;
   background-color: $filter-menu-bg;
@@ -223,7 +223,7 @@ label {
   position: absolute;
   top: 18%;
   left: 47%;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 20px;
   background-color: $filter-menu-bg;
   padding: 20px;
@@ -267,7 +267,7 @@ label {
 }
 
 .version-menu-box p:first-child {
-  margin-top: -20px;
+  margin-top: -10px;
   color: $turkish-green;
   font-weight: 500;
 }

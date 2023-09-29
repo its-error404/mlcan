@@ -190,13 +190,16 @@
 }
 
 .filter-header__first-part h4:first-child:not(.filter-header__second-part h4) {
-    margin-top: 30px;
+    margin-top: 40px;
+    font-weight: 500 !important;
+    font-size: 18px !important;
 }
 
 .filter-header__second-part {
     margin-right: 30px;
     display: flex;
     gap: 40px;
+    font-size: 16px !important;
 }
 
 .filter-header__second-part h4:first-child {
@@ -257,7 +260,7 @@
 }
 
 .option-activity {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .container-filter-menu.visible {
