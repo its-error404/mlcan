@@ -3,20 +3,27 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
-import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
-import SectionZero from "./SectionZero";
-import SectionOne from "./SectionOne";
-import SectionTwo from "./SectionTwo/";
+import "../AddRepair/AddRepair.scss";
 import { editRepairEntry } from "../../../services/RepairListService/repair.service";
-
+import repairDetailsSchema from "../AddRepair/FormValidation";
 interface EditRepairProps {
   data: any;
   onClose: () => void;
   id: any;
 }
 
-const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
+const EditRepair: React.FC<EditRepairProps> = ({
+  editedData,
+  onClose,
+  repairId,
+  overlayOpen,
+}) => {
+  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(
+    0
+  );
+
+
   const [formData, setFormData] = useState<any>({});
 
   useEffect(() => {
@@ -59,7 +66,8 @@ const EditRepair: React.FC<EditRepairProps> = ({ data, onClose, id }) => {
     validationSchema: repairDetailsSchema,
     onSubmit: async (formData) => {
       try {
-        await editRepairEntry(formData, id);
+        await editRepairEntry(formData, repairId);
+        onClose();
       } catch (err) {
         console.log(err);
       }

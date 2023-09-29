@@ -80,8 +80,8 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskHours",
       key: "nonMaerskHours",
-      render: (text: string, record: any) => {
-        const nonMaerskHours = record.nonMaerskHours;
+      render: (text: string, record: Repair) => {
+        const nonMaerskHours = record.nmaersk;
         return nonMaerskHours !== undefined && nonMaerskHours !== null
           ? nonMaerskHours
           : "-";
@@ -100,8 +100,8 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskMatCost",
       key: "nonMaerskMatCost",
-      render: (text: string, record: any) => {
-        const nonMaerskMatCost = record.nonMaerskMatCost;
+      render: (text: string, record: Repair) => {
+        const nonMaerskMatCost = record.nmaersk;
         return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
           ? nonMaerskMatCost
           : "-";
@@ -117,7 +117,7 @@ const RepairList = () => {
       ),
       dataIndex: "unitHours",
       key: "unitHours",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const unitHours = record.merc?.maxMatCost;
         return unitHours || "-";
       },
@@ -130,32 +130,25 @@ const RepairList = () => {
       ),
       data: "MaxMatCost",
       key: "MaxMatCost",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const maxMatCost = record.merc?.maxMatCost;
         return maxMatCost || "-";
       },
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => (
-        <EditIcon
-          width={20}
-          onClick={() => {
-            handleEditClick(record);
-          }}
-        />
-      ),
+      render: (text: string) => <EditIcon width={20} />,
       style: {
         marginRight: "-20px",
       },
     },
     {
       className: "delete-icon",
-      render: (text: string, record: any) => (
+      render: (text: string, record: Repair) => (
         <>
           <DeleteIcon
             width={20}
-            onClick={() => handleDeleteClick(record.id, record.uid)}
+            onClick={() => handleDeleteClick(record.id || '', record.uid || '')}
           />
         </>
       ),
@@ -219,8 +212,7 @@ const RepairList = () => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
-        setRepairListData(deserializedData);
-        setFilteredEntries(deserializedData.docs || []);
+        setRepairListData(deserializedData)
         setTotalEntries(deserializedData.docs?.length || 0);
         setDisplayedEntries(deserializedData.docs?.length || 0);
       } catch (error) {
