@@ -15,16 +15,17 @@ export const addRepairRequest = async (values: RepairData) => {
         description: "Click the repair entry for more information !",
         className: "custom-notification-placement",
       });
-
       setTimeout(() => {
         notification.destroy();
       }, 3000);
-      console.log("Repir Added", response.data);
     } else {
-      console.log("Repair Error", response.data);
+      notification.error({
+        message: "Failed to Add Repair !",
+        description: "Click the repair entry for more information !",
+        className: "custom-notification-placement",
+      });
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -35,21 +36,24 @@ export const deleteRepairEntry = async (id: string) => {
     const response = await axiosInstance.delete(`${ApiRoutes.ALL_REPAIRS}/${id}`);
 
     if (response.status === 200) {
-      console.log(`Repair Entry with ID ${id} Deleted`);
       notification.open({message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted'});
       return response.data;
     
     } else {
-      console.log(
-        `Error Deleting Repair Entry with ID ${id}: ${response.statusText}`
-      );
+      notification.error({
+        message: `Failed to Delete Repair ${id} !`,
+        description: "Click the repair entry for more information !",
+        className: "custom-notification-placement",
+      });
 
       throw new Error("Failed to delete repair entry.");
     }
   } catch (error: any) {
-    console.error(
-      `Error Deleting Repair Entry with ID ${id}: ${error.message}`
-    );
+    notification.error({
+      message: `Failed to Delete Repair ${id} !`,
+      description: "Click the repair entry for more information !",
+      className: "custom-notification-placement",
+    });
 
     throw error;
   }
@@ -63,9 +67,13 @@ export const editRepairEntry = async (values: RepairData, id: string) => {
       `${ApiRoutes.ALL_REPAIRS}/${id}`,
       values,
     );
-    return response.data
+   console.log('Edit Successful', response.data.data.message)
   } catch (error) {
-    console.log(error);
+    notification.error({
+      message: `Failed to Edit Repair ${id}, ${error} !`,
+      description: "Click the repair entry for more information !",
+      className: "custom-notification-placement",
+    });
   }
 };
 
@@ -83,7 +91,11 @@ export const fetchRepairData = async () => {
 
     return { deserializedData, totalEntries };
   } catch (error) {
-    console.error("Error fetching data:", error);
+    notification.error({
+      message: `Failed to Fetch Repair ${error} !`,
+      description: "Click the repair entry for more information !",
+      className: "custom-notification-placement",
+    });
     throw error;
   }
 };

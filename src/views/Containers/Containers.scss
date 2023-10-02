@@ -68,28 +68,9 @@
     margin-top: -100px;
 }
 
-.ant-table-tbody tr{
-    max-height: 30px !important;
-}
-
-.ant-table-row {
-    max-height: 30px !important;
-}
-
-.container-date-box input {
-    margin-top: 40px;
-    margin-left: -30px;
-    width: 240px !important;
-    height: 30px !important;
-}
-
-.activityStatusCap {
-    text-transform: capitalize;
-}
-
 .container-details {
     line-height: 20px;
-    margin-top: -44px;
+    margin-top: -43px;
     background-color: $input-bg;
     width: 84.3vw;
     height: 83vh;
@@ -175,7 +156,6 @@
     display: flex;
     flex-flow: column;
     border-radius: 6px;
-    z-index: 100;
     z-index: 100;
 }
 
@@ -302,6 +282,7 @@
     margin-top: 35px !important;
 }
 
+
 .container-filter-button {
     position: relative;
     padding-top: 10px;
@@ -309,10 +290,6 @@
     padding-left: 35px;
     padding-right: 20px;
     background-color: $bg-white;
-}
-
-.ant-table-tbody > tr {
-    max-height: 20px !important;
 }
   
 .container-filter-icon{
@@ -324,6 +301,10 @@
     opacity: 1;
   }
 
+  .container-filter-button.change-button {
+    background-color: $turkish-green;
+    color: $white-bg;
+  }
 
   .filter-button.change-button span {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(340deg) brightness(105%) contrast(101%);
@@ -346,8 +327,6 @@
     color: $turkish-green;
     font-weight: 500;
 }
-
-
 
 .container-box-table {
     margin-top: 20px;

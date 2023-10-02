@@ -1,15 +1,15 @@
 import { Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormikPropsSectionZero } from '../../../../shared/types/formikTypes';
-import '../AddRepair.scss'
+import '../../AddRepair/AddRepair.scss'
 import axiosInstance from '../../../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
 
 interface SectionZeroProps {
   onclose: () => void;
   formik: FormikPropsSectionZero
-  onNextSection: () => void;
-  sectionCompleted: boolean
+  onNextSection?: () => void;
+  sectionCompleted?: boolean
 }
 
 const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {

@@ -1,17 +1,18 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { editRepairEntry } from "../../../services/RepairListService/repairlist.service";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
-import repairDetailsSchema from "./EditFormValidation";
-import "./EditRepair.scss"
-import SectionZero from "./SectionZero";
+import "../EditRepair/EditRepair.scss";
+import "../AddRepair/AddRepair.scss";
+import { editRepairEntry } from "../../../services/RepairListService/repair.service";
+import repairDetailsSchema from "../AddRepair/FormValidation";
+import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
-import SectionTwo from "./SectionTwo/";
-
+import SectionZero from "./SectionZero";
+import { Repair } from "../../../models/repairList.model";
 interface EditRepairProps {
-  editedData: any;
+  editedData: Repair;
   onClose: () => void;
   repairId: string;
   overlayOpen?: boolean;
@@ -25,7 +26,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
   overlayOpen,
 }) => {
   
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (editedData) {
@@ -103,11 +104,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
         >
           <div className="form-header">
             <h2>Edit Repair Part</h2>
-            <CloseIcon
-              width={15}
-              onClick={onClose}
-              className="close-icon-edit"
-            />
+            <CloseIcon width={15} onClick={onClose} />
           </div>
           <div className="section-buttons edit-section-button">
             {sections.map((section, index) => (
@@ -151,6 +148,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
       <SectionTwo
         formik={formik}
         onclose={onClose}
+
         sectionCompleted={sectionCompleted[2]}
       />
     )}

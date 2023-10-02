@@ -3,14 +3,13 @@ import axiosInstance from "../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 import { RepairData } from "../../models/repairList.model";
 import { deserialize } from "serializr";
-import 'antd/dist/antd.css'
 
 //Add Repair
 
 export const addRepairRequest = async (values: RepairData) => {
   try {
     const response = await axiosInstance.post(ApiRoutes.ALL_REPAIRS, values);
-    if (response.status === 200) {
+    if (response) {
       notification.success({
         message: "Repair Added Successfully !",
         description: "Click the repair entry for more information !",
@@ -20,10 +19,7 @@ export const addRepairRequest = async (values: RepairData) => {
       setTimeout(() => {
         notification.destroy();
       }, 3000);
-      
-      console.log("Repair Added", response.data);
     } else {
-      console.log("Repair Error", response.data);
     }
   } catch (error) {
     console.log(error);
@@ -36,24 +32,22 @@ export const deleteRepairEntry = async (id: string) => {
   try {
     const response = await axiosInstance.delete(`${ApiRoutes.ALL_REPAIRS}/${id}`);
 
-    if (response.status === 200) {
-      notification.success({message: `Repair Entry Deleted`, className: "custom-notification-placement",});
+    if (response) {
+      console.log(`Repair Entry with ID ${id} Deleted`);
+      notification.open({message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted'});
       return response.data;
     
     } else {
       console.log(
-        `Error Deleting Repair Entry with ID ${id}: ${response.statusText}`
+        `Error Deleting Repair Entry with ID ${id}`
       );
 
       throw new Error("Failed to delete repair entry.");
     }
   } catch (error: any) {
-    console.error(`Error Deleting Repair Entry with ID ${id}: ${error.message}`);
-    notification.error({
-      message: "There was a error in deleting the entry !",
-      description: "Check your entry details for more information !",
-      className: "custom-notification-placement",
-    });
+    console.error(
+      `Error Deleting Repair Entry with ID ${id}: ${error.message}`
+    );
 
     throw error;
   }

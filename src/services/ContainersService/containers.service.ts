@@ -22,26 +22,6 @@ export const getContainersData = async () => {
 
 const workingLink = `${ApiRoutes.CONTAINERS}/6496b4d51725b1f902152f0b`
 
-
-//TODO: Container Api ERROR
-
-// export const GetContainer = async (docId: string) => {
-//   try {
-//     const response = await axiosInstance.get(`${ApiRoutes.CONTAINERS}/${docId}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching container data:', error);
-
-//     try {
-//       const workingResponse = await axiosInstance.get(workingLink);
-//       return workingResponse.data;
-//     } catch (err) {
-//       console.error('Error fetching data:', err);
-//       throw err; 
-//     }
-//   }
-// };
-
 export const getWorkingContainer = async () => {
   try {
     const response = await axiosInstance.get(workingLink);
