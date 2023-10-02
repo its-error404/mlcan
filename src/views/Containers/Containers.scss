@@ -189,6 +189,11 @@
     margin-left: 30px;
 }
 
+.approve-button {
+    height: 38px;
+    font-weight: 600;
+}
+
 .filter-header__first-part h4:first-child:not(.filter-header__second-part h4) {
     margin-top: 40px;
     font-weight: 500 !important;
@@ -403,4 +408,18 @@
 
 .activity-text.draft-style {
     width: 95px;
+}
+
+.activity-title, .current-activity-title {
+    text-transform: capitalize;
+}
+
+.container-export-menu > .export-container > button > span {
+    left: 29%;
+}
+
+.container-export-menu {
+    display: flex;
+    width: 1080px;
+    justify-content: space-between;
 }

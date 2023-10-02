@@ -6,7 +6,7 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { DatePicker, Table } from "antd";
+import { Button, DatePicker, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
@@ -15,8 +15,10 @@ import { AllContainersData, ContainersData } from "../../models/Containers.model
 import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
+import ExportMenu from "../../shared/components/ExportMenu";
 
 const AllContainers = () => {
+  const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
   const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [addContainer, setAddContainer] = useState<boolean>(false);
@@ -32,7 +34,6 @@ const AllContainers = () => {
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
-  const [filteredSearchEntries, setFilteredSearchEntries] = useState<ContainersData[]>([])
 
   useEffect(() => {
     refreshData();
@@ -76,14 +77,17 @@ const AllContainers = () => {
     setSectionIndex(newIndex);
     const sectionFilteredData = filterContainers(section, searchData);
     setFilteredEntries(sectionFilteredData);
+    setDisplayedEntries(sectionFilteredData.length);
     setActiveSection(section);
-    setDisplayedEntries(filteredEntries.length);
     setShowActivityUidColumn(section === "Draft");
   };
 
-  const getRowClassName = (record: any, index: number) => {
+
+  const getRowClassName = (record: ContainersData, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
+  const startIndex = Math.min(displayedEntries, totalEntries) > 0 ? 1 : 0;
+  const endIndex = Math.min(displayedEntries, totalEntries);
 
   const applyFilters = () => {
 
@@ -112,7 +116,7 @@ const AllContainers = () => {
     setDisplayedEntries(newFilteredData.length)
     setFilterMenu(false);
   };
-  
+
 
   const handleResetFilters = () => {
     setActivityData("");
@@ -122,10 +126,8 @@ const AllContainers = () => {
     setCustomerData("");
     setSearchData("")
 
-    const newFilteredData = applyFilters()
-    setFilteredSearchEntries(newFilteredData);
-    setFilteredEntries(newFilteredData);
-    setDisplayedEntries(newFilteredData.length);
+    setFilteredEntries(searchResults);
+    setDisplayedEntries(searchResults.length);
     setFilterMenu(false);
   };
 
@@ -133,16 +135,14 @@ const AllContainers = () => {
     const fetchData = async () => {
       try {
         const data = await getContainersData();
-        if(data)
-        {
-        setContainersData(data.deserializedData);
-        setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
-        setTotalEntries(data.totalEntries || 0);
-        setDisplayedEntries(data.totalEntries || 0);
+        if (data) {
+          setContainersData(data.deserializedData);
+          setSearchResults((data.deserializedData.docs || []) as ContainersData[]);
+          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
+          setTotalEntries(data.totalEntries || 0);
+          setDisplayedEntries(data.totalEntries || 0);
         }
-      } catch (e) {
-      
-      }
+      } catch (e) { }
     };
     fetchData();
   }
@@ -153,7 +153,7 @@ const AllContainers = () => {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
-      render: (text: string, record: any) => (
+      render: (text: string, record: ContainersData) => (
         <Link to={`/containers/${record.id}`}>{text}</Link>
       ),
     },
@@ -196,7 +196,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string) => (text || "N/A"),
+      render: (text: string) => (text ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() : "N/A"),
     },
     {
       title: (
@@ -217,7 +217,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityDate",
       key: "activityDate",
-      render: (text: string, record: any) => (formatDate(text) || "N/A"),
+      render: (text: string) => (formatDate(text) || "N/A"),
     },
     {
       title: (
@@ -227,29 +227,28 @@ const AllContainers = () => {
       ),
       dataIndex: "activityStatus",
       key: "activityStatus",
-      render: (text: string, record: any) => {
+      render: (text: string) => {
         let displayedText = "N/A";
         if (text === "billing") {
           displayedText = "Ready for Billing";
         } else if (text === "draft") {
           displayedText = "Quote Draft";
         }
-    
+
         return (
           <div
-            className={`activity-text ${
-              text === "billing"
-                ? "billing-style"
-                : text === "draft"
+            className={`activity-text ${text === "billing"
+              ? "billing-style"
+              : text === "draft"
                 ? "draft-style"
                 : "default-style"
-            }`}
+              }`}
           >
             {displayedText}
           </div>
         );
       },
-    },    
+    },
   ].filter(Boolean);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
@@ -267,27 +266,33 @@ const AllContainers = () => {
     };
   }, []);
 
-  const SearchChange = (e: any) => {
-
-  if(searchData === "") {
-    console.log(searchData)
-    refreshData();
-  }
-  
+  const SearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let searchQuery = e.target.value;
     setSearchData(searchQuery);
 
     const filteredData = applyFilters();
-    
+
     const filteredSearchData = filteredData.filter((doc) =>
       doc.uid?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    setSearchResults(filteredSearchData)
     setFilteredEntries(filteredSearchData);
     setDisplayedEntries(filteredSearchData.length);
-    
+
+    if (searchQuery === "") {
+      refreshData();
+    }
   };
 
-  
+  const handleClearSearch = () => {
+    setSearchData("");
+    setSearchResults([]);
+    const newFilteredData = applyFilters();
+    setFilteredEntries(newFilteredData);
+    setDisplayedEntries(newFilteredData.length);
+  };
+
+
   return (
     <div className="main">
       <div className="all-containers">
@@ -334,7 +339,11 @@ const AllContainers = () => {
                 <SearchIcon width={17} />
               </span>
               <input type="text" className="search-box" placeholder="Search container by number" onChange={SearchChange} value={searchData}></input>
-
+              {searchData && (
+                <button className="clear-search" onClick={handleClearSearch}>
+                  Clear
+                </button>
+              )}
               <div ref={filterMenuRef}>
                 <div
                   className="filters-container container-filter-container"
@@ -354,19 +363,19 @@ const AllContainers = () => {
                   <div
                     className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"
                       }`}
-                    onClick={(e: any) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <div className="filter-header__first-part">
                       <h4>Filters</h4>
                     </div>
                     <div className="filter-header__second-part">
-                      <h4 onClick={(e) => {e.stopPropagation(); handleResetFilters();}}>Reset</h4>
+                      <h4 onClick={(e) => { e.stopPropagation(); handleResetFilters(); }}>Reset</h4>
                       <h4 onClick={(e) => { e.stopPropagation(); handleApplyFilters() }}>Apply</h4>
                     </div>
 
                     <div className="filter-options-containers">
                       <div className="column-1">
-                        <label style={{width: '40px'}}>Date</label>
+                        <label style={{ width: '40px' }}>Date</label>
                         <div className="container-date-box filter-date">
                           <DatePicker
                             className="container-date-picker"
@@ -426,6 +435,12 @@ const AllContainers = () => {
                   </div>
                 </div>
               </div>
+
+              {activeSection === "Pending Customer Approval" && (
+                <div className="container-export-menu">
+                  <ExportMenu />
+                  <Button className="bulk-upload-button approve-button">Approve Quote</Button>
+                </div>)}
             </div>
 
             <div className="container-box__container">
@@ -439,8 +454,8 @@ const AllContainers = () => {
               />
             </div>
             <p className="total-records">
-              Showing <span className="record-range"> 1 - {displayedEntries} </span>{" "}
-              of <span className="total-range"> {totalEntries} </span>
+              Showing <span className="record-range">{startIndex} - {endIndex} &nbsp;</span>
+              of&nbsp; <span className="total-range">{totalEntries}</span>
             </p>
           </div>
         </div>

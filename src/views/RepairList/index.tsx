@@ -8,7 +8,6 @@ import { Table } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
-import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
 import { RepairData, Repair } from "../../models/repairList.model";
@@ -19,6 +18,7 @@ import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
 import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
+import ExportMenu from "../../shared/components/ExportMenu";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -201,7 +201,6 @@ const RepairList = () => {
   const [entryToDeleteUid, setEntryToDeleteUid] = useState<string | null>(null);
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
   const [versionMenu, setVersionMenu] = useState<boolean>(false);
-  const [exportMenu, setExportMenu] = useState<boolean>(false);
   const [repairAreaData, setRepairAreaData] = useState("");
   const [damagedAreaData, setDamagedAreaData] = useState("");
   const [typeData, setTypeData] = useState("");
@@ -251,10 +250,6 @@ const RepairList = () => {
       document.removeEventListener("mousedown", handler);
     };
   }, []);
-
-  const toggleExportMenu = () => {
-    setExportMenu(!exportMenu);
-  };
 
   const toggleAddRepair = () => {
     setAddRepair(!addRepair);
@@ -434,26 +429,7 @@ const RepairList = () => {
               </div>
             </div>
           </div>
-          <div className="export-container" onClick={toggleExportMenu}>
-            <button className="export-button">
-              <span className="export-icon">
-                <ExportIcon width={20} />
-              </span>
-              Export
-            </button>
-            <div
-              className={`export-menu-box ${
-                exportMenu ? "visible" : "invisible"
-              }`}
-            >
-              <div>
-                <p>Export as .csv</p>
-              </div>
-              <div>
-                <p>Export as .xlsv</p>
-              </div>
-            </div>
-          </div>
+          <ExportMenu/>
           <div
             className="versions-container"
             onClick={() => setVersionMenu(!versionMenu)}
