@@ -11,8 +11,11 @@ import AddContainer from "./AddContainer";
 import { format } from "date-fns";
 import { Link, } from "react-router-dom";
 import '../../styles/_@antOverrides.scss'
+import SortUp from '../../assets/collapse-up.png'
+import SortDown from '../../assets/collapse-down.png'
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import 'antd/dist/antd.css';
+import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ColumnsType } from "antd/lib/table";
 
 const AllContainers = () => {
@@ -170,69 +173,67 @@ const AllContainers = () => {
     "Pending Customer Approval",
     "Quotes Approved by Customers",
   ];
-  const columns: ColumnsType<ContainersData> = [
+  const columns = [
     {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
-      render: (text: string, record: any) => (
+      render: (text: string, record: ContainersData) => (
         <Link to={`/containers/${record.id}`}>{text}</Link>
       ),
     },
     {
       title: (
-        <>
-          Yard <AscToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Yard <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
       ),
       dataIndex: "yard",
       key: "yard",
-      render: (text: string) => (showActivityUidColumn ? text : null),
+      render: (text: string) => (text),
     },
     {
       title: (
-        <>
-          Customer <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Customer <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
       ),
       dataIndex: "customerName",
       key: "customerName",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text || "N/A"),
     },
     {
       title: (
-        <>
-          Owner Name <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Owner Name <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
       ),
       dataIndex: "owner",
       key: "owner",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text || "N/A"),
     },
-
     {
       title: (
-        <>
+        <div className="sort-column">
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
-        </>
+          <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
+        
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() : "N/A"),
     },
-    showActivityUidColumn && {
+    {
       title: (
         <>
           {sectionIndex === 1 ? "Activity ID" : ""}
-          {sectionIndex === 1 && (
-            <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-          )}
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
         </>
       ),
       dataIndex: "activityUid",
       key: "activityUid",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
     {
       title: (
@@ -242,7 +243,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityDate",
       key: "activityDate",
-      render: (text: string, record: any) => formatDate(text) || "N/A",
+      render: (text: string) => (formatDate(text) || "N/A"),
     },
     {
       title: (
@@ -252,19 +253,27 @@ const AllContainers = () => {
       ),
       dataIndex: "activityStatus",
       key: "activityStatus",
-      render: (text: string, record: any) => (
-        <div
-          className={`activity-text ${
-            text === "billing"
+      render: (text: string) => {
+        let displayedText = "N/A";
+        if (text === "billing") {
+          displayedText = "Ready for Billing";
+        } else if (text === "draft") {
+          displayedText = "Quote Draft";
+        }
+
+        return (
+          <div
+            className={`activity-text ${text === "billing"
               ? "billing-style"
               : text === "draft"
-              ? "draft-style"
-              : "default-style"
-          }`}
-        >
-          {text || "N/A"}
-        </div>
-      ),
+                ? "draft-style"
+                : "default-style"
+              }`}
+          >
+            {displayedText}
+          </div>
+        );
+      },
     },
   ].filter(Boolean);
   let filterMenuRef = useRef<HTMLDivElement | null>(null);

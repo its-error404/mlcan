@@ -21,7 +21,6 @@ const ActivitySection: React.FC = () => {
   const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
   const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
-  const cardsPerPage = 5;
 
   useEffect(() => {
     async function fetchData() {
@@ -43,7 +42,6 @@ const ActivitySection: React.FC = () => {
   const toggleExpandRepairCard = async (formId: string) => {
     console.log("Toggle expand Quote Form called with formId:", formId);
     try {
-      console.log('hello')
       const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
       setExpandedRepairFormData(response.data);
       console.log(response.data);
