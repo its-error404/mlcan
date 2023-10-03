@@ -194,7 +194,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : ''),
     },
     showActivityUidColumn && {
       title: (
@@ -303,7 +303,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection, searchData))} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
+            <Table columns={columns} dataSource={filteredEntries} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
             </div>
           </div>
         </div>

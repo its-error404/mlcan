@@ -9,6 +9,7 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import './Dropdown.scss'
 import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 const ActivityCard: React.FC<{
   formType: string;
@@ -30,19 +31,18 @@ const ActivityCard: React.FC<{
   const [isExpanded, setIsExpanded] = useState(false);
 
   const getBackgroundColor = () => {
-    if (icon.type === QuoteIcon) {
-      return "lightpurple";
-    } else if (icon.type === RepairIcon) {
-      return "lightyellow";
-    } else if (icon.type === InspectionIcon) {
-      return "lightblue";
-    } else {
-      return "";
+    switch (icon.type) {
+      case QuoteIcon:
+        return "lightpurple";
+      case RepairIcon:
+        return "lightyellow";
+      case InspectionIcon:
+        return "lightblue";
+      default:
+        return "red";
     }
   };
-
-  const { Option } = Select;
-
+  
 const columns = [
   {
     title: "Repair ID",
@@ -128,11 +128,7 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
     return (
         <Dropdown overlay={menu} trigger={["click"]}>
-          <div className="option-menu">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-          </div>
+          <EllipsisOutlined rev={''}/>
         </Dropdown>
       );
     };

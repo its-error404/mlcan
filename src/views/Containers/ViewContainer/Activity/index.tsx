@@ -81,19 +81,6 @@ const ActivitySection: React.FC = () => {
               toggleExpand={() => toggleExpandCard(data.id)}
               />
           ))}
-          {/* {inspectionData &&
-          inspectionData.docs.map((data) => (
-            <ActivityCard
-            key={data.id}
-            formType="Inspection Form"
-            formID={data.uid}
-            date={data.created_at} 
-              activityStatus={data.curr_status}
-              icon={<InspectionIcon width={20}/>}
-              expanded={false} 
-              toggleExpand={() => toggleExpandCard(data.id)}
-              />
-          ))} */}
       </Space>
     )}
   </div>
