@@ -1,6 +1,9 @@
 import { alias, list, object, serializable } from "serializr";
 
 
+
+
+
 class ItemsData {
     @serializable(alias('id'))
     id?: string;
