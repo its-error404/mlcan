@@ -10,7 +10,7 @@
     max-width: 300px;
 }
 
-.active{
+.side-active{
     border: 1px transparent;
     border-left: solid $turkish-green;
     border-width: 6px;
@@ -20,7 +20,7 @@
     padding-bottom: 25px;
 }
 
-.active span{
+.side-active span{
     filter: $sidebar-span !important;
 }
 
@@ -95,7 +95,7 @@
     align-items: center;
     justify-items: center;
 
-    &.active {
+    &.side-active {
         color: $sidebar-active-text;
         font-weight: 500;
     }

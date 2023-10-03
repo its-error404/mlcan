@@ -14,7 +14,8 @@ import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
 import ExportMenu from "../../shared/components/ExportMenu";
-import { ColumnsType } from "antd/lib/table";
+import { ColumnsType, TableProps } from "antd/lib/table";
+import { SorterResult } from "antd/lib/table/interface";
 
 const AllContainers = () => {
   const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
@@ -33,8 +34,26 @@ const AllContainers = () => {
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
-  const [sortOrder, setSortOrder] = useState<'ascend' | 'descend'>('ascend');
+  const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>({});
 
+  const handleChange: TableProps<ContainersData>['onChange'] = (pagination, filters, sorter) => {
+    if (Array.isArray(sorter)) {
+      
+    } else if (sorter && sorter.field) {
+      setSortedInfo(sorter as SorterResult<ContainersData>);
+  
+      const newFilteredData = [...filteredEntries];
+      newFilteredData.sort((a, b) => {
+        if (sorter.order === 'ascend') {
+          return a[sorter.field].localeCompare(b[sorter.field]);
+        } else {
+          return b[sorter.field].localeCompare(a[sorter.field]);
+        }
+      });
+      setFilteredEntries(newFilteredData);
+    }
+  };
+  
   useEffect(() => {
     refreshData();
   }, []);
@@ -159,15 +178,15 @@ const AllContainers = () => {
     },
     {
       title: (
-        <div className="sort-column" onClick={() => customSort("yard", sortOrder)}>
+        <div className="sort-column">
           Yard
         </div>
       ),
       dataIndex: "yard",
       key: "yard",
       render: (text: string) => (text),
-      // sorter: (a: ContainersData, b: ContainersData) => a.yard.length - b.yard.length,
-      // sortDirections: ['descend', 'ascend'],
+      sorter: (a: ContainersData, b: ContainersData) => a.yard.length - b.yard.length,
+      sortOrder: sortedInfo.columnKey === 'yard' ? sortedInfo.order: null,
     },
     {
       title: (
@@ -178,8 +197,8 @@ const AllContainers = () => {
       dataIndex: "customerName",
       key: "customerName",
       render: (text: string) => (text || "N/A"),
-      // sorter: (a: ContainersData, b: ContainersData) => a.customerName.length - b.customerName.length,
-      // sortDirections: ['descend', 'ascend'],
+      sorter: (a: ContainersData, b: ContainersData) => a.customerName.length - b.customerName.length,
+      sortOrder: sortedInfo.columnKey === 'customerName' ? sortedInfo.order: null,
     },
     {
       title: (
@@ -190,34 +209,42 @@ const AllContainers = () => {
       dataIndex: "owner",
       key: "owner",
       render: (text: string) => (text || "N/A"),
-      // sorter: (a: ContainersData, b: ContainersData) => a.owner.length - b.owner.length,
-      // sortDirections: ['descend', 'ascend'],
+      sorter: (a: ContainersData, b: ContainersData) => a.owner.length - b.owner.length,
+      sortOrder: sortedInfo.columnKey === 'owner' ? sortedInfo.order: null,
+      ellipsis: true
     },
     {
       title: (
         <div className="sort-column">
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
         </div>
-
       ),
       dataIndex: "activityType",
       key: "activityType",
       render: (text: string) => (text ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() : "N/A"),
-      // sorter: (a: ContainersData, b: ContainersData) => a.activityType.length - b.activityType.length,
-      // sortDirections: ['descend', 'ascend'],
+      sorter: (a: ContainersData, b: ContainersData) => {
+        const activityTypeA = a.activityType || '';
+        const activityTypeB = b.activityType || '';
+        return activityTypeA.localeCompare(activityTypeB);
+      },
+      sortOrder: sortedInfo.columnKey === 'activityType' ? sortedInfo.order : null,
+      ellipsis: true
     },
-    {
-      title: (
-        <div className="sort-column">
-          {sectionIndex === 1 ? "Activity ID" : ""}
-        </div>
-      ),
-      dataIndex: "activityUid",
-      key: "activityUid",
-      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
-      // sorter: (a: ContainersData, b: ContainersData) => a.activityUid.length - b.activityUid.length,
-      // sortDirections: ['descend', 'ascend'],
-    },
+    sectionIndex === 1
+    ? {
+        title: (
+          <div className="sort-column">Activity ID</div>
+        ),
+        dataIndex: "activityUid",
+        key: "activityUid",
+        render: (text: string) =>
+          showActivityUidColumn ? text || "N/A" : null,
+        sorter: (a: ContainersData, b: ContainersData) =>
+          a.activityUid.length - b.activityUid.length,
+        sortOrder: sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
+        ellipsis: true,
+      }
+    : null,
     {
       title: (
         <div className="sort-column">
@@ -227,8 +254,12 @@ const AllContainers = () => {
       dataIndex: "activityDate",
       key: "activityDate",
       render: (text: string) => (formatDate(text) || "N/A"),
-      // sorter: (a: ContainersData, b: ContainersData) => a.activityDate.length - b.activityDate.length,
-      // sortDirections: ['descend', 'ascend'],
+      sorter: (a: ContainersData, b: ContainersData) => {
+        const activityDateA = new Date(a.activityDate);
+        const activityDateB = new Date(b.activityDate);
+        return activityDateA.getTime() - activityDateB.getTime()
+      },
+      sortOrder: sortedInfo.columnKey === "activityDate" ? sortedInfo.order : null
     },
     {
       title: (
@@ -259,8 +290,12 @@ const AllContainers = () => {
           </div>
         );
       },
-      // sorter: (a: ContainersData, b: ContainersData) => a.activityStatus.length - b.activityStatus.length,
-      // sortDirections: ['descend', 'ascend'],
+      sorter: (a: ContainersData, b: ContainersData) => {
+        const activityStatusA = a.activityStatus || '';
+        const activityStatusB = b.activityStatus || '';
+        return activityStatusA.localeCompare(activityStatusB);
+      },
+      sortOrder: sortedInfo.columnKey === 'activityStatus' ? sortedInfo.order : null,
     },
   ].filter(Boolean);
 
@@ -278,22 +313,6 @@ const AllContainers = () => {
       document.removeEventListener("mousedown", handler);
     };
   }, []);
-
-  const customSort = (column: string, order: 'ascend' | 'descend') => {
-    const sortedData = [...filteredEntries];
-
-    sortedData.sort((a, b) => {
-      if (order === 'ascend') {
-        return a[column].localeCompare(b[column]);
-      } else {
-        return b[column].localeCompare(a[column]);
-      }
-    });
-
-    setFilteredEntries(sortedData);
-  };
-
-
 
   const SearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let searchQuery = e.target.value;
@@ -321,7 +340,6 @@ const AllContainers = () => {
     setFilteredEntries(newFilteredData);
     setDisplayedEntries(newFilteredData.length);
   };
-
 
   return (
     <div className="main">
@@ -481,9 +499,8 @@ const AllContainers = () => {
                 className="container-table"
                 rowClassName={getRowClassName}
                 pagination={false}
+                onChange={handleChange}
               />
-
-
             </div>
             <p className="total-records">
               Showing <span className="record-range">{startIndex} - {endIndex} &nbsp;</span>

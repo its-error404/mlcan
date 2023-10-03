@@ -254,3 +254,7 @@
 .ant-checkbox-checked::after{
   border: 0;
 }
+
+.ant-table-column-sorter-up.active, .ant-table-column-sorter-down.active {
+  color: $turkish-green;
+}
