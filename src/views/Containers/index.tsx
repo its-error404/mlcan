@@ -15,6 +15,8 @@ import { AllContainersData, ContainersData } from "../../models/Containers.model
 import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
+import SortUp from '../../assets/collapse-up.png'
+import SortDown from '../../assets/collapse-down.png'
 import ExportMenu from "../../shared/components/ExportMenu";
 
 const AllContainers = () => {
@@ -159,9 +161,9 @@ const AllContainers = () => {
     },
     {
       title: (
-        <>
-          Yard <AscToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Yard <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
       ),
       dataIndex: "yard",
       key: "yard",
@@ -169,9 +171,9 @@ const AllContainers = () => {
     },
     {
       title: (
-        <>
-          Customer <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Customer <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
       ),
       dataIndex: "customerName",
       key: "customerName",
@@ -179,9 +181,9 @@ const AllContainers = () => {
     },
     {
       title: (
-        <>
-          Owner Name <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Owner Name <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
       ),
       dataIndex: "owner",
       key: "owner",
@@ -189,10 +191,11 @@ const AllContainers = () => {
     },
     {
       title: (
-        <>
+        <div className="sort-column">
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
-        </>
+          <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        </div>
+        
       ),
       dataIndex: "activityType",
       key: "activityType",
@@ -286,8 +289,9 @@ const AllContainers = () => {
 
   const handleClearSearch = () => {
     setSearchData("");
-    setSearchResults([]);
+    refreshData();
     const newFilteredData = applyFilters();
+    console.log(newFilteredData);
     setFilteredEntries(newFilteredData);
     setDisplayedEntries(newFilteredData.length);
   };
@@ -340,9 +344,9 @@ const AllContainers = () => {
               </span>
               <input type="text" className="search-box" placeholder="Search container by number" onChange={SearchChange} value={searchData}></input>
               {searchData && (
-                <button className="clear-search" onClick={handleClearSearch}>
+                <Button className="clear-search" onClick={handleClearSearch}>
                   Clear
-                </button>
+                </Button>
               )}
               <div ref={filterMenuRef}>
                 <div
