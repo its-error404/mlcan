@@ -4,8 +4,6 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
-import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
 import { Button, DatePicker, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
@@ -15,9 +13,8 @@ import { AllContainersData, ContainersData } from "../../models/Containers.model
 import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
-import SortUp from '../../assets/collapse-up.png'
-import SortDown from '../../assets/collapse-down.png'
 import ExportMenu from "../../shared/components/ExportMenu";
+import { ColumnsType } from "antd/lib/table";
 
 const AllContainers = () => {
   const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
@@ -36,6 +33,7 @@ const AllContainers = () => {
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
+  const [sortOrder, setSortOrder] = useState<'ascend' | 'descend'>('ascend');
 
   useEffect(() => {
     refreshData();
@@ -150,7 +148,7 @@ const AllContainers = () => {
   }
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-  const columns = [
+  const columns: ColumnsType<ContainersData> = [
     {
       title: "Container Number",
       dataIndex: "uid",
@@ -161,72 +159,82 @@ const AllContainers = () => {
     },
     {
       title: (
-        <div className="sort-column">
-          Yard <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+        <div className="sort-column" onClick={() => customSort("yard", sortOrder)}>
+          Yard
         </div>
       ),
       dataIndex: "yard",
       key: "yard",
       render: (text: string) => (text),
+      // sorter: (a: ContainersData, b: ContainersData) => a.yard.length - b.yard.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: (
         <div className="sort-column">
-          Customer <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+          Customer
         </div>
       ),
       dataIndex: "customerName",
       key: "customerName",
       render: (text: string) => (text || "N/A"),
+      // sorter: (a: ContainersData, b: ContainersData) => a.customerName.length - b.customerName.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: (
         <div className="sort-column">
-          Owner Name <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
+          Owner Name
         </div>
       ),
       dataIndex: "owner",
       key: "owner",
       render: (text: string) => (text || "N/A"),
+      // sorter: (a: ContainersData, b: ContainersData) => a.owner.length - b.owner.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: (
         <div className="sort-column">
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          <div className="sort-flex"><img className="sort-up-icon" src={SortUp} width={10} alt=""/><img className="sort-down-icon" src={SortDown} alt="" width={10}/></div>
         </div>
-        
+
       ),
       dataIndex: "activityType",
       key: "activityType",
       render: (text: string) => (text ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() : "N/A"),
+      // sorter: (a: ContainersData, b: ContainersData) => a.activityType.length - b.activityType.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: (
-        <>
+        <div className="sort-column">
           {sectionIndex === 1 ? "Activity ID" : ""}
-          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
-        </>
+        </div>
       ),
       dataIndex: "activityUid",
       key: "activityUid",
       render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+      // sorter: (a: ContainersData, b: ContainersData) => a.activityUid.length - b.activityUid.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: (
-        <>
-          Activity Status <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Activity Date
+        </div>
       ),
       dataIndex: "activityDate",
       key: "activityDate",
       render: (text: string) => (formatDate(text) || "N/A"),
+      // sorter: (a: ContainersData, b: ContainersData) => a.activityDate.length - b.activityDate.length,
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: (
-        <>
-          Status <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Status
+        </div>
       ),
       dataIndex: "activityStatus",
       key: "activityStatus",
@@ -251,6 +259,8 @@ const AllContainers = () => {
           </div>
         );
       },
+      // sorter: (a: ContainersData, b: ContainersData) => a.activityStatus.length - b.activityStatus.length,
+      // sortDirections: ['descend', 'ascend'],
     },
   ].filter(Boolean);
 
@@ -268,6 +278,22 @@ const AllContainers = () => {
       document.removeEventListener("mousedown", handler);
     };
   }, []);
+
+  const customSort = (column: string, order: 'ascend' | 'descend') => {
+    const sortedData = [...filteredEntries];
+
+    sortedData.sort((a, b) => {
+      if (order === 'ascend') {
+        return a[column].localeCompare(b[column]);
+      } else {
+        return b[column].localeCompare(a[column]);
+      }
+    });
+
+    setFilteredEntries(sortedData);
+  };
+
+
 
   const SearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let searchQuery = e.target.value;
@@ -456,6 +482,8 @@ const AllContainers = () => {
                 rowClassName={getRowClassName}
                 pagination={false}
               />
+
+
             </div>
             <p className="total-records">
               Showing <span className="record-range">{startIndex} - {endIndex} &nbsp;</span>
