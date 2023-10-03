@@ -19,7 +19,6 @@ export const addRepairRequest = async (values: RepairData) => {
       setTimeout(() => {
         notification.destroy();
       }, 3000);
-    } else {
     }
   } catch (error) {
     console.log(error);
@@ -37,12 +36,6 @@ export const deleteRepairEntry = async (id: string) => {
       notification.open({message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted'});
       return response.data;
     
-    } else {
-      console.log(
-        `Error Deleting Repair Entry with ID ${id}`
-      );
-
-      throw new Error("Failed to delete repair entry.");
     }
   } catch (error: any) {
     console.error(

@@ -1,0 +1,111 @@
+@import '../../../../../styles/variables';
+
+.activity-card {
+    margin-top: 20px;
+    margin-left: 30px;
+    min-height: 80px;
+    min-width: 80vw;
+    background-color: $white-bg;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.activity-card.expanded {
+    min-height: 500px;
+}
+
+.activity-status {
+    border: 1px solid transparent;
+    border-radius: 0; 
+    padding: 5px;
+    margin-left: 1050px; 
+    
+    &.draft {
+      background-color: $draft-grey-bg;
+      color: $draft-grey-text;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+  }
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-background {
+    position: relative;
+    border: 1px solid transparent;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.activity-card.form-type-quote {
+    border-left: 2px solid $purple-bg; 
+  }
+  
+  .activity-card.form-type-repair {
+    border-left: 2px solid $yellow-bg; 
+  }
+  
+  .activity-card.form-type-inspection {
+    border-left: 2px solid $blue-bg; 
+  }
+
+.icon-background.lightpurple {
+    background-color: $light-purple;
+}
+
+.icon-background.icon-background.lightpurple > .card-icon {
+    filter: brightness(0) saturate(100%) invert(32%) sepia(30%) saturate(1117%) hue-rotate(236deg) brightness(95%) contrast(84%);
+}
+
+.icon-background.lightblue {
+    background-color: $light-blue;
+}
+
+.icon-background.lightblue > .card-icon {
+    filter: brightness(0) saturate(100%) invert(47%) sepia(40%) saturate(2991%) hue-rotate(189deg) brightness(104%) contrast(95%);
+}
+
+.icon-background.lightyellow {
+    background-color: $light-yellow;
+}
+
+.icon-background.lightyellow > .card-icon {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(2018%) hue-rotate(348deg) brightness(99%) contrast(92%);
+}
+.card-icon {
+    position: absolute;
+    left: 15px;
+    top: 12px;
+}
+
+.details-flex {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    align-items: center;
+    margin-left: 20px;
+
+}
+
+.form-type {
+    font-size: 12px;
+    color: $draft-text;
+}
+
+.date {
+    margin-left: 10px;
+    color: $draft-text;
+}
+
+.form-id {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.dropdown-icon {
+    margin-right: 30px;
+}

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Input, Space } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Input, Select, Space } from 'antd'
 import { useFormik } from 'formik';
 import {  InitialContainerFormValues } from '../../../models/singlecontainer.model';
 import { addContainerRequest } from '../../../services/ContainersService/containers.service';
@@ -8,6 +8,9 @@ import '../../../styles/_@antOverrides.scss'
 import './AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
+import 'antd/dist/antd.css';
+import axiosInstance from '../../../interceptor/axiosInstance';
+import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes';
 
 interface AddContainerProps {
   onclose: () => void;
@@ -17,6 +20,36 @@ const primaryColor = '#489482';
 const textColor = 'white';
 
 const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
+  const [yardNames, setYardNames] = useState([])
+  const [length, setLength] = useState([])
+  const [height, setHeight] = useState([])
+  const [type, setType] = useState([])
+
+ useEffect(()=> {
+  axiosInstance
+      .get(`${ApiRoutes.LENGTH}`)
+      .then(response => {
+        setLength(response.data.data.values)
+      })
+
+      axiosInstance
+      .get(`${ApiRoutes.HEIGHT}`)
+      .then(response => {
+        setHeight(response.data.data.values)
+      })
+
+      axiosInstance
+      .get(`${ApiRoutes.YARDS}`)
+      .then(response => {
+        setYardNames(response.data.data.values)
+      })
+
+      axiosInstance
+      .get(`${ApiRoutes.CON_TYPES}`)
+      .then(response => {
+        setType(response.data.data.values)
+      })
+ },[])
 
   const formik = useFormik({
     initialValues: InitialContainerFormValues,
@@ -38,33 +71,61 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <Space direction='vertical'>
+          <Space direction='vertical' size={20}>
             <label>Yard Name</label>
-            <select className='container-select'>
-              <option>Yard</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={yardNames.map(option => ({
+              label: option,
+              value: option
+            }))}
+          />
             <label>Container Number</label>
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Customer</label>
-            <select className='container-select'>
-              <option>Krishna</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={[
+              { value: 'Krishna', label: 'Krishna' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+            ]}
+          />
             <label>Container Owner Name</label>
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Submitter Initials</label>
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Container Length</label>
-            <select className='container-select'>
-              <option>20</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={length.map(option => ({
+              label: option,
+              value: option
+            }))}
+
+          />
             <label>Container Height</label>
-            <select className='container-select'>
-              <option>20</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={height.map(option => ({
+              label: option,
+              value: option
+            }))}
+
+          />
             <label>Container Type</label>
-            <select className='container-select'>
-              <option>20</option>
-            </select>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={type.map(option => ({
+              label: option,
+              value: option
+            }))}
+
+          />
             <label>Comments</label>
             <Input className='container-input comments-add-input' placeholder='Enter'></Input>
             <label>Door photo including container number</label>

@@ -13,6 +13,7 @@ import { Link, } from "react-router-dom";
 import '../../styles/_@antOverrides.scss'
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import 'antd/dist/antd.css';
+import { ColumnsType } from "antd/lib/table";
 
 const AllContainers = () => {
 
@@ -126,7 +127,7 @@ const AllContainers = () => {
   };
   
   const handleApplyFilters = () => {
-    const filteredData = applyFilters(allContainersData?.docs || []);
+    const filteredData = applyFilters(ContainersData?.docs || []);
     setFilteredEntries(filteredData);
     setFilterMenu(false);
     setDisplayedEntries(filteredData.length)
@@ -145,7 +146,7 @@ const AllContainers = () => {
 
 
   const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-  const columns = [
+  const columns: ColumnsType<ContainersData> = [
     {
       title: "Container Number",
       dataIndex: "uid",
@@ -193,9 +194,9 @@ const AllContainers = () => {
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : ''),
     },
-    {
+    showActivityUidColumn && {
       title: (
         <>
           {sectionIndex === 1 ? "Activity ID" : ""}
@@ -204,7 +205,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityUid",
       key: "activityUid",
-      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+      render: (text: string, record: any) => text || "N/A",
     },
     {
       title: (
@@ -240,7 +241,6 @@ const AllContainers = () => {
       ),
     },
   ].filter(Boolean);
-  
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -303,7 +303,7 @@ const AllContainers = () => {
               </div>
 
             <div className="container-box__container">
-            <Table columns={columns} dataSource={applyFilters(filterContainers(activeSection, searchData))} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
+            <Table columns={columns} dataSource={filteredEntries} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
             </div>
           </div>
         </div>

@@ -18,5 +18,9 @@ export const ApiRoutes = {
     EVENT_OPTIONS: "/meta/events",
     REP_MODES: "/meta/repair_modes",
     REP_CATEGORIES: "/meta/repair_categories",
-    REP_ITEMS: "/repair_items/"
+    REP_ITEMS: "/repair_items/",
+    YARDS: "/meta/yards",
+    LENGTH: "/meta/lengths",
+    HEIGHT: "/meta/heights",
+    CON_TYPES: "/meta/container_types"
 }

@@ -6,7 +6,7 @@ import { Button, Input, Pagination } from "antd";
 const CommentsComponent = () => {
   const [commentsData, setCommentsData] = useState<CommentsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState<number>(1); // State for current page
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const commentsPerPage = 3;
 
   useEffect(() => {

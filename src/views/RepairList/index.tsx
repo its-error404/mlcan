@@ -180,6 +180,7 @@ const RepairList = () => {
       }
     }
   };
+  
 
   const handleDeleteCancel = () => {
     setEntryToDeleteId(null);
