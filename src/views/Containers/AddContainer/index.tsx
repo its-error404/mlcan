@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useFormik } from 'formik';
 import {  InitialContainerFormValues } from '../../../models/singlecontainer.model';
@@ -9,6 +9,8 @@ import './AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
 import 'antd/dist/antd.css';
+import axiosInstance from '../../../interceptor/axiosInstance';
+import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes';
 
 interface AddContainerProps {
   onclose: () => void;
@@ -18,6 +20,36 @@ const primaryColor = '#489482';
 const textColor = 'white';
 
 const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
+  const [yardNames, setYardNames] = useState([])
+  const [length, setLength] = useState([])
+  const [height, setHeight] = useState([])
+  const [type, setType] = useState([])
+
+ useEffect(()=> {
+  axiosInstance
+      .get(`${ApiRoutes.LENGTH}`)
+      .then(response => {
+        setLength(response.data.data.values)
+      })
+
+      axiosInstance
+      .get(`${ApiRoutes.HEIGHT}`)
+      .then(response => {
+        setHeight(response.data.data.values)
+      })
+
+      axiosInstance
+      .get(`${ApiRoutes.YARDS}`)
+      .then(response => {
+        setYardNames(response.data.data.values)
+      })
+
+      axiosInstance
+      .get(`${ApiRoutes.CON_TYPES}`)
+      .then(response => {
+        setType(response.data.data.values)
+      })
+ },[])
 
   const formik = useFormik({
     initialValues: InitialContainerFormValues,
@@ -44,10 +76,10 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
             <Select
             className='container-select'
             defaultValue="select"
-            options={[
-              { value: 'Harbour Link', label: 'Harbour Link' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={yardNames.map(option => ({
+              label: option,
+              value: option
+            }))}
           />
             <label>Container Number</label>
             <Input className='container-input' placeholder='Enter'></Input>
@@ -68,28 +100,31 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
             <Select
             className='container-select'
             defaultValue="select"
-            options={[
-              { value: '20', label: '20' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={length.map(option => ({
+              label: option,
+              value: option
+            }))}
+
           />
             <label>Container Height</label>
             <Select
             className='container-select'
             defaultValue="select"
-            options={[
-              { value: '20', label: '20' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={height.map(option => ({
+              label: option,
+              value: option
+            }))}
+
           />
             <label>Container Type</label>
             <Select
             className='container-select'
             defaultValue="select"
-            options={[
-              { value: '20', label: '20' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={type.map(option => ({
+              label: option,
+              value: option
+            }))}
+
           />
             <label>Comments</label>
             <Input className='container-input comments-add-input' placeholder='Enter'></Input>

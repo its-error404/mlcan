@@ -16,7 +16,6 @@ import SortDown from '../../assets/collapse-down.png'
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import 'antd/dist/antd.css';
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { ColumnsType } from "antd/lib/table";
 
 const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
@@ -233,7 +232,7 @@ const AllContainers = () => {
       ),
       dataIndex: "activityUid",
       key: "activityUid",
-      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+      render: (text: string, record: any) => text || "N/A",
     },
     {
       title: (
