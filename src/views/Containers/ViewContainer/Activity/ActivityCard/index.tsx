@@ -36,7 +36,7 @@ const ActivityCard: React.FC<{
   toggleExpand,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState([])
   const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [addItem, setAddItem] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
