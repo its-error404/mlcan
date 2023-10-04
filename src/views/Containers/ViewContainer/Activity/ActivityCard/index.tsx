@@ -9,8 +9,12 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
+import axiosInstance from "../../../../../interceptor/axiosInstance";
+import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
+import OverlayBox from "../../../../../shared/components/overlayBox";
+import AddItem from "./AddItem";
 
 const ActivityCard: React.FC<{
   UniqueID: string
@@ -59,9 +63,7 @@ const ActivityCard: React.FC<{
       setShowConfirmation(true);
     }
   }
-
-  const { Option } = Select;
-
+  
   const columns = [
     {
       title: "Repair ID",
@@ -195,14 +197,13 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
   const handleConfirm = async () => {
     try {
-      const response = await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
+       await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
         option: selectedOption,
       });
       notification.success({
         message: "updated Successfully !",
         className: "custom-notification-placement",
-      });
-      console.log(response);   
+      });  
       setShowConfirmation(false);
     } catch (error) {
       setShowConfirmation(false);

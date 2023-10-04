@@ -1,16 +1,10 @@
 import { deserialize } from 'serializr';
 import axiosInstance from '../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../routes/routeConstants/apiRoutes';
-import { getWorkingContainer } from '../ContainersService/containers.service'
 import { CommentsData } from '../../models/comments.model';
-import { InspectionForm } from '../../models/inspectionform.model';
-import { PhotoDetails } from '../../models/photoData.model';
-import { QuoteDetails } from '../../models/quotedata.model';
-import { RepairResponseData } from '../../models/repairFormData.model';
 
 export const fetchActivityData = async () => {
-  const query = `{"container": "64a53e59c637122f8ba5421e"}`
-
+  
   const photoQuery = `64a63ed193c84f257a88415e`
   const photoURL = `${ApiRoutes.CONT_PHOTO}/${photoQuery}`;
   const inspectionForm = `${ApiRoutes.INSPECTION_FORM}`;
@@ -77,7 +71,7 @@ export const fetchLogData = async () => {
 export const expandedRepairForm = async (formId: string) => {
   try {
     const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`)
-    if(response.status === 200) {
+    if(response) {
       const expandedRepairFormData = response.data
       return expandedRepairFormData
     } else {
@@ -87,3 +81,18 @@ export const expandedRepairForm = async (formId: string) => {
     console.log(e)
   }
 }
+
+export const toggleExpandedQuoteCard = async (formId: string) => {
+  try {
+    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
+    return response.data
+  } catch (error) {
+    console.error("Error fetching card details:", error);
+  }
+}
+
+// export const handleUpdateConfirm = async (uniqueID: string, selectedOption: string) => {
+//   try {
+//     const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/upgrade/${uniqueID}`, )
+//   }
+// }

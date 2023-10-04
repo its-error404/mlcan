@@ -8,6 +8,8 @@ import '../AddContainer/AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
 import 'antd/dist/antd.css';
+import axiosInstance from '../../../interceptor/axiosInstance';
+import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes';
 
 interface EditContainerProps {
   onclose: () => void;
@@ -19,11 +21,10 @@ const primaryColor = '#489482';
 const textColor = 'white';
 
 const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
-    const [formData, setFormData] = useState<any>({});
+    const [, setFormData] = useState({});
 
     useEffect(() => {
         if (data) {
-          console.log(data)
           setFormData(data);
         }
       }, [data]);
@@ -31,6 +32,37 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
       const EditValues = {
         ...data,
       };
+
+      const [yardNames, setYardNames] = useState([])
+      const [length, setLength] = useState([])
+      const [height, setHeight] = useState([])
+      const [type, setType] = useState([])
+    
+     useEffect(()=> {
+      axiosInstance
+          .get(`${ApiRoutes.LENGTH}`)
+          .then(response => {
+            setLength(response.data.data.values)
+          })
+    
+          axiosInstance
+          .get(`${ApiRoutes.HEIGHT}`)
+          .then(response => {
+            setHeight(response.data.data.values)
+          })
+    
+          axiosInstance
+          .get(`${ApiRoutes.YARDS}`)
+          .then(response => {
+            setYardNames(response.data.data.values)
+          })
+    
+          axiosInstance
+          .get(`${ApiRoutes.CON_TYPES}`)
+          .then(response => {
+            setType(response.data.data.values)
+          })
+     },[])
 
   const formik = useFormik({
     initialValues: EditValues,
@@ -49,7 +81,7 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
     <div className="container-details-form">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Edit Container</h2>
+          <h2>Add New Container</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
@@ -57,65 +89,59 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
             <label>Yard Name</label>
             <Select
             className='container-select'
-            defaultValue={formData.yard}
-            onSelect={formik.handleChange}
-            options={[
-              { value: 'Harbour Link', label: 'Harbour Link' },
-              {value: 'Nordel', label: 'Nordel'},
-              {value: 'Aheer', label: 'Aheer'},
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            defaultValue="select"
+            options={yardNames.map(option => ({
+              label: option,
+              value: option
+            }))}
           />
             <label>Container Number</label>
-            <input className='container-input' defaultValue={formData.container.id} placeholder='Enter' name="uid" onChange={formik.handleChange} value={formik.values.uid}></input>
+            <Input className='container-input' placeholder='Enter'></Input>
             <label>Customer</label>
-            <Select
-            onSelect={formik.handleChange}
-            className='container-select'
-            defaultValue={formData.container.customer.name}
-            options={[
-              { value: 'Krishna', label: 'Krishna' },
-              {value: 'Ameer Krishna', label: 'Ameer Krishna'},
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
-          />
-            <label>Container Owner Name</label>
-            <input className='container-input' placeholder='Enter' name='owner' onChange={formik.handleChange} value={formik.values.owner}></input>
-            <label>Submitter Initials</label>
-            <input className='container-input' name="submitter" defaultValue={formData.submitter} placeholder='Enter' onChange={formik.handleChange} value={formik.values.submitter}></input>
-            <label>Container Length</label>
             <Select
             className='container-select'
             defaultValue="select"
             options={[
-              { value: '20', label: '20' },
+              { value: 'Krishna', label: 'Krishna' },
               { value: 'disabled', label: 'Disabled', disabled: true },
             ]}
+          />
+            <label>Container Owner Name</label>
+            <Input className='container-input' placeholder='Enter'></Input>
+            <label>Submitter Initials</label>
+            <Input className='container-input' placeholder='Enter'></Input>
+            <label>Container Length</label>
+            <Select
+            className='container-select'
+            defaultValue="select"
+            options={length.map(option => ({
+              label: option,
+              value: option
+            }))}
+
           />
             <label>Container Height</label>
             <Select
             className='container-select'
-            defaultValue={formData.height}
-            onChange={formik.handleChange}
-            options={[
-              { value: '20', label: '20' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            defaultValue="select"
+            options={height.map(option => ({
+              label: option,
+              value: option
+            }))}
+
           />
             <label>Container Type</label>
             <Select
             className='container-select'
-            defaultValue={formData.containerType}
-            onChange={formik.handleChange}
-            options={[
-              { value: '20', label: '20' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            defaultValue="select"
+            options={type.map(option => ({
+              label: option,
+              value: option
+            }))}
+
           />
             <label>Comments</label>
-            <input className='container-input comments-add-input' defaultValue={formData.comments} placeholder='Enter'></input>
+            <Input className='container-input comments-add-input' placeholder='Enter'></Input>
             <label>Door photo including container number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>Left side photo</label>
@@ -152,5 +178,6 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
     </div>
   )
 }
+
 
 export default EditContainer

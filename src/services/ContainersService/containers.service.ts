@@ -34,12 +34,11 @@ export const getWorkingContainer = async () => {
   }
 };
 
-
-export const addContainerRequest = async (values: any) => {
+export const addContainerRequest = async (values: ContainerData) => {
   try {
       const response = await axiosInstance.post(ApiRoutes.CONTAINERS, values)
 
-      if(response.status === 200) {
+      if(response) {
           notification.success({
               message: "Container Added Successfully !",
               description: "Check your container details for more information !",
@@ -62,11 +61,11 @@ export const addContainerRequest = async (values: any) => {
   }
 }
 
-export const addItemRequest = async (values: any) => {
+export const addItemRequest = async (values: ContainerData) => {
   try {
       const response = await axiosInstance.post(ApiRoutes.REP_ITEMS, values)
 
-      if(response.status === 200) {
+      if(response.status) {
           notification.success({
               message: "Item Added Successfully !",
               description: "Check your Item details for more information !",
@@ -89,10 +88,10 @@ export const addItemRequest = async (values: any) => {
   }
 }
 
-export const editContainerRequest = async (values: any, id:string) => {
+export const editContainerRequest = async (values: ContainerData, id:string) => {
   try {
       const response = await axiosInstance.put(`${ApiRoutes.CONTAINERS}/${id}`, values)
-      if(response.status === 200) {
+      if(response) {
           notification.success({
               message: "Container Edited Successfully !",
               description: "Check your container details for more information !",

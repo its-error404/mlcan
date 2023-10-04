@@ -7,14 +7,12 @@ import '../../../../AddContainer/AddContainer.scss';
 import PhotoDragger from '../../../../../../shared/components/Dragger';
 import '../../../../../../styles/_variables.scss';
 import 'antd/dist/antd.css';
+import './AddItem.scss'
 import { addItemRequest } from '../../../../../../services/ContainersService/containers.service';
 
 interface AddItemProps {
   onclose: () => void;
 }
-
-const primaryColor = '#489482';
-const textColor = 'white';
 
 const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
   const formik = useFormik({
@@ -130,20 +128,7 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
               onFileUpload={() =>{}}
               className="ant-upload-dragger"
             />
-            <button
-              type="submit"
-              style={{
-                backgroundColor: primaryColor,
-                width: '580px',
-                height: '40px',
-                color: textColor,
-                border: '1px solid transparent',
-                borderRadius: '10px',
-                cursor: 'pointer',
-              }}
-            >
-              Add Item
-            </button>
+            <button type="submit" className='submit-button'>Add Item</button>
           </Space>
         </form>
       </div>
