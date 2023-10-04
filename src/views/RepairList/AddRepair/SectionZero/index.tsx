@@ -8,8 +8,8 @@ import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes';
 interface SectionZeroProps {
   onclose: () => void;
   formik: FormikPropsSectionZero
-  onNextSection: () => void;
-  sectionCompleted: boolean
+  onNextSection?: () => void;
+  sectionCompleted?: boolean
 }
 
 const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSection, sectionCompleted }) => {

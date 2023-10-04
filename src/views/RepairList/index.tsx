@@ -15,13 +15,10 @@ import { RepairData, Repair } from "../../models/repairList.model";
 import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
-import {
-  deleteRepairEntry,
-  fetchRepairData,
-} from "../../services/RepairListService/repairlist.service";
 import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
+import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -33,7 +30,7 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
-      onCell: (record) => {
+      onCell: (record : Repair) => {
         return {
           onClick: () => handleRowClick(record),
         };
@@ -83,8 +80,8 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskHours",
       key: "nonMaerskHours",
-      render: (text: string, record: any) => {
-        const nonMaerskHours = record.nonMaerskHours;
+      render: (text: string, record: Repair) => {
+        const nonMaerskHours = record.nmaersk;
         return nonMaerskHours !== undefined && nonMaerskHours !== null
           ? nonMaerskHours
           : "-";
@@ -103,8 +100,8 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskMatCost",
       key: "nonMaerskMatCost",
-      render: (text: string, record: any) => {
-        const nonMaerskMatCost = record.nonMaerskMatCost;
+      render: (text: string, record: Repair) => {
+        const nonMaerskMatCost = record.nmaersk;
         return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
           ? nonMaerskMatCost
           : "-";
@@ -120,7 +117,7 @@ const RepairList = () => {
       ),
       dataIndex: "unitHours",
       key: "unitHours",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const unitHours = record.merc?.maxMatCost;
         return unitHours || "-";
       },
@@ -133,7 +130,7 @@ const RepairList = () => {
       ),
       data: "MaxMatCost",
       key: "MaxMatCost",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const maxMatCost = record.merc?.maxMatCost;
         return maxMatCost || "-";
       },
@@ -154,11 +151,11 @@ const RepairList = () => {
     },
     {
       className: "delete-icon",
-      render: (text: string, record: any) => (
+      render: (text: string, record: Repair) => (
         <>
           <DeleteIcon
             width={20}
-            onClick={() => handleDeleteClick(record.id, record.uid)}
+            onClick={() => handleDeleteClick(record.id || '', record.uid || '')}
           />
         </>
       ),
@@ -215,15 +212,14 @@ const RepairList = () => {
   const [typeData, setTypeData] = useState("");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
-  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<RepairData | null>(null);
+  const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
-        setRepairListData(deserializedData);
-        setFilteredEntries(deserializedData.docs || []);
+        setRepairListData(deserializedData)
         setTotalEntries(deserializedData.docs?.length || 0);
         setDisplayedEntries(deserializedData.docs?.length || 0);
       } catch (error) {
@@ -350,10 +346,8 @@ const RepairList = () => {
             <div className="overlay-content">
               <EditRepair
                 data={selectedEntryForEdit}
-                onClose={() => {
-                  setSelectedEntryForEdit(null);
-                }}
-                id={selectedEntryForEdit?.docs}
+                onClose={() => {setSelectedEntryForEdit(null);}}
+               id={selectedEntryForEdit.id || ''}
               />
             </div>
           </div>

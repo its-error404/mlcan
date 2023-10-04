@@ -9,11 +9,8 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
-import axiosInstance from "../../../../../interceptor/axiosInstance";
-import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
-import AddItem from "./AddItem";
-import OverlayBox from "../../../../../shared/components/overlayBox";
+import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 const ActivityCard: React.FC<{
   UniqueID: string
@@ -43,14 +40,15 @@ const ActivityCard: React.FC<{
   const [updateActivityStatus, setUpdateActivityStatus] = useState("");
 
   const getBackgroundColor = () => {
-    if (icon.type === QuoteIcon) {
-      return "lightpurple";
-    } else if (icon.type === RepairIcon) {
-      return "lightyellow";
-    } else if (icon.type === InspectionIcon) {
-      return "lightblue";
-    } else {
-      return "";
+    switch (icon.type) {
+      case QuoteIcon:
+        return "lightpurple";
+      case RepairIcon:
+        return "lightyellow";
+      case InspectionIcon:
+        return "lightblue";
+      default:
+        return "red";
     }
   };
   const [selectedOption, setSelectedOption] = useState("");
@@ -162,11 +160,7 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
     return (
         <Dropdown overlay={menu} trigger={["click"]}>
-          <div className="option-menu">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-          </div>
+          <EllipsisOutlined rev={''}/>
         </Dropdown>
       );
     };

@@ -3,20 +3,16 @@ import "./Containers.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
-import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
-import { DatePicker, Table } from "antd";
-import { getContainersData } from "../../services/ContainersService/containers.service";
+import { Table } from "antd";
+import {  getContainersData } from "../../services/ContainersService/containers.service";
 import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import "../../styles/_@antOverrides.scss";
-import {
-  AllContainersData,
-  ContainersData,
-} from "../../models/Containers.model";
-import "antd/dist/antd.css";
+import { Link, } from "react-router-dom";
+import '../../styles/_@antOverrides.scss'
+import { AllContainersData, ContainersData } from "../../models/Containers.model";
+import 'antd/dist/antd.css';
 import { ColumnsType } from "antd/lib/table";
 
 const AllContainers = () => {
@@ -75,9 +71,35 @@ const AllContainers = () => {
     }
 
     const containers = allContainersData.docs as ContainersData[];
+    
+    let filteredData = [] as ContainersData[];
+  switch (section) {
+    case "All":
+      filteredData = containers;
+      break;
+    case "Draft":
+      filteredData = containers.filter((doc) => doc.activityStatus === "draft");
+      break;
+    case "Admin Review Pending":
+      filteredData = containers.filter((doc) => doc.activityStatus === "billing");
+      break;
+    case "Pending Customer Approval":
+      filteredData = containers.filter((doc) => doc.activityStatus === "pending");
+      break;
+    case "Quotes Approved by Customers":
+      filteredData = containers.filter((doc) => doc.activityStatus === "approved");
+      break;
+    default:
+      filteredData = [];
+  }
 
-    let filteredData = containers.filter((doc) => {
-      const searchMatches = doc.uid.toLowerCase().includes(searchQuery.toLowerCase());
+  filteredData = filteredData.filter((doc) =>
+  {
+  if(doc.uid) {
+    doc.uid.toLowerCase().includes(searchQuery.toLowerCase())
+  }
+}
+  );
 
       switch (section) {
         case "All":
@@ -180,6 +202,7 @@ const AllContainers = () => {
       ),
       dataIndex: "yard",
       key: "yard",
+      render: (text: string) => (showActivityUidColumn ? text : null),
     },
     {
       title: (
@@ -189,7 +212,7 @@ const AllContainers = () => {
       ),
       dataIndex: "customerName",
       key: "customerName",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
     {
       title: (
@@ -199,19 +222,18 @@ const AllContainers = () => {
       ),
       dataIndex: "owner",
       key: "owner",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
     },
-
     {
       title: (
         <>
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          <ToggleIcon width={8} style={{ marginLeft: 8 }} />
+          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
         </>
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A" : ''),
     },
     showActivityUidColumn && {
       title: (
@@ -234,7 +256,8 @@ const AllContainers = () => {
       ),
       dataIndex: "activityDate",
       key: "activityDate",
-      render: (text: string, record: any) => formatDate(text) || "N/A",
+      render: (text: string, record: any) =>
+        showActivityUidColumn ? (formatDate(text) || "N/A") : null,
     },
     {
       title: (
@@ -423,15 +446,7 @@ const AllContainers = () => {
             </div>
 
             <div className="container-box__container">
-              <Table
-                columns={columns}
-                // dataSource={applyFilters(filterContainers(activeSection, searchData))}
-                dataSource={filteredEntries}
-                rowKey="uid"
-                className="container-table"
-                rowClassName={getRowClassName}
-                pagination={false}
-              />
+            <Table columns={columns} dataSource={filteredEntries} rowKey="uid" className="container-table" rowClassName={getRowClassName} pagination={false}/>
             </div>
           </div>
         </div>

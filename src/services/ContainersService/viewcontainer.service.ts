@@ -29,11 +29,6 @@ export const fetchActivityData = async () => {
       const quoteJsonData = quoteFormResponse.data.data
       const repairFormJsonData = repairFormResponse.data.data
 
-      // const photoData: PhotoDetails = deserialize(PhotoDetails, photoJsonData);
-      // const inspectionData: InspectionForm = deserialize(InspectionForm, inspectionJsonData);
-      // const quoteData: QuoteDetails = deserialize(QuoteDetails, quoteJsonData);
-      // const repairData: RepairResponseData = deserialize(RepairResponseData, repairFormJsonData);
-
       return {photoJsonData, inspectionJsonData, quoteJsonData, repairFormJsonData}
 
   } else {
@@ -50,14 +45,10 @@ export const fetchCommentsData = async () => {
 
   try {
     const response = await axiosInstance.get(URL)
-
-    if (response.status === 200) {
         const jsonData = response.data.data
         const commentsData: CommentsData = deserialize(CommentsData, jsonData);
         return commentsData
-  } else {
-    throw new Error ("Request Failed !")
-  }
+
 } catch (err) {
     console.log(err)
     return []
@@ -71,13 +62,10 @@ export const fetchLogData = async () => {
   try {
     const response = await axiosInstance.get(URL)
 
-    if (response.status === 200) {
         const jsonData = response.data.data
         const commentsData: CommentsData = deserialize(CommentsData, jsonData);
         return commentsData
-  } else {
-    throw new Error ("Request Failed !")
-  }
+
 } catch (err) {
     console.log(err)
     return []
