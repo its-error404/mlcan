@@ -343,7 +343,7 @@ const RepairList = () => {
                 onClose={() => {
                   setSelectedEntryForEdit(null);
                 }}
-                id={selectedEntryForEdit.id || ''}
+                repairId={selectedEntryForEdit.id || ''}
                 
               />
             </div>
