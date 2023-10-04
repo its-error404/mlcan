@@ -11,11 +11,11 @@ import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
 import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import "antd/dist/antd.css";
+import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
+import ExportMenu from "../../shared/components/ExportMenu";
 import { ColumnsType, TableProps } from "antd/lib/table";
 import { SorterResult } from "antd/lib/table/interface";
-import { formatDate } from "../../shared/utils/formatDate";
-import ExportMenu from "../../shared/components/ExportMenu";
 
 const AllContainers = () => {
   const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
@@ -185,7 +185,7 @@ const AllContainers = () => {
       dataIndex: "yard",
       key: "yard",
       render: (text: string) => (text),
-      sorter: (a: ContainersData, b: ContainersData) => (a?.yard || '').length - (b?.yard || '').length,
+      sorter: (a: ContainersData, b: ContainersData) => a.yard.length - b.yard.length,
       sortOrder: sortedInfo.columnKey === 'yard' ? sortedInfo.order: null,
     },
     {
@@ -197,7 +197,7 @@ const AllContainers = () => {
       dataIndex: "customerName",
       key: "customerName",
       render: (text: string) => (text || "N/A"),
-      sorter: (a: ContainersData, b: ContainersData) => (b?.customerName || "").length - (a?.customerName || "").length,
+      sorter: (a: ContainersData, b: ContainersData) => a.customerName.length - b.customerName.length,
       sortOrder: sortedInfo.columnKey === 'customerName' ? sortedInfo.order: null,
     },
     {
@@ -209,7 +209,7 @@ const AllContainers = () => {
       dataIndex: "owner",
       key: "owner",
       render: (text: string) => (text || "N/A"),
-      sorter: (a: ContainersData, b: ContainersData) => (a?.owner || '').length - (b.owner || '').length,
+      sorter: (a: ContainersData, b: ContainersData) => a.owner.length - b.owner.length,
       sortOrder: sortedInfo.columnKey === 'owner' ? sortedInfo.order: null,
       ellipsis: true
     },
@@ -239,7 +239,8 @@ const AllContainers = () => {
         key: "activityUid",
         render: (text: string) =>
           showActivityUidColumn ? text || "N/A" : null,
-        sorter: (a: ContainersData, b: ContainersData) => (a?.activityUid || '').length - (b?.activityUid || '').length,
+        sorter: (a: ContainersData, b: ContainersData) =>
+          a.activityUid.length - b.activityUid.length,
         sortOrder: sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
         ellipsis: true,
       }
@@ -254,7 +255,7 @@ const AllContainers = () => {
       key: "activityDate",
       render: (text: string) => (formatDate(text) || "N/A"),
       sorter: (a: ContainersData, b: ContainersData) => {
-        const activityDateA = new Date(a?.activityDate);
+        const activityDateA = new Date(a.activityDate);
         const activityDateB = new Date(b.activityDate);
         return activityDateA.getTime() - activityDateB.getTime()
       },
@@ -335,6 +336,7 @@ const AllContainers = () => {
     setSearchData("");
     refreshData();
     const newFilteredData = applyFilters();
+    console.log(newFilteredData);
     setFilteredEntries(newFilteredData);
     setDisplayedEntries(newFilteredData.length);
   };

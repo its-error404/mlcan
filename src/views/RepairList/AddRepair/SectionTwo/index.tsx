@@ -1,5 +1,5 @@
 import { Button, Checkbox } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormikValues } from 'formik'; 
 import CustomInput from '../../../../shared/components/InputField';
 import CustomSelect from '../../../../shared/components/SelectField';
@@ -36,11 +36,14 @@ const [modeOptions, setModeOptions] = useState([])
   },[])
   
   return (
-    <div className="merc-plus-form-section">
-      <Checkbox className="no-input-box">&nbsp;&nbsp;N/A</Checkbox>
-      <div style={{marginTop: '20px'}}>
+    <div className={`merc-plus-form-section ${isCheckboxChecked ? 'disabled' : ''}`}>
+      <br></br>
+      <input type='checkbox' className='na2-box' onChange={handleCheckboxChange} checked={isCheckboxChecked}/> N/A
+      <div>
         <hr></hr>
       </div>
+      <br></br>
+      <div className='section-three'>
       <h4>Cost Details</h4>
       <div className="repair-details__first-col">
         <div className="input__repair-id">
@@ -131,7 +134,7 @@ const [modeOptions, setModeOptions] = useState([])
           <CustomInput name='id' id='id' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.id} label='ID Source' placeholder='Enter'></CustomInput>
         </div>
       </div>
-     
+      </div>
       <div className="button-container">
         <Button type="primary" onClick={onclose}>
           Discard

@@ -10,11 +10,11 @@ import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
 import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
 import axiosInstance from "../../../../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
-import OverlayBox from "../../../../../shared/components/overlayBox";
 import AddItem from "./AddItem";
+import OverlayBox from "../../../../../shared/components/overlayBox";
+import { ContainerData } from "../../../../../models/singlecontainer.model";
 
 const ActivityCard: React.FC<{
   UniqueID: string
@@ -25,7 +25,7 @@ const ActivityCard: React.FC<{
   icon: React.ReactElement;
   expanded: boolean;
   toggleExpand: () => void;
-  expandedData
+  expandedData: ContainerData
 }> = ({
   UniqueID,
   formType,
@@ -38,21 +38,19 @@ const ActivityCard: React.FC<{
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
-  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [addItem, setAddItem] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [updateActivityStatus, setUpdateActivityStatus] = useState("");
 
   const getBackgroundColor = () => {
-    switch (icon.type) {
-      case QuoteIcon:
-        return "lightpurple";
-      case RepairIcon:
-        return "lightyellow";
-      case InspectionIcon:
-        return "lightblue";
-      default:
-        return "red";
+    if (icon.type === QuoteIcon) {
+      return "lightpurple";
+    } else if (icon.type === RepairIcon) {
+      return "lightyellow";
+    } else if (icon.type === InspectionIcon) {
+      return "lightblue";
+    } else {
+      return "";
     }
   };
   const [selectedOption, setSelectedOption] = useState("");
@@ -63,7 +61,7 @@ const ActivityCard: React.FC<{
       setShowConfirmation(true);
     }
   }
-  
+
   const columns = [
     {
       title: "Repair ID",
@@ -143,8 +141,6 @@ useEffect(() => {
   setData(mapRepairDataToTableData());
 }, [expandedRepairFormData]);
 
-
-
 const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
     const menu = (
       <Menu>
@@ -162,7 +158,11 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
     return (
         <Dropdown overlay={menu} trigger={["click"]}>
-          <EllipsisOutlined rev={''}/>
+          <div className="option-menu">
+            <div className="dot"></div>
+            <div className="dot"></div>
+            <div className="dot"></div>
+          </div>
         </Dropdown>
       );
     };
@@ -197,13 +197,14 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
   const handleConfirm = async () => {
     try {
-       await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
+      const response = await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
         option: selectedOption,
       });
       notification.success({
         message: "updated Successfully !",
         className: "custom-notification-placement",
-      });  
+      });
+      console.log(response);   
       setShowConfirmation(false);
     } catch (error) {
       setShowConfirmation(false);

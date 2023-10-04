@@ -3,7 +3,6 @@ import axiosInstance from "../../interceptor/axiosInstance";
 import { ApiRoutes } from "../../routes/routeConstants/apiRoutes";
 import { RepairData } from "../../models/repairList.model";
 import { deserialize } from "serializr";
-import 'antd/dist/antd.css'
 
 //Add Repair
 
@@ -39,12 +38,9 @@ export const deleteRepairEntry = async (id: string) => {
     
     }
   } catch (error: any) {
-    console.error(`Error Deleting Repair Entry with ID ${id}: ${error.message}`);
-    notification.error({
-      message: "There was a error in deleting the entry !",
-      description: "Check your entry details for more information !",
-      className: "custom-notification-placement",
-    });
+    console.error(
+      `Error Deleting Repair Entry with ID ${id}: ${error.message}`
+    );
 
     throw error;
   }
@@ -52,7 +48,7 @@ export const deleteRepairEntry = async (id: string) => {
 
 // Edit Repair Entry
 
-export const editRepairEntry = async (values: any, id: any) => {
+export const editRepairEntry = async (values: any, id: string) => {
   try {
     const response = await axiosInstance.put(`${ApiRoutes.ALL_REPAIRS}/${id}`,values);
     if(response) {
@@ -63,15 +59,6 @@ export const editRepairEntry = async (values: any, id: any) => {
       });
     }
   } catch (error) {
-    notification.error({
-      message: "There was a error in editing the entry !",
-      description: "Check your entry details for more information !",
-      className: "custom-notification-placement",
-    });
-
-    setTimeout(() => {
-      notification.destroy();
-    }, 3000);
     console.log(error);
   }
 };
@@ -86,6 +73,7 @@ export const fetchRepairData = async () => {
     const totalEntries = deserializedData?.docs?.length;
     return { deserializedData, totalEntries };
   } catch (error) {
+    console.error("Error fetching data:", error);
     console.error("Error fetching data:", error);
     throw error;
   }
