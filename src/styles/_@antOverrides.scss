@@ -251,8 +251,13 @@
 .ant-picker-input input {
   padding-left: 10px;
 }
+
 .ant-checkbox-checked::after{
   border: 0;
+}
+
+.ant-checkbox-inner {
+  position: absolute;
 }
 
 .ant-table-column-sorter-up.active, .ant-table-column-sorter-down.active {

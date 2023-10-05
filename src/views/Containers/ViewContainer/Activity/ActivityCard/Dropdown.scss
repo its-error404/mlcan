@@ -68,7 +68,9 @@
 .dropdown-lock-icon {
     filter: brightness(0) saturate(100%) invert(50%) sepia(25%) saturate(651%) hue-rotate(115deg) brightness(97%)
         contrast(94%);
+    font-size: 12px;
 }
+
 
 .select-container button{
     background-color: $light-gray-button;

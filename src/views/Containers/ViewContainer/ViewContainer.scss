@@ -94,8 +94,8 @@
 }
 
 .container-options {
-    margin-top: 30px;
-    margin-left: 0;
+    margin-top: 20px !important;
+    margin-left: 0px !important;
 }
 
 .section-content {
@@ -104,5 +104,56 @@
     overflow-y: auto;
     margin-left: -30px;
     background-color: $row-color-first;
-    // background-color: red;
+}
+
+.update-submit-button {
+    width: 100px !important;
+}
+
+.select-container {
+    display: flex;
+    align-items: center;
+}
+
+.update-status-buttons-container {
+    margin-top: 20px;
+}
+
+.update-status-buttons-container button:last-child{
+    background-color: $turkish-green;
+}
+
+.update-text p:nth-child(2) {
+    font-size: 24px;
+    font-weight: 600;
+    color: $text-black;
+}
+
+.update-text p:nth-child(3) {
+    margin-top: -30px;
+    font-size: 16px;
+}
+
+.select-container > .activity-select {
+    border-top: 1px solid $user-info-child-tertiary !important;
+    border-bottom: 1px solid $user-info-child-tertiary !important;
+    border-right: 1px solid $user-info-child-tertiary !important;
+    border-top-left-radius: 1px !important;
+    border-bottom-left-radius: 1px !important;
+}
+
+.select-container button {
+    border-left: 1px solid $user-info-child-tertiary !important;
+    border-top: 1px solid $user-info-child-tertiary !important;
+    border-bottom: 1px solid $user-info-child-tertiary !important;
+    border-right: 1px solid $user-info-child-tertiary !important;
+    border-top-right-radius: 1px !important;
+    border-bottom-right-radius: 1px !important;
+}
+
+.ant-select-selection-item {
+    padding-top: 3px !important;
+    text-transform: capitalize;
+    font-size: 16px !important;
+    color: $text-black;
 }

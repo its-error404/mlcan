@@ -2,6 +2,7 @@ import { deserialize } from 'serializr';
 import axiosInstance from '../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../routes/routeConstants/apiRoutes';
 import { CommentsData } from '../../models/comments.model';
+import { notification } from 'antd';
 
 export const fetchActivityData = async () => {
   
@@ -101,4 +102,19 @@ export const fetchActivityStatus = async () => {
     const activityStatus = await axiosInstance.get(ApiRoutes.ACTIVITY_STATUS)
     return activityStatus.data.data.values
   } catch (err) {}
+}
+
+export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) => {
+  try {
+    await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
+      option: selectedOption,
+    });
+    notification.success({
+      message: "updated Successfully !",
+      className: "custom-notification-placement",
+    });  
+  }catch (err) { notification.error({
+    message: "update failed !",
+    className: "custom-notification-placement",
+  });}
 }

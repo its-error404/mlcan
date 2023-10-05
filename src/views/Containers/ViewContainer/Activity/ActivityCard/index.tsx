@@ -5,17 +5,16 @@ import { ReactComponent as InspectionIcon } from "../../../../../assets/single c
 import { ReactComponent as DropdownIcon } from "../../../../../assets/single color icons - SVG/accordion closed.svg";
 import { ReactComponent as DropDownOpen } from "../../../../../assets/single color icons - SVG/accordion open.svg";
 import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
+import { ReactComponent as UpdateIcon} from '../../../../../assets/single color icons - SVG/resize.svg'
 import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
 import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
-import axiosInstance from "../../../../../interceptor/axiosInstance";
-import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import { fetchActivityStatus, toggleExpandRepairCard } from "../../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 
 interface RepairFormData {
   uid: string;
@@ -28,6 +27,7 @@ interface RepairFormData {
   labourCost: number;
   materialCost: number;
   totalCost: number;
+  id: string
 }
 
 interface OptionMenuProps {
@@ -61,6 +61,20 @@ const ActivityCard: React.FC<{
   const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>()
   const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showBox, setShowBox] = useState(false);
+
+  const handleMouseEnter = () => {
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
+
+  const handleClick = () => {
+    setShowBox(!showBox);
+  };
 
   const getBackgroundColor = () => {
     if (icon.type === QuoteIcon) {
@@ -220,24 +234,12 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
     setAddItem(!addItem);
   };
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (id: string, option:string, uniqueID: string) => {
     try {
-      await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
-        option: selectedOption,
-      });
-      notification.success({
-        message: "updated Successfully !",
-        className: "custom-notification-placement",
-      });  
+      upgradeRepairForm(id, option) 
       setShowConfirmation(false);
     } catch (error) {
-      setShowConfirmation(false);
-      notification.error({
-        message: "update failed !",
-        className: "custom-notification-placement",
-      });
-      console.error("Error updating status:", error);
-    
+      setShowConfirmation(false); 
     }
   };
   
@@ -286,7 +288,7 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
-                <p>James Vasanth <span className="dropdown-lock-icon">&nbsp;<LockIcon width={10}/></span></p>
+                <p>James Vasanth <span className="dropdown-lock-icon">&nbsp;<LockIcon onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} width={10}/>{showTooltip && `${<p>Unlock</p>}`}</span></p>
               </div>
             </div>
             <div className="header_second">
@@ -298,8 +300,6 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
                   value={updateActivityStatus}
                   defaultValue="Select"
                   style={{ width: 150 }}
-                  dropdownMatchSelectWidth={false}
-                  placement={"bottomLeft"}
                   className="activity-select"
                   options={activityStatuses.map(option => ({
                     label: option,
@@ -307,7 +307,7 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
                   }))}
                 />
               </div>
-              <Button onClick={handleUpdateClick}>Update</Button>
+              <Button className="submit-button update-submit-button" onClick={handleUpdateClick}>Update</Button>
             </div>
             </div>
             <Table
@@ -331,16 +331,19 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
       )}
 
       {showConfirmation && (
-  <OverlayBox maxWidth="400px" minHeight="200px" onClose={()=> {}}>
-    <div>
+  <OverlayBox maxWidth="400px" minHeight="330px" onClose={()=> {}}>
+    <div className="overlay-box-update">
      
       <div className="delete-confirmation-box">
-              <div className="delete-text-icon">
-                <p>Are you sure you want to update the status?</p>
+              <div className="delete-text-icon update-text">
+                <UpdateIcon/>
+                <p>Are you sure to change the status?</p>
+                {expandedRepairFormData.uid &&
+                <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
               </div>
-              <div className="delete-confirmation-buttons">
-              <button onClick={handleConfirm}>Confirm</button>
+              <div className="delete-confirmation-buttons update-status-buttons-container">
               <button onClick={handleCancel}>Cancel</button>
+              <button onClick={()=>handleConfirm(expandedRepairFormData.id, updateActivityStatus, expandedRepairFormData.uid)}>Confirm</button>
               </div>
             </div>
     
