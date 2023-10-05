@@ -32,15 +32,17 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
       const [length, setLength] = useState([])
       const [height, setHeight] = useState([])
       const [type, setType] = useState([])
+      const [customers, setCustomers] = useState([])
     
       useEffect(() => {
         const fetchCont = async () => {
           try {
-            const { contLengthData, contHeightsData, contTypesData, contYardsData } = await fetchEditContainerMeta(); 
+            const { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames } = await fetchEditContainerMeta(); 
             setLength(contLengthData);
             setHeight(contHeightsData);
             setYardNames(contYardsData);
             setType(contTypesData);
+            setCustomers(customerNames);
           } catch (err) {
             console.error(err);
           }
@@ -52,7 +54,6 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
     initialValues: EditValues,
     onSubmit: async (formData) => {
       try {
-        
         await editContainerRequest(formData, formData.id)
         onclose()
       } catch (err) {
@@ -72,8 +73,9 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
           <Space direction='vertical' size={20}>
             <label>Yard Name</label>
             <Select
+            value={formik.values.yardName}
+            onChange={formik.handleChange}
             className='container-select'
-            defaultValue="select"
             options={yardNames.map(option => ({
               label: option,
               value: option
@@ -83,17 +85,15 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Customer</label>
             <Select
+            onChange={formik.handleChange}
             className='container-select'
             defaultValue="select"
-            options={[
-              { value: 'Krishna', label: 'Krishna' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={customers.map(option => ({label: option, value: option}))}
           />
             <label>Container Owner Name</label>
-            <Input className='container-input' placeholder='Enter'></Input>
+            <Input className='container-input' placeholder='Enter' onChange={formik.handleChange}></Input>
             <label>Submitter Initials</label>
-            <Input className='container-input' placeholder='Enter'></Input>
+            <Input className='container-input' placeholder='Enter' onChange={formik.handleChange}></Input>
             <label>Container Length</label>
             <Select
             className='container-select'
@@ -102,10 +102,11 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
               label: option,
               value: option
             }))}
-
+            onChange={formik.handleChange}
           />
             <label>Container Height</label>
             <Select
+            onChange={formik.handleChange}
             className='container-select'
             defaultValue="select"
             options={height.map(option => ({
@@ -125,7 +126,7 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
 
           />
             <label>Comments</label>
-            <Input className='container-input comments-add-input' placeholder='Enter'></Input>
+            <Input className='container-input comments-add-input' placeholder='Enter' onChange={formik.handleChange}></Input>
             <label>Door photo including container number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>Left side photo</label>

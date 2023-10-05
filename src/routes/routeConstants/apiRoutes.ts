@@ -22,5 +22,6 @@ export const ApiRoutes = {
     YARDS: "/meta/yards",
     LENGTH: "/meta/lengths",
     HEIGHT: "/meta/heights",
-    CON_TYPES: "/meta/container_types"
+    CON_TYPES: "/meta/container_types",
+    CUSTOMERS: "/customers"
 }

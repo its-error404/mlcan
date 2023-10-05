@@ -1,58 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useFormik } from 'formik';
-import {  InitialContainerFormValues } from '../../../models/singlecontainer.model';
-import { addContainerRequest } from '../../../services/ContainersService/containers.service';
+import { addContainerRequest, fetchEditContainerMeta } from '../../../services/ContainersService/containers.service';
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_@antOverrides.scss'
 import './AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
 import 'antd/dist/antd.css';
-import axiosInstance from '../../../interceptor/axiosInstance';
-import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes';
-
+import { AddContainerValues, initialAddContainerFormValues } from '../../../models/addcontainer.model';
 interface AddContainerProps {
   onclose: () => void;
 }
-
-const primaryColor = '#489482';
-const textColor = 'white';
 
 const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
   const [yardNames, setYardNames] = useState([])
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
   const [type, setType] = useState([])
+  const [customers, setCustomers] = useState([])
 
- useEffect(()=> {
-  axiosInstance
-      .get(`${ApiRoutes.LENGTH}`)
-      .then(response => {
-        setLength(response.data.data.values)
-      })
-
-      axiosInstance
-      .get(`${ApiRoutes.HEIGHT}`)
-      .then(response => {
-        setHeight(response.data.data.values)
-      })
-
-      axiosInstance
-      .get(`${ApiRoutes.YARDS}`)
-      .then(response => {
-        setYardNames(response.data.data.values)
-      })
-
-      axiosInstance
-      .get(`${ApiRoutes.CON_TYPES}`)
-      .then(response => {
-        setType(response.data.data.values)
-      })
- },[])
+  useEffect(() => {
+    const fetchCont = async () => {
+      try {
+        const { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames } = await fetchEditContainerMeta(); 
+        setLength(contLengthData);
+        setHeight(contHeightsData);
+        setYardNames(contYardsData);
+        setType(contTypesData);
+        setCustomers(customerNames);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCont();
+  }, []);
 
   const formik = useFormik({
-    initialValues: InitialContainerFormValues,
+    initialValues: initialAddContainerFormValues,
     onSubmit: async (values: any) => {
       try {
         await addContainerRequest(values)
@@ -67,15 +52,16 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
     <div className="container-details-form">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Add New Container</h2>
+          <h2>Add Container</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
           <Space direction='vertical' size={20}>
             <label>Yard Name</label>
             <Select
+            value={formik.values.yard}
+            onChange={formik.handleChange}
             className='container-select'
-            defaultValue="select"
             options={yardNames.map(option => ({
               label: option,
               value: option
@@ -85,17 +71,15 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
             <Input className='container-input' placeholder='Enter'></Input>
             <label>Customer</label>
             <Select
+            onChange={formik.handleChange}
             className='container-select'
             defaultValue="select"
-            options={[
-              { value: 'Krishna', label: 'Krishna' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={customers.map(option => ({label: option, value: option}))}
           />
             <label>Container Owner Name</label>
-            <Input className='container-input' placeholder='Enter'></Input>
+            <Input className='container-input' placeholder='Enter' onChange={formik.handleChange}></Input>
             <label>Submitter Initials</label>
-            <Input className='container-input' placeholder='Enter'></Input>
+            <Input className='container-input' placeholder='Enter' onChange={formik.handleChange}></Input>
             <label>Container Length</label>
             <Select
             className='container-select'
@@ -104,10 +88,11 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
               label: option,
               value: option
             }))}
-
+            onChange={formik.handleChange}
           />
             <label>Container Height</label>
             <Select
+            onChange={formik.handleChange}
             className='container-select'
             defaultValue="select"
             options={height.map(option => ({
@@ -127,7 +112,7 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
 
           />
             <label>Comments</label>
-            <Input className='container-input comments-add-input' placeholder='Enter'></Input>
+            <Input className='container-input comments-add-input' placeholder='Enter' onChange={formik.handleChange}></Input>
             <label>Door photo including container number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>Left side photo</label>
@@ -144,20 +129,7 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>CSC Plate Number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
-            <button
-              type="submit"
-              style={{
-                backgroundColor: primaryColor,
-                width: "580px",
-                height: "40px",
-                color: textColor,
-                border: "1px solid transparent",
-                borderRadius: "10px",
-                cursor: 'pointer'
-              }}
-            >
-              Add Container
-            </button>
+            <button type="submit" className='submit-button'>Add Container</button>
           </Space>
         </form>
       </div>

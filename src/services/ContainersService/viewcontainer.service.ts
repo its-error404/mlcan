@@ -17,7 +17,7 @@ export const fetchActivityData = async () => {
     const quoteFormResponse = await axiosInstance.get(quoteForm)
     const repairFormResponse = await axiosInstance.get(repairForm)
 
-    if (photoResponse.status === 200 && quoteFormResponse.status === 200 && inspectionFormResponse.status === 200 && repairFormResponse.status) {
+    if (photoResponse && quoteFormResponse && inspectionFormResponse && repairFormResponse) {
       const photoJsonData = photoResponse.data.data
       const inspectionJsonData = inspectionFormResponse.data.data
       const quoteJsonData = quoteFormResponse.data.data
@@ -90,9 +90,3 @@ export const toggleExpandedQuoteCard = async (formId: string) => {
     console.error("Error fetching card details:", error);
   }
 }
-
-// export const handleUpdateConfirm = async (uniqueID: string, selectedOption: string) => {
-//   try {
-//     const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/upgrade/${uniqueID}`, )
-//   }
-// }
