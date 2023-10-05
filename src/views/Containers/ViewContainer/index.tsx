@@ -44,9 +44,6 @@ const ViewContainer: React.FC = () => {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-  }, [containerData]);
-
   const handleEditClick = (container: Container | null) => {
     if (container) {
       setEditContainer(container);

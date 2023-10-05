@@ -2,6 +2,7 @@ import { deserialize } from 'serializr';
 import axiosInstance from '../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../routes/routeConstants/apiRoutes';
 import { CommentsData } from '../../models/comments.model';
+import { notification } from 'antd';
 
 export const fetchActivityData = async () => {
   
@@ -102,3 +103,18 @@ export const fetchActivityStatus = async () => {
     return activityStatus.data.data.values
   } catch (err) {}
 }
+
+export const addComment = async (commentText: string) => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.COMMENTS, {comment: commentText});
+    notification.success({
+      message: "Comment Added Successfully",
+      description: "Comment",
+      className: "custom-notification-placement",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    throw error;
+  }
+};
