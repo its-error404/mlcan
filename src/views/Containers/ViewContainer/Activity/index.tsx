@@ -37,12 +37,9 @@ const ActivitySection: React.FC = () => {
   }, []);
 
   const toggleExpandRepairCard = async (formId: string) => {
-    console.log("Toggle expand Quote Form called with formId:", formId);
     try {
-      console.log('hello')
       const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
       setExpandedRepairFormData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching card details:", error);
     }
@@ -51,7 +48,6 @@ const ActivitySection: React.FC = () => {
   const toggleExpandedQuoteCard = async (formId: string) => {
     try {
       const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
-      console.log(response)
     } catch (error) {
       console.error("Error fetching card details:", error);
     }

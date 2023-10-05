@@ -336,7 +336,6 @@ const AllContainers = () => {
     setSearchData("");
     refreshData();
     const newFilteredData = applyFilters();
-    console.log(newFilteredData);
     setFilteredEntries(newFilteredData);
     setDisplayedEntries(newFilteredData.length);
   };

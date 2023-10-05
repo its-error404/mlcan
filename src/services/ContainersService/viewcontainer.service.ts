@@ -22,7 +22,6 @@ export const fetchActivityData = async () => {
       const inspectionJsonData = inspectionFormResponse.data.data
       const quoteJsonData = quoteFormResponse.data.data
       const repairFormJsonData = repairFormResponse.data.data
-
       return {photoJsonData, inspectionJsonData, quoteJsonData, repairFormJsonData}
 
   } else {
@@ -39,10 +38,14 @@ export const fetchCommentsData = async () => {
 
   try {
     const response = await axiosInstance.get(URL)
+
+    if (response.status) {
         const jsonData = response.data.data
         const commentsData: CommentsData = deserialize(CommentsData, jsonData);
         return commentsData
-
+  } else {
+    throw new Error ("Request Failed !")
+  }
 } catch (err) {
     console.log(err)
     return []
@@ -56,10 +59,13 @@ export const fetchLogData = async () => {
   try {
     const response = await axiosInstance.get(URL)
 
+    if (response) {
         const jsonData = response.data.data
         const commentsData: CommentsData = deserialize(CommentsData, jsonData);
         return commentsData
-
+  } else {
+    throw new Error ("Request Failed !")
+  }
 } catch (err) {
     console.log(err)
     return []
@@ -68,25 +74,31 @@ export const fetchLogData = async () => {
 
 //Repair form call
 
-export const expandedRepairForm = async (formId: string) => {
+export const toggleExpandRepairCard = async (uniqueID: string) => {
   try {
-    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`)
-    if(response) {
-      const expandedRepairFormData = response.data
-      return expandedRepairFormData
-    } else {
-      console.log('ID doesnt exist')
-    }
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const toggleExpandedQuoteCard = async (formId: string) => {
-  try {
-    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
-    return response.data
+    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${uniqueID}`);
+    return response.data.data.form
   } catch (error) {
     console.error("Error fetching card details:", error);
   }
+};
+
+export const containerItemsMeta = async () => {
+  try {
+    const [ repArea, dmgArea, itemTypes, quantity ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])
+
+    const repAreaData = repArea.data.data.values
+    const dmgAreaData = dmgArea.data.data.values
+    const itemTypesData = itemTypes.data.data.values
+    const quantityData = quantity.data.data.values
+
+    return { repAreaData, dmgAreaData, itemTypesData, quantityData }
+  } catch (err) {throw err}
+}
+
+export const fetchActivityStatus = async () => {
+  try {
+    const activityStatus = await axiosInstance.get(ApiRoutes.ACTIVITY_STATUS)
+    return activityStatus.data.data.values
+  } catch (err) {}
 }
