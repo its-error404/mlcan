@@ -1,0 +1,11 @@
+@import '../../../../../../styles/variables';
+
+.submit-button {
+    background-color: $turkish-green;
+    width: 580px;
+    height: 40px;
+    color: $white-bg;
+    border: 1px solid transparent;
+    border-radius: 10px ;
+    cursor: pointer;
+}

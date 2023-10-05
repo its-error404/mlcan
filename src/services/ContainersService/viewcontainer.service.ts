@@ -1,16 +1,10 @@
 import { deserialize } from 'serializr';
 import axiosInstance from '../../interceptor/axiosInstance';
 import { ApiRoutes } from '../../routes/routeConstants/apiRoutes';
-import { getWorkingContainer } from '../ContainersService/containers.service'
 import { CommentsData } from '../../models/comments.model';
-import { InspectionForm } from '../../models/inspectionform.model';
-import { PhotoDetails } from '../../models/photoData.model';
-import { QuoteDetails } from '../../models/quotedata.model';
-import { RepairResponseData } from '../../models/repairFormData.model';
 
 export const fetchActivityData = async () => {
-  const query = `{"container": "64a53e59c637122f8ba5421e"}`
-
+  
   const photoQuery = `64a63ed193c84f257a88415e`
   const photoURL = `${ApiRoutes.CONT_PHOTO}/${photoQuery}`;
   const inspectionForm = `${ApiRoutes.INSPECTION_FORM}`;
@@ -23,17 +17,11 @@ export const fetchActivityData = async () => {
     const quoteFormResponse = await axiosInstance.get(quoteForm)
     const repairFormResponse = await axiosInstance.get(repairForm)
 
-    if (photoResponse.status === 200 && quoteFormResponse.status === 200 && inspectionFormResponse.status === 200 && repairFormResponse.status) {
+    if (photoResponse && quoteFormResponse && inspectionFormResponse && repairFormResponse) {
       const photoJsonData = photoResponse.data.data
       const inspectionJsonData = inspectionFormResponse.data.data
       const quoteJsonData = quoteFormResponse.data.data
       const repairFormJsonData = repairFormResponse.data.data
-
-      // const photoData: PhotoDetails = deserialize(PhotoDetails, photoJsonData);
-      // const inspectionData: InspectionForm = deserialize(InspectionForm, inspectionJsonData);
-      // const quoteData: QuoteDetails = deserialize(QuoteDetails, quoteJsonData);
-      // const repairData: RepairResponseData = deserialize(RepairResponseData, repairFormJsonData);
-
       return {photoJsonData, inspectionJsonData, quoteJsonData, repairFormJsonData}
 
   } else {
@@ -51,7 +39,7 @@ export const fetchCommentsData = async () => {
   try {
     const response = await axiosInstance.get(URL)
 
-    if (response.status === 200) {
+    if (response.status) {
         const jsonData = response.data.data
         const commentsData: CommentsData = deserialize(CommentsData, jsonData);
         return commentsData
@@ -71,7 +59,7 @@ export const fetchLogData = async () => {
   try {
     const response = await axiosInstance.get(URL)
 
-    if (response.status === 200) {
+    if (response) {
         const jsonData = response.data.data
         const commentsData: CommentsData = deserialize(CommentsData, jsonData);
         return commentsData
@@ -86,16 +74,31 @@ export const fetchLogData = async () => {
 
 //Repair form call
 
-export const expandedRepairForm = async (formId: string) => {
+export const toggleExpandRepairCard = async (uniqueID: string) => {
   try {
-    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`)
-    if(response.status === 200) {
-      const expandedRepairFormData = response.data
-      return expandedRepairFormData
-    } else {
-      console.log('ID doesnt exist')
-    }
-  } catch (e) {
-    console.log(e)
+    const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${uniqueID}`);
+    return response.data.data.form
+  } catch (error) {
+    console.error("Error fetching card details:", error);
   }
+};
+
+export const containerItemsMeta = async () => {
+  try {
+    const [ repArea, dmgArea, itemTypes, quantity ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])
+
+    const repAreaData = repArea.data.data.values
+    const dmgAreaData = dmgArea.data.data.values
+    const itemTypesData = itemTypes.data.data.values
+    const quantityData = quantity.data.data.values
+
+    return { repAreaData, dmgAreaData, itemTypesData, quantityData }
+  } catch (err) {throw err}
+}
+
+export const fetchActivityStatus = async () => {
+  try {
+    const activityStatus = await axiosInstance.get(ApiRoutes.ACTIVITY_STATUS)
+    return activityStatus.data.data.values
+  } catch (err) {}
 }

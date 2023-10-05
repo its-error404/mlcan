@@ -15,6 +15,26 @@ import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
+import { fetchActivityStatus, toggleExpandRepairCard } from "../../../../../services/ContainersService/viewcontainer.service";
+
+interface RepairFormData {
+  uid: string;
+  repairArea: string;
+  damageArea: string;
+  type: string;
+  quantity: string;
+  location: string;
+  hours: number;
+  labourCost: number;
+  materialCost: number;
+  totalCost: number;
+}
+
+interface OptionMenuProps {
+  onDelete: () => void;
+  onUpdateComment: () => void;
+  onUpdatePhoto: () => void;
+}
 
 const ActivityCard: React.FC<{
   UniqueID: string
@@ -24,23 +44,23 @@ const ActivityCard: React.FC<{
   activityStatus: string;
   icon: React.ReactElement;
   expanded: boolean;
-  toggleExpand: () => void;
-  expandedData: ContainerData
+  toggleExpand?: () => void;
+  expandedData?: ContainerData
 }> = ({
   UniqueID,
   formType,
   formID,
   date,
   activityStatus,
-  icon,
-  expanded,
-  toggleExpand,
+  icon
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
   const [addItem, setAddItem] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [updateActivityStatus, setUpdateActivityStatus] = useState("");
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>()
+  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
+  const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
 
   const getBackgroundColor = () => {
     if (icon.type === QuoteIcon) {
@@ -115,20 +135,32 @@ const ActivityCard: React.FC<{
     },
   ]
 
+  const [activityStatuses, setActivityStatuses] = useState([])
+
+  useEffect(()=> {
+      const fetchData = async () => {
+        try {
+          const activitystatues = await fetchActivityStatus()
+          setActivityStatuses(activitystatues)
+        } catch (err) {}
+      }
+      fetchData()
+  },[])
+
   const mapRepairDataToTableData = () => {
     if (expandedRepairFormData) {
       return [
         {
-          repairID: expandedRepairFormData.uid || 'RF00001',
-          repairArea: expandedRepairFormData.repairArea || 'Top Rails and Headers',
-          damageArea: expandedRepairFormData.damageArea || 'Top Longitudinal Rails',
-          type: expandedRepairFormData.type || 'Replace',
-          quantity: expandedRepairFormData.quantity || '3',
-          location: expandedRepairFormData.location || 'LXXX',
-          hours: expandedRepairFormData.hours || 1.2,
-          labourCost: expandedRepairFormData.labourCost || 71.5,
-          materialCost: expandedRepairFormData.materialCost || 71.5,
-          totalCost: expandedRepairFormData.totalCost || 71.5,
+          repairID: expandedRepairFormData.uid,
+          repairArea: expandedRepairFormData.repairArea,
+          damageArea: expandedRepairFormData.damageArea,
+          type: expandedRepairFormData.type,
+          quantity: expandedRepairFormData.quantity,
+          location: expandedRepairFormData.location,
+          hours: expandedRepairFormData.hours,
+          labourCost: expandedRepairFormData.labourCost,
+          materialCost: expandedRepairFormData.materialCost,
+          totalCost: expandedRepairFormData.totalCost,
         },
       ];
     }
@@ -141,7 +173,7 @@ useEffect(() => {
   setData(mapRepairDataToTableData());
 }, [expandedRepairFormData]);
 
-const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
+const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
     const menu = (
       <Menu>
         <Menu.Item key="updateComment" onClick={onUpdateComment}>
@@ -176,19 +208,12 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
       ? "form-type-inspection"
       : "";
 
-      const toggleExpandRepairCard = async (uniqueID: string) => {
-        try {
-          const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${UniqueID}`);
-          setExpandedRepairFormData(response.data);
-          setData(mapRepairDataToTableData());
-        } catch (error) {
-          console.error("Error fetching card details:", error);
-        }
-      };
-
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
     toggleExpandRepairCard(UniqueID)
+    .then((response)=> {
+      setExpandedRepairFormData(response)
+    })
   };
 
   const toggleAddItem = () => {
@@ -197,14 +222,13 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
   const handleConfirm = async () => {
     try {
-      const response = await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
+      await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
         option: selectedOption,
       });
       notification.success({
         message: "updated Successfully !",
         className: "custom-notification-placement",
-      });
-      console.log(response);   
+      });  
       setShowConfirmation(false);
     } catch (error) {
       setShowConfirmation(false);
@@ -277,28 +301,10 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
                   dropdownMatchSelectWidth={false}
                   placement={"bottomLeft"}
                   className="activity-select"
-                  options={[
-                    {
-                      value: "Quote Draft",
-                      label: "Quote Draft",
-                    },
-                    {
-                      value: "Quote Pending",
-                      label: "Quote Pending ",
-                    },
-                    {
-                      value: "Quote Issued",
-                      label: "Quote Issued",
-                    },
-                    {
-                      value: "Quote Approved",
-                      label: "Quote Approved",
-                    },
-                    {
-                      value: "Repair Done",
-                      label: "Repair Done",
-                    },
-                  ]}
+                  options={activityStatuses.map(option => ({
+                    label: option,
+                    value: option
+                  }))}
                 />
               </div>
               <Button onClick={handleUpdateClick}>Update</Button>
@@ -311,9 +317,9 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
                 key: "options",
                 render: (text, record, index) => (
                   <OptionMenu
-                    onDelete={() => console.log('delete')}
-                    onUpdateComment={() => console.log('update')}
-                    onUpdatePhoto={() => console.log('comment')}
+                    onDelete={() =>{}}
+                    onUpdateComment={() =>{}}
+                    onUpdatePhoto={() =>{}}
                   />
                 ),
               },

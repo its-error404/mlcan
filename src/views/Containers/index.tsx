@@ -31,8 +31,8 @@ const AllContainers = () => {
   const [dateData, setDateData] = useState("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
   const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
-  const [totalEntries, setTotalEntries] = useState<number | null>(null);
-  const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
+  const [totalEntries, setTotalEntries] = useState<number>(0);
+  const [displayedEntries, setDisplayedEntries] = useState<number>(totalEntries ?? 0);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const AllContainers = () => {
   const getRowClassName = (record: ContainersData, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
-  const startIndex = Math.min(displayedEntries, totalEntries) > 0 ? 1 : 0;
+  const startIndex = Math.min(displayedEntries, totalEntries)
   const endIndex = Math.min(displayedEntries, totalEntries);
 
   const applyFilters = () => {

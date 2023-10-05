@@ -45,12 +45,10 @@ const ViewContainer: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log('hello');
   }, [containerData]);
 
   const handleEditClick = (container: Container | null) => {
     if (container) {
-      console.log(container)
       setEditContainer(container);
       setEditContainerVisible(true)
     }
@@ -93,21 +91,17 @@ const ViewContainer: React.FC = () => {
             <h2>hi</h2>
             {containerData && containerData.container && (
               <>
-                {/* {console.log(containerData.container)} */}
                 <h1>{containerData.container.uid}</h1>
                 <EditIcon width={15} onClick={() => handleEditClick(containerData.container)} />
-                {/* {console.log(containerData.container)} */}
               </>
             )}
           </div>
           <div className="container-header__second">
-          {/* {console.log(containerData.container)} */}
             <p>1 of 94 </p>
             <PrevIcon width={30} />
             <NextIcon width={30} />
           </div>
         </div>
-        {/* {console.log(containerData.container)} */}
         <div className="container-headlines">
           <p>Yard name</p>
           <p>Customer</p>
