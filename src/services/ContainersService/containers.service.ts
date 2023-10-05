@@ -113,3 +113,18 @@ export const editContainerRequest = async (values: ContainerData, id:string) => 
       console.log(error)
   }
 }
+
+//edit container meta
+
+export const fetchEditContainerMeta = async () => {
+  try  {
+    const [contLengths, contHeights, contYards, contTypes] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES)])
+
+    const contLengthData = contLengths.data.data.values
+    const contHeightsData = contHeights.data.data.values
+    const contTypesData = contTypes.data.data.values
+    const contYardsData = contYards.data.data.values
+
+    return { contLengthData, contHeightsData, contTypesData, contYardsData }
+  } catch (err) {throw err}
+}

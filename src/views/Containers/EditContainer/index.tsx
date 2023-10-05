@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useFormik } from 'formik';
-import { editContainerRequest } from '../../../services/ContainersService/containers.service';
+import { editContainerRequest, fetchEditContainerMeta } from '../../../services/ContainersService/containers.service';
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_@antOverrides.scss'
 import '../AddContainer/AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
 import 'antd/dist/antd.css';
-import axiosInstance from '../../../interceptor/axiosInstance';
-import { ApiRoutes } from '../../../routes/routeConstants/apiRoutes';
-
+import './EditContainer.scss'
 interface EditContainerProps {
   onclose: () => void;
   data: any;
   id: string
 }
-
-const primaryColor = '#489482';
-const textColor = 'white';
 
 const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
     const [, setFormData] = useState({});
@@ -38,31 +33,20 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
       const [height, setHeight] = useState([])
       const [type, setType] = useState([])
     
-     useEffect(()=> {
-      axiosInstance
-          .get(`${ApiRoutes.LENGTH}`)
-          .then(response => {
-            setLength(response.data.data.values)
-          })
-    
-          axiosInstance
-          .get(`${ApiRoutes.HEIGHT}`)
-          .then(response => {
-            setHeight(response.data.data.values)
-          })
-    
-          axiosInstance
-          .get(`${ApiRoutes.YARDS}`)
-          .then(response => {
-            setYardNames(response.data.data.values)
-          })
-    
-          axiosInstance
-          .get(`${ApiRoutes.CON_TYPES}`)
-          .then(response => {
-            setType(response.data.data.values)
-          })
-     },[])
+      useEffect(() => {
+        const fetchCont = async () => {
+          try {
+            const { contLengthData, contHeightsData, contTypesData, contYardsData } = await fetchEditContainerMeta(); 
+            setLength(contLengthData);
+            setHeight(contHeightsData);
+            setYardNames(contYardsData);
+            setType(contTypesData);
+          } catch (err) {
+            console.error(err);
+          }
+        };
+        fetchCont();
+      }, []);
 
   const formik = useFormik({
     initialValues: EditValues,
@@ -81,7 +65,7 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
     <div className="container-details-form">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Add New Container</h2>
+          <h2>Edit Container</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
@@ -158,20 +142,7 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>CSC Plate Number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
-            <button
-              type="submit"
-              style={{
-                backgroundColor: primaryColor,
-                width: "580px",
-                height: "40px",
-                color: textColor,
-                border: "1px solid transparent",
-                borderRadius: "10px",
-                cursor: 'pointer'
-              }}
-            >
-              Edit Container
-            </button>
+            <button type="submit" className='submit-button'>Edit Container</button>
           </Space>
         </form>
       </div>
