@@ -16,6 +16,16 @@
     border-bottom: 2px solid $turkish-green;
 }
 
+.sort-column {
+    display: flex;
+    gap: 15px;
+}
+
+.sort-flex {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
 .plus-icon {
     margin-top: -10px;
     filter: $plus-icon;
