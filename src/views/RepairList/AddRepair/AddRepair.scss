@@ -10,6 +10,19 @@ input, select {
     
 }
 
+.add-repair-section 
+{
+    margin-bottom: 40px !important;
+}
+
+.add-repair-buttons button:first-child {
+    height: 50px;
+  }
+
+  .add-repair-buttons button:last-child {
+    height: 50px;
+  }
+
 .repair-details__first-col {
     display: flex;
     flex-direction: row nowrap;
@@ -209,6 +222,7 @@ input, select {
 
 .section-title {
     align-items: center;
+    display: flex;
 }
 
 .na1-box {

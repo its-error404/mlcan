@@ -33,7 +33,6 @@ const validateForm = (values: RegisterFormValues) => {
 const RegisterForm = () => {
 
   const onSubmit = () => {
-    console.log('Registered')
   }
 
   const formik = useFormik({

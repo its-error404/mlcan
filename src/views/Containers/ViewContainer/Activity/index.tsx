@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import './activity.scss'
 import { ReactComponent as QuoteIcon } from '../../../../assets/single color icons - SVG/quote.svg';
 import { ReactComponent as RepairIcon } from '../../../../assets/single color icons - SVG/repair.svg'
-import { ReactComponent as InspectionIcon } from '../../../../assets/single color icons - SVG/inspection.svg'
-import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../services/ContainersService/viewcontainer.service";
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
 import 'antd/dist/antd.css';
@@ -15,14 +14,14 @@ const ActivitySection: React.FC = () => {
   const [inspectionData, setInspectionData] = useState(null);
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 5;
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
+  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetchActivityData();
-        setInspectionData(response.inspectionJsonData)
+        setInspectionData(response.inspectionJsonData.docs)
         setQuoteData(response.quoteJsonData)
         setPhotoData(response.photoJsonData)
         setRepairData(response.repairFormJsonData || { docs: [] })
@@ -34,10 +33,6 @@ const ActivitySection: React.FC = () => {
     }
     fetchData();
   }, []);
-
-  const toggleExpandCard = (formType: string) => {
-   
-  };
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -65,7 +60,9 @@ const ActivitySection: React.FC = () => {
               activityStatus={data.curr_status}
               icon={<RepairIcon width={20}/>}
               expanded={false} 
-              toggleExpand={() => toggleExpandCard(data.id)}
+              toggleExpand={() => toggleExpandRepairCard(data.id)}
+              expandedData={expandedRepairFormData}
+              UniqueID = {data.id}
             />
           ))}
           {quoteData &&
@@ -78,7 +75,9 @@ const ActivitySection: React.FC = () => {
               activityStatus={data.curr_status}
               icon={<QuoteIcon width={20}/>}
               expanded={false} 
-              toggleExpand={() => toggleExpandCard(data.id)}
+              toggleExpand={() => toggleExpandedQuoteCard(data.id)}
+              expandedData={expandedQuoteFormData}
+              UniqueID={data.id}
               />
           ))}
       </Space>

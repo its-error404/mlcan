@@ -10,10 +10,10 @@ import "./AddRepair.scss";
 import { ReactComponent as TickIcon } from '../../../assets/single color icons - SVG/done.svg'
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_variables.scss'
-import { addRepairRequest } from "../../../services/RepairListService/repairlist.service";
 import SectionTwo from "./SectionTwo";
 import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
+import { addRepairRequest } from "../../../services/RepairListService/repair.service";
 
 const AddRepair = ({ onclose }: { onclose: () => void }) => {
     const initialRepairFormValues = {
@@ -75,7 +75,7 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
                     <h2>Add Repair Part</h2>
                     <CloseIcon width={15} onClick={onclose} />
                 </div>
-                <div className="section-buttons">
+                <div className="section-buttons add-repair-section">
                     {sections.map((section, index) => (
                         <div
                             key={index}

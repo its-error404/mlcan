@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
+import { addComment, fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
 import "./Comments.scss";
 import { CommentsData } from "../../../../models/comments.model";
 import { Button, Input, Pagination } from "antd";
@@ -44,6 +44,18 @@ const CommentsComponent = () => {
     setCurrentPage(page);
   };
 
+  const handleAddComment = async () => {
+    const inputElement = document.querySelector(".comments-input") as HTMLInputElement;
+    const commentText = inputElement.value;
+      try {
+        await addComment(commentText);
+        const updatedData = await fetchCommentsData();
+        setCommentsData(updatedData as CommentsData | null);
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
+  };
+
   return (
     <div className="comments-main">
       <div className="comments-flex">
@@ -54,7 +66,7 @@ const CommentsComponent = () => {
           size="large"
           className="comments-input"
         />
-        <Button className="comments-add">Add Comment</Button>
+        <Button className="comments-add" onClick={handleAddComment}>Add Comment</Button>
       </div>
       {isLoading ? (
         <p>Loading comments...</p>

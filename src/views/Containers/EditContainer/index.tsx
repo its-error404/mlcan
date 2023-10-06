@@ -1,46 +1,60 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useFormik } from 'formik';
-import { addContainerRequest, fetchEditContainerMeta } from '../../../services/ContainersService/containers.service';
+import { editContainerRequest, fetchEditContainerMeta } from '../../../services/ContainersService/containers.service';
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import '../../../styles/_@antOverrides.scss'
-import './AddContainer.scss'
+import '../AddContainer/AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
 import 'antd/dist/antd.css';
-import { initialAddContainerFormValues } from '../../../models/addcontainer.model';
-interface AddContainerProps {
+import './EditContainer.scss'
+interface EditContainerProps {
   onclose: () => void;
+  data: any;
+  id: string
 }
 
-const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
-  const [yardNames, setYardNames] = useState([])
-  const [length, setLength] = useState([])
-  const [height, setHeight] = useState([])
-  const [type, setType] = useState([])
-  const [customers, setCustomers] = useState([])
+const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
+    const [, setFormData] = useState({});
 
-  useEffect(() => {
-    const fetchCont = async () => {
-      try {
-        const { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames } = await fetchEditContainerMeta(); 
-        setLength(contLengthData);
-        setHeight(contHeightsData);
-        setYardNames(contYardsData);
-        setType(contTypesData);
-        setCustomers(customerNames);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchCont();
-  }, []);
+    useEffect(() => {
+        if (data) {
+          setFormData(data);
+        }
+      }, [data]);
+    
+      const EditValues = {
+        ...data,
+      };
+
+      const [yardNames, setYardNames] = useState([])
+      const [length, setLength] = useState([])
+      const [height, setHeight] = useState([])
+      const [type, setType] = useState([])
+      const [customers, setCustomers] = useState([])
+    
+      useEffect(() => {
+        const fetchCont = async () => {
+          try {
+            const { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames } = await fetchEditContainerMeta(); 
+            setLength(contLengthData);
+            setHeight(contHeightsData);
+            setYardNames(contYardsData);
+            setType(contTypesData);
+            setCustomers(customerNames);
+          } catch (err) {
+            console.error(err);
+          }
+        };
+        fetchCont();
+      }, []);
 
   const formik = useFormik({
-    initialValues: initialAddContainerFormValues,
-    onSubmit: async (values: any) => {
+    initialValues: EditValues,
+    onSubmit: async (formData) => {
       try {
-        await addContainerRequest(values)
+        await editContainerRequest(formData, formData.id)
         onclose()
       } catch (err) {
         console.log(err)
@@ -52,14 +66,14 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
     <div className="container-details-form">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Add Container</h2>
+          <h2>Edit Container</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
           <Space direction='vertical' size={20}>
             <label>Yard Name</label>
             <Select
-            value={formik.values.yard}
+            value={formik.values.yardName}
             onChange={formik.handleChange}
             className='container-select'
             options={yardNames.map(option => ({
@@ -129,7 +143,7 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>CSC Plate Number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
-            <button type="submit" className='submit-button'>Add Container</button>
+            <button type="submit" className='submit-button'>Edit Container</button>
           </Space>
         </form>
       </div>
@@ -137,4 +151,5 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
   )
 }
 
-export default AddContainer
+
+export default EditContainer

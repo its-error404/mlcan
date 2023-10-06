@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as QuoteIcon } from "../../../../../assets/single color icons - SVG/quote.svg";
 import { ReactComponent as RepairIcon } from "../../../../../assets/single color icons - SVG/repair.svg";
 import { ReactComponent as InspectionIcon } from "../../../../../assets/single color icons - SVG/inspection.svg";
@@ -7,111 +7,171 @@ import { ReactComponent as DropDownOpen } from "../../../../../assets/single col
 import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
 import "antd/dist/antd.css";
 import "./ActivityCard.scss";
+import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
 import { Button, Dropdown, Menu, Select, Table } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
+import AddItem from "./AddItem";
+import OverlayBox from "../../../../../shared/components/overlayBox";
+import { ContainerData } from "../../../../../models/singlecontainer.model";
+import { fetchActivityStatus, handleConfirm, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../../services/ContainersService/viewcontainer.service";
+
+interface RepairFormData {
+  uid: string;
+  repairArea: string;
+  damageArea: string;
+  type: string;
+  quantity: string;
+  location: string;
+  hours: number;
+  labourCost: number;
+  materialCost: number;
+  totalCost: number;
+}
+
+interface OptionMenuProps {
+  onDelete: () => void;
+  onUpdateComment: () => void;
+  onUpdatePhoto: () => void;
+}
 
 const ActivityCard: React.FC<{
+  UniqueID: string
   formType: string;
   formID: string;
   date: string;
   activityStatus: string;
   icon: React.ReactElement;
   expanded: boolean;
-  toggleExpand: () => void;
+  toggleExpand?: () => void;
+  expandedData?: ContainerData
 }> = ({
+  UniqueID,
   formType,
   formID,
   date,
   activityStatus,
-  icon,
-  expanded,
-  toggleExpand,
+  icon
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const [addItem, setAddItem] = useState<boolean>(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [updateActivityStatus, setUpdateActivityStatus] = useState("");
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>()
+  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
+  const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
+  
   const getBackgroundColor = () => {
-    switch (icon.type) {
-      case QuoteIcon:
-        return "lightpurple";
-      case RepairIcon:
-        return "lightyellow";
-      case InspectionIcon:
-        return "lightblue";
-      default:
-        return "red";
+    if (icon.type === QuoteIcon) {
+      return "lightpurple";
+    } else if (icon.type === RepairIcon) {
+      return "lightyellow";
+    } else if (icon.type === InspectionIcon) {
+      return "lightblue";
+    } else {
+      return "";
     }
   };
-  
-const columns = [
-  {
-    title: "Repair ID",
-    dataIndex: "repairID",
-    key: "repairID",
-  },
-  {
-    title: "Repair Area",
-    dataIndex: "repairArea",
-    key: "repairArea",
-  },
-  {
-    title: "Damage Area",
-    dataIndex: "damageArea",
-    key: "damageArea",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    key: "type",
-  },
-  {
-    title: "Quantity",
-    dataIndex: "quantity",
-    key: "quantity",
-  },
-  {
-    title: "Location",
-    dataIndex: "location",
-    key: "location",
-  },
-  {
-    title: "Hours",
-    dataIndex: "hours",
-    key: "hours",
-  },
-  {
-    title: "Labour Cost",
-    dataIndex: "labourCost",
-    key: "labourCost",
-  },
-  {
-    title: "Material Cost",
-    dataIndex: "materialCost",
-    key: "materialCost",
-  },
-  {
-    title: "Total Cost",
-    dataIndex: "totalCost",
-    key: "totalCost",
-  },
-];
+  const [selectedOption, setSelectedOption] = useState("");
 
-const data = [
-  {
-    repairID: "001",
-    repairArea: "Top Rails and Headers",
-    damageArea: "Top Longitudinal Rails",
-    type: "Replace",
-    quantity: '3',
-    location: "LXXX",
-    hours: 1.2,
-    labourCost: 71.5,
-    materialCost: 71.5,
-    totalCost: 71.5,
-  },
-];
+  const handleUpdateClick = () => {
+    if (activityStatus !== "Select") {
+      setSelectedOption(activityStatus); 
+      setShowConfirmation(true);
+    }
+  }
 
-const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
+  const columns = [
+    {
+      title: "Repair ID",
+      dataIndex: "repairID",
+      key: "repairID",
+    },
+    {
+      title: "Repair Area",
+      dataIndex: "repairArea",
+      key: "repairArea",
+    },
+    {
+      title: "Damage Area",
+      dataIndex: "damageArea",
+      key: "damageArea",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "Hours",
+      dataIndex: "hours",
+      key: "hours",
+    },
+    {
+      title: "Labour Cost",
+      dataIndex: "labourCost",
+      key: "labourCost",
+    },
+    {
+      title: "Material Cost",
+      dataIndex: "materialCost",
+      key: "materialCost",
+    },
+    {
+      title: "Total Cost",
+      dataIndex: "totalCost",
+      key: "totalCost",
+    },
+  ]
+
+  const [activityStatuses, setActivityStatuses] = useState([])
+
+  useEffect(()=> {
+      const fetchData = async () => {
+        try {
+          const activitystatues = await fetchActivityStatus()
+          setActivityStatuses(activitystatues)
+        } catch (err) {}
+      }
+      fetchData()
+  },[])
+
+  const mapRepairDataToTableData = () => {
+    if (expandedRepairFormData) {
+      return [
+        {
+          repairID: expandedRepairFormData.uid,
+          repairArea: expandedRepairFormData.repairArea,
+          damageArea: expandedRepairFormData.damageArea,
+          type: expandedRepairFormData.type,
+          quantity: expandedRepairFormData.quantity,
+          location: expandedRepairFormData.location,
+          hours: expandedRepairFormData.hours,
+          labourCost: expandedRepairFormData.labourCost,
+          materialCost: expandedRepairFormData.materialCost,
+          totalCost: expandedRepairFormData.totalCost,
+        },
+      ];
+    }
+    return [];
+  };
+
+const [data, setData] = useState(mapRepairDataToTableData());
+
+useEffect(() => {
+  setData(mapRepairDataToTableData());
+}, [expandedRepairFormData]);
+
+const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
     const menu = (
       <Menu>
         <Menu.Item key="updateComment" onClick={onUpdateComment}>
@@ -128,7 +188,11 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
     return (
         <Dropdown overlay={menu} trigger={["click"]}>
-          <EllipsisOutlined rev={''}/>
+          <div className="option-menu">
+            <div className="dot"></div>
+            <div className="dot"></div>
+            <div className="dot"></div>
+          </div>
         </Dropdown>
       );
     };
@@ -144,9 +208,29 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
 
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
+    toggleExpandRepairCard(UniqueID)
+    toggleExpandedQuoteCard(UniqueID)
+    .then((response)=> {
+      setExpandedRepairFormData(response)
+      setExpandedQuoteFormData(response)
+
+    })
   };
 
+  const toggleAddItem = () => {
+    setAddItem(!addItem);
+  };
 
+const confirmHandler = async () => {
+  try {
+    await handleConfirm(UniqueID, selectedOption, setShowConfirmation);
+  } catch (error) {
+  }
+};
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
 
   return (
     <div
@@ -191,41 +275,24 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
               </div>
             </div>
             <div className="header_second">
-              <div><Button>Add Item</Button></div>
+              <div><Button onClick={()=>toggleAddItem()}>Add Item</Button></div>
               <div className="select-container">
                 <Button>Status</Button>
                 <Select
-                  value={activityStatus}
+                 onChange={(value) => setUpdateActivityStatus(value)}
+                  value={updateActivityStatus}
                   defaultValue="Select"
                   style={{ width: 150 }}
                   dropdownMatchSelectWidth={false}
                   placement={"bottomLeft"}
                   className="activity-select"
-                  options={[
-                    {
-                      value: "Quote Draft",
-                      label: "Quote Draft",
-                    },
-                    {
-                      value: "Quote Pending",
-                      label: "Quote Pending ",
-                    },
-                    {
-                      value: "Quote Issued",
-                      label: "Quote Issued",
-                    },
-                    {
-                      value: "Quote Approved",
-                      label: "Quote Approved",
-                    },
-                    {
-                      value: "Repair Done",
-                      label: "Repair Done",
-                    },
-                  ]}
+                  options={activityStatuses.map(option => ({
+                    label: option,
+                    value: option
+                  }))}
                 />
               </div>
-              <div><Button>Update</Button></div>
+              <Button onClick={handleUpdateClick}>Update</Button>
             </div>
             </div>
             <Table
@@ -235,9 +302,9 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
                 key: "options",
                 render: (text, record, index) => (
                   <OptionMenu
-                    onDelete={() => console.log('delete')}
-                    onUpdateComment={() => console.log('update')}
-                    onUpdatePhoto={() => console.log('comment')}
+                    onDelete={() =>{}}
+                    onUpdateComment={() =>{}}
+                    onUpdatePhoto={() =>{}}
                   />
                 ),
               },
@@ -247,6 +314,37 @@ const OptionMenu = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
           />
         </div>
       )}
+
+      {showConfirmation && (
+  <OverlayBox maxWidth="400px" minHeight="200px" onClose={()=> {}}>
+    <div>
+     
+      <div className="delete-confirmation-box">
+              <div className="delete-text-icon">
+                <p>Are you sure you want to update the status?</p>
+              </div>
+              <div className="delete-confirmation-buttons">
+              <button onClick={()=>confirmHandler}>Confirm</button>
+              <button onClick={handleCancel}>Cancel</button>
+              </div>
+            </div>
+    
+    </div>
+  </OverlayBox>
+)}
+
+          {addItem && (
+            <div className="overlay">
+              <div className="overlay-content">
+                <AddItem
+                  onclose={() => {
+                    setAddItem
+                    (false);
+                  }}
+                />
+              </div>
+            </div>
+          )}
     </div>
   );
 };

@@ -165,6 +165,8 @@ label {
 .export-button {
   width: 100px;
   height: 40px;
+  background-color: $bg-white;
+  color: $turkish-green;
   padding-left: 20px;
 }
 
@@ -205,6 +207,13 @@ label {
   transition: 0.3s ease;
 }
 
+.version-icon {
+  position: absolute;
+  left: 10px;
+  filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%)
+    hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
 .version-menu-box {
   position: absolute;
   top: 18%;
@@ -233,6 +242,22 @@ label {
   opacity: 0;
   transform: translateY(-20px);
   transition: 0.3s ease;
+}
+
+.repair-filter-button {
+  position: relative;
+  padding-left: 25px;
+  height: 40px !important;
+  width: 100px !important;
+  align-items: center;
+  justify-items: center;
+  background-color: $bg-white;
+  color: $dark-grey !important;
+}
+
+.repair-filter-icon {
+  position: absolute;
+  left: 10% !important;
 }
 
 .version-menu-box p:first-child {

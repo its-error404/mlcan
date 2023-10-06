@@ -4,11 +4,10 @@ import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Table, notification } from "antd";
+import { Table } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
-import { ReactComponent as ExportIcon } from "../../assets/single color icons - SVG/export.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
 import { RepairData, Repair } from "../../models/repairList.model";
@@ -19,6 +18,7 @@ import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
 import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
+import ExportMenu from "../../shared/components/ExportMenu";
 
 const RepairList = () => {
   const [columns] = useState([
@@ -30,7 +30,7 @@ const RepairList = () => {
       ),
       dataIndex: "uid",
       key: "uid",
-      onCell: (record : Repair) => {
+      onCell: (record: Repair) => {
         return {
           onClick: () => handleRowClick(record),
         };
@@ -80,8 +80,8 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskHours",
       key: "nonMaerskHours",
-      render: (text: string, record: Repair) => {
-        const nonMaerskHours = record.nmaersk;
+      render: (text: string, record: any) => {
+        const nonMaerskHours = record.nonMaerskHours;
         return nonMaerskHours !== undefined && nonMaerskHours !== null
           ? nonMaerskHours
           : "-";
@@ -100,8 +100,8 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskMatCost",
       key: "nonMaerskMatCost",
-      render: (text: string, record: Repair) => {
-        const nonMaerskMatCost = record.nmaersk;
+      render: (text: string, record: any) => {
+        const nonMaerskMatCost = record.nonMaerskMatCost;
         return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
           ? nonMaerskMatCost
           : "-";
@@ -117,7 +117,7 @@ const RepairList = () => {
       ),
       dataIndex: "unitHours",
       key: "unitHours",
-      render: (text: string, record: Repair) => {
+      render: (text: string, record: any) => {
         const unitHours = record.merc?.maxMatCost;
         return unitHours || "-";
       },
@@ -130,25 +130,32 @@ const RepairList = () => {
       ),
       data: "MaxMatCost",
       key: "MaxMatCost",
-      render: (text: string, record: Repair) => {
+      render: (text: string, record: any) => {
         const maxMatCost = record.merc?.maxMatCost;
         return maxMatCost || "-";
       },
     },
     {
       className: "edit-icon",
-      render: (text: string) => <EditIcon width={20} />,
+      render: (text: string, record: any) => (
+        <EditIcon
+          width={20}
+          onClick={() => {
+            handleEditClick(record);
+          }}
+        />
+      ),
       style: {
         marginRight: "-20px",
       },
     },
     {
       className: "delete-icon",
-      render: (text: string, record: Repair) => (
+      render: (text: string, record: any) => (
         <>
           <DeleteIcon
             width={20}
-            onClick={() => handleDeleteClick(record.id || '', record.uid || '')}
+            onClick={() => handleDeleteClick(record.id, record.uid)}
           />
         </>
       ),
@@ -168,19 +175,13 @@ const RepairList = () => {
 
   const handleDeleteConfirmed = async () => {
     if (entryToDeleteId) {
-      try {
         await deleteRepairEntry(entryToDeleteId);
         fetchRepairData();
         setEntryToDeleteId(null);
         setEntryToDeleteUid(null);
         setShowDeleteConfirmation(false);
-      } catch (error) {
-        setShowDeleteConfirmation(false);
-        console.error("Error deleting entry:", error);
-      }
     }
   };
-  
 
   const handleDeleteCancel = () => {
     setEntryToDeleteId(null);
@@ -200,7 +201,6 @@ const RepairList = () => {
   const [entryToDeleteUid, setEntryToDeleteUid] = useState<string | null>(null);
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
   const [versionMenu, setVersionMenu] = useState<boolean>(false);
-  const [exportMenu, setExportMenu] = useState<boolean>(false);
   const [repairAreaData, setRepairAreaData] = useState("");
   const [damagedAreaData, setDamagedAreaData] = useState("");
   const [typeData, setTypeData] = useState("");
@@ -213,7 +213,8 @@ const RepairList = () => {
     const fetchData = async () => {
       try {
         const { deserializedData } = await fetchRepairData();
-        setRepairListData(deserializedData)
+        setRepairListData(deserializedData);
+        setFilteredEntries(deserializedData.docs || []);
         setTotalEntries(deserializedData.docs?.length || 0);
         setDisplayedEntries(deserializedData.docs?.length || 0);
       } catch (error) {
@@ -232,6 +233,7 @@ const RepairList = () => {
 
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData, repairListData]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
@@ -248,10 +250,6 @@ const RepairList = () => {
       document.removeEventListener("mousedown", handler);
     };
   }, []);
-
-  const toggleExportMenu = () => {
-    setExportMenu(!exportMenu);
-  };
 
   const toggleAddRepair = () => {
     setAddRepair(!addRepair);
@@ -285,6 +283,7 @@ const RepairList = () => {
     const filteredData = applyFilters(repairListData?.docs || []);
     setFilteredEntries(filteredData);
     setFilterMenu(false);
+    setDisplayedEntries(filteredData.length);
   };
 
   const handleBulkUploadClick = () => {
@@ -340,8 +339,11 @@ const RepairList = () => {
             <div className="overlay-content">
               <EditRepair
                 data={selectedEntryForEdit}
-                onClose={() => {setSelectedEntryForEdit(null);}}
-               id={selectedEntryForEdit.id || ''}
+                onClose={() => {
+                  setSelectedEntryForEdit(null);
+                }}
+                repairId={selectedEntryForEdit.id || ''}
+                
               />
             </div>
           </div>
@@ -388,9 +390,9 @@ const RepairList = () => {
                 </div>
                 <div className="filter-options-flex">
                   <div>
-                    <br />
+                    
                     <label>Repair area</label>
-                    <br />
+                    
                     <select
                       value={repairAreaData}
                       onChange={(e) => setRepairAreaData(e.target.value)}
@@ -400,9 +402,9 @@ const RepairList = () => {
                     </select>
                   </div>
                   <div className="repair-damage">
-                    <br />
+                    
                     <label>Damaged area</label>
-                    <br />
+                    
                     <select
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
@@ -414,7 +416,7 @@ const RepairList = () => {
                 </div>
                 <div className="option-activity">
                   <label>Type</label>
-                  <br />
+                  
                   <select
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}
@@ -426,26 +428,7 @@ const RepairList = () => {
               </div>
             </div>
           </div>
-          <div className="export-container" onClick={toggleExportMenu}>
-            <button className="export-button">
-              <span className="export-icon">
-                <ExportIcon width={20} />
-              </span>
-              Export
-            </button>
-            <div
-              className={`export-menu-box ${
-                exportMenu ? "visible" : "invisible"
-              }`}
-            >
-              <div>
-                <p>Export as .csv</p>
-              </div>
-              <div>
-                <p>Export as .xlsv</p>
-              </div>
-            </div>
-          </div>
+          <ExportMenu/>
           <div
             className="versions-container"
             onClick={() => setVersionMenu(!versionMenu)}

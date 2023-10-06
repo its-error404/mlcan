@@ -3,29 +3,28 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
+import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
 import SectionZero from "./SectionZero";
 import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo/";
+import { editRepairEntry } from "../../../services/RepairListService/repair.service";
 
 interface EditRepairProps {
   data: any;
   onClose: () => void;
-  id: any;
+  repairId: string;
+  overlayOpen?: boolean;
+  closeOverlay?: () => void;
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({
-  editedData,
+  data,
   onClose,
   repairId,
-  overlayOpen,
 }) => {
-  const [activeSectionIndex, setActiveSectionIndex] = useState<number | null>(
-    0
-  );
-
-
-  const [formData, setFormData] = useState<any>({});
+  
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (data) {
@@ -54,33 +53,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
     },
   ];
 
-  const toggleSection = (index: number) => {
-    setSectionIndex(index === sectionIndex ? null : index);
-  };
-
-  const isSectionFilled = (index: number) => {
-    return true;
-  };
-
-  const formik = useFormik({
-    initialValues: EditValues,
-    validationSchema: repairDetailsSchema,
-    onSubmit: async (formData) => {
-      try {
-        await editRepairEntry(formData, repairId);
-        onClose();
-      } catch (err) {
-        console.log(err);
-      }
-    },
-  });
-
-  const [sectionCompleted, setSectionCompleted] = useState<boolean[]>([
-    false,
-    false,
-    false, 
-  ]);
-
   const handleNextSection = () => {
     if (sectionIndex !== null && sectionIndex < sections.length - 1) {
       sectionCompleted[sectionIndex] = true;
@@ -88,15 +60,32 @@ const EditRepair: React.FC<EditRepairProps> = ({
     }
   };
 
+  const toggleSection = (index: number) => {
+    setSectionIndex(index === sectionIndex ? null : index)
+  }
+
+  const formik = useFormik({
+    initialValues: EditValues,
+    onSubmit: async (values) => {
+      try {
+        await editRepairEntry(values, repairId);
+        onClose()
+      } catch (err) {
+        
+      }
+    },
+  });
+
+  const [sectionCompleted,] = useState<boolean[]>([false,false,false]);
+
   return (
-    <div>
-      <div className="repair-details-form">
-        <div className="form-wrapper">
+    <div className="repair-details-form">
+    <div className="form-wrapper">
           <div className="form-header">
             <h2>Edit Repair Part</h2>
             <CloseIcon width={15} onClick={onClose} />
           </div>
-          <div className="section-buttons">
+          <div className="section-buttons edit-section-button">
             {sections.map((section, index) => (
               <div
                 key={index}
@@ -105,8 +94,12 @@ const EditRepair: React.FC<EditRepairProps> = ({
                 }`}
                 onClick={() => toggleSection(index)}
               >
-                <div className="section-title">
-                  {isSectionFilled(index) && <TickIcon width={20} />}
+                 <div className="section-title">
+                  {sectionCompleted[index] ? (
+                    <TickIcon width={20} className="tick-icon-filled" />
+                  ) : (
+                    <TickIcon width={20} />
+                  )}
                   <span className="section-header-text">{section.name}</span>
                 </div>
               </div>
@@ -126,6 +119,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
       <SectionOne
         formik={formik}
         onclose={onClose}
+        onNextSection={handleNextSection}
+        sectionCompleted={sectionCompleted[1]}
       />
     )}
              {sectionIndex === 2 && (
@@ -139,7 +134,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
