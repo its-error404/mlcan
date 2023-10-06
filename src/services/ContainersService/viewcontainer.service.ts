@@ -84,6 +84,13 @@ export const toggleExpandRepairCard = async (uniqueID: string) => {
   }
 };
 
+export const toggleExpandedQuoteCard = async (uniqueID: string) => {
+  try {
+    const response = await axiosInstance.get(`${ApiRoutes.QUOTE_FORM}/&${uniqueID}`)
+    return response.data.data.form
+  } catch (err) {}
+}
+
 export const containerItemsMeta = async () => {
   try {
     const [ repArea, dmgArea, itemTypes, quantity ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])

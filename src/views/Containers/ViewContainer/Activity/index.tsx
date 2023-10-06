@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import './activity.scss'
 import { ReactComponent as QuoteIcon } from '../../../../assets/single color icons - SVG/quote.svg';
 import { ReactComponent as RepairIcon } from '../../../../assets/single color icons - SVG/repair.svg'
-import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../services/ContainersService/viewcontainer.service";
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
 import 'antd/dist/antd.css';
-import axiosInstance from "../../../../interceptor/axiosInstance";
-import { ApiRoutes } from "../../../../routes/routeConstants/apiRoutes";
 
 const ActivitySection: React.FC = () => {
   
@@ -35,24 +33,6 @@ const ActivitySection: React.FC = () => {
     }
     fetchData();
   }, []);
-
-  const toggleExpandRepairCard = async (formId: string) => {
-    try {
-      const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
-      setExpandedRepairFormData(response.data);
-    } catch (error) {
-      console.error("Error fetching card details:", error);
-    }
-  };
-
-  const toggleExpandedQuoteCard = async (formId: string) => {
-    try {
-      const response = await axiosInstance.get(`${ApiRoutes.REPAIR_FORM}/${formId}`);
-    } catch (error) {
-      console.error("Error fetching card details:", error);
-    }
-  }
-
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
