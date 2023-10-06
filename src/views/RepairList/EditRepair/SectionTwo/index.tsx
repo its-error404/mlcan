@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FormikValues } from 'formik'
 import CustomInput from '../../../../shared/components/InputField'
 import CustomSelect from '../../../../shared/components/SelectField'
-import axiosInstance from '../../../../interceptor/axiosInstance'
-import { ApiRoutes } from '../../../../routes/routeConstants/apiRoutes'
+import { RepairFormMeta } from '../../../../services/RepairListService/repair.service'
 
 interface SectionTwoProps {
   onclose: () => void
@@ -29,16 +28,18 @@ const SectionTwo: React.FC<SectionTwoProps> = ({
   }
 
   useEffect(() => {
-    axiosInstance
-      .get(`${ApiRoutes.REP_CATEGORIES}`)
-      .then(response => {
-        setModeOptions(response.data.data.values)
-      })
-      .catch(error => {
-        console.error('Error fetching repArea options:', error)
-      })
-  }, [])
-
+    const fetchCont = async () => {
+      try {
+        const repCategoriesOptions = await RepairFormMeta();
+        const modeOptionsData = repCategoriesOptions.repCategoriesOptionsData;
+        setModeOptions(modeOptionsData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCont();
+  }, []);
+  
   return (
     <div>
       <div className={`section-two ${isCheckboxChecked ? 'disabled' : ''}`}>
