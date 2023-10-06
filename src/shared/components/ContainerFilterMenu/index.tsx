@@ -1,7 +1,6 @@
 import { DatePicker } from "antd";
-import moment from "moment";
 import React from "react";
-import "antd/dist/antd.css";
+import "";
 
 const FilterMenu = ({
   filterMenu,
@@ -19,6 +18,10 @@ const FilterMenu = ({
   handleResetFilters,
   handleApplyFilters,
 }) => {
+  function moment(dateData: any, arg1: string): import("dayjs").Dayjs | null | undefined {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"}`} onClick={(e) => e.stopPropagation()}>
       <div className="filter-header__first-part">

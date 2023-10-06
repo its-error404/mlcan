@@ -6,7 +6,7 @@ import { ReactComponent as DropdownIcon } from "../../../../../assets/single col
 import { ReactComponent as DropDownOpen } from "../../../../../assets/single color icons - SVG/accordion open.svg";
 import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
 import { ReactComponent as UpdateIcon} from '../../../../../assets/single color icons - SVG/resize.svg'
-import "antd/dist/antd.css";
+import "";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'

@@ -10,7 +10,7 @@ import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
 import { AllContainersData,ContainersData,} from "../../models/Containers.model";
-import "antd/dist/antd.css";
+import "";
 import { formatDate } from "../../shared/utils/formatDate";
 import ExportMenu from "../../shared/components/ExportMenu";
 import { TableProps } from "antd/lib/table";

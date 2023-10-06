@@ -7,7 +7,7 @@ import '../../../styles/_@antOverrides.scss'
 import '../AddContainer/AddContainer.scss'
 import PhotoDragger from '../../../shared/components/Dragger';
 import '../../../styles/_variables.scss'
-import 'antd/dist/antd.css';
+import '';
 import './EditContainer.scss'
 interface EditContainerProps {
   onclose: () => void;

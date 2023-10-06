@@ -6,7 +6,7 @@ import { ReactComponent as InspectionIcon } from '../../../../assets/single colo
 import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
-import 'antd/dist/antd.css';
+import '';
 import { formatDate } from "../../../../shared/utils/dateFormat";
 import { QuoteData, RepairData } from "../../../../shared/types/formTypes";
 
