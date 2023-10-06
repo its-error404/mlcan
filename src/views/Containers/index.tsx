@@ -267,12 +267,13 @@ const AllContainers = () => {
       key: "activityDate",
       render: (text: string | undefined) => (text ? formatDate(text) : "N/A"),
       sorter: (a: ContainersData, b: ContainersData) => {
-        const activityDateA = new Date(a.activityDate || "");
-        const activityDateB = new Date(b.activityDate || "");
-        return activityDateA.getTime() - activityDateB.getTime();
+        const activityDateA = a.activityDate || "";
+        const activityDateB = b.activityDate || "";
+        return activityDateA.localeCompare(activityDateB)
       },
       sortOrder:
         sortedInfo.columnKey === "activityDate" ? sortedInfo.order : null,
+      ellipsis: true,
     },
     {
       title: <div className="sort-column">Status</div>,
