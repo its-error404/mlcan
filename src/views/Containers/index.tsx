@@ -9,16 +9,14 @@ import { getContainersData } from "../../services/ContainersService/containers.s
 import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
-import {
-  AllContainersData,
-  ContainersData,
-} from "../../models/Containers.model";
+import { AllContainersData,ContainersData,} from "../../models/Containers.model";
 import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import ExportMenu from "../../shared/components/ExportMenu";
 import { TableProps } from "antd/lib/table";
 import { SorterResult } from "antd/lib/table/interface";
 import FilterMenu from "../../shared/components/ContainerFilterMenu";
+import ApproveBox from "../../shared/components/ApproveBox";
 
 const AllContainers = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -26,6 +24,7 @@ const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [addContainer, setAddContainer] = useState<boolean>(false);
+  const [approveBox, setApproveBox] = useState(false)
   const [activeSection, setActiveSection] = useState("All");
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
   const [activityData, setActivityData] = useState("");
@@ -34,16 +33,11 @@ const AllContainers = () => {
   const [yardData, setYardData] = useState("");
   const [dateData, setDateData] = useState("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
-  const [allContainersData, setContainersData] =
-    useState<AllContainersData | null>(null);
+  const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
   const [totalEntries, setTotalEntries] = useState<number>(0);
-  const [displayedEntries, setDisplayedEntries] = useState<number>(
-    totalEntries ?? 0
-  );
+  const [displayedEntries, setDisplayedEntries] = useState<number>(totalEntries ?? 0);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
-  const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>(
-    {}
-  );
+  const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>({});
 
   const handleChange: TableProps<ContainersData>["onChange"] = (
     pagination,
@@ -478,12 +472,22 @@ const AllContainers = () => {
                 </div>
               </div>
 
+              {approveBox && (
+            <div className="overlay">
+              <div className="overlay-content">
+                <ApproveBox
+                  onclose={() => {
+                    setApproveBox(false);
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
               {activeSection === "Pending Customer Approval" && (
                 <div className="container-export-menu">
                   <ExportMenu />
-                  <Button className="bulk-upload-button approve-button">
-                    Approve Quote
-                  </Button>
+                  <Button className="bulk-upload-button approve-button" onClick={()=>setApproveBox(!approveBox)}>Approve Quote</Button>
                 </div>
               )}
             </div>
