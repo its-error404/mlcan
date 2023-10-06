@@ -27,11 +27,11 @@ const AllContainers = () => {
   const [approveBox, setApproveBox] = useState(false)
   const [activeSection, setActiveSection] = useState("All");
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
-  const [activityData, setActivityData] = useState("");
-  const [statusData, setStatusData] = useState("");
-  const [customerData, setCustomerData] = useState("");
-  const [yardData, setYardData] = useState("");
-  const [dateData, setDateData] = useState("");
+  const [activityData, setActivityData] = useState<string>("");
+  const [statusData, setStatusData] = useState<string>("");
+  const [customerData, setCustomerData] = useState<string>("");
+  const [yardData, setYardData] = useState<string>("");
+  const [dateData, setDateData] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
   const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
   const [totalEntries, setTotalEntries] = useState<number>(0);

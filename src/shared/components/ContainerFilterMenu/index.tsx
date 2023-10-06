@@ -1,8 +1,24 @@
 import { DatePicker } from "antd";
 import React from "react";
-import "";
 
-const FilterMenu = ({
+interface FilterMenuProps {
+  filterMenu?: boolean;
+  setFilterMenu?: React.Dispatch<React.SetStateAction<boolean>>;
+  setDateData?:React.Dispatch<React.SetStateAction<string>>;
+  dateData?:string;
+  setActivityData:React.Dispatch<React.SetStateAction<string>>;
+  activityData?:string;
+  setStatusData?:React.Dispatch<React.SetStateAction<string>>;
+  yardData?:string
+  statusData?:string
+  setYardData?:React.Dispatch<React.SetStateAction<string>>;
+  setCustomerData?:React.Dispatch<React.SetStateAction<string>>;
+  customerData:string
+  handleResetFilters: () => void
+  handleApplyFilters: () => void
+}
+
+const FilterMenu:React.FC<FilterMenuProps> = ({
   filterMenu,
   setFilterMenu,
   setDateData,
