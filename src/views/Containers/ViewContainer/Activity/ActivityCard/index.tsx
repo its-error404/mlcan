@@ -10,12 +10,14 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Modal, Select, Table, } from "antd";
+import { Button, Dropdown, Menu, Modal, Select, Table, Timeline, } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
 import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
+import FilterMenu from "../../../../../shared/components/ContainerFilterMenu";
+import TimeLine from "../../../../../shared/components/Timeline";
 
 interface RepairFormData {
   uid: string;
@@ -286,7 +288,7 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
           <div className="expanded-header">
             <div className="header_first">
               <div>
-                <Button>View Timeline</Button>
+                <Button onClick={()=><TimeLine/>}>View Timeline</Button>
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
@@ -353,12 +355,12 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
               <div className="delete-text-icon update-text">
                 <UpdateIcon/>
                 <p>Are you sure to change the status?</p>
-                {expandedRepairFormData.uid &&
+                {expandedRepairFormData?.uid &&
                 <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
               </div>
               <div className="delete-confirmation-buttons update-status-buttons-container">
               <button onClick={handleCancel}>Cancel</button>
-              <button onClick={()=>handleConfirm(expandedRepairFormData.id, updateActivityStatus, expandedRepairFormData.uid)}>Confirm</button>
+              <button onClick={()=>handleConfirm(expandedRepairFormData?.id || '', updateActivityStatus, expandedRepairFormData?.uid || '')}>Confirm</button>
               </div>
             </div>
     

@@ -8,7 +8,30 @@
 }
 
 .text-container {
-    margin: 0 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 500px;
+}
+
+.text-container p:nth-child(2){
+    font-size: 24px;
+    color: $text-black;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.text-container p:nth-child(3){
+    font-size: 16px;
+    font-weight: 500;
+    color: $text-gray;
+    margin-top: -10px;
+    margin-left: 80px;
+}
+
+.text-container svg 
+{
+    margin-left: 230px;
 }
 
 .unlock-modal > .ant-modal-content > .ant-modal-header {
@@ -18,7 +41,6 @@
 
 .unlock-modal > .ant-modal-content > .ant-modal-footer  {
     display: flex;
-    margin-top: 30px;
     margin-left: 20px;
     gap: 10px;
 }
@@ -39,5 +61,9 @@
     border: 1px solid transparent;
     color: $white-bg;
     border-radius: 10px;
+}
+
+.unlock-modal > .ant-modal-content > button > span {
+    display: none;
 }
 
