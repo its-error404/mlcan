@@ -369,7 +369,8 @@ const RepairList = () => {
                 setFilterMenu(!filterMenu);
               }}
             >
-              <button className="repair-filter-button">
+              <button  className={`repair-filter-button ${                      filterMenu ? "change-button" : ""
+                    }`}>
                 <span className="repair-filter-icon">
                   <FilterIcon width={20} />
                 </span>

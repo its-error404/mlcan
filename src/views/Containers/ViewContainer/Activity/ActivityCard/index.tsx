@@ -10,11 +10,12 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
+import { Button, Dropdown, Menu, Modal, Select, Table, } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
 import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import UnlockModal from "../../../../../shared/components/UnlockModal";
 
 interface RepairFormData {
   uid: string;
@@ -63,6 +64,7 @@ const ActivityCard: React.FC<{
   const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
   const [showTooltip, setShowTooltip] = useState(false);
   const [showBox, setShowBox] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleMouseEnter = () => {
     setShowTooltip(true);
@@ -288,8 +290,21 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
-                <p>James Vasanth <span className="dropdown-lock-icon">&nbsp;<LockIcon onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} width={10}/>{showTooltip && `${<p>Unlock</p>}`}</span></p>
+                <p>
+      James Vasanth{' '}
+      <span
+        className="dropdown-lock-icon"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={()=>{setShowModal(true)}}
+      >
+        &nbsp;
+        <LockIcon width={10} />
+        {showTooltip && <span>Unlock</span>}
+      </span>
+    </p>
               </div>
+              {showModal && <UnlockModal onCancel={()=>setShowModal(false)} onOk={()=>setShowModal(false)}/>}
             </div>
             <div className="header_second">
               <div><Button onClick={()=>toggleAddItem()}>Add Item</Button></div>

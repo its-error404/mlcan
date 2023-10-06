@@ -1,0 +1,43 @@
+@import '../../../styles/variables';
+
+.unlock-modal > .ant-modal-content {
+    height: 316px !important;
+    width: 536px !important;
+    border: 1px solid transparent !important;
+    border-radius: 20px !important;
+}
+
+.text-container {
+    margin: 0 0;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-header {
+    border: 1px solid transparent !important;
+    border-radius: 15px !important;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-footer  {
+    display: flex;
+    margin-top: 30px;
+    margin-left: 20px;
+    gap: 10px;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-footer button:first-child{
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    background-color: $cancel-bg;
+    border-radius: 10px;
+    color: $text-black;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-footer button:last-child{
+    background-color: $unlock-bg;
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    color: $white-bg;
+    border-radius: 10px;
+}
+

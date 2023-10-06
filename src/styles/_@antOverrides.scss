@@ -12,7 +12,17 @@
     box-shadow: $input-border-box-shadow !important;
   }
 }
+.activity-select > .ant-select-selector{
+  border: 0 !important;
+}
 
+.ant-modal-footer {
+  border-top: 0;
+}
+
+.ant-modal-header {
+  border-bottom: 0;
+}
 .ant-table-thead th.ant-table-column-sort{
   color: $turkish-green;
 }

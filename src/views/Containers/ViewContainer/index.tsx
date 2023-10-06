@@ -114,7 +114,7 @@ const ViewContainer: React.FC = () => {
         </div>
         <div className="container-data" >
         {loading ? (
-          <p>Loading...</p>
+          <p></p>
         ) : (
           containerData && containerData.container && (
             <>
