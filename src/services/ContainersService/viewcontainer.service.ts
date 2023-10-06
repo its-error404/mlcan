@@ -125,3 +125,42 @@ export const addComment = async (commentText: string) => {
     throw error;
   }
 };
+
+export const upgradeRepairForm = async (UniqueID, selectedOption) => {
+  try {
+    const response = await axiosInstance.post(
+      `${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`,
+      {
+        option: selectedOption,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const handleConfirm = async (UniqueID, selectedOption, setShowConfirmation) => {
+  try {
+    
+    const response = await upgradeRepairForm(UniqueID, selectedOption);
+
+    notification.success({
+      message: "Updated Successfully!",
+      className: "custom-notification-placement",
+    });
+
+    setShowConfirmation(false);
+
+    return response;
+  } catch (error) {
+    setShowConfirmation(false);
+    notification.error({
+      message: "Update Failed!",
+      className: "custom-notification-placement",
+    });
+    console.error("Error updating status:", error);
+
+    throw error;
+  }
+};

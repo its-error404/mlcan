@@ -9,13 +9,11 @@ import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table, notification } from "antd";
-import axiosInstance from "../../../../../interceptor/axiosInstance";
-import { ApiRoutes } from "../../../../../routes/routeConstants/apiRoutes";
+import { Button, Dropdown, Menu, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import { fetchActivityStatus, toggleExpandRepairCard } from "../../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityStatus, handleConfirm, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../../services/ContainersService/viewcontainer.service";
 
 interface RepairFormData {
   uid: string;
@@ -61,7 +59,7 @@ const ActivityCard: React.FC<{
   const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>()
   const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
-
+  
   const getBackgroundColor = () => {
     if (icon.type === QuoteIcon) {
       return "lightpurple";
@@ -211,8 +209,11 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
     toggleExpandRepairCard(UniqueID)
+    toggleExpandedQuoteCard(UniqueID)
     .then((response)=> {
       setExpandedRepairFormData(response)
+      setExpandedQuoteFormData(response)
+
     })
   };
 
@@ -220,34 +221,18 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
     setAddItem(!addItem);
   };
 
-  const handleConfirm = async () => {
-    try {
-      await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
-        option: selectedOption,
-      });
-      notification.success({
-        message: "updated Successfully !",
-        className: "custom-notification-placement",
-      });  
-      setShowConfirmation(false);
-    } catch (error) {
-      setShowConfirmation(false);
-      notification.error({
-        message: "update failed !",
-        className: "custom-notification-placement",
-      });
-      console.error("Error updating status:", error);
-    
-    }
-  };
-  
+const confirmHandler = async () => {
+  try {
+    await handleConfirm(UniqueID, selectedOption, setShowConfirmation);
+  } catch (error) {
+  }
+};
+
   const handleCancel = () => {
     setShowConfirmation(false);
   };
 
   return (
-
-    
     <div
       className={`activity-card ${formTypeClass} ${
         isExpanded ? "expanded" : ""
@@ -339,7 +324,7 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
                 <p>Are you sure you want to update the status?</p>
               </div>
               <div className="delete-confirmation-buttons">
-              <button onClick={handleConfirm}>Confirm</button>
+              <button onClick={()=>confirmHandler}>Confirm</button>
               <button onClick={handleCancel}>Cancel</button>
               </div>
             </div>
