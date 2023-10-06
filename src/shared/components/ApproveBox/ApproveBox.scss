@@ -1,0 +1,49 @@
+@import '../../../styles/variables';
+
+.delete-confirmation-box {
+    background-color: $white-bg;
+    height: 316px;
+    width: 570px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+.approve-buttons{
+    display: flex;
+    gap: 30px;
+    margin-top: 25px;
+    margin-left: 10px;
+}
+
+.approve-buttons button {
+    min-width: 220px !important;
+    max-width: 220px !important;
+    height: 40px !important;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+.approve-buttons button:first-child{
+    color: $text-black;
+}
+
+.approve-buttons button:last-child{
+    color: $white-bg
+}
+
+.delete-text-icon p:nth-child(2) {
+    margin-top: 10px;
+    font-size: 24px;
+    color: $text-black;
+    font-weight: 600;
+}
+
+.delete-text-icon p:nth-child(3){
+    margin-top: -20px;
+    font-size: 16px;
+}
+
+.delete-text-icon {
+    margin-left: 40px;
+    max-width: 500px;
+}

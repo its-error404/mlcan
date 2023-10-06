@@ -189,13 +189,7 @@ const AllContainers = () => {
     fetchData();
   };
 
-  const sections = [
-    "All",
-    "Draft",
-    "Admin Review Pending",
-    "Pending Customer Approval",
-    "Quotes Approved by Customers",
-  ];
+  const sections = ["All","Draft","Admin Review Pending","Pending Customer Approval","Quotes Approved by Customers",];
   const baseColumns = [
     {
       title: "Container Number",
