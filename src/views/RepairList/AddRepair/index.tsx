@@ -54,18 +54,7 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
     false,
   ]);
 
-    const handleNextSection = () => {
-        if (sectionIndex !== null && sectionIndex < sections.length - 1) {
-          sectionCompleted[sectionIndex] = true;
-          setSectionIndex(sectionIndex + 1);
-        }
-      };
-      const [sectionCompleted, ] = useState<boolean[]>([
-        false,
-        false,
-        false, 
-      ]);
-
+ 
     const formik = useFormik({
         initialValues: initialRepairFormValues,
         validationSchema: repairDetailsSchema,
