@@ -315,8 +315,12 @@
     opacity: 1;
   }
 
+  .repair-filter-button.change-button{
+    background-color: $turkish-green !important;
+    color: $white-bg !important;
+  }
 
-  .filter-button.change-button span {
+  .repair-filter-button.change-button span {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(340deg) brightness(105%) contrast(101%);
   }
 

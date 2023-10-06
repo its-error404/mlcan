@@ -20,12 +20,7 @@ const FilterMenu = ({
   handleApplyFilters,
 }) => {
   return (
-    <div
-      className={`filter-menu repair-list-filters container-filter-menu ${
-        filterMenu ? "visible" : "invisible"
-      }`}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"}`} onClick={(e) => e.stopPropagation()}>
       <div className="filter-header__first-part">
         <h4>Filters</h4>
       </div>
