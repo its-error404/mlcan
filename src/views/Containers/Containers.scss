@@ -27,7 +27,7 @@
 }
 
 .plus-icon {
-    margin-top: -10px;
+    margin-top: 5px;
     filter: $plus-icon;
 }
 
@@ -103,7 +103,7 @@
 
 .container-details {
     line-height: 20px;
-    margin-top: -44px;
+    margin-top: -30px;
     background-color: $input-bg;
     width: 84.3vw;
     height: 83vh;
@@ -200,7 +200,7 @@
 }
 
 .approve-button {
-    height: 38px;
+    height: 50px;
     font-weight: 600;
 }
 
@@ -324,13 +324,10 @@
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(340deg) brightness(105%) contrast(101%);
   }
 
-
 .filter-menu__options p:nth-child(2) {
     color: $turkish-green;
     font-weight: 500;
 }
-
-
 
 .container-box-table {
     margin-top: 20px;
@@ -434,6 +431,5 @@
 
 .container-export-menu {
     display: flex;
-    width: 1080px;
-    justify-content: space-between;
+    max-width: 1000px !important;
 }

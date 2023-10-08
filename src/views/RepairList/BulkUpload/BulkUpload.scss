@@ -19,7 +19,7 @@
 }
 
 .upload-box {
-    border: 1px solid $light-border;
+    border: 2px solid $cancel-bg;
     border-radius: 10px;
     border-style: dashed;
     max-width: 560px;
@@ -39,12 +39,17 @@
 }
 
 .upload-box {
+    background-color: $table-header;
     display: flex;
     flex-flow: column nowrap;
     gap: 10px;
     align-items: center;
     justify-items: center;
     justify-content: center;
+}
+
+.upload-box svg {
+    filter: brightness(0) saturate(100%) invert(85%) sepia(6%) saturate(333%) hue-rotate(172deg) brightness(92%) contrast(96%);
 }
 
 .upload-box h3 {

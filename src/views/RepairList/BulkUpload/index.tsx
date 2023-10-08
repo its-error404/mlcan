@@ -2,7 +2,7 @@ import React from "react";
 import OverlayBox from "../../../shared/components/overlayBox";
 import {ReactComponent as UploadIcon } from '../../../assets/single color icons - SVG/upload photo.svg'
 import {ReactComponent as CloseIcon } from '../../../assets/single color icons - SVG/close.svg'
-import {ReactComponent as AlertIcon } from '../../../assets/Multicolor icons - SVG/alert.svg'
+import {ReactComponent as AlertIcon } from '../../../assets/Multicolor icons - SVG/alert-triangle.svg'
 import './BulkUpload.scss'
 import { Upload, notification } from "antd";
 
@@ -30,7 +30,7 @@ const BulkUploadComponent: React.FC<BulkUploadComponentProps> = ({ onClose }) =>
         <div className="header">
             <div className="close-flex">
                 <h2>Bulk Upload repair list</h2>
-                <CloseIcon width={20} onClick={onClose} className="bulk-close"/>
+                <CloseIcon width={15} onClick={onClose} className="bulk-close"/>
             </div>
             <p><span><AlertIcon width={20}/></span>&emsp;Append the new list with existing list and upload</p>
             <p>Upload .csv/ .xlsv file</p>

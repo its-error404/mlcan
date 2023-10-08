@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./RepairList.scss";
+import '../../styles/_@antOverrides.scss';
+import { Icon } from '@iconify/react';
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
@@ -7,11 +9,10 @@ import { ReactComponent as FilterIcon } from "../../assets/single color icons - 
 import { Table } from "antd";
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/Multicolor icons - SVG/Trash-Recycle Bin-Delete-User Interface-Remove.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
 import { RepairData, Repair } from "../../models/repairList.model";
-import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
 import AddRepair from "./AddRepair";
@@ -80,7 +81,7 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskHours",
       key: "nonMaerskHours",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const nonMaerskHours = record.nonMaerskHours;
         return nonMaerskHours !== undefined && nonMaerskHours !== null
           ? nonMaerskHours
@@ -100,7 +101,7 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskMatCost",
       key: "nonMaerskMatCost",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const nonMaerskMatCost = record.nonMaerskMatCost;
         return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
           ? nonMaerskMatCost
@@ -117,8 +118,8 @@ const RepairList = () => {
       ),
       dataIndex: "unitHours",
       key: "unitHours",
-      render: (text: string, record: any) => {
-        const unitHours = record.merc?.maxMatCost;
+      render: (text: string, record: Repair) => {
+        const unitHours = record.merc?.unitHours;
         return unitHours || "-";
       },
     },
@@ -130,31 +131,26 @@ const RepairList = () => {
       ),
       data: "MaxMatCost",
       key: "MaxMatCost",
-      render: (text: string, record: any) => {
+      render: (text: string, record: Repair) => {
         const maxMatCost = record.merc?.maxMatCost;
         return maxMatCost || "-";
       },
     },
     {
       className: "edit-icon",
-      render: (text: string, record: any) => (
-        <EditIcon
-          width={20}
+      render: ( record: any) => (
+        <Icon icon="material-symbols:edit"  color="#949ea9" width={20}
           onClick={() => {
             handleEditClick(record);
           }}
         />
       ),
-      style: {
-        marginRight: "-20px",
-      },
     },
     {
       className: "delete-icon",
       render: (text: string, record: any) => (
         <>
-          <DeleteIcon
-            width={20}
+          <Icon icon="material-symbols:delete"  color="#949ea9" width={20}
             onClick={() => handleDeleteClick(record.id, record.uid)}
           />
         </>
@@ -163,6 +159,7 @@ const RepairList = () => {
   ]);
 
   const handleRowClick = (row: any) => {
+    console.log(row)
     setSelectedRow(row);
     setOverlayOpen(true);
   };
@@ -227,20 +224,19 @@ const RepairList = () => {
 
   useEffect(() => {
     const filteredData = applyFilters(repairListData?.docs || []).filter(
-      (record: any) =>
-        record.uid.toLowerCase().includes(searchData.toLowerCase())
+      (record: Repair) =>
+        record?.uid?.toLowerCase().includes(searchData.toLowerCase())
     );
 
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData, repairListData]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    let handler = (e: any) => {
-      if (!filterMenuRef.current?.contains(e.target)) {
+    let handler = (e: MouseEvent) => {
+      if (!filterMenuRef.current?.contains(e.target as Node)) {
         setFilterMenu(false);
       }
     };
@@ -260,7 +256,7 @@ const RepairList = () => {
   };
 
   const applyFilters = (data: any) => {
-    return data.filter((doc: any) => {
+    return data.filter((doc: Repair) => {
       const repairAreaMatches =  repairAreaData === "" || doc.repArea === repairAreaData;
       const typeMatches = typeData === "" || doc.type === typeData;
       const damagedAreaMatches = damagedAreaData === "" || doc.dmgArea === damagedAreaData;
@@ -369,7 +365,7 @@ const RepairList = () => {
                 setFilterMenu(!filterMenu);
               }}
             >
-              <button  className={`repair-filter-button ${                      filterMenu ? "change-button" : ""
+              <button  className={`repair-filter-button ${filterMenu ? "change-button" : ""
                     }`}>
                 <span className="repair-filter-icon">
                   <FilterIcon width={20} />
@@ -398,6 +394,7 @@ const RepairList = () => {
                       value={repairAreaData}
                       onChange={(e) => setRepairAreaData(e.target.value)}
                     >
+                      <option>Select</option>
                       <option>Doors</option>
                       <option>Vents</option>
                     </select>
@@ -410,6 +407,7 @@ const RepairList = () => {
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
                     >
+                      <option>Select</option>
                       <option>Doors</option>
                       <option>Vents</option>
                     </select>
@@ -422,6 +420,7 @@ const RepairList = () => {
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}
                   >
+                    <option>Select</option>
                     <option>INSERT</option>
                     <option>PATCH</option>
                   </select>
@@ -455,11 +454,7 @@ const RepairList = () => {
         {showBulkUpload && (
           <BulkUploadComponent onClose={handleBulkUploadClose} />
         )}
-        <div
-          className={`version-menu-box ${
-            versionMenu ? "visible" : "invisible"
-          }`}
-        >
+        <div className={`version-menu-box ${versionMenu ? "visible" : "invisible"}`}>
           <p>+ New Version </p>
           <p>Version 1 - 22 Aug 2020</p>
           <p>Version 1 - 22 Aug 2020</p>
@@ -478,15 +473,15 @@ const RepairList = () => {
         {showDeleteConfirmation && (
           <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
             <div className="delete-confirmation-box">
-              <div className="delete-text-icon">
+              <div className="delete-text-icon-repair">
                 <DeleteIcon width={45} />
                 <h2>
-                  Are you sure you to delete the <br />
+                  Are you sure to delete the <br />
                   &emsp; &emsp;Repair - <span>{entryToDeleteUid}</span>&nbsp;?
                 </h2>
                 <p>You can't undo this action</p>
               </div>
-              <div className="delete-confirmation-buttons">
+              <div className="delete-confirmation-buttons-repair">
                 <button onClick={handleDeleteCancel}>Cancel</button>
                 <button onClick={handleDeleteConfirmed}>Delete</button>
               </div>

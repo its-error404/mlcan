@@ -10,7 +10,6 @@ import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import "./Dropdown.scss";
 import { CalendarOutlined } from '@ant-design/icons'
-
 import { Button, Dropdown, Menu, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
@@ -18,6 +17,8 @@ import { ContainerData } from "../../../../../models/singlecontainer.model";
 import {fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import TimeLine from "../../../../../shared/components/Timeline";
+import { EllipsisOutlined } from "@ant-design/icons";
+import EllipsisMenu from "../../../../../shared/components/EllipsisMenu";
 
 interface RepairFormData {
   uid: string;
@@ -50,6 +51,7 @@ const ActivityCard: React.FC<{
   toggleExpand?: () => void;
   expandedData?: ContainerData;
 }> = ({ UniqueID, formType, formID, date, activityStatus, icon }) => {
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const [addItem, setAddItem] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -138,6 +140,30 @@ const ActivityCard: React.FC<{
       dataIndex: "totalCost",
       key: "totalCost",
     },
+    {
+        title: "Options",
+        dataIndex: "options",
+        key: "options",
+        render: (_: any, record: any) => (
+          <EllipsisMenu
+            onDelete={() => {
+              // Implement the delete logic here
+              console.log("Delete logic called for record:", record);
+            }}
+            onUpdateComment={() => {
+              // Implement the update comment logic here
+              console.log(
+                "Update Comment logic called for record:",
+                record
+              );
+            }}
+            onUpdatePhoto={() => {
+              // Implement the update photo logic here
+              console.log("Update Photo logic called for record:", record);
+            }}
+          />
+        ),
+      },
   ];
 
   const [activityStatuses, setActivityStatuses] = useState([]);
@@ -177,39 +203,7 @@ const ActivityCard: React.FC<{
   useEffect(() => {
     setData(mapRepairDataToTableData());
   }, [expandedRepairFormData]);
-
-  const OptionMenu: React.FC<OptionMenuProps> = ({
-    onDelete,
-    onUpdateComment,
-    onUpdatePhoto,
-  }) => {
-    const menu = (
-      <Menu>
-        <Menu.Item key="updateComment" onClick={onUpdateComment}>
-          Update Comment
-        </Menu.Item>
-        <Menu.Item key="updatePhoto" onClick={onUpdatePhoto}>
-          Update Photo
-        </Menu.Item>
-        <Menu.Item key="delete" onClick={onDelete}>
-          Delete
-        </Menu.Item>
-      </Menu>
-    );
-
-    return (
-      <Dropdown overlay={menu} trigger={["click"]}>
-        <div className="option-menu">
-          <div className="dot"></div>
-          <div className="dot"></div>
-          <div className="dot"></div>
-        </div>
-      </Dropdown>
-    );
-  };
-
-
-
+  
   const formTypeClass =
     formType === "Quote Form"
       ? "form-type-quote"
@@ -345,19 +339,7 @@ const ActivityCard: React.FC<{
             
           </div>
           <Table
-            columns={[
-              ...columns,
-              {
-                key: "options",
-                render: (text, record, index) => (
-                  <OptionMenu
-                    onDelete={() => { }}
-                    onUpdateComment={() => { }}
-                    onUpdatePhoto={() => { }}
-                  />
-                ),
-              },
-            ]}
+            columns={[...columns]}
             dataSource={data}
             pagination={false}
             className="activity-item-table"
