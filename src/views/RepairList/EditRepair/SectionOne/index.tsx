@@ -1,7 +1,6 @@
 import { Button, Checkbox } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { FormikProps, FormikValues } from 'formik'
-import ''
 import CustomInput from '../../../../shared/components/InputField'
 import CustomSelect from '../../../../shared/components/SelectField'
 import { RepairFormMeta } from '../../../../services/RepairListService/repair.service'

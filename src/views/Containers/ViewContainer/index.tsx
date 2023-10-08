@@ -92,7 +92,11 @@ const ViewContainer: React.FC = () => {
             {containerData && containerData.container && (
               <>
                 <h1>{containerData.container.uid}</h1>
-                <EditIcon width={15} onClick={() => handleEditClick(containerData.container)} />
+                <EditIcon width={15} onClick={() => {
+  if (containerData.container) {
+    handleEditClick(containerData.container);
+  }
+}} />
               </>
             )}
           </div>
@@ -119,7 +123,7 @@ const ViewContainer: React.FC = () => {
           containerData && containerData.container && (
             <>
               <p>{containerData.container.yard}</p>
-              <p>{containerData.container.customer.name}</p>
+              <p>{containerData.container.customer?.name}</p>
               <p> {containerData.container.owner}</p>
               <p>{containerData.container.submitter}</p>
               <p>{containerData.container.length}</p>
@@ -135,7 +139,7 @@ const ViewContainer: React.FC = () => {
       <div className="overlay-content">
         <EditContainer
           data={editContainer}
-          id={id} 
+          id={id || ''} 
           onclose={() => setEditContainerVisible(false)}
         />
         </div>

@@ -6,7 +6,6 @@ import '../../../../../../styles/_@antOverrides.scss';
 import '../../../../AddContainer/AddContainer.scss';
 import PhotoDragger from '../../../../../../shared/components/Dragger';
 import '../../../../../../styles/_variables.scss';
-import '';
 import './AddItem.scss'
 import { addItemRequest } from '../../../../../../services/ContainersService/containers.service';
 import { containerItemsMeta } from '../../../../../../services/ContainersService/viewcontainer.service';

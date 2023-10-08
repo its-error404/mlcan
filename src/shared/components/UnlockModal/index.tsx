@@ -18,7 +18,7 @@ const UnlockModal:React.FC<ModalProps> = ({onCancel, onOk}) => {
     <div>
       <Modal
         centered
-        visible
+        open
         onCancel={onCancel}
         onOk={onOk}
         className='unlock-modal'

@@ -3,7 +3,7 @@ import "./datePickerField.scss"
 import { DatePicker } from "antd";
 import { ErrorMessage, Field } from "formik";
 import Error from "../Error";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 interface DatePickerFieldProps {
     name: string;
@@ -47,7 +47,7 @@ const DatePickerField: FC<DatePickerFieldProps> = (props) => {
                             disabled={disabled}
                             placeholder={placeholder}
                             onChange={onChange}
-                            value={value ? moment(value) : null}
+                            value={value ? dayjs(value) : null}
                         />
                         <ErrorMessage name={name}>
                             {(message: string) => (

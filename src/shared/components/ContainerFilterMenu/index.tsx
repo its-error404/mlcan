@@ -68,7 +68,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
           <div className="container-date-box filter-date">
             <DatePicker
               className="container-date-picker"
-              onChange={(date, dateString) => setDateData(dateString)}
+              onChange={(date, dateString) => setDateData?.(dateString)}
               value={dateData !== "" ? moment(dateData, "DD MMM YYYY") : null}
               format="DD MMM YYYY"
             />
@@ -90,7 +90,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
             <label>Status</label>
             <select
               value={statusData}
-              onChange={(e) => setStatusData(e.target.value)}
+              onChange={(e) => setStatusData?.(e.target.value)}
             >
               <option>billing</option>
               <option>draft</option>
@@ -101,7 +101,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
             <label>Yard</label>
             <select
               value={yardData}
-              onChange={(e) => setYardData(e.target.value)}
+              onChange={(e) => setYardData?.(e.target.value)}
             >
               <option>Nordel</option>
               <option>Harbourlink</option>
@@ -114,7 +114,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
           <label>Customer</label>
           <select
             value={customerData}
-            onChange={(e) => setCustomerData(e.target.value)}
+            onChange={(e) => setCustomerData?.(e.target.value)}
           >
             <option>Krishna</option>
             <option>Killian Darian</option>

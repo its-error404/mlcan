@@ -6,17 +6,16 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { Button, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
-import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
 import { AllContainersData,ContainersData,} from "../../models/Containers.model";
-import "";
 import { formatDate } from "../../shared/utils/formatDate";
 import ExportMenu from "../../shared/components/ExportMenu";
 import { TableProps } from "antd/lib/table";
 import { SorterResult } from "antd/lib/table/interface";
 import FilterMenu from "../../shared/components/ContainerFilterMenu";
 import ApproveBox from "../../shared/components/ApproveBox";
+import AddContainer from "./AddContainer";
 
 const AllContainers = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -203,7 +202,7 @@ const AllContainers = () => {
       title: <div className="sort-column">Yard</div>,
       dataIndex: "yard",
       key: "yard",
-      render: (text: string) => text,
+      render: (text: string) => text || 'N/A',
       sorter: (a: ContainersData, b: ContainersData) => {
         if (a.yard && b.yard) {
           return a.yard.length - b.yard.length;
@@ -318,7 +317,7 @@ const AllContainers = () => {
       title: <div className="sort-column">Activity ID</div>,
       dataIndex: "activityUid",
       key: "activityUid",
-      render: (text: string) => (showActivityUidColumn ? text || "N/A" : null),
+      render: (text: string) => (showActivityUidColumn ? text || "N/A": ''),
       sorter: (a: ContainersData, b: ContainersData) => {
         if (a.activityUid && b.activityUid) {
           return a.activityUid.length - b.activityUid.length;
