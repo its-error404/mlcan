@@ -4,18 +4,19 @@ import { ReactComponent as RepairIcon } from "../../../../../assets/single color
 import { ReactComponent as InspectionIcon } from "../../../../../assets/single color icons - SVG/inspection.svg";
 import { ReactComponent as DropdownIcon } from "../../../../../assets/single color icons - SVG/accordion closed.svg";
 import { ReactComponent as DropDownOpen } from "../../../../../assets/single color icons - SVG/accordion open.svg";
-import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
-import { ReactComponent as UpdateIcon} from '../../../../../assets/single color icons - SVG/resize.svg'
+import { ReactComponent as LockIcon } from "../../../../../assets/single color icons - SVG/password.svg";
+import { ReactComponent as UpdateIcon } from "../../../../../assets/single color icons - SVG/resize.svg";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
-import './Dropdown.scss'
-import { Button, Dropdown, Menu, Modal, Select, Table, Timeline, } from "antd";
+import "./Dropdown.scss";
+import { CalendarOutlined } from '@ant-design/icons'
+
+import { Button, Dropdown, Menu, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import {fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
-import FilterMenu from "../../../../../shared/components/ContainerFilterMenu";
 import TimeLine from "../../../../../shared/components/Timeline";
 
 interface RepairFormData {
@@ -29,7 +30,7 @@ interface RepairFormData {
   labourCost: number;
   materialCost: number;
   totalCost: number;
-  id: string
+  id: string;
 }
 
 interface OptionMenuProps {
@@ -39,7 +40,7 @@ interface OptionMenuProps {
 }
 
 const ActivityCard: React.FC<{
-  UniqueID: string
+  UniqueID: string;
   formType: string;
   formID: string;
   date: string;
@@ -47,25 +48,16 @@ const ActivityCard: React.FC<{
   icon: React.ReactElement;
   expanded: boolean;
   toggleExpand?: () => void;
-  expandedData?: ContainerData
-}> = ({
-  UniqueID,
-  formType,
-  formID,
-  date,
-  activityStatus,
-  icon
-}) => {
+  expandedData?: ContainerData;
+}> = ({ UniqueID, formType, formID, date, activityStatus, icon }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [addItem, setAddItem] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [updateActivityStatus, setUpdateActivityStatus] = useState("");
-  const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>()
-  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
-  const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>();
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showBox, setShowBox] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [timeline, setTimeline] = useState(false)
 
   const handleMouseEnter = () => {
     setShowTooltip(true);
@@ -73,10 +65,6 @@ const ActivityCard: React.FC<{
 
   const handleMouseLeave = () => {
     setShowTooltip(false);
-  };
-
-  const handleClick = () => {
-    setShowBox(!showBox);
   };
 
   const getBackgroundColor = () => {
@@ -94,10 +82,10 @@ const ActivityCard: React.FC<{
 
   const handleUpdateClick = () => {
     if (activityStatus !== "Select") {
-      setSelectedOption(activityStatus); 
+      setSelectedOption(activityStatus);
       setShowConfirmation(true);
     }
-  }
+  };
 
   const columns = [
     {
@@ -150,19 +138,19 @@ const ActivityCard: React.FC<{
       dataIndex: "totalCost",
       key: "totalCost",
     },
-  ]
+  ];
 
-  const [activityStatuses, setActivityStatuses] = useState([])
+  const [activityStatuses, setActivityStatuses] = useState([]);
 
-  useEffect(()=> {
-      const fetchData = async () => {
-        try {
-          const activitystatues = await fetchActivityStatus()
-          setActivityStatuses(activitystatues)
-        } catch (err) {}
-      }
-      fetchData()
-  },[])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const activitystatues = await fetchActivityStatus();
+        setActivityStatuses(activitystatues);
+      } catch (err) { }
+    };
+    fetchData();
+  }, []);
 
   const mapRepairDataToTableData = () => {
     if (expandedRepairFormData) {
@@ -184,13 +172,17 @@ const ActivityCard: React.FC<{
     return [];
   };
 
-const [data, setData] = useState(mapRepairDataToTableData());
+  const [data, setData] = useState(mapRepairDataToTableData());
 
-useEffect(() => {
-  setData(mapRepairDataToTableData());
-}, [expandedRepairFormData]);
+  useEffect(() => {
+    setData(mapRepairDataToTableData());
+  }, [expandedRepairFormData]);
 
-const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUpdatePhoto }) => {
+  const OptionMenu: React.FC<OptionMenuProps> = ({
+    onDelete,
+    onUpdateComment,
+    onUpdatePhoto,
+  }) => {
     const menu = (
       <Menu>
         <Menu.Item key="updateComment" onClick={onUpdateComment}>
@@ -206,57 +198,59 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
     );
 
     return (
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <div className="option-menu">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-          </div>
-        </Dropdown>
-      );
-    };
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <div className="option-menu">
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+        </div>
+      </Dropdown>
+    );
+  };
+
+
 
   const formTypeClass =
     formType === "Quote Form"
       ? "form-type-quote"
       : formType === "Repair Form"
-      ? "form-type-repair"
-      : formType === "Inspection Form"
-      ? "form-type-inspection"
-      : "";
+        ? "form-type-repair"
+        : formType === "Inspection Form"
+          ? "form-type-inspection"
+          : "";
 
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
-    toggleExpandRepairCard(UniqueID)
-    .then((response)=> {
-      setExpandedRepairFormData(response)
-    })
+    toggleExpandRepairCard(UniqueID).then((response) => {
+      setExpandedRepairFormData(response);
+    });
   };
 
   const toggleAddItem = () => {
     setAddItem(!addItem);
   };
 
-  const handleConfirm = async (id: string, option:string, uniqueID: string) => {
+  const handleConfirm = async (
+    id: string,
+    option: string,
+    uniqueID: string
+  ) => {
     try {
-      upgradeRepairForm(id, option) 
+      upgradeRepairForm(id, option);
       setShowConfirmation(false);
     } catch (error) {
-      setShowConfirmation(false); 
+      setShowConfirmation(false);
     }
   };
-  
+
   const handleCancel = () => {
     setShowConfirmation(false);
   };
 
   return (
-
-    
     <div
-      className={`activity-card ${formTypeClass} ${
-        isExpanded ? "expanded" : ""
-      }`}
+      className={`activity-card ${formTypeClass} ${isExpanded ? "expanded" : ""
+        }`}
     >
       <div
         className={`card-header ${isExpanded ? "expanded-header" : ""}`}
@@ -273,12 +267,17 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
           <div className="date">{date}</div>
         </div>
 
-        <div className={`activity-status ${activityStatus === "draft" ? "draft" : ""}`}> {activityStatus === "repair" ? "repair" : activityStatus}</div>
+        <div
+  className={`activity-status ${activityStatus === "draft" ? "draft" : ""}`}
+>
+  {activityStatus === "draft" ? "Quote Draft" : "Ready for Billing"}
+</div>
+
         <div className="dropdown-icon">
           {isExpanded ? (
             <DropDownOpen width={10} />
           ) : (
-            <DropdownIcon width={10} />
+            <DropdownIcon width={5} />
           )}
         </div>
       </div>
@@ -286,99 +285,133 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
         <div className="expanded-content">
           <div className="expanded-header">
             <div className="header_first">
-              <div>
-                <Button onClick={()=><TimeLine/>}>View Timeline</Button>
+              <div className="timeline-button-container">
+              <CalendarOutlined rev='' className="calender-icon-timeline"/>
+              <Button onClick={()=>setTimeline(!timeline)}>View Timeline</Button>
+              {timeline && <TimeLine timelineDate={date}/>}
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
                 <p>
-      James Vasanth{' '}
-      <span
-        className="dropdown-lock-icon"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={()=>{setShowModal(true)}}
-      >
-        &nbsp;
-        <LockIcon width={10} />
-        {showTooltip && <span>Unlock</span>}
-      </span>
-    </p>
+                  James Vasanth{" "}
+                  <span
+                    className="dropdown-lock-icon"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                  >
+                    &nbsp;
+                    <LockIcon width={10} />
+                    {showTooltip && <span>Unlock</span>}
+                  </span>
+                </p>
               </div>
-              {showModal && <UnlockModal onCancel={()=>setShowModal(false)} onOk={()=>setShowModal(false)}/>}
+              {showModal && (
+                <UnlockModal
+                  onCancel={() => setShowModal(false)}
+                  onOk={() => setShowModal(false)}
+                />
+              )}
             </div>
             <div className="header_second">
-              <div><Button onClick={()=>toggleAddItem()}>Add Item</Button></div>
+              <div>
+                <Button onClick={() => toggleAddItem()}>Add Item</Button>
+              </div>
               <div className="select-container">
                 <Button>Status</Button>
                 <Select
-                 onChange={(value) => setUpdateActivityStatus(value)}
+                  onChange={(value) => setUpdateActivityStatus(value)}
                   value={updateActivityStatus}
                   defaultValue="Select"
                   style={{ width: 150 }}
                   className="activity-select"
-                  options={activityStatuses.map(option => ({
+                  options={activityStatuses.map((option) => ({
                     label: option,
-                    value: option
+                    value: option,
                   }))}
                 />
+                
               </div>
-              <Button className="submit-button update-submit-button" onClick={handleUpdateClick}>Update</Button>
+              <Button
+                className="submit-button update-submit-button"
+                onClick={handleUpdateClick}
+              >
+                Update
+              </Button>
+              
             </div>
-            </div>
-            <Table
+            
+          </div>
+          <Table
             columns={[
               ...columns,
               {
                 key: "options",
                 render: (text, record, index) => (
                   <OptionMenu
-                    onDelete={() =>{}}
-                    onUpdateComment={() =>{}}
-                    onUpdatePhoto={() =>{}}
+                    onDelete={() => { }}
+                    onUpdateComment={() => { }}
+                    onUpdatePhoto={() => { }}
                   />
                 ),
               },
             ]}
             dataSource={data}
             pagination={false}
+            className="activity-item-table"
           />
         </div>
       )}
 
       {showConfirmation && (
-  <OverlayBox maxWidth="400px" minHeight="330px" onClose={()=> {}}>
-    <div className="overlay-box-update">
-     
-      <div className="delete-confirmation-box">
+        <OverlayBox maxWidth="400px" minHeight="330px" onClose={() => { }}>
+          <div className="overlay-box-update">
+            <div className="delete-confirmation-box">
               <div className="delete-text-icon update-text">
-                <UpdateIcon/>
+                <UpdateIcon />
                 <p>Are you sure to change the status?</p>
-                {expandedRepairFormData?.uid &&
-                <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
+                {expandedRepairFormData?.uid && (
+                  <p>
+                    {formType} - {expandedRepairFormData.uid} will be moved to{" "}
+                    <span className="update-activity-text">
+                      {updateActivityStatus}
+                    </span>{" "}
+                    status
+                  </p>
+                )}
               </div>
               <div className="delete-confirmation-buttons update-status-buttons-container">
-              <button onClick={handleCancel}>Cancel</button>
-              <button onClick={()=>handleConfirm(expandedRepairFormData?.id || '', updateActivityStatus, expandedRepairFormData?.uid || '')}>Confirm</button>
+                <button onClick={handleCancel}>Cancel</button>
+                <button
+                  onClick={() =>
+                    handleConfirm(
+                      expandedRepairFormData?.id || "",
+                      updateActivityStatus,
+                      expandedRepairFormData?.uid || ""
+                    )
+                  }
+                >
+                  Confirm
+                </button>
               </div>
             </div>
-    
-    </div>
-  </OverlayBox>
-)}
+          </div>
+        </OverlayBox>
+      )}
 
-          {addItem && (
-            <div className="overlay">
-              <div className="overlay-content">
-                <AddItem
-                  onclose={() => {
-                    setAddItem
-                    (false);
-                  }}
-                />
-              </div>
-            </div>
-          )}
+      {addItem && (
+        <div className="overlay">
+          <div className="overlay-content">
+            <AddItem
+              onclose={() => {
+                setAddItem(false);
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -71,10 +71,6 @@ const AllContainers = () => {
     refreshData();
   }, []);
 
-  const toggleAddContainer = () => {
-    setAddContainer(!addContainer);
-  };
-
   const filterContainers = (section: string, searchQuery: string) => {
     if (!allContainersData?.docs) {
       return [];
@@ -83,9 +79,7 @@ const AllContainers = () => {
     const containers = allContainersData.docs as ContainersData[];
 
     let filteredData = containers.filter((doc) => {
-      const searchMatches = doc.uid
-        ?.toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      const searchMatches = doc.uid?.toLowerCase().includes(searchQuery.toLowerCase());
 
       switch (section) {
         case "All":
@@ -125,23 +119,13 @@ const AllContainers = () => {
   const applyFilters = () => {
     const filteredData = filterContainers(activeSection, searchData).filter(
       (doc) => {
-        const ActivityMatches =
-          activityData === "" || doc.activityType === activityData;
-        const statusMatches =
-          statusData === "" || doc.activityStatus === statusData;
+        const ActivityMatches = activityData === "" || doc.activityType === activityData;
+        const statusMatches = statusData === "" || doc.activityStatus === statusData;
         const yardMatches = yardData === "" || doc.yard === yardData;
-        const customerMatches =
-          customerData === "" || doc.customerName === customerData;
-        const dateMatches =
-          dateData === "" || formatDate(doc.activityDate) === dateData;
+        const customerMatches = customerData === "" || doc.customerName === customerData;
+        const dateMatches = dateData === "" || formatDate(doc.activityDate) === dateData;
 
-        return (
-          ActivityMatches &&
-          customerMatches &&
-          yardMatches &&
-          statusMatches &&
-          dateMatches
-        );
+        return ( ActivityMatches && customerMatches && yardMatches && statusMatches && dateMatches);
       }
     );
 
@@ -383,9 +367,7 @@ const AllContainers = () => {
             <PlusIcon
               width={25}
               className="plus-icon"
-              onClick={(event: React.MouseEvent<SVGSVGElement, MouseEvent>) =>
-                toggleAddContainer()
-              }
+              onClick={(event: React.MouseEvent<SVGSVGElement, MouseEvent>) =>()=>setAddContainer(!addContainer)}
             />
           </div>
 
