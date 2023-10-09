@@ -2,10 +2,10 @@
 
 .submit-button {
     background-color: $turkish-green;
+    color: $white-bg;
     width: 580px;
     height: 40px;
-    color: $white-bg;
     border: 1px solid transparent;
-    border-radius: 10px ;
+    border-radius: 10px;
     cursor: pointer;
 }
