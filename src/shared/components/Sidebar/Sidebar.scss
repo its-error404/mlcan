@@ -30,7 +30,7 @@
 }
 
 .user-information p:nth-child(2){
-    margin-top: 4px;
+    margin-top: -10px !important;
 }
 
 .user-info{
@@ -49,7 +49,8 @@
 }
 
 .user-information-dropdown p:first-child {
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .user-info p:nth-child(1){
@@ -59,7 +60,6 @@
 .user-info p:nth-child(2){
     color: $user-info-child-secondary;
     margin-top: 10px;
-    font-size: 13px;
     font-weight: 300;
 }
 
@@ -78,20 +78,35 @@
     text-decoration: none;
 }
 
+.side-bar__options-text a:hover {
+   color: $sidebar-text;
+}
+
+.side-bar__options-text a:hover > span {
+    filter: brightness(0) saturate(100%) invert(46%) sepia(11%) saturate(4524%) hue-rotate(127deg) brightness(99%) contrast(62%);
+}
+
 .side-bar__options-text a{
     text-decoration: none;
     color: $sidebar-text;
     padding-top: 25px;
     padding-bottom: 25px;
     padding-left: 40px;
+    align-items: center;
+    justify-items: center;
 
     &.active {
         color: $sidebar-active-text;
+        font-weight: 500;
     }
 }
 
 .side-bar__options-text span{
     margin-right: 24px;
+}
+
+.logout-icon {
+    margin-top: -15px;
 }
 
 .customer-icon, .logout-icon{
@@ -101,8 +116,7 @@
 .user-arrow{
     margin-top: 10px;
     margin-left: 20px;
-    filter: $arrow-svg;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease-in-out;
 }
 
 .user-info{
@@ -123,11 +137,11 @@
     border: 1px solid transparent;
     border-radius: 8px;
     bottom: 90px;
-    right: -40px;
-    width: 280px;
-    height: 240px;
+    right: -50px;
+    width: 300px;
+    height: 260px;
     background-color: $user-dropdown-bg;
-    z-index: 6;
+    z-index: 100;
 }
 
 .user-dropdown button {
@@ -153,39 +167,46 @@
 }
 
 .designation-flex p {
-    margin-top: -5px;
+    margin-top: -22px;
     color: $user-info-child-secondary !important;
-    font-size: 12px;
-    font-weight: 500 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
 }
 
 .dot {
     border: 1px solid transparent;
     border-radius: 50%;
-    font-size: x-large;
-    margin-top: -20px;
+    font-size: 40px !important;
+    margin-top: -55px;
     color: $user-info-child-secondary;
 }
 
 .user-email {
     color: $user-info-child-tertiary !important;
-    font-size: 16px !important;
+    font-size: 15px !important;
     margin-top: -2px !important;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
 }
 
 .mail-container, .number-container {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 13px;
+    justify-items: center;
 }
 
+.mail-icon {
+    margin-top: -15px;
+}
+
+.call-icon {
+    margin-top: -20px;
+}
 .user-contact {
     border-top: 1px solid $user-contact-border;
-    margin-top: 10px;
-    padding-top: 20px;
+    margin-top: 5px;
+    padding-top: 15px;
     border-bottom: 1px solid $user-contact-border;
-    padding-bottom: 20px;
 }
 
 .number-container{
@@ -195,8 +216,8 @@
 .user-number {
     color: $user-info-child-tertiary !important;
     font-size: 16px !important;
-    margin-top: -2px !important;
-    font-weight: 400 !important;
+    margin-top: -5px !important;
+    font-weight: 500 !important;
 }
 
 .logout-container {
@@ -209,7 +230,7 @@
     padding-left: 20px;
     margin-top: -2px !important;
     color: $logout-text !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
 }
 
 .align-left {

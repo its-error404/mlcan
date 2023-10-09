@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import '../../styles/@antOverrides';
 
 .repair-list {
   display: flex;
@@ -36,6 +37,11 @@
   left: 29.9%;
   filter: brightness(0) saturate(100%) invert(51%) sepia(10%) saturate(2383%)
   hue-rotate(119deg) brightness(95%) contrast(82%);
+}
+
+.ant-table-repair .ant-table-thead > tr > th {
+  padding: 5px 18px !important;
+  font-weight: 600 !important;
 }
 
 .export-menu-box {
@@ -82,7 +88,7 @@ label {
 
 .filter-header__second-part h4:first-child {
   color: $grey-text;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .filter-header__second-part h4:last-child{
@@ -91,12 +97,12 @@ label {
 }
 
 .filter-header__first-part {
-  padding-top: 30px;
+  padding-top: 10px !important;
   margin-left: 30px;
 }
 
 .filter-header__second-part {
-  margin-top: -20px;
+  margin-top: -30px;
   display: flex;
   flex-flow: row;
   gap: 35px;
@@ -178,7 +184,7 @@ label {
   margin-top: 20px;
   border: 1px solid $light-border;
   border-radius: 15px !important;
-  height: 26vh;
+  height: 25.5vh !important;
   z-index: 4;
   width: 30vw;
   background-color: $filter-menu-bg;
@@ -261,7 +267,7 @@ label {
 }
 
 .version-menu-box p:first-child {
-  margin-top: -20px;
+  margin-top: -10px;
   color: $turkish-green;
   font-weight: 500;
 }
@@ -307,12 +313,17 @@ label {
   gap: 20px;
 }
 
+.repairs-header h1 {
+  font-weight: 800 !important;
+  font-size: 32px !important;
+}
+
 .repair-search-container {
   position: relative;
   display: flex;
   gap: 30px;
   margin-left: 40px;
-  margin-top: 10px;
+  margin-top: -20px;
 }
 
 .repair-search-container input {
@@ -439,6 +450,7 @@ label {
 }
 
 .total-records {
+  margin-top: 10px;
   margin-left: 30px;
 }
 
@@ -498,6 +510,7 @@ label {
 .repair-details {
   background-color: $row-color-first;
   margin-top: 40px;
+  margin-bottom: 40px;
   margin-left: 52px;
   max-width: 500px;
   min-height: 150px;

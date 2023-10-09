@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Upload, message } from 'antd';
 import { ReactComponent as CameraIcon } from "../../../assets/Multicolor icons - SVG/add photo.svg";
-
+import './Dragger.scss'
 interface DraggerProps {
     onFileUpload: () => void;
     className? : string

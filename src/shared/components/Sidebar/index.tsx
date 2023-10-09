@@ -25,10 +25,8 @@ const Sidebar = () => {
     const location = useLocation();
     const { pathname } = location;
     const splitLocation = pathname.split("/");
-
     const [dropDown, setDropDown] = useState(false)
     const dropdownRef = useRef<HTMLDivElement | null>(null);
-
     const navigate = useNavigate()
 
     const toggleDropdown = () => {
@@ -43,21 +41,14 @@ const Sidebar = () => {
         };
 
         document.addEventListener('click', handleOutsideClick);
-
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
     }, []);
 
-    const [data, setData] = useState<UserData>({
-        uid: null,
-        email: null,
-        phone: null,
-        is_admin: null,
-    });
+    const [data, setData] = useState<UserData>({uid: null, email: null, phone: null, is_admin: null});
 
     const authToken = getAuthToken()
-
     useEffect(() => {
         if (authToken) {
             const userData = getUserInfo()
@@ -69,7 +60,6 @@ const Sidebar = () => {
         logoutUser()
         navigate('/auth/login')
     }
-
     return (
         <div className="side-bar">
             <img src={Logo} alt="" width={200} className="logo" />
@@ -142,16 +132,16 @@ const Sidebar = () => {
                                 <div className="align-left">
                                 <div className="user-contact">
                                     <div className="mail-container">
-                                        <EmailIcon width={20} className="mail-icon" />
+                                        <EmailIcon width={15} className="mail-icon" />
                                         <p className="user-email">{data.email}</p>
                                     </div>
                                     <div className="number-container">
-                                        <PhoneIcon width={20} className="call-icon" />
+                                        <PhoneIcon width={15} className="call-icon" />
                                         <p className="user-number">{data.phone}</p>
                                     </div>
                                 </div>
                                 <div className="logout-container" onClick={()=> logout()}>
-                                    <LogoutIcon width={20} className="logout-icon"/>
+                                    <LogoutIcon width={15} className="logout-icon"/>
                                     <p className="logout-text">Logout</p>
                                 </div>
                                 </div>

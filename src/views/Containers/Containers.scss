@@ -17,6 +17,7 @@
 }
 
 .plus-icon {
+    margin-top: -10px;
     filter: $plus-icon;
 }
 
@@ -30,6 +31,7 @@
 }
 
 .containers-header h1 {
+    font-size: 32px;
     font-weight: 700 !important;
 }
 
@@ -44,10 +46,12 @@
     gap: 50px;
     color: $container-options;
     margin-top: -10px;
+    font-weight: 400;
+    font-size: 15px;
 }
 
 .container-table tr {
-    height: 55px;
+    height: 20px !important;
     background-color: $table-row-bg;
 }
 
@@ -69,7 +73,7 @@
     margin-top: -43px;
     background-color: $input-bg;
     width: 84.3vw;
-    height: 80vh;
+    height: 83vh;
     border-top: 1px solid $container-border-top;
 }
 
@@ -162,14 +166,16 @@
 }
 
 .filter-header__first-part h4:first-child:not(.filter-header__second-part h4) {
-    margin-top: 30px;
+    margin-top: 40px;
+    font-weight: 500 !important;
+    font-size: 18px !important;
 }
 
 .filter-header__second-part {
-    margin-top: 30px;
     margin-right: 30px;
     display: flex;
     gap: 40px;
+    font-size: 16px !important;
 }
 
 .filter-header__second-part h4:first-child {
@@ -202,36 +208,6 @@
     color: $gray;
 }
 
-
-.ant-picker-dropdown {
-    position: absolute;
-    left: 36% !important;
-    background-color: white;
-    border: 1px solid black;
-    padding: 10px;
-    height: 230px;
-    width: 230px;
-}
-
-.ant-picker-header-view button {
-    padding: 5px;
-    background-color: $turkish-green;
-    color: $white-bg;
-    border: 0;
-}
-
-.ant-picker-header-view button:first-child{
-    margin-right: 10px;
-}
-
-.ant-picker-cell-inner {
-    background-color: $turkish-green;
-    color: $white-bg;
-    padding: 5px;
-    border: 1px solid transparent;
-    border-radius: 50%;
-}
-
 .filter-dropdown-date {
     display: flex;
     flex-flow: column ;
@@ -260,7 +236,7 @@
 }
 
 .option-activity {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .container-filter-menu.visible {
@@ -278,7 +254,6 @@
     margin-top: 35px !important;
 }
 
-
 .container-filter-button {
     position: relative;
     padding-top: 10px;
@@ -286,6 +261,10 @@
     padding-left: 35px;
     padding-right: 20px;
     background-color: $bg-white;
+}
+
+.ant-table-tbody > tr {
+    max-height: 20px !important;
 }
   
 .container-filter-icon{
@@ -297,10 +276,6 @@
     opacity: 1;
   }
 
-  .container-filter-button.change-button {
-    background-color: $turkish-green;
-    color: $white-bg;
-  }
 
   .filter-button.change-button span {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(340deg) brightness(105%) contrast(101%);
@@ -318,9 +293,6 @@
     padding-left: 10px;
     color: #000;
 }
-
-
-
 
 .filter-menu__options p:nth-child(2) {
     color: $turkish-green;
@@ -401,17 +373,22 @@
     border: 1px solid transparent;
     border-radius: 20px;
     color: red;
-    text-align: center;
-    max-width: 70px;
-    padding: 5px;
+    padding-left: 5px;
+    max-width: 120px;
 }
 
 .billing-style {
     background-color: $billing-bg;
     color: $billing-text;
+    text-transform: capitalize;
 }
 
 .draft-style {
     background-color: $draft-bg;
     color: $draft-text;
+    text-transform: capitalize;
+}
+
+.activity-text.draft-style {
+    width: 95px;
 }

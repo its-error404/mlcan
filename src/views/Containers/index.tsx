@@ -135,6 +135,7 @@ const AllContainers = () => {
     setDisplayedEntries(newFilteredData.length)
     setFilterMenu(false);
   };
+  
 
 
   const handleResetFilters = () => {

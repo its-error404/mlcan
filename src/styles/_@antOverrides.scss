@@ -39,11 +39,30 @@
 }
 .ant-table table {
   border-collapse: collapse;
-  width: 100%;
+  width: 100% !important;
 }
 
 .ant-table-tbody > .ant-table-row td{
-  padding-left: 50px;  
+  padding-left: 20px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-right: 10px !important;  
+}
+
+.ant-table-tbody > .ant-table-row tr:nth-child(2){
+  padding-left: 10px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-right: 10px !important;
+  max-width: 40px;
+}
+
+.ant-table-thead > tr > th {
+  background-color: $table-header !important;
+}
+
+.ant-upload.ant-upload-drag .ant-upload {
+  padding: 0 0 !important;
 }
 
 .ant-table-thead th {
@@ -52,9 +71,6 @@
 }
 
 .even-row td {
-  padding-left: 20px;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
   background-color: $bg-white;
 }
 
@@ -63,9 +79,6 @@
 }
 
 .odd-row td{
-  padding-left: 20px;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
   background-color: $row-color-first;
 }
 .antd-table-repair.ant-table {
@@ -173,7 +186,6 @@
   margin-top: 20px; 
 }
 
-
 .horizontal-pagination {
   display: flex;
   margin-top: -30px;
@@ -213,4 +225,32 @@
 
 .container-table {
   border-spacing: 40px 50px !important;
+}
+
+
+.container-date-picker{
+
+  &.ant-picker {
+      border: 0;
+
+      &.ant-picker-focused {
+          box-shadow: none;
+      }
+  }
+}
+.ant-picker-suffix {
+  position: absolute;
+  top: 70%;
+  right: 5%;
+}
+
+.ant-picker-clear {
+  top: 20%;
+}
+
+.ant-picker-input input {
+  padding-left: 10px;
+}
+.ant-checkbox-checked::after{
+  border: 0;
 }

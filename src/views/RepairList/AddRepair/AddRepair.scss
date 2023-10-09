@@ -30,6 +30,10 @@ input, select {
     margin-top: 20px;
 }
 
+.cost-details-div {
+    margin-bottom: 30px !important;
+}
+
 .form-wrapper {
     border: 1px solid $user-contact-border;
     border-radius: 7px;
@@ -54,8 +58,19 @@ input, select {
     justify-content: space-between;
 }
 
+.input__repair-Area {
+    margin-left: 30px !important;
+}
+.form-header svg {
+    margin-right: 30px;
+}
+
 .repaid-id__input input{
     background-color: $filled-input !important;
+}
+
+.repaid-id__input {
+    margin-bottom: 10px;
 }
 
 .custom-margin {
@@ -169,6 +184,11 @@ input, select {
 .no-input-box {
     color: $primary-black;
     font-weight: 700;
+    border: 0;
+}
+
+.no-input-box span {
+    display: inline-block;
 }
 
 .button-container {
@@ -187,6 +207,7 @@ input, select {
     padding-bottom: 12px;
     padding-left: 18px;
     padding-right: 18px;
+    height: 50px;
     border: 1px solid transparent;
     border-radius: 7px;
     font-weight: 500;
@@ -201,6 +222,7 @@ input, select {
     padding-right: 18px;
     border: 1px solid transparent;
     border-radius: 7px;
+    height: 50px;
     font-weight: 500;
 }
 
@@ -218,6 +240,8 @@ input, select {
 
 .section-header-text {
     margin-left: 10px;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .section-title {

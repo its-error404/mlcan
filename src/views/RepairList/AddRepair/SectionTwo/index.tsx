@@ -6,7 +6,7 @@ import CustomSelect from '../../../../shared/components/SelectField';
 import { RepairFormMeta } from '../../../../services/RepairListService/repair.service';
 
 interface SectionTwoProps {
-  onclose: () => void;
+  onclose: () => void
   formik: {
     values: FormikValues;
     handleChange: (e: React.ChangeEvent<any>) => void;
@@ -21,8 +21,8 @@ const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 const [modeOptions, setModeOptions] = useState([])
 
   const handleCheckboxChange = () => {
-    setIsCheckboxChecked(!isCheckboxChecked);
-  };
+    setIsCheckboxChecked(!isCheckboxChecked)
+  }
 
   useEffect(() => {
     const fetchCont = async () => {
