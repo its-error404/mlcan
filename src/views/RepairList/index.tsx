@@ -271,7 +271,6 @@ const RepairList = () => {
 
   const handleApplyFilters = () => {
     const filteredData = applyFilters(repairListData?.docs || []);
-    console.log(filteredData)
     setFilteredEntries(filteredData);
     setFilterMenu(false);
     setDisplayedEntries(filteredData.length);

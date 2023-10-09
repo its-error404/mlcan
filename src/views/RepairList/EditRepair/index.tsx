@@ -35,9 +35,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
   const EditValues = {
     ...data,
   };
-
-  console.log(formData)
-
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
   const sections = [
