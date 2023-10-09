@@ -31,6 +31,10 @@
     filter: $plus-icon;
 }
 
+label {
+    display:inline-flex !important;
+}
+
 .containers-header {
     padding-left: 40px;
     padding-top: 40px;
