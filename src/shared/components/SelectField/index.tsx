@@ -31,7 +31,6 @@ const CustomSelect: React.FC<SelectProps> = ({
   return (
     <div className="select__container">
       <label htmlFor={id}>{label}</label>
-      <br />
       <select
         name={name}
         onBlur={onBlur}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Select, Space } from 'antd';
 import { useFormik } from 'formik';
 import { ReactComponent as CloseIcon } from "../../../../../../assets/single color icons - SVG/close.svg";
@@ -7,14 +7,13 @@ import '../../../../AddContainer/AddContainer.scss';
 import PhotoDragger from '../../../../../../shared/components/Dragger';
 import '../../../../../../styles/_variables.scss';
 import 'antd/dist/antd.css';
+import './AddItem.scss'
 import { addItemRequest } from '../../../../../../services/ContainersService/containers.service';
+import { containerItemsMeta } from '../../../../../../services/ContainersService/viewcontainer.service';
 
 interface AddItemProps {
   onclose: () => void;
 }
-
-const primaryColor = '#489482';
-const textColor = 'white';
 
 const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
   const formik = useFormik({
@@ -39,6 +38,24 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
     },
   });
 
+  const [repData, setRepData ] = useState([])
+  const [ dmgData, setDmgData ] = useState([])
+  const [itemsData, setItemsData ] = useState([])
+  const [ quantityData, setQuantityData ] = useState([])
+
+  useEffect(() => {
+      const fetchMeta = async () =>{
+        try {
+          const { repAreaData, dmgAreaData, itemTypesData, quantityData  } = await containerItemsMeta()
+          setRepData(repAreaData)
+          setDmgData(dmgAreaData)
+          setItemsData(itemTypesData)
+          setQuantityData(quantityData)
+        } catch (e){}
+      }
+      fetchMeta()
+  },[])
+
   return (
     <div className="container-details-form">
       <div className="form-wrapper">
@@ -60,10 +77,10 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
             <Select
               className="container-select"
               defaultValue="select"
-              options={[
-                { value: 'Area1', label: 'Area 1' },
-                { value: 'Area2', label: 'Area 2' },
-              ]}
+              options={repData.map(option => ({
+                label: option,
+                value: option
+              }))}
 
               onChange={(value) => formik.setFieldValue('repairArea', value)}
               value={formik.values.repairArea}
@@ -72,10 +89,10 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
             <Select
               className="container-select"
               defaultValue="select"
-              options={[
-                { value: 'Damage1', label: 'Damage 1' },
-                { value: 'Damage2', label: 'Damage 2' },
-              ]}
+              options={dmgData.map(option => ({
+                label: option,
+                value: option
+              }))}
              
               onChange={(value) => formik.setFieldValue('damageArea', value)}
               value={formik.values.damageArea}
@@ -84,10 +101,10 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
             <Select
               className="container-select"
               defaultValue="select"
-              options={[
-                { value: 'Type1', label: 'Type 1' },
-                { value: 'Type2', label: 'Type 2' },
-              ]}
+              options={itemsData.map(option => ({
+                label: option,
+                value: option
+              }))}
 
               onChange={(value) => formik.setFieldValue('type', value)}
               value={formik.values.type}
@@ -96,10 +113,10 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
             <Select
               className="container-select"
               defaultValue="select"
-              options={[
-                { value: '1', label: '1' },
-                { value: '2', label: '2' },
-              ]}
+              options={quantityData.map(option => ({
+                label: option,
+                value: option
+              }))}
              
               onChange={(value) => formik.setFieldValue('quantity', value)}
               value={formik.values.quantity}
@@ -130,18 +147,7 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
               onFileUpload={() =>{}}
               className="ant-upload-dragger"
             />
-            <button
-              type="submit"
-              style={{
-                backgroundColor: primaryColor,
-                width: '580px',
-                height: '40px',
-                color: textColor,
-                border: '1px solid transparent',
-                borderRadius: '10px',
-                cursor: 'pointer',
-              }}
-            >
+            <button type="submit" className='submit-button'>
               Add Item
             </button>
           </Space>

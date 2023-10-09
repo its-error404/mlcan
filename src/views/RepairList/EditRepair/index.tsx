@@ -3,14 +3,13 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
 import "../../../styles/_variables.scss";
+import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
-import "../AddRepair/AddRepair.scss";
-import { editRepairEntry } from "../../../services/RepairListService/repair.service";
-import repairDetailsSchema from "../AddRepair/FormValidation";
-import SectionTwo from "./SectionTwo";
-import SectionOne from "./SectionOne";
 import SectionZero from "./SectionZero";
-import { Repair } from "../../../models/repairList.model";
+import SectionOne from "./SectionOne";
+import SectionTwo from "./SectionTwo/";
+import { editRepairEntry } from "../../../services/RepairListService/repair.service";
+
 interface EditRepairProps {
   editedData: Repair;
   onClose: () => void;
@@ -20,26 +19,22 @@ interface EditRepairProps {
 }
 
 const EditRepair: React.FC<EditRepairProps> = ({
-  editedData,
+  data,
   onClose,
   repairId,
-  overlayOpen,
 }) => {
   
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    if (editedData) {
-      setFormData(editedData);
+    if (data) {
+      setFormData(data);
     }
-  }, [editedData]);
+  }, [data]);
 
   const EditValues = {
-    ...editedData,
+    ...data,
   };
-
-  console.log(formData)
-
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
   const sections = [
@@ -57,28 +52,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
     },
   ];
 
-  const toggleSection = (index: number) => {
-    setSectionIndex(index === sectionIndex ? null : index);
-  };
-
-  const isSectionFilled = (index: number) => {
-    return sectionCompleted[index]
-  };
-
-  const formik = useFormik({
-    initialValues: EditValues,
-    onSubmit: async (values) => {
-      try {
-        await editRepairEntry(values, values.id);
-        onClose()
-      } catch (err) {
-        console.log(err);
-      }
-    },
-  });
-
-  const [sectionCompleted, setSectionCompleted] = useState<boolean[]>([false,false,false]);
-
   const handleNextSection = () => {
     if (sectionIndex !== null && sectionIndex < sections.length - 1) {
       sectionCompleted[sectionIndex] = true;
@@ -86,22 +59,27 @@ const EditRepair: React.FC<EditRepairProps> = ({
     }
   };
 
+  const toggleSection = (index: number) => {
+    setSectionIndex(index === sectionIndex ? null : index)
+  }
+
+  const formik = useFormik({
+    initialValues: EditValues,
+    onSubmit: async (values) => {
+      try {
+        await editRepairEntry(values, repairId);
+        onClose()
+      } catch (err) {
+        
+      }
+    },
+  });
+
+  const [sectionCompleted,] = useState<boolean[]>([false,false,false]);
+
   return (
-    <div className="overlay">
-      <div className="overlay-content">
-        <div
-          className={`overlay-box-edit  ${overlayOpen ? "overlay-open" : ""}`}
-          style={{
-            maxHeight: "80vh",
-            overflowY: "auto",
-            position: "fixed",
-            top: "45%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: 'white',
-            borderRadius: '10px'
-          }}
-        >
+    <div className="repair-details-form">
+    <div className="form-wrapper">
           <div className="form-header">
             <h2>Edit Repair Part</h2>
             <CloseIcon width={15} onClick={onClose} />
@@ -116,8 +94,8 @@ const EditRepair: React.FC<EditRepairProps> = ({
                 onClick={() => toggleSection(index)}
               >
                  <div className="section-title">
-                  {isSectionFilled(index) ? (
-                    <TickIcon width={20} fill="#009966" />
+                  {sectionCompleted[index] ? (
+                    <TickIcon width={20} className="tick-icon-filled" />
                   ) : (
                     <TickIcon width={20} />
                   )}
@@ -156,7 +134,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

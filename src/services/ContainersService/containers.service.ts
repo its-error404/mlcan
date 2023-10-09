@@ -34,12 +34,11 @@ export const getWorkingContainer = async () => {
   }
 };
 
-
-export const addContainerRequest = async (values: any) => {
+export const addContainerRequest = async (values: ContainerData) => {
   try {
       const response = await axiosInstance.post(ApiRoutes.CONTAINERS, values)
 
-      if(response.status === 200) {
+      if(response) {
           notification.success({
               message: "Container Added Successfully !",
               description: "Check your container details for more information !",
@@ -62,11 +61,11 @@ export const addContainerRequest = async (values: any) => {
   }
 }
 
-export const addItemRequest = async (values: any) => {
+export const addItemRequest = async (values: ContainerData) => {
   try {
       const response = await axiosInstance.post(ApiRoutes.REP_ITEMS, values)
 
-      if(response.status === 200) {
+      if(response.status) {
           notification.success({
               message: "Item Added Successfully !",
               description: "Check your Item details for more information !",
@@ -89,10 +88,10 @@ export const addItemRequest = async (values: any) => {
   }
 }
 
-export const editContainerRequest = async (values: any, id:string) => {
+export const editContainerRequest = async (values: ContainerData, id:string) => {
   try {
       const response = await axiosInstance.put(`${ApiRoutes.CONTAINERS}/${id}`, values)
-      if(response.status === 200) {
+      if(response) {
           notification.success({
               message: "Container Edited Successfully !",
               description: "Check your container details for more information !",
@@ -113,4 +112,20 @@ export const editContainerRequest = async (values: any, id:string) => {
    } catch (error) {
       console.log(error)
   }
+}
+
+//edit container meta
+
+export const fetchEditContainerMeta = async () => {
+  try  {
+    const [contLengths, contHeights, contYards, contTypes, customers ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])
+
+    const contLengthData = contLengths.data.data.values
+    const contHeightsData = contHeights.data.data.values
+    const contTypesData = contTypes.data.data.values
+    const contYardsData = contYards.data.data.values
+    const customersData = customers.data.data.docs
+    const customerNames = customersData.map(entry => entry.name);
+    return { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames }
+  } catch (err) {throw err}
 }

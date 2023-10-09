@@ -226,3 +226,31 @@
 .container-table {
   border-spacing: 40px 50px !important;
 }
+
+
+.container-date-picker{
+
+  &.ant-picker {
+      border: 0;
+
+      &.ant-picker-focused {
+          box-shadow: none;
+      }
+  }
+}
+.ant-picker-suffix {
+  position: absolute;
+  top: 70%;
+  right: 5%;
+}
+
+.ant-picker-clear {
+  top: 20%;
+}
+
+.ant-picker-input input {
+  padding-left: 10px;
+}
+.ant-checkbox-checked::after{
+  border: 0;
+}

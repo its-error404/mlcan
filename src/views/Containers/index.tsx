@@ -6,17 +6,24 @@ import { ReactComponent as SearchIcon } from "../../assets/single color icons - 
 import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
 import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
 import { ReactComponent as FilterIcon } from '../../assets/single color icons - SVG/filter.svg'
-import { Table } from "antd";
-import {  getContainersData } from "../../services/ContainersService/containers.service";
-import AddContainer from "./AddContainer";
 import { format } from "date-fns";
-import { Link, } from "react-router-dom";
 import '../../styles/_@antOverrides.scss'
-import { AllContainersData, ContainersData } from "../../models/Containers.model";
 import 'antd/dist/antd.css';
-import { ColumnsType } from "antd/lib/table";
+import { Button, DatePicker, Table } from "antd";
+import { getContainersData } from "../../services/ContainersService/containers.service";
+import AddContainer from "./AddContainer";
+import { Link } from "react-router-dom";
+import "../../styles/_@antOverrides.scss";
+import { AllContainersData, ContainersData } from "../../models/Containers.model";
+import "antd/dist/antd.css";
+import { formatDate } from "../../shared/utils/formatDate";
+import moment from "moment";
+import ExportMenu from "../../shared/components/ExportMenu";
+import { ColumnsType, TableProps } from "antd/lib/table";
+import { SorterResult } from "antd/lib/table/interface";
 
 const AllContainers = () => {
+  const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
   const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [addContainer, setAddContainer] = useState<boolean>(false);
@@ -28,36 +35,33 @@ const AllContainers = () => {
   const [yardData, setYardData] = useState("");
   const [dateData, setDateData] = useState("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
-  const [allContainersData, setContainersData] =
-    useState<AllContainersData | null>(null);
+  const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
   const [totalEntries, setTotalEntries] = useState<number | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
+  const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>({});
 
+  const handleChange: TableProps<ContainersData>['onChange'] = (pagination, filters, sorter) => {
+    if (Array.isArray(sorter)) {
+      
+    } else if (sorter && sorter.field) {
+      setSortedInfo(sorter as SorterResult<ContainersData>);
+  
+      const newFilteredData = [...filteredEntries];
+      newFilteredData.sort((a, b) => {
+        if (sorter.order === 'ascend') {
+          return a[sorter.field].localeCompare(b[sorter.field]);
+        } else {
+          return b[sorter.field].localeCompare(a[sorter.field]);
+        }
+      });
+      setFilteredEntries(newFilteredData);
+    }
+  };
   
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getContainersData();
-          setContainersData(data.deserializedData);
-          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
-          setTotalEntries(data.totalEntries || 0);
-          setDisplayedEntries(data.totalEntries || 0);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchData();
+    refreshData();
   }, []);
-
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) {
-      return "";
-    }
-
-    const date = new Date(dateString);
-    return format(date, "dd MMM yyyy");
-  };
 
   const toggleAddContainer = () => {
     setAddContainer(!addContainer);
@@ -67,7 +71,7 @@ const AllContainers = () => {
     if (!allContainersData?.docs) {
       return [];
     }
-    
+
     const containers = allContainersData.docs as ContainersData[];
     
     let filteredData = [] as ContainersData[];
@@ -107,23 +111,27 @@ const AllContainers = () => {
     setSectionIndex(newIndex);
     const sectionFilteredData = filterContainers(section, searchData);
     setFilteredEntries(sectionFilteredData);
+    setDisplayedEntries(sectionFilteredData.length);
     setActiveSection(section);
     setShowActivityUidColumn(section === "Draft");
-  }
+  };
 
-  const getRowClassName = (record: any, index: number) => {
+
+  const getRowClassName = (record: ContainersData, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
- 
+  const startIndex = Math.min(displayedEntries, totalEntries) > 0 ? 1 : 0;
+  const endIndex = Math.min(displayedEntries, totalEntries);
+
   const applyFilters = () => {
-  
+
     const filteredData = filterContainers(activeSection, searchData).filter((doc) => {
       const ActivityMatches = activityData === "" || doc.activityType === activityData;
       const statusMatches = statusData === "" || doc.activityStatus === statusData;
       const yardMatches = yardData === "" || doc.yard === yardData;
       const customerMatches = customerData === "" || doc.customerName === customerData;
       const dateMatches = dateData === "" || formatDate(doc.activityDate) === dateData;
-      
+
       return (
         ActivityMatches &&
         customerMatches &&
@@ -132,16 +140,17 @@ const AllContainers = () => {
         dateMatches
       );
     });
-    
+
     return filteredData;
   };
-  
+
   const handleApplyFilters = () => {
     const newFilteredData = applyFilters();
     setFilteredEntries(newFilteredData);
+    setDisplayedEntries(newFilteredData.length)
     setFilterMenu(false);
-    setDisplayedEntries(newFilteredData.length);
   };
+  
 
   const handleResetFilters = () => {
     setActivityData("");
@@ -149,119 +158,162 @@ const AllContainers = () => {
     setYardData("");
     setStatusData("");
     setCustomerData("");
-    const newFilteredData = filterContainers(activeSection, searchData);
-    setFilteredEntries(newFilteredData);
+    setSearchData("")
+
+    setFilteredEntries(searchResults);
+    setDisplayedEntries(searchResults.length);
     setFilterMenu(false);
-    setDisplayedEntries(newFilteredData.length);
   };
 
-  const sections = [ "All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
+  const refreshData = () => {
+    const fetchData = async () => {
+      try {
+        const data = await getContainersData();
+        if (data) {
+          setContainersData(data.deserializedData);
+          setSearchResults((data.deserializedData.docs || []) as ContainersData[]);
+          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
+          setTotalEntries(data.totalEntries || 0);
+          setDisplayedEntries(data.totalEntries || 0);
+        }
+      } catch (e) { }
+    };
+    fetchData();
+  }
+
+  const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
   const columns: ColumnsType<ContainersData> = [
     {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
-      render: (text: string, record: any) => (
+      render: (text: string, record: ContainersData) => (
         <Link to={`/containers/${record.id}`}>{text}</Link>
       ),
     },
     {
       title: (
-        <>
-          Yard <AscToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Yard
+        </div>
       ),
       dataIndex: "yard",
       key: "yard",
-      render: (text: string) => (showActivityUidColumn ? text : null),
+      render: (text: string) => (text),
+      sorter: (a: ContainersData, b: ContainersData) => a.yard.length - b.yard.length,
+      sortOrder: sortedInfo.columnKey === 'yard' ? sortedInfo.order: null,
     },
     {
       title: (
-        <>
-          Customer <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Customer
+        </div>
       ),
       dataIndex: "customerName",
       key: "customerName",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text || "N/A"),
+      sorter: (a: ContainersData, b: ContainersData) => a.customerName.length - b.customerName.length,
+      sortOrder: sortedInfo.columnKey === 'customerName' ? sortedInfo.order: null,
     },
     {
       title: (
-        <>
-          Owner Name <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Owner Name
+        </div>
       ),
       dataIndex: "owner",
       key: "owner",
-      render: (text: string, record: any) => text || "N/A",
+      render: (text: string) => (text || "N/A"),
+      sorter: (a: ContainersData, b: ContainersData) => a.owner.length - b.owner.length,
+      sortOrder: sortedInfo.columnKey === 'owner' ? sortedInfo.order: null,
+      ellipsis: true
     },
-
     {
       title: (
-        <>
+        <div className="sort-column">
           {sectionIndex === 1 ? "Activity" : "Current Activity"}
-          {sectionIndex === 1 && <ToggleIcon width={8} style={{ marginLeft: 8 }} />}
-        </>
+        </div>
       ),
       dataIndex: "activityType",
       key: "activityType",
-      render: (text: string, record: any) => <div className="activityStatusCap">{text || 'N/A'}</div> || "N/A",
+      render: (text: string) => (text ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() : "N/A"),
+      sorter: (a: ContainersData, b: ContainersData) => {
+        const activityTypeA = a.activityType || '';
+        const activityTypeB = b.activityType || '';
+        return activityTypeA.localeCompare(activityTypeB);
+      },
+      sortOrder: sortedInfo.columnKey === 'activityType' ? sortedInfo.order : null,
+      ellipsis: true
     },
-    showActivityUidColumn && {
-      title: (
-        <>
-          {sectionIndex === 1 ? "Activity ID" : ""}
-          {sectionIndex === 1 && (
-            <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-          )}
-        </>
-      ),
-      dataIndex: "activityUid",
-      key: "activityUid",
-      render: (text: string, record: any) => text || "N/A",
-    },
+    sectionIndex === 1
+    ? {
+        title: (
+          <div className="sort-column">Activity ID</div>
+        ),
+        dataIndex: "activityUid",
+        key: "activityUid",
+        render: (text: string) =>
+          showActivityUidColumn ? text || "N/A" : null,
+        sorter: (a: ContainersData, b: ContainersData) =>
+          a.activityUid.length - b.activityUid.length,
+        sortOrder: sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
+        ellipsis: true,
+      }
+    : null,
     {
       title: (
-        <>
-          Activity Status <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Activity Date
+        </div>
       ),
       dataIndex: "activityDate",
       key: "activityDate",
-      render: (text: string, record: any) => formatDate(text) || "N/A",
+      render: (text: string) => (formatDate(text) || "N/A"),
+      sorter: (a: ContainersData, b: ContainersData) => {
+        const activityDateA = new Date(a.activityDate);
+        const activityDateB = new Date(b.activityDate);
+        return activityDateA.getTime() - activityDateB.getTime()
+      },
+      sortOrder: sortedInfo.columnKey === "activityDate" ? sortedInfo.order : null
     },
     {
       title: (
-        <>
-          Status <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
+        <div className="sort-column">
+          Status
+        </div>
       ),
       dataIndex: "activityStatus",
       key: "activityStatus",
-      render: (text: string, record: any) => {
+      render: (text: string) => {
         let displayedText = "N/A";
         if (text === "billing") {
           displayedText = "Ready for Billing";
         } else if (text === "draft") {
           displayedText = "Quote Draft";
         }
-    
+
         return (
           <div
-            className={`activity-text ${
-              text === "billing"
-                ? "billing-style"
-                : text === "draft"
+            className={`activity-text ${text === "billing"
+              ? "billing-style"
+              : text === "draft"
                 ? "draft-style"
                 : "default-style"
-            }`}
+              }`}
           >
             {displayedText}
           </div>
         );
       },
-    },    
+      sorter: (a: ContainersData, b: ContainersData) => {
+        const activityStatusA = a.activityStatus || '';
+        const activityStatusB = b.activityStatus || '';
+        return activityStatusA.localeCompare(activityStatusB);
+      },
+      sortOrder: sortedInfo.columnKey === 'activityStatus' ? sortedInfo.order : null,
+    },
   ].filter(Boolean);
+
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -277,12 +329,31 @@ const AllContainers = () => {
     };
   }, []);
 
-  const SearchChange = (e: any) => {
-    const searchQuery = e.target.value;
-    console.log(searchQuery)
+  const SearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let searchQuery = e.target.value;
     setSearchData(searchQuery);
-    console.log("searchData:", searchData);
-  }
+
+    const filteredData = applyFilters();
+
+    const filteredSearchData = filteredData.filter((doc) =>
+      doc.uid?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setSearchResults(filteredSearchData)
+    setFilteredEntries(filteredSearchData);
+    setDisplayedEntries(filteredSearchData.length);
+
+    if (searchQuery === "") {
+      refreshData();
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchData("");
+    refreshData();
+    const newFilteredData = applyFilters();
+    setFilteredEntries(newFilteredData);
+    setDisplayedEntries(newFilteredData.length);
+  };
 
   return (
     <div className="main">
@@ -329,14 +400,12 @@ const AllContainers = () => {
               <span className="search-icon">
                 <SearchIcon width={17} />
               </span>
-              <input
-                type="text"
-                className="search-box"
-                placeholder="Search container by number"
-                onChange={SearchChange}
-                value={searchData}
-              ></input>
-
+              <input type="text" className="search-box" placeholder="Search container by number" onChange={SearchChange} value={searchData}></input>
+              {searchData && (
+                <Button className="clear-search" onClick={handleClearSearch}>
+                  Clear
+                </Button>
+              )}
               <div ref={filterMenuRef}>
                 <div
                   className="filters-container container-filter-container"
@@ -345,9 +414,8 @@ const AllContainers = () => {
                   }}
                 >
                   <button
-                    className={`repair-filter-button ${
-                      filterMenu ? "change-button" : ""
-                    }`}
+                    className={`repair-filter-button ${filterMenu ? "change-button" : ""
+                      }`}
                   >
                     <span className="filter-icon">
                       <FilterIcon width={20} />
@@ -355,31 +423,29 @@ const AllContainers = () => {
                     Filters
                   </button>
                   <div
-                    className={`filter-menu repair-list-filters container-filter-menu ${
-                      filterMenu ? "visible" : "invisible"
-                    }`}
-                    onClick={(e: any) => e.stopPropagation()}
+                    className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"
+                      }`}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <div className="filter-header__first-part">
                       <h4>Filters</h4>
                     </div>
                     <div className="filter-header__second-part">
-                      <h4 onClick={handleResetFilters}>Reset</h4>
-                      <h4 onClick={(e)=> {e.stopPropagation(); handleApplyFilters()}}>Apply</h4>
+                      <h4 onClick={(e) => { e.stopPropagation(); handleResetFilters(); }}>Reset</h4>
+                      <h4 onClick={(e) => { e.stopPropagation(); handleApplyFilters() }}>Apply</h4>
                     </div>
 
                     <div className="filter-options-containers">
                       <div className="column-1">
-                        <label>Date</label>
-                        <div className="container-date-box">
-                          <input
-                            type="date"
+                        <label style={{ width: '40px' }}>Date</label>
+                        <div className="container-date-box filter-date">
+                          <DatePicker
                             className="container-date-picker"
-                            onChange={(e) => setDateData(e.target.value)}
-                            value={dateData}
+                            onChange={(date, dateString) => setDateData(dateString)}
+                            value={dateData !== "" ? moment(dateData, "DD MMM YYYY") : null}
+                            format="DD MMM YYYY"
                           />
                         </div>
-
                         <div className="filter-dropdown-date choose-activity">
                           <label>Activity</label>
                           <select
@@ -431,6 +497,12 @@ const AllContainers = () => {
                   </div>
                 </div>
               </div>
+
+              {activeSection === "Pending Customer Approval" && (
+                <div className="container-export-menu">
+                  <ExportMenu />
+                  <Button className="bulk-upload-button approve-button">Approve Quote</Button>
+                </div>)}
             </div>
 
             <div className="container-box__container">
@@ -441,8 +513,13 @@ const AllContainers = () => {
                 className="container-table"
                 rowClassName={getRowClassName}
                 pagination={false}
+                onChange={handleChange}
               />
             </div>
+            <p className="total-records">
+              Showing <span className="record-range">{startIndex} - {endIndex} &nbsp;</span>
+              of&nbsp; <span className="total-range">{totalEntries}</span>
+            </p>
           </div>
         </div>
       </div>

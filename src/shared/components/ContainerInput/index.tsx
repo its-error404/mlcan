@@ -1,35 +1,34 @@
-import React, { ChangeEvent, FocusEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface InputProps {
-  label: string;
-  name: string;
-  id: string;
+  label?: string;
+  name?: string;
+  id?: string;
+  className: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: FocusEvent<HTMLInputElement>) => void;
   placeholder: string;
 }
 
 const CustomInput: React.FC<InputProps> = ({
-  label,
   name,
   id,
   value,
   onChange,
-  onBlur,
-  placeholder
+  placeholder,
+  className
 }) => {
   return (
-    <div className="input__repair-id">
-      <label htmlFor={id}>{label}</label>
+    <div>
+      <br />
       <input
         type="text"
         name={name}
         id={id}
         onChange={onChange}
-        onBlur={onBlur}
         value={value}
         placeholder={placeholder}
+        className={className}
       />
     </div>
   );
