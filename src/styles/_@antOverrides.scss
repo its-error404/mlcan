@@ -256,6 +256,25 @@
       }
   }
 }
+
+.container-date-picker{
+    &.ant-picker{
+      background: none !important;
+
+      &.ant-picker-input  input{
+          border: 1px solid !important;
+      }
+    }
+}
+
+.ant-select-selection-search > input {
+  color: $text-gray !important;
+}
+
+.filter-date > div > div > input {
+  border: 1px solid $ant-input-border !important;
+}
+
 .ant-picker-suffix {
   position: absolute;
   top: 70%;

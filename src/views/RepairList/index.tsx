@@ -22,7 +22,6 @@ import { SorterResult } from "antd/es/table/interface";
 import { TableProps } from "antd/lib";
 import { ColumnType } from "antd/lib/table";
 
-
 const RepairList = () => {
  
   const handleRowClick = (row: any) => {
@@ -153,13 +152,15 @@ const RepairList = () => {
       sortOrder: sortedInfo.columnKey === "dmgArea" ? sortedInfo.order : null,
     },
     {
-      title: (
-        <>
-          Type
-        </>
-      ),
+      title: "Type",
       dataIndex: "type",
       key: "type",
+      render: (text: string) => {
+        if (text) {
+          return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+        }
+        return text;
+      },
       sorter: (a: Repair, b: Repair) => {
         if (a.type && b.type) {
           return a.type.length - b.type.length;
@@ -233,7 +234,7 @@ const RepairList = () => {
     },
     {
       className: "edit-icon",
-      render: ( record: any) => (
+      render: ( record: Repair) => (
         <Icon icon="material-symbols:edit"  color="#949ea9" width={20}
           onClick={() => {
             handleEditClick(record);
@@ -243,10 +244,10 @@ const RepairList = () => {
     },
     {
       className: "delete-icon",
-      render: (text: string, record: any) => (
+      render: (text: string, record: Repair) => (
         <>
           <Icon icon="material-symbols:delete"  color="#949ea9" width={20}
-            onClick={() => handleDeleteClick(record.id, record.uid)}
+            onClick={() => handleDeleteClick(record.id || '', record.uid ||'')}
           />
         </>
       ),
@@ -298,14 +299,14 @@ const RepairList = () => {
     setAddRepair(!addRepair);
   };
 
-  const getRowClassName = (record: any, index: number) => {
+  const getRowClassName = (record: Repair, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
 
   const applyFilters = (data: any) => {
     return data.filter((doc: Repair) => {
       const repairAreaMatches =  repairAreaData === "" || doc.repArea === repairAreaData;
-      const typeMatches = typeData === "" || doc.type === typeData;
+      const typeMatches = typeData === "" || doc?.type?.toLowerCase() === typeData.toLowerCase();
       const damagedAreaMatches = damagedAreaData === "" || doc.dmgArea === damagedAreaData;
 
       return repairAreaMatches && typeMatches && damagedAreaMatches;
@@ -422,7 +423,7 @@ const RepairList = () => {
                 className={`filter-menu repair-list-filters ${
                   filterMenu ? "visible" : "invisible"
                 }`}
-                onClick={(e: any) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
               >
                 <div className="filter-header__first-part">
                   <h4>Filters</h4>
@@ -467,8 +468,8 @@ const RepairList = () => {
                     onChange={(e) => setTypeData(e.target.value)}
                   >
                     <option>Select</option>
-                    <option>INSERT</option>
-                    <option>PATCH</option>
+                    <option>Insert</option>
+                    <option>Patch</option>
                   </select>
                 </div>
               </div>

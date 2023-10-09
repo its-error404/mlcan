@@ -25,7 +25,7 @@ const onUpload = (onClose: { (): void; (): void; }) => {
 
 const BulkUploadComponent: React.FC<BulkUploadComponentProps> = ({ onClose }) => {
   return (
-    <OverlayBox onClose={onClose} minHeight="450px">
+    <OverlayBox onClose={onClose} minHeight="437px">
       <div className="bulk-upload-box">
         <div className="header">
             <div className="close-flex">
@@ -40,7 +40,7 @@ const BulkUploadComponent: React.FC<BulkUploadComponentProps> = ({ onClose }) =>
             <h3>Drag & Drop to upload</h3>
             <Upload className="file-upload">or browse file </Upload>
         </div>
-        <div className="delete-confirmation-buttons upload-buttons">
+        <div className="delete-confirmation-buttons upload-buttons repair-list-bulk-upload-buttons">
                 <button onClick={onClose}>Cancel</button>
                 <button onClick={()=>onUpload(onClose)}>Proceed</button>
         </div>

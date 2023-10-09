@@ -1,5 +1,7 @@
 import { DatePicker } from "antd";
+import dayjs, { Dayjs } from "dayjs";
 import React from "react";
+import '../../../views/Containers/Containers.scss'
 
 interface FilterMenuProps {
   filterMenu?: boolean;
@@ -34,16 +36,24 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
   handleResetFilters,
   handleApplyFilters,
 }) => {
-  function moment(dateData: any, arg1: string): import("dayjs").Dayjs | null | undefined {
-    throw new Error("Function not implemented.");
+const handleDateChange = (date: Dayjs | null, dateString: string) => {
+  if (date !== null) {
+    if(setDateData){
+    setDateData(date.format('DD MMM YYYY'));
+    }
+  } else {
+    if(setDateData){
+    setDateData('');
+    }
   }
+};
 
   return (
     <div className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"}`} onClick={(e) => e.stopPropagation()}>
       <div className="filter-header__first-part">
         <h4>Filters</h4>
       </div>
-      <div className="filter-header__second-part">
+      <div className="filter-header__second-part container-filter-second-part">
         <h4
           onClick={(e) => {
             e.stopPropagation();
@@ -66,19 +76,19 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
         <div className="column-1">
           <label style={{ width: "40px" }}>Date</label>
           <div className="container-date-box filter-date">
-            <DatePicker
-              className="container-date-picker"
-              onChange={(date, dateString) => setDateData?.(dateString)}
-              value={dateData !== "" ? moment(dateData, "DD MMM YYYY") : null}
-              format="DD MMM YYYY"
-            />
-          </div>
+      <DatePicker
+        className="container-date-picker"
+        onChange={handleDateChange}
+        value={dateData !== "" ? dayjs(dateData, "DD MMM YYYY") : null}
+        format="DD MMM YYYY"
+      />
+    </div>
           <div className="filter-dropdown-date choose-activity">
             <label>Activity</label>
             <select
               value={activityData}
               onChange={(e) => setActivityData(e.target.value)}
-            >
+            ><option>Select</option>
               <option>draft</option>
               <option>inspection</option>
             </select>
@@ -92,6 +102,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
               value={statusData}
               onChange={(e) => setStatusData?.(e.target.value)}
             >
+              <option>Select</option>
               <option>billing</option>
               <option>draft</option>
             </select>
@@ -103,6 +114,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
               value={yardData}
               onChange={(e) => setYardData?.(e.target.value)}
             >
+              <option>Select</option>
               <option>Nordel</option>
               <option>Harbourlink</option>
               <option>Aheer</option>
@@ -116,6 +128,7 @@ const FilterMenu:React.FC<FilterMenuProps> = ({
             value={customerData}
             onChange={(e) => setCustomerData?.(e.target.value)}
           >
+            <option>Select</option>
             <option>Krishna</option>
             <option>Killian Darian</option>
           </select>

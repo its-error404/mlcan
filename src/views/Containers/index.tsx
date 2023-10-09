@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Containers.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
@@ -15,7 +15,7 @@ import { TableProps } from "antd/lib/table";
 import { SorterResult } from "antd/lib/table/interface";
 import FilterMenu from "../../shared/components/ContainerFilterMenu";
 import ApproveBox from "../../shared/components/ApproveBox";
-import AddContainer from "./AddContainer";
+import AddContainer from "./AddContainer/index";
 
 const AllContainers = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -316,21 +316,6 @@ const AllContainers = () => {
   baseColumns.splice(5, 0, ...dynamicColumns);
   const columns = baseColumns.filter(Boolean);
 
-  let filterMenuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    let handler = (e: any) => {
-      if (!filterMenuRef.current?.contains(e.target)) {
-        setFilterMenu(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, []);
-
   const SearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let searchQuery = e.target.value;
     setSearchData(searchQuery);
@@ -367,7 +352,7 @@ const AllContainers = () => {
             <PlusIcon
               width={25}
               className="plus-icon"
-              onClick={(event: React.MouseEvent<SVGSVGElement, MouseEvent>) =>()=>setAddContainer(!addContainer)}
+              onClick={() =>setAddContainer(!addContainer)}
             />
           </div>
 
@@ -412,7 +397,7 @@ const AllContainers = () => {
                   Clear
                 </Button>
               )}
-              <div ref={filterMenuRef}>
+              <div>
                 <div
                   className="filters-container container-filter-container"
                   onClick={() => {
@@ -461,9 +446,12 @@ const AllContainers = () => {
           )}
 
               {activeSection === "Pending Customer Approval" && (
+                <div>
                 <div className="container-export-menu">
                   <ExportMenu />
                   <Button className="bulk-upload-button approve-button" onClick={()=>setApproveBox(!approveBox)}>Approve Quote</Button>
+                </div>
+                
                 </div>
               )}
             </div>
