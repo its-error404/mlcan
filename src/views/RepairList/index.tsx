@@ -74,24 +74,21 @@ const RepairList = () => {
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [sortedInfo, setSortedInfo] = useState<SorterResult<Repair>>({});
 
+
+  
   const handleChange: TableProps<Repair>["onChange"] = (
     pagination,
     filters,
     sorter
   ) => {
     if (Array.isArray(sorter)) {
-    } else if (sorter && sorter.field) {
+    } else if (sorter?.field) {
       setSortedInfo(sorter as SorterResult<Repair>);
-    }
-  };
-  
-  useEffect(() => {
-    if (sortedInfo.field) {
       const newFilteredData = [...filteredEntries];
       newFilteredData.sort((a, b) => {
-        const fieldA = a[sortedInfo.field as keyof Repair] as string;
-        const fieldB = b[sortedInfo.field as keyof Repair] as string;
-        if (sortedInfo.order === "ascend") {
+        const fieldA = a[sorter.field as keyof Repair] as string;
+        const fieldB = b[sorter.field as keyof Repair] as string;
+        if (sorter.order === "ascend") {
           return fieldA.localeCompare(fieldB);
         } else {
           return fieldB.localeCompare(fieldA);
@@ -99,7 +96,8 @@ const RepairList = () => {
       });
       setFilteredEntries(newFilteredData);
     }
-  }, [sortedInfo]);
+  };
+  
   
 
   const [columns] = useState<ColumnType<Repair>[]>([
@@ -126,20 +124,15 @@ const RepairList = () => {
       sortOrder: sortedInfo.columnKey === "uid" ? sortedInfo.order : null,
     },
     {
-      title: (
-        <>
-          Repair Area
-        </>
-      ),
+      title: <div className="sort-column">Repair Area</div>,
       dataIndex: "repArea",
-      key: "repArea",
+      key: "repArea", 
       sorter: (a: Repair, b: Repair) => {
         if (a.repArea && b.repArea) {
           return a.repArea.length - b.repArea.length;
         }
         return 0;
       },
-      sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "repArea" ? sortedInfo.order : null,
     },
     {
@@ -392,8 +385,7 @@ const RepairList = () => {
                 onClose={() => {
                   setSelectedEntryForEdit(null);
                 }}
-                repairId={selectedEntryForEdit.id || ''}
-                
+                repairId={selectedEntryForEdit.id || ''} 
               />
             </div>
           </div>

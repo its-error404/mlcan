@@ -27,6 +27,10 @@
   color: $turkish-green;
 }
 
+.ant-table-column-sort > .ant-table-column-sorters > .ant-table-column-title{
+  color: $turkish-green !important;
+}
+
 .ant-upload-drag-icon {
   position: absolute;
   top: 33%;
@@ -275,5 +279,5 @@
 }
 
 .ant-table-column-sorter-up.active, .ant-table-column-sorter-down.active {
-  color: $turkish-green;
+  color: $turkish-green !important;
 }
