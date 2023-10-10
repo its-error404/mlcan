@@ -147,19 +147,11 @@ const ActivityCard: React.FC<{
         render: (_: any, record: any) => (
           <EllipsisMenu
             onDelete={() => {
-              // Implement the delete logic here
-              console.log("Delete logic called for record:", record);
             }}
             onUpdateComment={() => {
-              // Implement the update comment logic here
-              console.log(
-                "Update Comment logic called for record:",
-                record
-              );
             }}
             onUpdatePhoto={() => {
-              // Implement the update photo logic here
-              console.log("Update Photo logic called for record:", record);
+              
             }}
           />
         ),

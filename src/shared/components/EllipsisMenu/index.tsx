@@ -18,17 +18,14 @@ const EllipsisMenu: React.FC<EllipsisMenuProps> = ({
 }) => {
 
   const handleDelete = () => {
-    console.log("Delete function called in EllipsisMenu");
     onDelete();
   };
 
   const handleUpdateComment = () => {
-    console.log("Update Comment function called in EllipsisMenu");
     onUpdateComment();
   };
 
   const handleUpdatePhoto = () => {
-    console.log("Update Photo function called in EllipsisMenu");
     onUpdatePhoto();
   };
 
