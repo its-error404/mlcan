@@ -1,0 +1,77 @@
+@import '../../../styles/variables';
+
+.delete-modal > .ant-modal-content {
+    height: 316px !important;
+    width: 536px !important;
+    border: 1px solid transparent !important;
+    border-radius: 20px !important;
+}
+
+.text-container {
+    margin-top: 20px !important;
+    margin-right: auto;
+    margin-left: auto;
+    width: 500px;
+}
+
+.delete-modal-text p:nth-child(3) {
+    margin-top: 10px !important;
+    text-align: center;
+    margin-left: -20px !important;
+}
+
+.text-container p:nth-child(2){
+    font-size: 24px;
+    color: $text-black;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.text-container p:nth-child(3){
+    font-size: 16px;
+    font-weight: 500;
+    color: $text-gray;
+    margin-top: -10px;
+    margin-left: 80px;
+}
+
+.text-container svg 
+{
+    margin-left: 230px;
+}
+
+.delete-modal > .ant-modal-content > .ant-modal-header {
+    border: 1px solid transparent !important;
+    border-radius: 15px !important;
+}
+
+.delete-modal > .ant-modal-content > .ant-modal-footer  {
+    display: flex;
+    margin-top: 30px;
+    margin-left: 20px;
+    gap: 10px;
+}
+
+.delete-modal > .ant-modal-content > .ant-modal-footer button:first-child{
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    background-color: $cancel-bg;
+    border-radius: 10px;
+    color: $text-black;
+}
+
+.delete-modal > .ant-modal-content > .ant-modal-footer button:last-child{
+    background-color: $delete-button-bg;
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    color: $white-bg;
+    border-radius: 10px;
+}
+
+.delete-modal > .ant-modal-content > button > span {
+    display: none;
+}
+

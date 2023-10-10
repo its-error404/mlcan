@@ -118,3 +118,15 @@ export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) 
     className: "custom-notification-placement",
   });}
 }
+
+export const deleteItem = async (uniqueID: string) => {
+  try {
+    await axiosInstance.delete(`${ApiRoutes.REPAIR_ITEMS}/${uniqueID}`)
+    notification.success({
+      message: "Item Deleted !",
+      className: 'custom-notification-placement'
+    })
+  } catch(err) {}
+}
+
+// export const editItem = astnc

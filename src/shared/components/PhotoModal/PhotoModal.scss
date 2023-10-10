@@ -1,0 +1,51 @@
+@import '../../../styles/variables';
+
+.photo-modal > .overlay {
+    align-items: normal;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: flex-start;
+}
+
+.photo-modal > .overlay > .overlay-content > .main-photo-header > .photo-header{
+    
+    margin-left: 30px;
+    display: flex !important;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 30px;
+}
+
+.photo-modal > .overlay > .overlay-content > .main-photo-header>  .photo-header > p{
+    color: $bg-white;
+    font-weight: 600;
+}
+
+.photo-icon-header {
+    display: flex;
+    gap: 30px;
+}
+
+.photo-modal > .overlay > .overlay-content > .main-photo-header {
+    display: flex;
+    margin-top: 60px;
+    gap: 1400px;
+    justify-content: space-between !important;
+}
+
+.photo-image-div {
+    margin-top: 100px;
+    display: flex;
+    margin-left: 450px;
+}
+
+.photo-image-div svg:nth-child(1) {
+    margin-left: -200px;
+}
+
+.photo-image-div img {
+    margin-left: 100px;
+}
+
+.photo-image-div svg:nth-child(3) {
+    margin-left: 100px;
+}

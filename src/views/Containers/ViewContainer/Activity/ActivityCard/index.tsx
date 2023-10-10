@@ -14,11 +14,15 @@ import { Button, Dropdown, Menu, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import {fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import {deleteItem, fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import TimeLine from "../../../../../shared/components/Timeline";
 import { EllipsisOutlined } from "@ant-design/icons";
 import EllipsisMenu from "../../../../../shared/components/EllipsisMenu";
+import DeleteModal from "../../../../../shared/components/DeleteModal";
+import EditItem from "./EditItem";
+import CommentModal from "../../../../../shared/components/CommentModal";
+import PhotoModal from "../../../../../shared/components/PhotoModal";
 
 interface RepairFormData {
   uid: string;
@@ -32,6 +36,7 @@ interface RepairFormData {
   materialCost: number;
   totalCost: number;
   id: string;
+  items: []
 }
 
 interface OptionMenuProps {
@@ -60,6 +65,10 @@ const ActivityCard: React.FC<{
   const [showTooltip, setShowTooltip] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [timeline, setTimeline] = useState(false)
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editItem, setEditItem] = useState(false)
+  const [commentModal, setCommentModal] = useState(false)
+  const [photoModal, setPhotoModal] = useState(false)
 
   const handleMouseEnter = () => {
     setShowTooltip(true);
@@ -147,12 +156,15 @@ const ActivityCard: React.FC<{
         render: (_: any, record: any) => (
           <EllipsisMenu
             onDelete={() => {
+             setDeleteModalVisible(true)
             }}
             onUpdateComment={() => {
+              setCommentModal(true)
             }}
             onUpdatePhoto={() => {
-              
+              setPhotoModal(true)
             }}
+            onEditItem={()=>{setEditItem(true)}}
           />
         ),
       },
@@ -386,6 +398,11 @@ const ActivityCard: React.FC<{
           </div>
         </div>
       )}
+
+      {isDeleteModalVisible && (<DeleteModal onOk={()=>{deleteItem(expandedRepairFormData?.id || ''); setDeleteModalVisible(false)}} onCancel={()=>setDeleteModalVisible(false)}/>)}
+      {editItem && (<div className="overlay"><div className="overlay-content"><EditItem onclose={()=>setEditItem(false)}/></div></div>)}
+      {commentModal && (<CommentModal commentData="" id={expandedRepairFormData?.uid} repairArea={expandedRepairFormData?.repairArea}  centered onCancel={()=>{setCommentModal(false)}}/>)}
+      {photoModal && (<PhotoModal centered onCancel={()=>{setPhotoModal(false)}}/>)}
     </div>
   );
 };

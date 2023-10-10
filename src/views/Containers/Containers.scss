@@ -13,6 +13,7 @@
 }
 
 .active-section {
+    color: $turkish-green;
     padding-bottom: 10px;
     border-bottom: 2px solid $turkish-green;
 }
@@ -71,7 +72,7 @@ label {
 }
 
 .container-table tr > th {
-    font-weight: 500 !important;
+    font-weight: 600 !important;
 }
 
 .container-table td > a {

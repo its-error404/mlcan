@@ -21,21 +21,21 @@
 
 @font-face {
      font-family: SFProDisplay, sans-serif;
-     src: url('./SFPRODISPLAYLIGHTITALIC.OTF');
+     src: url('./SFPRODISPLAYLIGHTITALIC.OTF') format(opentype);
      font-weight: 300;
      font-style: italic;
 }
 
 @font-face {
      font-family: SFProDisplay, sans-serif;
-     src: url('./SFPRODISPLAYMEDIUM.OTF');
+     src: url('./SFPRODISPLAYMEDIUM.OTF') format(opentype);
      font-weight: 500;
      font-style: normal;
 }
 
 @font-face {
      font-family: SFProDisplay, sans-serif;
-     src: url('./SFPRODISPLAYREGULAR.OTF');
+     src: url('./SFPRODISPLAYREGULAR.OTF')format(opentype);
      font-weight: 400;
      font-style: normal;
 }
