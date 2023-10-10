@@ -245,6 +245,14 @@
   border-spacing: 40px 50px !important;
 }
 
+:where(.css-dev-only-do-not-override-pr0fja).ant-table-wrapper .ant-table-thead >tr>th, :where(.css-dev-only-do-not-override-pr0fja).ant-table-wrapper .ant-table-thead >tr>td {
+  background: none;
+}
+
+.ant-table-column-sorters > span:nth-child(2){
+  position: absolute !important;
+  left: 55% !important;
+}
 
 .container-date-picker{
 

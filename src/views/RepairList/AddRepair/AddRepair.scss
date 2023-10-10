@@ -218,11 +218,9 @@ h4 {
 
 .button-container button:first-child {
     color: $text-black;
-    background-color: $light-gray;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 18px;
-    padding-right: 18px;
+    background-color: $cancel-bg;
+    width: 82px !important;
+    height: 40px !important;
     height: 50px;
     border: 1px solid transparent;
     border-radius: 7px;
@@ -232,10 +230,8 @@ h4 {
 .button-container button:last-child {
     color: $white-bg;
     background-color: $primary-black;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 18px;
-    padding-right: 18px;
+    width: 82px !important;
+    height: 40px !important;
     border: 1px solid transparent;
     border-radius: 7px;
     height: 50px;
@@ -263,6 +259,10 @@ h4 {
 
 .section-title {
     align-items: center;
+}
+
+.section-title > span {
+    margin-top: -10px !important;
 }
 
 .na1-box {

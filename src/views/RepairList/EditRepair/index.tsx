@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { ReactComponent as TickIcon } from "../../../assets/single color icons - SVG/done.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/single color icons - SVG/close.svg";
-import "../../../styles/_variables.scss";
 import repairDetailsSchema from "./EditFormValidation";
 import "../EditRepair/EditRepair.scss";
 import SectionZero from "./SectionZero";
@@ -68,7 +67,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
     initialValues: EditValues,
     onSubmit: async (values) => {
       try {
-        await editRepairEntry(values, repairId);
+        await editRepairEntry(values, values.id);
         onClose()
       } catch (err) {
         
@@ -98,7 +97,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
                   {sectionCompleted[index] ? (
                     <TickIcon width={20} className="tick-icon-filled" />
                   ) : (
-                    <TickIcon width={20} />
+                    <TickIcon width={20} className="tick-icon-not-filled" />
                   )}
                   <span className="section-header-text">{section.name}</span>
                 </div>

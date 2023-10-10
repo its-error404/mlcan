@@ -4,6 +4,7 @@ import { FormikProps, FormikValues } from 'formik'
 import CustomInput from '../../../../shared/components/InputField'
 import CustomSelect from '../../../../shared/components/SelectField'
 import { RepairFormMeta } from '../../../../services/RepairListService/repair.service'
+import "../../RepairList.scss"
 
 interface SectionOneProps {
   onclose: () => void

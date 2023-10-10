@@ -25,7 +25,6 @@ import { ColumnType } from "antd/lib/table";
 const RepairList = () => {
  
   const handleRowClick = (row: any) => {
-    console.log(row)
     setSelectedRow(row);
     setOverlayOpen(true);
   };
@@ -73,8 +72,6 @@ const RepairList = () => {
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
   const [sortedInfo, setSortedInfo] = useState<SorterResult<Repair>>({});
 
-
-  
   const handleChange: TableProps<Repair>["onChange"] = (
     pagination,
     filters,
@@ -97,8 +94,6 @@ const RepairList = () => {
     }
   };
   
-  
-
   const [columns] = useState<ColumnType<Repair>[]>([
     {
       title: (
@@ -235,7 +230,7 @@ const RepairList = () => {
     {
       className: "edit-icon",
       render: ( record: Repair) => (
-        <Icon icon="material-symbols:edit"  color="#949ea9" width={20}
+        <Icon icon="material-symbols:edit"  color="#949ea9" width={22}
           onClick={() => {
             handleEditClick(record);
           }}
@@ -246,7 +241,7 @@ const RepairList = () => {
       className: "delete-icon",
       render: (text: string, record: Repair) => (
         <>
-          <Icon icon="material-symbols:delete"  color="#949ea9" width={20}
+          <Icon icon="material-symbols:delete"  color="#949ea9" width={22}
             onClick={() => handleDeleteClick(record.id || '', record.uid ||'')}
           />
         </>
