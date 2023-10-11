@@ -6,11 +6,12 @@ import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } fr
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
 import 'antd/dist/antd.css';
+import { QuoteData, RepairDataActivity } from "../../../../shared/types/formTypes";
 
 const ActivitySection: React.FC = () => {
   
-  const [repairData, setRepairData] = useState<RepairData>()
-  const [quoteData, setQuoteData] = useState<QuoteData>();
+  const [quoteData, setQuoteData] = useState<QuoteData>({ docs: [] });
+  const [repairData, setRepairData] = useState<RepairDataActivity>({ docs: [] });  
   const [inspectionData, setInspectionData] = useState({docs: []});
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
