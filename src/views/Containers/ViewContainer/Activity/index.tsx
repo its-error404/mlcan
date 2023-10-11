@@ -2,22 +2,21 @@ import React, { useEffect, useState } from "react";
 import './activity.scss'
 import { ReactComponent as QuoteIcon } from '../../../../assets/single color icons - SVG/quote.svg';
 import { ReactComponent as RepairIcon } from '../../../../assets/single color icons - SVG/repair.svg'
-import { ReactComponent as InspectionIcon } from '../../../../assets/single color icons - SVG/inspection.svg'
-import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../services/ContainersService/viewcontainer.service";
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
-import { formatDate } from "../../../../shared/utils/dateFormat";
-import { QuoteData, RepairData } from "../../../../shared/types/formTypes";
+import 'antd/dist/antd.css';
+import { QuoteData, RepairDataActivity } from "../../../../shared/types/formTypes";
 
 const ActivitySection: React.FC = () => {
   
-  const [repairData, setRepairData] = useState<RepairData>()
-  const [quoteData, setQuoteData] = useState<QuoteData>();
+  const [quoteData, setQuoteData] = useState<QuoteData>({ docs: [] });
+  const [repairData, setRepairData] = useState<RepairDataActivity>({ docs: [] });  
   const [inspectionData, setInspectionData] = useState({docs: []});
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-
+  const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
+  const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +34,15 @@ const ActivitySection: React.FC = () => {
     }
     fetchData();
   }, []);
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <div className="activity-section">

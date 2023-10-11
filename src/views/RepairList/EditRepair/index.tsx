@@ -11,7 +11,7 @@ import SectionTwo from "./SectionTwo/";
 import { editRepairEntry } from "../../../services/RepairListService/repair.service";
 
 interface EditRepairProps {
-  data: any;
+  editedData: Repair;
   onClose: () => void;
   repairId: string;
   overlayOpen?: boolean;
@@ -35,7 +35,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
   const EditValues = {
     ...data,
   };
-
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
   const sections = [
@@ -127,6 +126,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
       <SectionTwo
         formik={formik}
         onclose={onClose}
+
         sectionCompleted={sectionCompleted[2]}
       />
     )}
