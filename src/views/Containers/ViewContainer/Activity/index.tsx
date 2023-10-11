@@ -4,7 +4,7 @@ import { ReactComponent as QuoteIcon } from '../../../../assets/single color ico
 import { ReactComponent as RepairIcon } from '../../../../assets/single color icons - SVG/repair.svg'
 import { ReactComponent as InspectionIcon } from '../../../../assets/single color icons - SVG/inspection.svg'
 import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
-import { Space } from "antd";
+import { Space, Spin } from "antd";
 import ActivityCard from "./ActivityCard";
 import { formatDate } from "../../../../shared/utils/dateFormat";
 import { QuoteData, RepairData } from "../../../../shared/types/formTypes";
@@ -39,7 +39,7 @@ const ActivitySection: React.FC = () => {
   return (
     <div className="activity-section">
       {isLoading ? (
-        <div>Loading...</div>
+        <div className="loader-icon-activity"><Spin size="large"/><p>Loading Data....</p></div>
       ) : (
         <Space direction="vertical" size={1}>
           {combinedData.map((data, index: number) => (

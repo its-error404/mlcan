@@ -4,3 +4,15 @@
     overflow-y: auto;
     height: 100%;
 }
+
+.loader-icon-activity {
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    position: absolute;
+    top: 35%;
+    left: 48%;
+    font-family: 'SFProDisplay';
+    font-weight: 700;
+    font-style: italic;
+}

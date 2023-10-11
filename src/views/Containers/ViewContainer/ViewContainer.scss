@@ -102,6 +102,7 @@
 .section-content {
     position: relative;
     min-height: 70.6vh;
+    max-height: 70.6vh;
     overflow-y: auto;
     margin-left: -30px;
     background-color: $row-color-first;
