@@ -50,10 +50,10 @@ export class ContainerForm {
   roofPhoto?: string;
 
   @serializable(alias('under_side_photo',  primitive()))
-  under_side_photo?: string;
+  underSidePhoto?: string;
 
   @serializable(alias('plate_photo',  primitive()))
-  plate_photo?: string;
+  platePhoto?: string;
 }
 
 export class ContainerData {
