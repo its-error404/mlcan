@@ -13,7 +13,7 @@ import { ReactComponent as DownIcon } from "../../assets/single color icons - SV
 import { RepairData, Repair } from "../../models/repairList.model";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
-import AddRepair from "./AddRepair";
+import AddRepair from './AddRepair'
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
 import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";

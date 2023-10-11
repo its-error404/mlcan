@@ -14,11 +14,10 @@ import { Button, Dropdown, Menu, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import {fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import {fetchActivityStatus, handleConfirm, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import TimeLine from "../../../../../shared/components/Timeline";
-import { EllipsisOutlined } from "@ant-design/icons";
-import EllipsisMenu from "../../../../../shared/components/EllipsisMenu";
+import { USER_ID, getUserInfo } from "../../../../../services/AuthService/authToken";
 
 interface RepairFormData {
   uid: string;
@@ -60,6 +59,9 @@ const ActivityCard: React.FC<{
   const [showTooltip, setShowTooltip] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [timeline, setTimeline] = useState(false)
+
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
 
   const handleMouseEnter = () => {
     setShowTooltip(true);
@@ -215,27 +217,25 @@ const ActivityCard: React.FC<{
 
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
-    toggleExpandRepairCard(UniqueID).then((response) => {
-      setExpandedRepairFormData(response);
-    });
+    toggleExpandRepairCard(UniqueID)
+    toggleExpandedQuoteCard(UniqueID)
+    .then((response)=> {
+      setExpandedRepairFormData(response)
+      setExpandedQuoteFormData(response)
+
+    })
   };
 
   const toggleAddItem = () => {
     setAddItem(!addItem);
   };
 
-  const handleConfirm = async (
-    id: string,
-    option: string,
-    uniqueID: string
-  ) => {
-    try {
-      upgradeRepairForm(id, option);
-      setShowConfirmation(false);
-    } catch (error) {
-      setShowConfirmation(false);
-    }
-  };
+const confirmHandler = async () => {
+  try {
+    await handleConfirm(UniqueID, selectedOption, setShowConfirmation);
+  } catch (error) {
+  }
+};
 
   const handleCancel = () => {
     setShowConfirmation(false);
@@ -286,21 +286,18 @@ const ActivityCard: React.FC<{
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
-                <p>
-                  James Vasanth{" "}
-                  <span
-                    className="dropdown-lock-icon"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => {
-                      setShowModal(true);
-                    }}
-                  >
-                    &nbsp;
-                    <LockIcon width={10} />
-                    {showTooltip && <span>Unlock</span>}
-                  </span>
-                </p>
+                <p>{userID}{' '}
+                <span
+        className="dropdown-lock-icon"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={()=>{setShowModal(true)}}
+      >
+        &nbsp;
+        <LockIcon width={10} />
+        {showTooltip && <span>Unlock</span>}
+      </span>
+    </p>
               </div>
               {showModal && (
                 <UnlockModal
@@ -364,19 +361,10 @@ const ActivityCard: React.FC<{
                   </p>
                 )}
               </div>
-              <div className="delete-confirmation-buttons update-status-buttons-container">
-                <button onClick={handleCancel}>Cancel</button>
-                <button
-                  onClick={() =>
-                    handleConfirm(
-                      expandedRepairFormData?.id || "",
-                      updateActivityStatus,
-                      expandedRepairFormData?.uid || ""
-                    )
-                  }
-                >
-                  Confirm
-                </button>
+              <div className="delete-confirmation-buttons">
+              <button onClick={()=>confirmHandler}>Confirm</button>
+              <button onClick={handleCancel}>Cancel</button>
+              <button onClick={()=>handleConfirm(expandedRepairFormData?.id || '', updateActivityStatus, expandedRepairFormData?.uid || '')}>Confirm</button>
               </div>
             </div>
           </div>
