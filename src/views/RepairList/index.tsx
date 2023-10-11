@@ -463,6 +463,7 @@ const RepairList = () => {
             className="ant-table-repair"
             columns={columns}
             dataSource={filteredEntries}
+            pagination={false}
           />
         </div>
 
