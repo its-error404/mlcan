@@ -13,6 +13,10 @@
     min-height: 500px;
 }
 
+.activity-item-table {
+    margin-top: 30px;
+}
+
 .activity-status {
     border: 1px solid transparent;
     border-radius: 0; 
@@ -22,8 +26,9 @@
     &.draft {
       background-color: $draft-grey-bg;
       color: $draft-grey-text;
-      font-weight: 700;
+      font-weight: 500 !important;
       border-radius: 10px;
+      font-size: 13px;
     }
   }
 
@@ -108,4 +113,30 @@
 
 .dropdown-icon {
     margin-right: 30px;
+}
+
+.timeline-button-container button {
+    background-color: $turkish-green;
+    color: $white-bg;
+    font-weight: 500;
+    width: 145px;
+    padding-left: 30px;
+    height: 40px;
+    border: 0.5px solid $cancel-bg;
+    border-radius: 10px;
+}
+.timeline-button-container button:hover{
+    color: $white-bg !important;
+}
+
+.timeline-button-container {
+    position: relative;
+}
+
+.calender-icon-timeline{
+    position: absolute;
+    z-index: 54;
+    top:30%;
+    left: 8%;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(153deg) brightness(103%) contrast(102%);
 }

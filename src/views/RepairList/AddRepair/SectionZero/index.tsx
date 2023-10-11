@@ -36,7 +36,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
   }, []);
   
   return (
-    <div>
+    <div className='section-zero'>
       <div className="repair-details__first-col">
 
         <div className="field-1 input__repair-id repaid-id__input">
@@ -45,10 +45,6 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
           {formik.touched.uid && formik.errors.uid ? (<div className="field-1-error-message">{formik.errors.uid}</div>) : null}
 
         </div>
-
-        <hr></hr>
-
-
         <div className="container-damaged-area field-2 container-repair-area">
 
           <CustomSelect

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="60" viewBox="0 0 52 60">
+  <g id="Trash-Recycle_Bin-Delete-User_Interface-Remove" data-name="Trash-Recycle Bin-Delete-User Interface-Remove" transform="translate(-19 -17)">
+    <path id="Path_62434" data-name="Path 62434" d="M68,22V34H20V22H68Z" transform="translate(1 5)" fill="#c9ced4"/>
+    <path id="Path_62435" data-name="Path 62435" d="M22,28H62V64H22Z" transform="translate(3 11)" fill="#c9ced4"/>
+    <path id="Path_62436" data-name="Path 62436" d="M28,18H44v8H28Z" transform="translate(9 1)" fill="#c9ced4"/>
+    <g id="Group_44051" data-name="Group 44051" transform="translate(19 17)">
+      <path id="Path_62442" data-name="Path 62442" d="M69,25H55V19a2,2,0,0,0-2-2H37a2,2,0,0,0-2,2v6H21a2,2,0,0,0-2,2V39a2,2,0,0,0,2,2h2V75a2,2,0,0,0,2,2H65a2,2,0,0,0,2-2V41h2a2,2,0,0,0,2-2V27A2,2,0,0,0,69,25ZM39,21H51v4H39ZM63,73H27V41H63Zm4-36H23V29H67Z" transform="translate(-19 -17)" fill="#949ea9"/>
+      <path id="Path_62443" data-name="Path 62443" d="M26,31h4V55H26Z" transform="translate(-12 -3)" fill="#949ea9"/>
+      <path id="Path_62444" data-name="Path 62444" d="M31,31h4V55H31Z" transform="translate(-7 -3)" fill="#949ea9"/>
+      <path id="Path_62445" data-name="Path 62445" d="M36,31h4V55H36Z" transform="translate(-2 -3)" fill="#949ea9"/>
+    </g>
+  </g>
+</svg>

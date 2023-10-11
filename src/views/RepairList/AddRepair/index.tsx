@@ -134,7 +134,7 @@ const AddRepair = ({ onclose }: { onclose: () => void }) => {
                 {sectionCompleted[index] ? (
                   <TickIcon width={20} className="tick-icon-filled"/>
                 ) : (
-                  <TickIcon width={20} />
+                  <TickIcon width={20} className="tick-icon-not-filled" />
                 )}
                 <span className="section-header-text">{section.name}</span>
               </div>

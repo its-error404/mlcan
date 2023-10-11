@@ -4,7 +4,7 @@ import { FormikProps, FormikValues } from 'formik';
 import CustomInput from '../../../../shared/components/InputField';
 import CustomSelect from '../../../../shared/components/SelectField';
 import { RepairFormMeta } from '../../../../services/RepairListService/repair.service';
-
+import '../EditRepair.scss'
 interface SectionZeroProps {
   onclose: () => void;
   formik: FormikProps<FormikValues>
@@ -36,7 +36,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
   }, []);
   
   return (
-    <div>
+    <div className='section-zero'>
       <div className="repair-details__first-col">
 
         <div className="field-1 input__repair-id repaid-id__input">
@@ -45,9 +45,6 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
           {formik.touched.uid && formik.errors.uid ? (<div className="field-1-error-message">{formik.errors.uid}</div>) : null}
 
         </div>
-
-        <hr></hr>
-
 
         <div className="container-damaged-area field-2 container-repair-area">
 
@@ -60,7 +57,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
             onBlur={formik.handleBlur}
             value={formik.values.repArea}
             onChange={formik.handleChange}
-            options={repAreaOptions.map((option) => (
+            options={repAreaOptions?.map((option) => (
               { label: option, value: option }
             ))}
           >

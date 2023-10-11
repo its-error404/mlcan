@@ -15,15 +15,17 @@
 }
 
 .bulk-upload-box {
-    min-width: 600px !important;
+    max-width: 533px !important;
+    width: 533px;
+    height: 437px;
 }
 
 .upload-box {
-    border: 1px solid $light-border;
+    border: 2px solid $cancel-bg;
     border-radius: 10px;
     border-style: dashed;
-    max-width: 560px;
-    min-height: 200px;
+    width: 456px;
+    height: 160px;
     margin-left: 30px;
     margin-top: 10px;
     background-color: $upload-bg;
@@ -39,12 +41,17 @@
 }
 
 .upload-box {
+    background-color: $table-header;
     display: flex;
     flex-flow: column nowrap;
     gap: 10px;
     align-items: center;
     justify-items: center;
     justify-content: center;
+}
+
+.upload-box svg {
+    filter: brightness(0) saturate(100%) invert(85%) sepia(6%) saturate(333%) hue-rotate(172deg) brightness(92%) contrast(96%);
 }
 
 .upload-box h3 {
@@ -73,4 +80,15 @@
 
 .upload-buttons button:last-child {
     background-color: $turkish-green;
+}
+.repair-list-bulk-upload-buttons{
+    margin-left: 50px;
+    display: flex;
+    gap: 20px;
+}
+.repair-list-bulk-upload-buttons button {
+    width: 220px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    height: 40px;
 }

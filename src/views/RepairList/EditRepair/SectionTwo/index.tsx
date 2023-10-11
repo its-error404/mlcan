@@ -1,9 +1,13 @@
 import { Button, Checkbox } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { FormikValues } from 'formik'
+import "../EditRepair.scss";
 import CustomInput from '../../../../shared/components/InputField'
 import CustomSelect from '../../../../shared/components/SelectField'
 import { RepairFormMeta } from '../../../../services/RepairListService/repair.service'
+import "../../RepairList.scss"
+import "../../AddRepair/AddRepair.scss"
+
 
 interface SectionTwoProps {
   onclose: () => void

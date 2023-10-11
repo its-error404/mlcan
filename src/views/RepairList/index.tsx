@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./RepairList.scss";
+import '../../styles/_@antOverrides.scss';
+import { Icon } from '@iconify/react';
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
 import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
 import { Table } from "antd";
-import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
-import { ReactComponent as EditIcon } from "../../assets/single color icons - SVG/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/single color icons - SVG/delete.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/Multicolor icons - SVG/Trash-Recycle Bin-Delete-User Interface-Remove.svg";
 import { ReactComponent as VersionIcon } from "../../assets/single color icons - SVG/version.svg";
 import { ReactComponent as DownIcon } from "../../assets/single color icons - SVG/accordion open.svg";
 import { RepairData, Repair } from "../../models/repairList.model";
-import "../../styles/_@antOverrides.scss";
 import SelectedEntry from "./SelectedEntry";
 import EditRepair from "./EditRepair";
 import AddRepair from './AddRepair'
@@ -19,149 +18,12 @@ import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
 import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 import ExportMenu from "../../shared/components/ExportMenu";
+import { SorterResult } from "antd/es/table/interface";
+import { TableProps } from "antd/lib";
+import { ColumnType } from "antd/lib/table";
 
 const RepairList = () => {
-  const [columns] = useState([
-    {
-      title: (
-        <>
-          Repair ID <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
-      ),
-      dataIndex: "uid",
-      key: "uid",
-      onCell: (record: Repair) => {
-        return {
-          onClick: () => handleRowClick(record),
-        };
-      },
-    },
-    {
-      title: (
-        <>
-          Repair Area <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
-      ),
-      dataIndex: "repArea",
-      key: "repArea",
-      style: {
-        marginLeft: "8px",
-        Width: 200,
-      },
-    },
-    {
-      title: (
-        <>
-          Damaged Area <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
-      ),
-      dataIndex: "dmgArea",
-      key: "dmgArea",
-    },
-    {
-      title: (
-        <>
-          Type <ToggleIcon width={8} style={{ marginLeft: 8 }} />
-        </>
-      ),
-      dataIndex: "type",
-      key: "type",
-      style: {
-        marginLeft: "20px",
-      },
-    },
-    {
-      title: (
-        <>
-          Non-Maersk
-          <br />
-          &emsp;&emsp;&emsp;hours
-        </>
-      ),
-      dataIndex: "nonMaerskHours",
-      key: "nonMaerskHours",
-      render: (text: string, record: any) => {
-        const nonMaerskHours = record.nonMaerskHours;
-        return nonMaerskHours !== undefined && nonMaerskHours !== null
-          ? nonMaerskHours
-          : "-";
-      },
-      style: {
-        marginLeft: "20px !important",
-      },
-    },
-    {
-      title: (
-        <>
-          Non-Maersk
-          <br />
-          &emsp;&emsp;mat.cost
-        </>
-      ),
-      dataIndex: "nonMaerskMatCost",
-      key: "nonMaerskMatCost",
-      render: (text: string, record: any) => {
-        const nonMaerskMatCost = record.nonMaerskMatCost;
-        return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
-          ? nonMaerskMatCost
-          : "-";
-      },
-    },
-    {
-      title: (
-        <>
-          &emsp;&emsp;Merc+
-          <br />
-          hours/unit
-        </>
-      ),
-      dataIndex: "unitHours",
-      key: "unitHours",
-      render: (text: string, record: any) => {
-        const unitHours = record.merc?.maxMatCost;
-        return unitHours || "-";
-      },
-    },
-    {
-      title: (
-        <>
-          &emsp;&emsp;&emsp;Merc+ <br /> mat.cost/unit
-        </>
-      ),
-      data: "MaxMatCost",
-      key: "MaxMatCost",
-      render: (text: string, record: any) => {
-        const maxMatCost = record.merc?.maxMatCost;
-        return maxMatCost || "-";
-      },
-    },
-    {
-      className: "edit-icon",
-      render: (text: string, record: any) => (
-        <EditIcon
-          width={20}
-          onClick={() => {
-            handleEditClick(record);
-          }}
-        />
-      ),
-      style: {
-        marginRight: "-20px",
-      },
-    },
-    {
-      className: "delete-icon",
-      render: (text: string, record: any) => (
-        <>
-          <DeleteIcon
-            width={20}
-            onClick={() => handleDeleteClick(record.id, record.uid)}
-          />
-        </>
-      ),
-    },
-  ]);
-
+ 
   const handleRowClick = (row: any) => {
     setSelectedRow(row);
     setOverlayOpen(true);
@@ -208,6 +70,184 @@ const RepairList = () => {
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
   const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
+  const [sortedInfo, setSortedInfo] = useState<SorterResult<Repair>>({});
+
+  const handleChange: TableProps<Repair>["onChange"] = (
+    pagination,
+    filters,
+    sorter
+  ) => {
+    if (Array.isArray(sorter)) {
+    } else if (sorter?.field) {
+      setSortedInfo(sorter as SorterResult<Repair>);
+      const newFilteredData = [...filteredEntries];
+      newFilteredData.sort((a, b) => {
+        const fieldA = a[sorter.field as keyof Repair] as string;
+        const fieldB = b[sorter.field as keyof Repair] as string;
+        if (sorter.order === "ascend") {
+          return fieldA.localeCompare(fieldB);
+        } else {
+          return fieldB.localeCompare(fieldA);
+        }
+      });
+      setFilteredEntries(newFilteredData);
+    }
+  };
+  
+  const [columns] = useState<ColumnType<Repair>[]>([
+    {
+      title: (
+        <>
+          Repair ID
+        </>
+      ),
+      dataIndex: "uid",
+      key: "uid",
+      onCell: (record: Repair) => {
+        return {
+          onClick: () => handleRowClick(record),
+        };
+      },
+      sorter: (a: Repair, b: Repair) => {
+        if (a.uid && b.uid) {
+          return a.uid.length - b.uid.length;
+        }
+        return 0;
+      },
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "uid" ? sortedInfo.order : null,
+    },
+    {
+      title: <div className="sort-column">Repair Area</div>,
+      dataIndex: "repArea",
+      key: "repArea", 
+      sorter: (a: Repair, b: Repair) => {
+        if (a.repArea && b.repArea) {
+          return a.repArea.length - b.repArea.length;
+        }
+        return 0;
+      },
+      sortOrder: sortedInfo.columnKey === "repArea" ? sortedInfo.order : null,
+    },
+    {
+      title: (
+        <>
+          Damaged Area
+        </>
+      ),
+      dataIndex: "dmgArea",
+      key: "dmgArea",
+      sorter: (a: Repair, b: Repair) => {
+        if (a.dmgArea && b.dmgArea) {
+          return a.dmgArea.length - b.dmgArea.length;
+        }
+        return 0;
+      },
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "dmgArea" ? sortedInfo.order : null,
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (text: string) => {
+        if (text) {
+          return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+        }
+        return text;
+      },
+      sorter: (a: Repair, b: Repair) => {
+        if (a.type && b.type) {
+          return a.type.length - b.type.length;
+        }
+        return 0;
+      },
+      sortDirections: ["descend", "ascend"],
+      sortOrder: sortedInfo.columnKey === "type" ? sortedInfo.order : null,
+    },
+    {
+      title: (
+        <>
+          Non-Maersk
+          <br />
+          &emsp;&emsp;&emsp;hours
+        </>
+      ),
+      dataIndex: "nonMaerskHours",
+      key: "nonMaerskHours",
+      render: (text: string, record: Repair) => {
+        const nonMaerskHours = record.nonMaerskHours;
+        return nonMaerskHours !== undefined && nonMaerskHours !== null
+          ? nonMaerskHours
+          : "-";
+      }
+    },
+    {
+      title: (
+        <>
+          Non-Maersk
+          <br />
+          &emsp;&emsp;mat.cost
+        </>
+      ),
+      dataIndex: "nonMaerskMatCost",
+      key: "nonMaerskMatCost",
+      render: (text: string, record: Repair) => {
+        const nonMaerskMatCost = record.nonMaerskMatCost;
+        return nonMaerskMatCost !== undefined && nonMaerskMatCost !== null
+          ? nonMaerskMatCost
+          : "-";
+      },
+    },
+    {
+      title: (
+        <>
+          &emsp;&emsp;Merc+
+          <br />
+          hours/unit
+        </>
+      ),
+      dataIndex: "unitHours",
+      key: "unitHours",
+      render: (text: string, record: Repair) => {
+        const unitHours = record.merc?.unitHours;
+        return unitHours || "-";
+      },
+    },
+    {
+      title: (
+        <>
+          &emsp;&emsp;&emsp;Merc+ <br /> mat.cost/unit
+        </>
+      ),
+      dataIndex: "MaxMatCost",
+      key: "MaxMatCost",
+      render: (text: string, record: Repair) => {
+        const maxMatCost = record.merc?.maxMatCost;
+        return maxMatCost || "-";
+      },
+    },
+    {
+      className: "edit-icon",
+      render: ( record: Repair) => (
+        <Icon icon="material-symbols:edit"  color="#949ea9" width={22}
+          onClick={() => {
+            handleEditClick(record);
+          }}
+        />
+      ),
+    },
+    {
+      className: "delete-icon",
+      render: (text: string, record: Repair) => (
+        <>
+          <Icon icon="material-symbols:delete"  color="#949ea9" width={22}
+            onClick={() => handleDeleteClick(record.id || '', record.uid ||'')}
+          />
+        </>
+      ),
+    },
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -227,20 +267,19 @@ const RepairList = () => {
 
   useEffect(() => {
     const filteredData = applyFilters(repairListData?.docs || []).filter(
-      (record: any) =>
-        record.uid.toLowerCase().includes(searchData.toLowerCase())
+      (record: Repair) =>
+        record?.uid?.toLowerCase().includes(searchData.toLowerCase())
     );
 
     setFilteredEntries(filteredData);
     setDisplayedEntries(filteredData.length);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData, repairListData]);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    let handler = (e: any) => {
-      if (!filterMenuRef.current?.contains(e.target)) {
+    let handler = (e: MouseEvent) => {
+      if (!filterMenuRef.current?.contains(e.target as Node)) {
         setFilterMenu(false);
       }
     };
@@ -255,14 +294,14 @@ const RepairList = () => {
     setAddRepair(!addRepair);
   };
 
-  const getRowClassName = (record: any, index: number) => {
+  const getRowClassName = (record: Repair, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
 
   const applyFilters = (data: any) => {
-    return data.filter((doc: any) => {
+    return data.filter((doc: Repair) => {
       const repairAreaMatches =  repairAreaData === "" || doc.repArea === repairAreaData;
-      const typeMatches = typeData === "" || doc.type === typeData;
+      const typeMatches = typeData === "" || doc?.type?.toLowerCase() === typeData.toLowerCase();
       const damagedAreaMatches = damagedAreaData === "" || doc.dmgArea === damagedAreaData;
 
       return repairAreaMatches && typeMatches && damagedAreaMatches;
@@ -342,8 +381,7 @@ const RepairList = () => {
                 onClose={() => {
                   setSelectedEntryForEdit(null);
                 }}
-                repairId={selectedEntryForEdit.id || ''}
-                
+                repairId={selectedEntryForEdit.id || ''} 
               />
             </div>
           </div>
@@ -369,7 +407,7 @@ const RepairList = () => {
                 setFilterMenu(!filterMenu);
               }}
             >
-              <button  className={`repair-filter-button ${                      filterMenu ? "change-button" : ""
+              <button  className={`repair-filter-button ${filterMenu ? "change-button" : ""
                     }`}>
                 <span className="repair-filter-icon">
                   <FilterIcon width={20} />
@@ -380,7 +418,7 @@ const RepairList = () => {
                 className={`filter-menu repair-list-filters ${
                   filterMenu ? "visible" : "invisible"
                 }`}
-                onClick={(e: any) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
               >
                 <div className="filter-header__first-part">
                   <h4>Filters</h4>
@@ -398,6 +436,7 @@ const RepairList = () => {
                       value={repairAreaData}
                       onChange={(e) => setRepairAreaData(e.target.value)}
                     >
+                      <option>Select</option>
                       <option>Doors</option>
                       <option>Vents</option>
                     </select>
@@ -410,6 +449,7 @@ const RepairList = () => {
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
                     >
+                      <option>Select</option>
                       <option>Doors</option>
                       <option>Vents</option>
                     </select>
@@ -422,8 +462,9 @@ const RepairList = () => {
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}
                   >
-                    <option>INSERT</option>
-                    <option>PATCH</option>
+                    <option>Select</option>
+                    <option>Insert</option>
+                    <option>Patch</option>
                   </select>
                 </div>
               </div>
@@ -455,11 +496,7 @@ const RepairList = () => {
         {showBulkUpload && (
           <BulkUploadComponent onClose={handleBulkUploadClose} />
         )}
-        <div
-          className={`version-menu-box ${
-            versionMenu ? "visible" : "invisible"
-          }`}
-        >
+        <div className={`version-menu-box ${versionMenu ? "visible" : "invisible"}`}>
           <p>+ New Version </p>
           <p>Version 1 - 22 Aug 2020</p>
           <p>Version 1 - 22 Aug 2020</p>
@@ -472,21 +509,22 @@ const RepairList = () => {
             columns={columns}
             dataSource={filteredEntries}
             pagination={false}
+            onChange={handleChange}
           />
         </div>
 
         {showDeleteConfirmation && (
           <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
             <div className="delete-confirmation-box">
-              <div className="delete-text-icon">
+              <div className="delete-text-icon-repair">
                 <DeleteIcon width={45} />
                 <h2>
-                  Are you sure you to delete the <br />
+                  Are you sure to delete the <br />
                   &emsp; &emsp;Repair - <span>{entryToDeleteUid}</span>&nbsp;?
                 </h2>
                 <p>You can't undo this action</p>
               </div>
-              <div className="delete-confirmation-buttons">
+              <div className="delete-confirmation-buttons-repair">
                 <button onClick={handleDeleteCancel}>Cancel</button>
                 <button onClick={handleDeleteConfirmed}>Delete</button>
               </div>

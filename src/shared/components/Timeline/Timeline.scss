@@ -1,0 +1,155 @@
+@import '../../../styles/variables';
+
+.ant-timeline {
+    position: absolute;
+    border: 1px solid $cancel-bg;
+    padding-left: 30px;
+    padding-right: 20px;
+    padding-top: 30px;
+    margin-top: 10px;
+    border-radius: 12px;
+    z-index: 50;
+    max-height: 320px !important;
+    min-width: 350px;
+    background-color: $white-bg;
+}
+
+.date-modal > .ant-modal-content > .ant-modal-header > .ant-modal-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.timeline-datepicker > .ant-picker-input > .ant-picker-suffix {
+    position: absolute;
+    top: 35%;
+    right: 0;
+}
+
+.timeline-datepicker > .ant-picker-input {
+    width: 517px;
+    height: 40px;
+    border-radius: 10px;
+    padding-left: 20px;
+}
+
+.date-modal {
+    width: 597px !important;
+    height: 289px !important;
+    border-radius: 10px !important;
+}
+
+.date-modal > .ant-modal-content {
+    height: 289px !important;
+    border-radius: 10px !important;
+}
+
+.date-modal > .ant-modal-content > .ant-modal-footer{
+    text-align: center;
+}
+
+.date-modal > .ant-modal-content > .ant-modal-footer button:first-child {
+    display: none;
+}
+
+.date-modal > .ant-modal-content > .ant-modal-footer button:last-child{
+    margin-top: 20px;
+    align-items: center;
+    width: 516px;
+    height: 40px;
+    background-color: $turkish-green;
+    border-radius: 10px;
+}
+
+.date-modal > .ant-modal-content > .ant-modal-body {
+    margin-top: 30px;
+}
+
+.date-modal > .ant-modal-content > .ant-modal-body > div {
+    margin-top: 10px;
+}
+
+.quote-icon-bg {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    background-color: $timeline-icon-bg-quote;
+   
+}
+
+.ant-timeline-item-head, .ant-timeline-item-head-blue {
+  display: none;
+}
+
+.quote-icon-bg svg {
+    position: absolute;
+    top: 25%;
+    filter: brightness(0) saturate(100%) invert(62%) sepia(48%) saturate(422%) hue-rotate(102deg) brightness(84%) contrast(88%);
+    left: 32%;
+}
+
+.ant-timeline-item-content {
+    display: flex;
+    gap: 10px;
+}
+
+.ant-timeline-item-content > div:first-child  {
+    margin-left: -35px !important;
+}
+
+.ant-timeline-item-content > div:last-child{
+    margin-left: 40px;
+    font-weight: 700;
+}
+
+.timeline-item.on-going > .ant-timeline-item-content > div:nth-child(3){
+    margin-left: 10px;
+    font-weight: 700;
+}
+
+.timeline-item.completed > .ant-timeline-item-content > div:nth-child(3), .timeline-item.on-going > .ant-timeline-item-content > div:nth-child(4)
+{
+    font-weight: 700;
+}
+
+.timeline-item.completed > .ant-timeline-item-content > div:nth-child(3) > span {
+    
+    margin-left: -20px;
+} 
+
+.timeline-item.not-started > .ant-timeline-item-content > div:nth-child(2) {
+    margin-left: 0;
+}
+
+.ant-timeline-item-tail {
+    border-inline-start: 1px solid $turkish-green !important;
+}
+
+.timeline-item.not-started > .ant-timeline-item-content > .quote-icon-bg {
+    background-color: $draft-bg;
+}
+
+.timeline-item.on-going > .ant-timeline-item-content > .quote-icon-bg {
+    background-color: $ongoing-icon-bg;
+}
+
+.timeline-item.on-going > .ant-timeline-item-content > .quote-icon-bg svg {
+filter: brightness(0) saturate(100%) invert(77%) sepia(45%) saturate(6457%) hue-rotate(356deg) brightness(99%) contrast(92%);
+}
+
+.timeline-item.completed > .ant-timeline-item-content > div:nth-child(2) {
+    color: $turkish-green;
+    font-weight: 500;
+}
+
+.timeline-item.on-going > .ant-timeline-item-content > div:nth-child(2) {
+    color: $ongoing-text;
+    font-weight: 500;
+}
+
+.timeline-item.not-started > .ant-timeline-item-content > div:nth-child(2) {
+    color: $not-started-text;
+    font-weight: 500;
+}
+

@@ -27,8 +27,12 @@
 }
 
 .plus-icon {
-    margin-top: -10px;
+    margin-top: 5px;
     filter: $plus-icon;
+}
+
+label {
+    display:inline-flex !important;
 }
 
 .containers-header {
@@ -76,6 +80,33 @@
 
 .container-table {
     margin-top: -100px;
+}
+
+.ant-table-tbody tr{
+    max-height: 30px !important;
+}
+
+.ant-table-row {
+    max-height: 30px !important;
+}
+
+.container-date-picker input {
+    padding-left: 10px !important;
+}
+
+.container-date-box input {
+    margin-top: 40px;
+    margin-left: -42px;
+    width: 232px !important;
+    height: 32px !important;
+}
+
+.filter-date {
+    margin-left: -10px;
+}
+
+.activityStatusCap {
+    text-transform: capitalize;
 }
 
 .container-details {
@@ -176,7 +207,7 @@
 }
 
 .approve-button {
-    height: 38px;
+    height: 50px;
     font-weight: 600;
 }
 
@@ -242,7 +273,20 @@
     margin-bottom: -30px;
 }
 
+.filter-options-containers{
+    margin-top: 15px;
+}
+
+.container-filter-second-part {
+    margin-top: -20px !important;
+}
+
+input,select {
+    border-radius: 8px !important;
+}
+
 .option-yard {
+    margin-left: 10px;
     margin-bottom: -30px !important;
 }
 
@@ -254,8 +298,15 @@
     margin-top: 15px;
 }
 
+.option-activity > label {
+    display: block !important;
+}
+
 .container-filter-menu.visible {
-    height: 34vh !important;
+    height: 35vh !important;
+    border: 0.5px solid $cancel-bg !important;
+    border-radius: 12px !important;
+    box-shadow: 0px 0px 24px #3E3F5E29;
 }
 .column-1 {
     display: flex;
@@ -420,6 +471,15 @@
 
 .container-export-menu {
     display: flex;
-    width: 1080px;
-    justify-content: space-between;
+    align-items: center;
+}
+
+.container-export-menu > button{
+    margin-right: 50px !important;
+}
+
+.ant-table-selection > label {
+    position: absolute;
+    left: 10%;
+    top: -15px;
 }

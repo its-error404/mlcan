@@ -51,11 +51,11 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
     <div className="container-details-form">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Add Container</h2>
+          <h2>Add New Container</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
-        <form onSubmit={formik.handleSubmit}>
-          <Space direction='vertical' size={20}>
+        <form className='add-container-form' onSubmit={formik.handleSubmit}>
+          <Space direction='vertical' size={1}>
             <label>Yard Name</label>
             <Select
             value={formik.values.yard}
@@ -112,6 +112,8 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
           />
             <label>Comments</label>
             <Input className='container-input comments-add-input' placeholder='Enter' onChange={formik.handleChange}></Input>
+            </Space>
+            <Space direction='vertical' size={20}>
             <label>Door photo including container number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>Left side photo</label>
@@ -129,7 +131,7 @@ const AddContainer: React.FC<AddContainerProps> = ({ onclose }) => {
             <label>CSC Plate Number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <button type="submit" className='submit-button'>Add Container</button>
-          </Space>
+            </Space>
         </form>
       </div>
     </div>

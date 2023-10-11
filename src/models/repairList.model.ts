@@ -97,6 +97,15 @@ export class Repair {
 
   @serializable(alias('id', primitive()))
   id?: string;
+
+  @serializable(alias('nmaersk_hours', primitive()))
+  nonMaerskHours?: string
+
+  @serializable(alias('nmaersk_mat_cost', primitive()))
+  nonMaerskMatCost?: string
+
+  @serializable(alias('maersk_mat_cost',primitive()))
+  maerskMatCost?: string
 }
 
 export class RepairData {

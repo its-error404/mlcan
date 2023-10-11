@@ -73,9 +73,9 @@ export const RepairFormMeta = async () => {
   try {
     const [ repAreaOptions, dmgAreaOptions, repairTypeOptions, compOptions, damOptions, repOptions, componentOptions, eventOptions,repCategoriesOptions ] = await Promise.all([axiosInstance.get(ApiRoutes.REP_AREAS), axiosInstance.get(ApiRoutes.DMG_AREAS), axiosInstance.get(ApiRoutes.REP_TYPES), axiosInstance.get(ApiRoutes.COMP_OPTIONS), axiosInstance.get(ApiRoutes.DAM_OPTIONS), axiosInstance.get(ApiRoutes.REP_OPTIONS), axiosInstance.get(ApiRoutes.COMPONENT_OPTIONS), axiosInstance.get(ApiRoutes.EVENT_OPTIONS), axiosInstance.get(ApiRoutes.REP_CATEGORIES)])
 
-    const repAreaOptionsData = repAreaOptions.data.values
-    const dmgAreaOptionsData = dmgAreaOptions.data.values
-    const repairTypeOptionsData = repairTypeOptions.data.values
+    const repAreaOptionsData = repAreaOptions?.data?.data.values
+    const dmgAreaOptionsData = dmgAreaOptions.data.data.values
+    const repairTypeOptionsData = repairTypeOptions.data.data.values
     const compOptionsData = compOptions.data.data.values
     const damOptionsData = damOptions.data.data.values
     const repOptionsData = repOptions.data.data.values

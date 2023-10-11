@@ -4,13 +4,15 @@ import "./overlayBox.scss";
 interface OverlayBoxProps {
   onClose: () => void;
   children: React.ReactNode;
-  maxWidth?: string; 
+  maxWidth?: string;
+  minWidth?: string; 
   minHeight? : string
 }
 
-const OverlayBox: React.FC<OverlayBoxProps> = ({ onClose, children, maxWidth, minHeight }) => {
+const OverlayBox: React.FC<OverlayBoxProps> = ({ onClose, children, maxWidth, minHeight, minWidth }) => {
   const overlayStyle = {
-    maxWidth: maxWidth || "400px", 
+    minWidth: minWidth || "400px",
+    maxWidth: maxWidth || "533px", 
     minHeight: minHeight || "400px"
   };
 

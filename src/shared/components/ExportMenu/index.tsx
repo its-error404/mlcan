@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../../../views/RepairList/RepairList.scss'
 import { ReactComponent as ExportIcon } from "../../../assets/single color icons - SVG/export.svg"
 
 const ExportMenu = () => {

@@ -1,0 +1,47 @@
+@import '../../../styles/variables';
+
+.ant-table-cell > button {
+    border: 0;
+}
+
+.ant-table-cell > button:hover{
+    border: 0;
+    box-shadow: none !important;
+    background:none !important;
+}
+.custom-dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-dropdown-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .custom-dropdown-menu {
+    position: absolute;
+    right: 100%;
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
+    width: 0% ;
+    top: 0;
+    z-index: 1;
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    transition: width 0.4s ease-in;
+  }
+
+  .custom-dropdown-container:hover .custom-dropdown-menu {
+    width: 220px;
+  }
+  
+  .menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+
+  

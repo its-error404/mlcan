@@ -27,6 +27,10 @@
   color: $turkish-green;
 }
 
+.ant-table-column-sort > .ant-table-column-sorters > .ant-table-column-title{
+  color: $turkish-green !important;
+}
+
 .ant-upload-drag-icon {
   position: absolute;
   top: 33%;
@@ -241,6 +245,14 @@
   border-spacing: 40px 50px !important;
 }
 
+.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
+  background: none;
+}
+
+.ant-table-column-sorters > span:nth-child(2){
+  position: absolute !important;
+  left: 55% !important;
+}
 
 .container-date-picker{
 
@@ -252,6 +264,25 @@
       }
   }
 }
+
+.container-date-picker{
+    &.ant-picker{
+      background: none !important;
+
+      &.ant-picker-input  input{
+          border: 1px solid !important;
+      }
+    }
+}
+
+.ant-select-selection-search > input {
+  color: $text-gray !important;
+}
+
+.filter-date > div > div > input {
+  border: 1px solid $ant-input-border !important;
+}
+
 .ant-picker-suffix {
   position: absolute;
   top: 70%;
@@ -275,5 +306,5 @@
 }
 
 .ant-table-column-sorter-up.active, .ant-table-column-sorter-down.active {
-  color: $turkish-green;
+  color: $turkish-green !important;
 }

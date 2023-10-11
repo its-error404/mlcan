@@ -40,7 +40,6 @@ const SectionOne: React.FC<SectionOneProps> = ({
     };
     fetchRep()
   }, []);
-
   const handleCheckboxChange = () => {
     setIsCheckboxChecked(!isCheckboxChecked)
   }

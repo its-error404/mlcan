@@ -24,6 +24,7 @@ const [modeOptions, setModeOptions] = useState([])
     setIsCheckboxChecked(!isCheckboxChecked)
   }
 
+ 
   useEffect(() => {
     const fetchCont = async () => {
       try {
