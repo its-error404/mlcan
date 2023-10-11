@@ -11,8 +11,8 @@ import { QuoteData, RepairData } from "../../../../shared/types/formTypes";
 
 const ActivitySection: React.FC = () => {
   
-  const [repairData, setRepairData] = useState<RepairData>()
-  const [quoteData, setQuoteData] = useState<QuoteData>();
+  const [quoteData, setQuoteData] = useState<QuoteData>({ docs: [] });
+  const [repairData, setRepairData] = useState<RepairData>({ docs: [] });  
   const [inspectionData, setInspectionData] = useState({docs: []});
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
