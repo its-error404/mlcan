@@ -245,7 +245,7 @@
   border-spacing: 40px 50px !important;
 }
 
-:where(.css-dev-only-do-not-override-pr0fja).ant-table-wrapper .ant-table-thead >tr>th, :where(.css-dev-only-do-not-override-pr0fja).ant-table-wrapper .ant-table-thead >tr>td {
+.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
   background: none;
 }
 

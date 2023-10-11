@@ -18,6 +18,8 @@ import {fetchActivityStatus, handleConfirm, toggleExpandRepairCard, upgradeRepai
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import TimeLine from "../../../../../shared/components/Timeline";
 import { USER_ID, getUserInfo } from "../../../../../services/AuthService/authToken";
+import EllipsisMenu from "../../../../../shared/components/EllipsisMenu";
+import { ItemData } from "../../../../../models/containeritems.model";
 
 interface RepairFormData {
   uid: string;
@@ -146,22 +148,14 @@ const ActivityCard: React.FC<{
         title: "Options",
         dataIndex: "options",
         key: "options",
-        render: (_: any, record: any) => (
+        render: (_: any, record: ItemData) => (
           <EllipsisMenu
             onDelete={() => {
-              // Implement the delete logic here
-              console.log("Delete logic called for record:", record);
             }}
             onUpdateComment={() => {
-              // Implement the update comment logic here
-              console.log(
-                "Update Comment logic called for record:",
-                record
-              );
+            
             }}
             onUpdatePhoto={() => {
-              // Implement the update photo logic here
-              console.log("Update Photo logic called for record:", record);
             }}
           />
         ),
@@ -175,7 +169,7 @@ const ActivityCard: React.FC<{
       try {
         const activitystatues = await fetchActivityStatus();
         setActivityStatuses(activitystatues);
-      } catch (err) { }
+      } catch (err) {console.log(err) }
     };
     fetchData();
   }, []);
