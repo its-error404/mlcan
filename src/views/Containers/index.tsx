@@ -157,6 +157,7 @@ const AllContainers = () => {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
+      className: 'container-number-colmun',
       render: (text: string, record: ContainersData) => (
         <Link to={`/containers/${record.id}`}>{text}</Link>
       ),
@@ -165,6 +166,7 @@ const AllContainers = () => {
       title: <div className="sort-column">Yard</div>,
       dataIndex: "yard",
       key: "yard",
+      className: 'container-yard-colmun',
       render: (text: string) => text || 'N/A',
       sorter: (a:ContainersData, b:ContainersData) => (a?.yard || '').localeCompare(b?.yard || '')
     },
