@@ -23,6 +23,7 @@ export const fetchActivityData = async () => {
       const inspectionJsonData = inspectionFormResponse.data.data
       const quoteJsonData = quoteFormResponse.data.data
       const repairFormJsonData = repairFormResponse.data.data
+
       return {photoJsonData, inspectionJsonData, quoteJsonData, repairFormJsonData}
 
   } else {

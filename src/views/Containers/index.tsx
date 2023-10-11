@@ -463,7 +463,6 @@ const AllContainers = () => {
                 rowKey="uid"
                 className="container-table"
                 rowClassName={getRowClassName}
-                // pagination={false}
                 onChange={handleChange}
                 {...(sectionIndex === 3 ? { rowSelection } : {})}
               />

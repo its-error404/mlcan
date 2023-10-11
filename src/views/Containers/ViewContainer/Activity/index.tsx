@@ -13,20 +13,18 @@ const ActivitySection: React.FC = () => {
   
   const [quoteData, setQuoteData] = useState<QuoteData>({ docs: [] });
   const [repairData, setRepairData] = useState<RepairData>({ docs: [] });  
-  const [inspectionData, setInspectionData] = useState({docs: []});
+  const [inspectionData, setInspectionData] = useState({ docs: [] });
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-
-
+ 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetchActivityData();
-        setInspectionData(response.inspectionJsonData)
-        setQuoteData(response.quoteJsonData)
-        setPhotoData(response.photoJsonData)
-        setRepairData(response.repairFormJsonData)
+        setInspectionData(response.inspectionJsonData);
+        setQuoteData(response.quoteJsonData);
+        setPhotoData(response.photoJsonData);
+        setRepairData(response.repairFormJsonData);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -36,43 +34,30 @@ const ActivitySection: React.FC = () => {
     fetchData();
   }, []);
 
+  const combinedData = repairData.docs.concat(quoteData.docs);
+
   return (
     <div className="activity-section">
-    {isLoading ? (
-     
-      <div>Loading...</div>
-    ) : (
-      <Space direction="vertical" size={1}>
-        {repairData &&
-          repairData.docs.map((data:any) => (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Space direction="vertical" size={1}>
+          {combinedData.map((data, index: number) => (
             <ActivityCard
               key={data.id}
-              formType="Repair Form" 
+              formType={index % 2 === 0 ? "Repair Form" : "Quote Form"} 
               formID={data.uid}
-              date={formatDate(data.created_at)} 
+              date={formatDate(data.created_at)}
               activityStatus={data.curr_status}
-              icon={<RepairIcon width={20}/>}
-              expanded={false} 
-              UniqueID = {data.id}
+              icon={index % 2 === 0 ? <RepairIcon width={20} /> : <QuoteIcon width={20} />} 
+              expanded={false}
+              UniqueID={data.id}
             />
           ))}
-          {quoteData &&
-          quoteData.docs.map((data:any) => (
-            <ActivityCard
-            key={data.id}
-            formType="Quote Form"
-            formID={data.uid}
-            date={formatDate(data.created_at)} 
-              activityStatus={data.curr_status}
-              icon={<QuoteIcon width={20}/>}
-              expanded={false} 
-              UniqueID={data.id}
-              />
-          ))}
-      </Space>
-    )}
-  </div>
-);
+        </Space>
+      )}
+    </div>
+  );
 };
 
 export default ActivitySection;

@@ -48,11 +48,11 @@
 }
 
 .activity-card.form-type-quote {
-    border-left: 2px solid $purple-bg; 
+    border-left: 2px solid $border-purple; 
   }
   
   .activity-card.form-type-repair {
-    border-left: 2px solid $yellow-bg; 
+    border-left: 2px solid $border-yellow; 
   }
   
   .activity-card.form-type-inspection {
@@ -107,7 +107,7 @@
     margin-left: 10px;
     padding-top: 15px;
     font-style: italic;
-    color: $draft-text;
+    color: $unlock-bg;
 }
 
 .form-id {
