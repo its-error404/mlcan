@@ -29,7 +29,6 @@ interface RepairFormData {
   labourCost: number;
   materialCost: number;
   totalCost: number;
-  id: string
 }
 
 interface OptionMenuProps {
@@ -228,8 +227,11 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
     toggleExpandRepairCard(UniqueID)
+    toggleExpandedQuoteCard(UniqueID)
     .then((response)=> {
       setExpandedRepairFormData(response)
+      setExpandedQuoteFormData(response)
+
     })
   };
 
@@ -237,22 +239,18 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
     setAddItem(!addItem);
   };
 
-  const handleConfirm = async (id: string, option:string, uniqueID: string) => {
-    try {
-      upgradeRepairForm(id, option) 
-      setShowConfirmation(false);
-    } catch (error) {
-      setShowConfirmation(false); 
-    }
-  };
-  
+const confirmHandler = async () => {
+  try {
+    await handleConfirm(UniqueID, selectedOption, setShowConfirmation);
+  } catch (error) {
+  }
+};
+
   const handleCancel = () => {
     setShowConfirmation(false);
   };
 
   return (
-
-    
     <div
       className={`activity-card ${formTypeClass} ${
         isExpanded ? "expanded" : ""
@@ -357,7 +355,8 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
                 {expandedRepairFormData?.uid &&
                 <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
               </div>
-              <div className="delete-confirmation-buttons update-status-buttons-container">
+              <div className="delete-confirmation-buttons">
+              <button onClick={()=>confirmHandler}>Confirm</button>
               <button onClick={handleCancel}>Cancel</button>
               <button onClick={()=>handleConfirm(expandedRepairFormData?.id || '', updateActivityStatus, expandedRepairFormData?.uid || '')}>Confirm</button>
               </div>
