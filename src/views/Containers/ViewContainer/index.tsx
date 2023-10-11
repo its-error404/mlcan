@@ -115,12 +115,12 @@ const ViewContainer: React.FC = () => {
         </div>
         <div className="container-data" >
         {loading ? (
-          <p>Loading...</p>
+          <p></p>
         ) : (
           containerData && containerData.container && (
             <>
               <p>{containerData.container.yard}</p>
-              <p>{containerData.container.customer.name}</p>
+              <p>{containerData.container.customer?.name}</p>
               <p> {containerData.container.owner}</p>
               <p>{containerData.container.submitter}</p>
               <p>{containerData.container.length}</p>
@@ -136,7 +136,7 @@ const ViewContainer: React.FC = () => {
       <div className="overlay-content">
         <EditContainer
           data={editContainer}
-          id={id} 
+          id={id || ''} 
           onclose={() => setEditContainerVisible(false)}
         />
         </div>

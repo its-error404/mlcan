@@ -67,7 +67,12 @@
     font-size: 12px;
 }
 
-
+.dropdown-lock-icon span{
+    display: inline;
+    font-size: 12px !important;
+    padding-left: 5px !important;
+    cursor: pointer;
+}
 .select-container button{
     background-color: $light-gray-button;
     border: 1px solid transparent;

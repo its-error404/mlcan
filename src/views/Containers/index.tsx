@@ -11,16 +11,17 @@ import '../../styles/_@antOverrides.scss'
 import 'antd/dist/antd.css';
 import { Button, DatePicker, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
-import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
 import { AllContainersData,ContainersData,} from "../../models/Containers.model";
-import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
 import ExportMenu from "../../shared/components/ExportMenu";
 import { ColumnsType, TableProps } from "antd/lib/table";
 import { SorterResult } from "antd/lib/table/interface";
+import FilterMenu from "../../shared/components/ContainerFilterMenu";
+import ApproveBox from "../../shared/components/ApproveBox";
+import AddContainer from "./AddContainer";
 
 const AllContainers = () => {
   const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
@@ -30,11 +31,11 @@ const AllContainers = () => {
   const [approveBox, setApproveBox] = useState(false)
   const [activeSection, setActiveSection] = useState("All");
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
-  const [activityData, setActivityData] = useState("");
-  const [statusData, setStatusData] = useState("");
-  const [customerData, setCustomerData] = useState("");
-  const [yardData, setYardData] = useState("");
-  const [dateData, setDateData] = useState("");
+  const [activityData, setActivityData] = useState<string>("");
+  const [statusData, setStatusData] = useState<string>("");
+  const [customerData, setCustomerData] = useState<string>("");
+  const [yardData, setYardData] = useState<string>("");
+  const [dateData, setDateData] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
   const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
   const [totalEntries, setTotalEntries] = useState<number>(0);
@@ -233,9 +234,14 @@ const AllContainers = () => {
       ),
       dataIndex: "yard",
       key: "yard",
-      render: (text: string) => (text),
-      sorter: (a: ContainersData, b: ContainersData) => a.yard.length - b.yard.length,
-      sortOrder: sortedInfo.columnKey === 'yard' ? sortedInfo.order: null,
+      render: (text: string) => text || 'N/A',
+      sorter: (a: ContainersData, b: ContainersData) => {
+        if (a.yard && b.yard) {
+          return a.yard.length - b.yard.length;
+        }
+        return 0;
+      },
+      sortOrder: sortedInfo.columnKey === "yard" ? sortedInfo.order : null,
     },
     {
       title: (
@@ -346,7 +352,29 @@ const AllContainers = () => {
       },
       sortOrder: sortedInfo.columnKey === 'activityStatus' ? sortedInfo.order : null,
     },
-  ].filter(Boolean);
+  ];
+
+  const dynamicColumns = [];
+
+  if (sectionIndex === 1) {
+    dynamicColumns.push({
+      title: <div className="sort-column">Activity ID</div>,
+      dataIndex: "activityUid",
+      key: "activityUid",
+      render: (text: string) => (showActivityUidColumn ? text || "N/A": ''),
+      sorter: (a: ContainersData, b: ContainersData) => {
+        if (a.activityUid && b.activityUid) {
+          return a.activityUid.length - b.activityUid.length;
+        }
+        return 0;
+      },
+      sortOrder:
+        sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
+      ellipsis: true,
+    });
+  }
+  baseColumns.splice(5, 0, ...dynamicColumns);
+  const columns = baseColumns.filter(Boolean);
 
   let filterMenuRef = useRef<HTMLDivElement | null>(null);
 

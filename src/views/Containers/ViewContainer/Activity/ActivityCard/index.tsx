@@ -6,15 +6,18 @@ import { ReactComponent as DropdownIcon } from "../../../../../assets/single col
 import { ReactComponent as DropDownOpen } from "../../../../../assets/single color icons - SVG/accordion open.svg";
 import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
 import { ReactComponent as UpdateIcon} from '../../../../../assets/single color icons - SVG/resize.svg'
-import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import './Dropdown.scss'
-import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { Button, Dropdown, Menu, Modal, Select, Table, Timeline, } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import { fetchActivityStatus, handleConfirm, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import UnlockModal from "../../../../../shared/components/UnlockModal";
+import FilterMenu from "../../../../../shared/components/ContainerFilterMenu";
+import TimeLine from "../../../../../shared/components/Timeline";
+import { USER_ID, getUserInfo } from "../../../../../services/AuthService/authToken";
 
 interface RepairFormData {
   uid: string;
@@ -60,7 +63,25 @@ const ActivityCard: React.FC<{
   const [expandedRepairFormData, setExpandedRepairFormData] = useState<RepairFormData>()
   const [expandedQuoteFormData, setExpandedQuoteFormData] = useState(null)
   const [expandedInspectionFormData, setExpandedInspectionFormData] = useState(null)
-  
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showBox, setShowBox] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
+
+  const handleMouseEnter = () => {
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
+
+  const handleClick = () => {
+    setShowBox(!showBox);
+  };
+
   const getBackgroundColor = () => {
     if (icon.type === QuoteIcon) {
       return "lightpurple";
@@ -268,12 +289,24 @@ const confirmHandler = async () => {
           <div className="expanded-header">
             <div className="header_first">
               <div>
-                <Button>View Timeline</Button>
+                <Button onClick={()=><TimeLine/>}>View Timeline</Button>
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
-                <p>James Vasanth <span className="dropdown-lock-icon">&nbsp;<LockIcon onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} width={10}/>{showTooltip && `${<p>Unlock</p>}`}</span></p>
+                <p>{userID}{' '}
+                <span
+        className="dropdown-lock-icon"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={()=>{setShowModal(true)}}
+      >
+        &nbsp;
+        <LockIcon width={10} />
+        {showTooltip && <span>Unlock</span>}
+      </span>
+    </p>
               </div>
+              {showModal && <UnlockModal onCancel={()=>setShowModal(false)} onOk={()=>setShowModal(false)}/>}
             </div>
             <div className="header_second">
               <div><Button onClick={()=>toggleAddItem()}>Add Item</Button></div>
@@ -322,13 +355,13 @@ const confirmHandler = async () => {
               <div className="delete-text-icon update-text">
                 <UpdateIcon/>
                 <p>Are you sure to change the status?</p>
-                {expandedRepairFormData.uid &&
+                {expandedRepairFormData?.uid &&
                 <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
               </div>
               <div className="delete-confirmation-buttons">
               <button onClick={()=>confirmHandler}>Confirm</button>
               <button onClick={handleCancel}>Cancel</button>
-              <button onClick={()=>handleConfirm(expandedRepairFormData.id, updateActivityStatus, expandedRepairFormData.uid)}>Confirm</button>
+              <button onClick={()=>handleConfirm(expandedRepairFormData?.id || '', updateActivityStatus, expandedRepairFormData?.uid || '')}>Confirm</button>
               </div>
             </div>
     

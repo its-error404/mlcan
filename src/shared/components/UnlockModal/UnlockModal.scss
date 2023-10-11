@@ -1,0 +1,69 @@
+@import '../../../styles/variables';
+
+.unlock-modal > .ant-modal-content {
+    height: 316px !important;
+    width: 536px !important;
+    border: 1px solid transparent !important;
+    border-radius: 20px !important;
+}
+
+.text-container {
+    margin-right: auto;
+    margin-left: auto;
+    width: 500px;
+}
+
+.text-container p:nth-child(2){
+    font-size: 24px;
+    color: $text-black;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.text-container p:nth-child(3){
+    font-size: 16px;
+    font-weight: 500;
+    color: $text-gray;
+    margin-top: -10px;
+    margin-left: 80px;
+}
+
+.text-container svg 
+{
+    margin-left: 230px;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-header {
+    border: 1px solid transparent !important;
+    border-radius: 15px !important;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-footer  {
+    display: flex;
+    margin-left: 20px;
+    gap: 10px;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-footer button:first-child{
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    background-color: $cancel-bg;
+    border-radius: 10px;
+    color: $text-black;
+}
+
+.unlock-modal > .ant-modal-content > .ant-modal-footer button:last-child{
+    background-color: $unlock-bg;
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    color: $white-bg;
+    border-radius: 10px;
+}
+
+.unlock-modal > .ant-modal-content > button > span {
+    display: none;
+}
+
