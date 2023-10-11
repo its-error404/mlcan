@@ -83,7 +83,7 @@
     font-size: 24px;
     font-weight: 700;
     margin-left: 20px;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 ::placeholder {
@@ -91,7 +91,7 @@
 }
 
 .email-container{
-    margin-top: 20px;
+    margin-top: 40px;
     margin-left: 10px;
     margin-bottom: -20px;
 }
@@ -147,17 +147,17 @@
 
 .login-items p {
     margin-top: 25px;
+    font-family: 'SF Pro Display';
     color: $turkish-green;
     font-weight: 500;
 }
 
 .email-data {
-    margin-top: -20px;
     position: relative;
 }
 
+
 .password-data {
-    margin-top: -20px;
     position: relative;
 }
 
@@ -203,7 +203,7 @@ label {
 }
 
 .password-container {
-    margin-top: 21px;
+    margin-top: 40px;
     margin-left: 10px;
 }
 

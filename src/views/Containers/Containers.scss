@@ -281,6 +281,7 @@ label {
 }
 
 .container-filter-second-part {
+    gap: 20px !important;
     margin-top: -20px !important;
 }
 
@@ -288,6 +289,9 @@ input,select {
     border-radius: 8px !important;
 }
 
+.ant-pagination {
+    margin-top: 165px;
+}
 .option-yard {
     margin-left: 10px;
     margin-bottom: -30px !important;
