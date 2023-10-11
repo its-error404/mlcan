@@ -17,6 +17,7 @@ import { fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import FilterMenu from "../../../../../shared/components/ContainerFilterMenu";
 import TimeLine from "../../../../../shared/components/Timeline";
+import { USER_ID, getUserInfo } from "../../../../../services/AuthService/authToken";
 
 interface RepairFormData {
   uid: string;
@@ -66,6 +67,9 @@ const ActivityCard: React.FC<{
   const [showTooltip, setShowTooltip] = useState(false);
   const [showBox, setShowBox] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
 
   const handleMouseEnter = () => {
     setShowTooltip(true);
@@ -291,9 +295,8 @@ const OptionMenu: React.FC<OptionMenuProps> = ({ onDelete, onUpdateComment, onUp
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
-                <p>
-      James Vasanth{' '}
-      <span
+                <p>{userID}{' '}
+                <span
         className="dropdown-lock-icon"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

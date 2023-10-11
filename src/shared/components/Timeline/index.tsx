@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Timeline } from 'antd';
 
-const TimeLine: React.FC = () => {
+const App: React.FC = () => {
   const [reverse, setReverse] = useState(false);
 
   const handleClick = () => {
@@ -32,4 +32,4 @@ const TimeLine: React.FC = () => {
   );
 };
 
-export default TimeLine;
+export default App;
