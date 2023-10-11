@@ -48,18 +48,20 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
 
   const handleItemCompletion = (index: number) => {
     const updatedStatuses = [...itemStatuses];
-    if (updatedStatuses[index] === 'not-started') {
-      updatedStatuses[index] = 'on-going';
-    } else if (updatedStatuses[index] === 'on-going') {
-      updatedStatuses[index] = 'completed';
-    } else {
-      updatedStatuses[index] = 'not-started';
+    switch (updatedStatuses[index]) {
+      case 'not-started':
+        updatedStatuses[index] = 'on-going';
+        break;
+      case 'on-going':
+        updatedStatuses[index] = 'completed';
+        break;
+      default:
+        updatedStatuses[index] = 'not-started';
+        break;
     }
     setItemStatuses(updatedStatuses);
   };
   
-  
-
   return (
     <div>
       <Timeline >
