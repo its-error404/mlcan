@@ -1,9 +1,26 @@
 import { DatePicker } from "antd";
-import moment from "moment";
+import dayjs, { Dayjs } from "dayjs";
 import React from "react";
-import "antd/dist/antd.css";
+import '../../../views/Containers/Containers.scss'
 
-const FilterMenu = ({
+interface FilterMenuProps {
+  filterMenu?: boolean;
+  setFilterMenu?: React.Dispatch<React.SetStateAction<boolean>>;
+  setDateData?:React.Dispatch<React.SetStateAction<string>>;
+  dateData?:string;
+  setActivityData:React.Dispatch<React.SetStateAction<string>>;
+  activityData?:string;
+  setStatusData?:React.Dispatch<React.SetStateAction<string>>;
+  yardData?:string
+  statusData?:string
+  setYardData?:React.Dispatch<React.SetStateAction<string>>;
+  setCustomerData?:React.Dispatch<React.SetStateAction<string>>;
+  customerData:string
+  handleResetFilters: () => void
+  handleApplyFilters: () => void
+}
+
+const FilterMenu:React.FC<FilterMenuProps> = ({
   filterMenu,
   setFilterMenu,
   setDateData,
@@ -19,12 +36,24 @@ const FilterMenu = ({
   handleResetFilters,
   handleApplyFilters,
 }) => {
+const handleDateChange = (date: Dayjs | null, dateString: string) => {
+  if (date !== null) {
+    if(setDateData){
+    setDateData(date.format('DD MMM YYYY'));
+    }
+  } else {
+    if(setDateData){
+    setDateData('');
+    }
+  }
+};
+
   return (
     <div className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"}`} onClick={(e) => e.stopPropagation()}>
       <div className="filter-header__first-part">
         <h4>Filters</h4>
       </div>
-      <div className="filter-header__second-part">
+      <div className="filter-header__second-part container-filter-second-part">
         <h4
           onClick={(e) => {
             e.stopPropagation();
@@ -47,19 +76,19 @@ const FilterMenu = ({
         <div className="column-1">
           <label style={{ width: "40px" }}>Date</label>
           <div className="container-date-box filter-date">
-            <DatePicker
-              className="container-date-picker"
-              onChange={(date, dateString) => setDateData(dateString)}
-              value={dateData !== "" ? moment(dateData, "DD MMM YYYY") : null}
-              format="DD MMM YYYY"
-            />
-          </div>
+      <DatePicker
+        className="container-date-picker"
+        onChange={handleDateChange}
+        value={dateData !== "" ? dayjs(dateData, "DD MMM YYYY") : null}
+        format="DD MMM YYYY"
+      />
+    </div>
           <div className="filter-dropdown-date choose-activity">
             <label>Activity</label>
             <select
               value={activityData}
               onChange={(e) => setActivityData(e.target.value)}
-            >
+            ><option>Select</option>
               <option>draft</option>
               <option>inspection</option>
             </select>
@@ -71,8 +100,9 @@ const FilterMenu = ({
             <label>Status</label>
             <select
               value={statusData}
-              onChange={(e) => setStatusData(e.target.value)}
+              onChange={(e) => setStatusData?.(e.target.value)}
             >
+              <option>Select</option>
               <option>billing</option>
               <option>draft</option>
             </select>
@@ -82,8 +112,9 @@ const FilterMenu = ({
             <label>Yard</label>
             <select
               value={yardData}
-              onChange={(e) => setYardData(e.target.value)}
+              onChange={(e) => setYardData?.(e.target.value)}
             >
+              <option>Select</option>
               <option>Nordel</option>
               <option>Harbourlink</option>
               <option>Aheer</option>
@@ -95,8 +126,9 @@ const FilterMenu = ({
           <label>Customer</label>
           <select
             value={customerData}
-            onChange={(e) => setCustomerData(e.target.value)}
+            onChange={(e) => setCustomerData?.(e.target.value)}
           >
+            <option>Select</option>
             <option>Krishna</option>
             <option>Killian Darian</option>
           </select>

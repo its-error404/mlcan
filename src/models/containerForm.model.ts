@@ -32,22 +32,22 @@ export class ContainerForm {
   location?: string;
 
   @serializable(alias('door_photo', primitive()))
-  door_photo?: string;
+  doorPhoto?: string;
 
   @serializable(alias('left_side_photo',  primitive()))
-  left_side_photo?: string;
+  leftSidePhoto?: string;
 
   @serializable(alias('right_side_photo',  primitive()))
-  right_side_photo?: string;
+  rightSidePhoto?: string;
 
   @serializable(alias('front_side_photo',  primitive()))
-  front_side_photo?: string;
+  frontSidePhoto?: string;
 
   @serializable(alias('interior_photo', primitive()))
-  interior_photo?: string;
+  interiorPhoto?: string;
 
   @serializable(alias('roof_photo',  primitive()))
-  roof_photo?: string;
+  roofPhoto?: string;
 
   @serializable(alias('under_side_photo',  primitive()))
   under_side_photo?: string;
