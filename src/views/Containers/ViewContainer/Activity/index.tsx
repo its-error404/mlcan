@@ -6,12 +6,13 @@ import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } fr
 import { Space } from "antd";
 import ActivityCard from "./ActivityCard";
 import 'antd/dist/antd.css';
+import { QuoteData, RepairDataActivity } from "../../../../shared/types/formTypes";
 
 const ActivitySection: React.FC = () => {
   
-  const [repairData, setRepairData] = useState({docs: [],})
-  const [quoteData, setQuoteData] = useState(null);
-  const [inspectionData, setInspectionData] = useState(null);
+  const [quoteData, setQuoteData] = useState<QuoteData>({ docs: [] });
+  const [repairData, setRepairData] = useState<RepairDataActivity>({ docs: [] });  
+  const [inspectionData, setInspectionData] = useState({docs: []});
   const [photoData, setPhotoData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedRepairFormData, setExpandedRepairFormData] = useState(null)
@@ -21,10 +22,10 @@ const ActivitySection: React.FC = () => {
     async function fetchData() {
       try {
         const response = await fetchActivityData();
-        setInspectionData(response.inspectionJsonData.docs)
+        setInspectionData(response.inspectionJsonData)
         setQuoteData(response.quoteJsonData)
         setPhotoData(response.photoJsonData)
-        setRepairData(response.repairFormJsonData || { docs: [] })
+        setRepairData(response.repairFormJsonData)
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -51,7 +52,7 @@ const ActivitySection: React.FC = () => {
     ) : (
       <Space direction="vertical" size={1}>
         {repairData &&
-          repairData.docs.map((data) => (
+          repairData.docs.map((data:any) => (
             <ActivityCard
               key={data.id}
               formType="Repair Form" 
@@ -60,13 +61,11 @@ const ActivitySection: React.FC = () => {
               activityStatus={data.curr_status}
               icon={<RepairIcon width={20}/>}
               expanded={false} 
-              toggleExpand={() => toggleExpandRepairCard(data.id)}
-              expandedData={expandedRepairFormData}
               UniqueID = {data.id}
             />
           ))}
           {quoteData &&
-          quoteData.docs.map((data) => (
+          quoteData.docs.map((data:any) => (
             <ActivityCard
             key={data.id}
             formType="Quote Form"
@@ -75,8 +74,6 @@ const ActivitySection: React.FC = () => {
               activityStatus={data.curr_status}
               icon={<QuoteIcon width={20}/>}
               expanded={false} 
-              toggleExpand={() => toggleExpandedQuoteCard(data.id)}
-              expandedData={expandedQuoteFormData}
               UniqueID={data.id}
               />
           ))}

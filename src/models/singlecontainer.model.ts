@@ -296,11 +296,4 @@ export const InitialContainerFormValues = {
     ...Container,
     ...ContainerData,
     ...Customer,
-    ...frontSidePhoto,
-    ...interiorPhoto,
-    ...leftSidePhoto,
-    ...platePhoto,
-    ...rightSidePhoto,
-    ...roofPhoto,
-    ...underSidePhoto
 }

@@ -118,7 +118,7 @@ export const editContainerRequest = async (values: ContainerData, id:string) => 
 
 export const fetchEditContainerMeta = async () => {
   try  {
-    const [contLengths, contHeights, contYards, contTypes, customers ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])
+    const [contLengths, contHeights, contYards, contTypes, customers, activityStatus ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS), axiosInstance.get(ApiRoutes.ACTIVITY_STATUS)])
 
     const contLengthData = contLengths.data.data.values
     const contHeightsData = contHeights.data.data.values
@@ -126,6 +126,7 @@ export const fetchEditContainerMeta = async () => {
     const contYardsData = contYards.data.data.values
     const customersData = customers.data.data.docs
     const customerNames = customersData.map(entry => entry.name);
-    return { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames }
+    const activityStatusData = activityStatus.data.data.values
+    return { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames, activityStatusData }
   } catch (err) {throw err}
 }

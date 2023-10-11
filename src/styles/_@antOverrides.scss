@@ -13,6 +13,10 @@
   }
 }
 
+.ant-table-thead th.ant-table-column-sort{
+  color: $turkish-green;
+}
+
 .ant-upload-drag-icon {
   position: absolute;
   top: 33%;
@@ -44,8 +48,8 @@
 
 .ant-table-tbody > .ant-table-row td{
   padding-left: 20px !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
   padding-right: 10px !important;  
 }
 
@@ -251,6 +255,15 @@
 .ant-picker-input input {
   padding-left: 10px;
 }
+
 .ant-checkbox-checked::after{
   border: 0;
+}
+
+.ant-checkbox-inner {
+  position: absolute;
+}
+
+.ant-table-column-sorter-up.active, .ant-table-column-sorter-down.active {
+  color: $turkish-green;
 }

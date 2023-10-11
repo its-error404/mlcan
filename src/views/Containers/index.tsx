@@ -14,7 +14,7 @@ import { getContainersData } from "../../services/ContainersService/containers.s
 import AddContainer from "./AddContainer";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
-import { AllContainersData, ContainersData } from "../../models/Containers.model";
+import { AllContainersData,ContainersData,} from "../../models/Containers.model";
 import "antd/dist/antd.css";
 import { formatDate } from "../../shared/utils/formatDate";
 import moment from "moment";
@@ -27,6 +27,7 @@ const AllContainers = () => {
   const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
   const [addContainer, setAddContainer] = useState<boolean>(false);
+  const [approveBox, setApproveBox] = useState(false)
   const [activeSection, setActiveSection] = useState("All");
   const [filterMenu, setFilterMenu] = useState<boolean>(false);
   const [activityData, setActivityData] = useState("");
@@ -36,10 +37,39 @@ const AllContainers = () => {
   const [dateData, setDateData] = useState("");
   const [filteredEntries, setFilteredEntries] = useState<ContainersData[]>([]);
   const [allContainersData, setContainersData] = useState<AllContainersData | null>(null);
-  const [totalEntries, setTotalEntries] = useState<number | null>(null);
-  const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
+  const [totalEntries, setTotalEntries] = useState<number>(0);
+  const [displayedEntries, setDisplayedEntries] = useState<number>(totalEntries ?? 0);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
   const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>({});
+
+  const handleChange: TableProps<ContainersData>["onChange"] = (
+    pagination,
+    filters,
+    sorter
+  ) => {
+    if (Array.isArray(sorter)) {
+    } else if (sorter?.field) {
+      setSortedInfo(sorter as SorterResult<ContainersData>);
+      const newFilteredData = [...filteredEntries];
+      newFilteredData.sort((a, b) => {
+        const fieldA = a[sorter.field as keyof ContainersData] as string;
+        const fieldB = b[sorter.field as keyof ContainersData] as string;
+        if (sorter.order === "ascend") {
+          return fieldA.localeCompare(fieldB);
+        } else {
+          return fieldB.localeCompare(fieldA);
+        }
+      });
+      setFilteredEntries(newFilteredData);
+    }
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (selectedKeys: React.Key[], selectedRows: ContainersData[]) => {
+      setSelectedRowKeys(selectedKeys.map((key) => key.toString()));
+    },
+  };
 
   const handleChange: TableProps<ContainersData>['onChange'] = (pagination, filters, sorter) => {
     if (Array.isArray(sorter)) {
@@ -124,22 +154,27 @@ const AllContainers = () => {
   const endIndex = Math.min(displayedEntries, totalEntries);
 
   const applyFilters = () => {
+    const filteredData = filterContainers(activeSection, searchData).filter(
+      (doc) => {
+        const ActivityMatches =
+          activityData === "" || doc.activityType === activityData;
+        const statusMatches =
+          statusData === "" || doc.activityStatus === statusData;
+        const yardMatches = yardData === "" || doc.yard === yardData;
+        const customerMatches =
+          customerData === "" || doc.customerName === customerData;
+        const dateMatches =
+          dateData === "" || formatDate(doc.activityDate) === dateData;
 
-    const filteredData = filterContainers(activeSection, searchData).filter((doc) => {
-      const ActivityMatches = activityData === "" || doc.activityType === activityData;
-      const statusMatches = statusData === "" || doc.activityStatus === statusData;
-      const yardMatches = yardData === "" || doc.yard === yardData;
-      const customerMatches = customerData === "" || doc.customerName === customerData;
-      const dateMatches = dateData === "" || formatDate(doc.activityDate) === dateData;
-
-      return (
-        ActivityMatches &&
-        customerMatches &&
-        yardMatches &&
-        statusMatches &&
-        dateMatches
-      );
-    });
+        return (
+          ActivityMatches &&
+          customerMatches &&
+          yardMatches &&
+          statusMatches &&
+          dateMatches
+        );
+      }
+    );
 
     return filteredData;
   };
@@ -147,10 +182,9 @@ const AllContainers = () => {
   const handleApplyFilters = () => {
     const newFilteredData = applyFilters();
     setFilteredEntries(newFilteredData);
-    setDisplayedEntries(newFilteredData.length)
+    setDisplayedEntries(newFilteredData.length);
     setFilterMenu(false);
   };
-  
 
   const handleResetFilters = () => {
     setActivityData("");
@@ -158,7 +192,7 @@ const AllContainers = () => {
     setYardData("");
     setStatusData("");
     setCustomerData("");
-    setSearchData("")
+    setSearchData("");
 
     setFilteredEntries(searchResults);
     setDisplayedEntries(searchResults.length);
@@ -179,10 +213,10 @@ const AllContainers = () => {
       } catch (e) { }
     };
     fetchData();
-  }
+  };
 
-  const sections = ["All", "Draft", "Admin Review Pending", "Pending Customer Approval", "Quotes Approved by Customers"];
-  const columns: ColumnsType<ContainersData> = [
+  const sections = ["All","Draft","Admin Review Pending","Pending Customer Approval","Quotes Approved by Customers",];
+  const baseColumns = [
     {
       title: "Container Number",
       dataIndex: "uid",
@@ -414,95 +448,52 @@ const AllContainers = () => {
                   }}
                 >
                   <button
-                    className={`repair-filter-button ${filterMenu ? "change-button" : ""
-                      }`}
+                    className={`repair-filter-button ${
+                      filterMenu ? "change-button" : ""
+                    }`}
                   >
                     <span className="filter-icon">
                       <FilterIcon width={20} />
                     </span>
                     Filters
                   </button>
-                  <div
-                    className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"
-                      }`}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="filter-header__first-part">
-                      <h4>Filters</h4>
-                    </div>
-                    <div className="filter-header__second-part">
-                      <h4 onClick={(e) => { e.stopPropagation(); handleResetFilters(); }}>Reset</h4>
-                      <h4 onClick={(e) => { e.stopPropagation(); handleApplyFilters() }}>Apply</h4>
-                    </div>
-
-                    <div className="filter-options-containers">
-                      <div className="column-1">
-                        <label style={{ width: '40px' }}>Date</label>
-                        <div className="container-date-box filter-date">
-                          <DatePicker
-                            className="container-date-picker"
-                            onChange={(date, dateString) => setDateData(dateString)}
-                            value={dateData !== "" ? moment(dateData, "DD MMM YYYY") : null}
-                            format="DD MMM YYYY"
-                          />
-                        </div>
-                        <div className="filter-dropdown-date choose-activity">
-                          <label>Activity</label>
-                          <select
-                            value={activityData}
-                            onChange={(e) => setActivityData(e.target.value)}
-                          >
-                            <option>draft</option>
-                            <option>inspection</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="column-2">
-                        <div className="filter-dropdown-date">
-                          <label>Status</label>
-                          <select
-                            value={statusData}
-                            onChange={(e) => setStatusData(e.target.value)}
-                          >
-                            <option>billing</option>
-                            <option>draft</option>
-                          </select>
-                        </div>
-
-                        <div className="filter-dropdown-date option-yard">
-                          <label>Yard</label>
-                          <select
-                            value={yardData}
-                            onChange={(e) => setYardData(e.target.value)}
-                          >
-                            <option>Nordel</option>
-                            <option>Harbourlink</option>
-                            <option>Aheer</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="filter-dropdown-date">
-                        <label>Customer</label>
-                        <select
-                          value={customerData}
-                          onChange={(e) => setCustomerData(e.target.value)}
-                        >
-                          <option>Krishna</option>
-                          <option>Killian Darian</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
+                  <FilterMenu
+                    filterMenu={filterMenu}
+                    setFilterMenu={setFilterMenu}
+                    setDateData={setDateData}
+                    dateData={dateData}
+                    setActivityData={setActivityData}
+                    activityData={activityData}
+                    setStatusData={setStatusData}
+                    statusData={statusData}
+                    setYardData={setYardData}
+                    yardData={yardData}
+                    setCustomerData={setCustomerData}
+                    customerData={customerData}
+                    handleResetFilters={handleResetFilters}
+                    handleApplyFilters={handleApplyFilters}
+                  />
                 </div>
               </div>
+
+              {approveBox && (
+            <div className="overlay">
+              <div className="overlay-content">
+                <ApproveBox
+                  onclose={() => {
+                    setApproveBox(false);
+                  }}
+                />
+              </div>
+            </div>
+          )}
 
               {activeSection === "Pending Customer Approval" && (
                 <div className="container-export-menu">
                   <ExportMenu />
-                  <Button className="bulk-upload-button approve-button">Approve Quote</Button>
-                </div>)}
+                  <Button className="bulk-upload-button approve-button" onClick={()=>setApproveBox(!approveBox)}>Approve Quote</Button>
+                </div>
+              )}
             </div>
 
             <div className="container-box__container">
@@ -514,10 +505,14 @@ const AllContainers = () => {
                 rowClassName={getRowClassName}
                 pagination={false}
                 onChange={handleChange}
+                {...(sectionIndex === 3 ? { rowSelection } : {})}
               />
             </div>
             <p className="total-records">
-              Showing <span className="record-range">{startIndex} - {endIndex} &nbsp;</span>
+              Showing{" "}
+              <span className="record-range">
+                {startIndex} - {endIndex} &nbsp;
+              </span>
               of&nbsp; <span className="total-range">{totalEntries}</span>
             </p>
           </div>

@@ -83,7 +83,7 @@
     font-size: 24px;
     font-weight: 700;
     margin-left: 20px;
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 ::placeholder {
@@ -115,7 +115,7 @@
     box-sizing: border-box;
     padding-left: 40px;
     margin-bottom: 8px;
-    margin-top: -10px;
+    margin-top: -20px !important;
 }
 
 .login-logic {
@@ -123,8 +123,8 @@
 }
 
 .login-items {
-    text-align: center;
     margin-top: 20px;
+    text-align: center;
 }
 
 .login-items button {
@@ -152,10 +152,12 @@
 }
 
 .email-data {
+    margin-top: -20px;
     position: relative;
 }
 
 .password-data {
+    margin-top: -20px;
     position: relative;
 }
 
@@ -201,7 +203,7 @@ label {
 }
 
 .password-container {
-    margin-top: 10px;
+    margin-top: 21px;
     margin-left: 10px;
 }
 

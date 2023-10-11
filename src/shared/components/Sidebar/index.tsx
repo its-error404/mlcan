@@ -67,7 +67,7 @@ const Sidebar = () => {
                 <div className="side-bar__options-text">
                     <Link
                         to="/containers"
-                        className={splitLocation[1] === "containers" ? "active" : ""}
+                        className={splitLocation[1] === "containers" ? "side-active" : ""}
                     >
                         <span>
                             <ContainerIcon width={20} />
@@ -76,7 +76,7 @@ const Sidebar = () => {
                     </Link>
                     <Link
                         to="/customers"
-                        className={splitLocation[1] === "customers" ? "active" : ""}
+                        className={splitLocation[1] === "customers" ? "side-active" : ""}
                     >
                         <span>
                             <CustomersIcon width={20} />
@@ -85,7 +85,7 @@ const Sidebar = () => {
                     </Link>
                     <Link
                         to="/repair-list"
-                        className={splitLocation[1] === "repair-list" ? "active" : ""}
+                        className={splitLocation[1] === "repair-list" ? "side-active" : ""}
                     >
                         <span>
                             <RepairListIcon width={20} />
@@ -94,7 +94,7 @@ const Sidebar = () => {
                     </Link>
                     <Link
                         to="/user-management"
-                        className={splitLocation[1] === "user-management" ? "active" : ""}
+                        className={splitLocation[1] === "user-management" ? "side-active" : ""}
                     >
                         <span>
                             <UsersIcon width={20} />

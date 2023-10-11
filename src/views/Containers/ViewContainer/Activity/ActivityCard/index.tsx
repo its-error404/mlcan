@@ -5,6 +5,7 @@ import { ReactComponent as InspectionIcon } from "../../../../../assets/single c
 import { ReactComponent as DropdownIcon } from "../../../../../assets/single color icons - SVG/accordion closed.svg";
 import { ReactComponent as DropDownOpen } from "../../../../../assets/single color icons - SVG/accordion open.svg";
 import { ReactComponent as LockIcon } from '../../../../../assets/single color icons - SVG/password.svg'
+import { ReactComponent as UpdateIcon} from '../../../../../assets/single color icons - SVG/resize.svg'
 import "antd/dist/antd.css";
 import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
@@ -271,7 +272,7 @@ const confirmHandler = async () => {
               </div>
               <div className="dropdown-user-info">
                 <p>Current User</p>
-                <p>James Vasanth <span className="dropdown-lock-icon">&nbsp;<LockIcon width={10}/></span></p>
+                <p>James Vasanth <span className="dropdown-lock-icon">&nbsp;<LockIcon onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} width={10}/>{showTooltip && `${<p>Unlock</p>}`}</span></p>
               </div>
             </div>
             <div className="header_second">
@@ -283,8 +284,6 @@ const confirmHandler = async () => {
                   value={updateActivityStatus}
                   defaultValue="Select"
                   style={{ width: 150 }}
-                  dropdownMatchSelectWidth={false}
-                  placement={"bottomLeft"}
                   className="activity-select"
                   options={activityStatuses.map(option => ({
                     label: option,
@@ -292,7 +291,7 @@ const confirmHandler = async () => {
                   }))}
                 />
               </div>
-              <Button onClick={handleUpdateClick}>Update</Button>
+              <Button className="submit-button update-submit-button" onClick={handleUpdateClick}>Update</Button>
             </div>
             </div>
             <Table
@@ -316,16 +315,20 @@ const confirmHandler = async () => {
       )}
 
       {showConfirmation && (
-  <OverlayBox maxWidth="400px" minHeight="200px" onClose={()=> {}}>
-    <div>
+  <OverlayBox maxWidth="400px" minHeight="330px" onClose={()=> {}}>
+    <div className="overlay-box-update">
      
       <div className="delete-confirmation-box">
-              <div className="delete-text-icon">
-                <p>Are you sure you want to update the status?</p>
+              <div className="delete-text-icon update-text">
+                <UpdateIcon/>
+                <p>Are you sure to change the status?</p>
+                {expandedRepairFormData.uid &&
+                <p>{formType} - {expandedRepairFormData.uid} will be moved to <span className="update-activity-text">{updateActivityStatus}</span> status</p>}
               </div>
               <div className="delete-confirmation-buttons">
               <button onClick={()=>confirmHandler}>Confirm</button>
               <button onClick={handleCancel}>Cancel</button>
+              <button onClick={()=>handleConfirm(expandedRepairFormData.id, updateActivityStatus, expandedRepairFormData.uid)}>Confirm</button>
               </div>
             </div>
     
