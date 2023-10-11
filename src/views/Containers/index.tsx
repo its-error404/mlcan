@@ -34,6 +34,7 @@ const AllContainers = () => {
   const [totalEntries, setTotalEntries] = useState<number>(0);
   const [displayedEntries, setDisplayedEntries] = useState<number>(totalEntries ?? 0);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const rowSelection = {
     selectedRowKeys,
@@ -130,6 +131,7 @@ const AllContainers = () => {
   const refreshData = () => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         const data = await getContainersData();
         if (data) {
           setContainersData(data.deserializedData);
@@ -142,7 +144,9 @@ const AllContainers = () => {
           setTotalEntries(data.totalEntries || 0);
           setDisplayedEntries(data.totalEntries || 0);
         }
-      } catch (e) {}
+      } catch (e) {} finally {
+        setLoading(false)
+      }
     };
     fetchData();
   };
@@ -390,6 +394,7 @@ const AllContainers = () => {
                 className="container-table"
                 rowClassName={getRowClassName}
                 pagination={false}
+                loading={loading}
                 {...(sectionIndex === 3 ? { rowSelection } : {})}
               />
             </div>
