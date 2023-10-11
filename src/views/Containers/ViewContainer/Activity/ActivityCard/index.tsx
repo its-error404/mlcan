@@ -177,7 +177,7 @@ const ActivityCard: React.FC<{
       try {
         const activitystatues = await fetchActivityStatus();
         setActivityStatuses(activitystatues);
-      } catch (err) { }
+      } catch (err) { console.log(err)}
     };
     fetchData();
   }, []);
