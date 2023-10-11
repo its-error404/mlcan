@@ -18,9 +18,7 @@ import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
 import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 import ExportMenu from "../../shared/components/ExportMenu";
-import { SorterResult } from "antd/es/table/interface";
-import { TableProps } from "antd/lib";
-import { ColumnType } from "antd/lib/table";
+import { ColumnType} from "antd/lib/table";
 
 const RepairList = () => {
  
@@ -70,30 +68,9 @@ const RepairList = () => {
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
   const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
-  const [sortedInfo, setSortedInfo] = useState<SorterResult<Repair>>({});
-
-  const handleChange: TableProps<Repair>["onChange"] = (
-    pagination,
-    filters,
-    sorter
-  ) => {
-    if (Array.isArray(sorter)) {
-    } else if (sorter?.field) {
-      setSortedInfo(sorter as SorterResult<Repair>);
-      const newFilteredData = [...filteredEntries];
-      newFilteredData.sort((a, b) => {
-        const fieldA = a[sorter.field as keyof Repair] as string;
-        const fieldB = b[sorter.field as keyof Repair] as string;
-        if (sorter.order === "ascend") {
-          return fieldA.localeCompare(fieldB);
-        } else {
-          return fieldB.localeCompare(fieldA);
-        }
-      });
-      setFilteredEntries(newFilteredData);
-    }
-  };
   
+  const [loading, setLoading] = useState<boolean>(false)
+
   const [columns] = useState<ColumnType<Repair>[]>([
     {
       title: (
@@ -108,27 +85,15 @@ const RepairList = () => {
           onClick: () => handleRowClick(record),
         };
       },
-      sorter: (a: Repair, b: Repair) => {
-        if (a.uid && b.uid) {
-          return a.uid.length - b.uid.length;
-        }
-        return 0;
-      },
-      sortDirections: ["ascend", "descend"],
-      sortOrder: sortedInfo.columnKey === "uid" ? sortedInfo.order : null,
+      sorter: (a:Repair, b:Repair) => (a?.uid || '').localeCompare(b?.uid || '')
     },
     {
       title: <div className="sort-column">Repair Area</div>,
       dataIndex: "repArea",
-      key: "repArea", 
-      sorter: (a: Repair, b: Repair) => {
-        if (a.repArea && b.repArea) {
-          return a.repArea.length - b.repArea.length;
-        }
-        return 0;
-      },
-      sortOrder: sortedInfo.columnKey === "repArea" ? sortedInfo.order : null,
-    },
+      key: "repArea",
+      render: (text: string) => text || 'N/A',
+      sorter: (a:Repair, b:Repair) => (a?.repArea || '').localeCompare(b?.repArea || '')
+    },    
     {
       title: (
         <>
@@ -137,14 +102,7 @@ const RepairList = () => {
       ),
       dataIndex: "dmgArea",
       key: "dmgArea",
-      sorter: (a: Repair, b: Repair) => {
-        if (a.dmgArea && b.dmgArea) {
-          return a.dmgArea.length - b.dmgArea.length;
-        }
-        return 0;
-      },
-      sortDirections: ["ascend", "descend"],
-      sortOrder: sortedInfo.columnKey === "dmgArea" ? sortedInfo.order : null,
+      sorter: (a:Repair, b:Repair) => (a?.dmgArea || '').localeCompare(b?.dmgArea || '')
     },
     {
       title: "Type",
@@ -156,14 +114,7 @@ const RepairList = () => {
         }
         return text;
       },
-      sorter: (a: Repair, b: Repair) => {
-        if (a.type && b.type) {
-          return a.type.length - b.type.length;
-        }
-        return 0;
-      },
-      sortDirections: ["descend", "ascend"],
-      sortOrder: sortedInfo.columnKey === "type" ? sortedInfo.order : null,
+      sorter: (a:Repair, b:Repair) => (a?.type || '').localeCompare(b?.type || '')
     },
     {
       title: (
@@ -252,6 +203,7 @@ const RepairList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const { deserializedData } = await fetchRepairData();
         setRepairListData(deserializedData);
         setFilteredEntries(deserializedData.docs || []);
@@ -259,12 +211,14 @@ const RepairList = () => {
         setDisplayedEntries(deserializedData.docs?.length || 0);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
-
+  
   useEffect(() => {
     const filteredData = applyFilters(repairListData?.docs || []).filter(
       (record: Repair) =>
@@ -504,12 +458,11 @@ const RepairList = () => {
 
         <div className="repair-box__container">
           <Table
+            loading={loading}
             rowClassName={getRowClassName}
             className="ant-table-repair"
             columns={columns}
             dataSource={filteredEntries}
-            pagination={false}
-            onChange={handleChange}
           />
         </div>
 
