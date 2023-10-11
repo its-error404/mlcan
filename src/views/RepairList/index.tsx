@@ -16,7 +16,7 @@ import EditRepair from "./EditRepair";
 import AddRepair from "./AddRepair";
 import OverlayBox from "../../shared/components/overlayBox";
 import BulkUploadComponent from "./BulkUpload";
-import { deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
+import { RepairFormMeta, deleteRepairEntry, fetchRepairData } from "../../services/RepairListService/repair.service";
 import ExportMenu from "../../shared/components/ExportMenu";
 import { ColumnType} from "antd/lib/table";
 
@@ -68,8 +68,10 @@ const RepairList = () => {
   const [filteredEntries, setFilteredEntries] = useState<Repair[]>([]);
   const [selectedEntryForEdit, setSelectedEntryForEdit] = useState<Repair | null>(null);
   const [displayedEntries, setDisplayedEntries] = useState(totalEntries);
-  
   const [loading, setLoading] = useState<boolean>(false)
+  const [dmgAreaOptions, setDmgAreaOptions] = useState<string[]>([])
+  const [typeOptions, setTypeOptions] = useState<string[]>([])
+  const [repairAreaOptions, setRepairAreaOptions] = useState<string[]>([])
 
   const [columns] = useState<ColumnType<Repair>[]>([
     {
@@ -218,7 +220,19 @@ const RepairList = () => {
   
     fetchData();
   }, []);
-  
+
+  useEffect(()=>{
+    const fetchOptions = async () => {
+      try {
+        const { repairTypeOptionsData, repAreaOptionsData, dmgAreaOptionsData } = await RepairFormMeta()
+        setRepairAreaOptions(repAreaOptionsData)
+        setTypeOptions(repairTypeOptionsData)
+        setDmgAreaOptions(dmgAreaOptionsData)
+      } catch (e) {console.log(e)}
+    }
+    fetchOptions()
+  },[])
+
   useEffect(() => {
     const filteredData = applyFilters(repairListData?.docs || []).filter(
       (record: Repair) =>
@@ -390,9 +404,12 @@ const RepairList = () => {
                       value={repairAreaData}
                       onChange={(e) => setRepairAreaData(e.target.value)}
                     >
-                      <option>Select</option>
-                      <option>Doors</option>
-                      <option>Vents</option>
+                       <option value=''>Select</option>
+                {repairAreaOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
                     </select>
                   </div>
                   <div className="repair-damage">
@@ -403,9 +420,11 @@ const RepairList = () => {
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
                     >
-                      <option>Select</option>
-                      <option>Doors</option>
-                      <option>Vents</option>
+                     {dmgAreaOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
                     </select>
                   </div>
                 </div>
@@ -416,9 +435,11 @@ const RepairList = () => {
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}
                   >
-                    <option>Select</option>
-                    <option>Insert</option>
-                    <option>Patch</option>
+                   {typeOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
                   </select>
                 </div>
               </div>
