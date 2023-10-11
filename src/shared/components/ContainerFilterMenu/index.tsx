@@ -1,7 +1,8 @@
 import { DatePicker } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import '../../../views/Containers/Containers.scss'
+import { fetchEditContainerMeta } from "../../../services/ContainersService/containers.service";
 
 interface FilterMenuProps {
   filterMenu?: boolean;
@@ -47,6 +48,23 @@ const handleDateChange = (date: Dayjs | null, dateString: string) => {
     }
   }
 };
+const [activityOptions, setActivityOptions] = useState<string[]>([])
+const [yardOptions, setYardOptions] = useState<string[]>([])
+const [customers, setCustomers] = useState<string[]>([])
+
+useEffect(()=>{
+  const fetchOptions = async () => {
+    try {
+      const { activityStatusData, contYardsData, customerNames } = await fetchEditContainerMeta()
+      setActivityOptions(activityStatusData)
+      setYardOptions(contYardsData)
+      setCustomers(customerNames)
+    }catch (err) {}
+  }
+fetchOptions()
+},[])
+
+
 
   return (
     <div className={`filter-menu repair-list-filters container-filter-menu ${filterMenu ? "visible" : "invisible"}`} onClick={(e) => e.stopPropagation()}>
@@ -87,10 +105,13 @@ const handleDateChange = (date: Dayjs | null, dateString: string) => {
             <label>Activity</label>
             <select
               value={activityData}
-              onChange={(e) => setActivityData(e.target.value)}
-            ><option>Select</option>
-              <option>draft</option>
-              <option>inspection</option>
+              onChange={(e) => setActivityData(e.target.value)}>
+              <option value=''>Select</option>
+                {activityOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -102,9 +123,12 @@ const handleDateChange = (date: Dayjs | null, dateString: string) => {
               value={statusData}
               onChange={(e) => setStatusData?.(e.target.value)}
             >
-              <option>Select</option>
-              <option>billing</option>
-              <option>draft</option>
+              <option value=''>Select</option>
+                {activityOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -114,10 +138,12 @@ const handleDateChange = (date: Dayjs | null, dateString: string) => {
               value={yardData}
               onChange={(e) => setYardData?.(e.target.value)}
             >
-              <option>Select</option>
-              <option>Nordel</option>
-              <option>Harbourlink</option>
-              <option>Aheer</option>
+             <option value=''>Select</option>
+                {yardOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -128,9 +154,12 @@ const handleDateChange = (date: Dayjs | null, dateString: string) => {
             value={customerData}
             onChange={(e) => setCustomerData?.(e.target.value)}
           >
-            <option>Select</option>
-            <option>Krishna</option>
-            <option>Killian Darian</option>
+           <option value=''>Select</option>
+                {customers.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
           </select>
         </div>
       </div>
