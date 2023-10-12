@@ -57,15 +57,10 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
             value={formik.values.repArea}
             onChange={formik.handleChange}
             options={repAreaOptions.map((option) => (
+              
               { label: option, value: option }
             ))}
           >
-            <option value="">Select</option>
-            {repAreaOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
           </CustomSelect>
           {formik.touched.repArea && formik.errors.repArea ? (
             <div className="field-2-error-message">{formik.errors.repArea}</div>
@@ -87,9 +82,10 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
             onBlur={formik.handleBlur}
             value={formik.values.dmgArea}
             onChange={formik.handleChange}
-            options={dmgAreaOptions.map((option) => (
-              { label: option, value: option }
-            ))}
+            options={[
+    { label: "Select", value: "" }, 
+    ...dmgAreaOptions.map((option) => ({ label: option, value: option }))
+  ]}
           >
             <option value="">Select</option>
             {repAreaOptions.map(option => (

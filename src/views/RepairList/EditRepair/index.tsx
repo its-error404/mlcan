@@ -95,9 +95,9 @@ const EditRepair: React.FC<EditRepairProps> = ({
               >
                  <div className="section-title">
                   {sectionCompleted[index] ? (
-                    <TickIcon width={20} className="tick-icon-filled" />
+                    <TickIcon width={18} className="tick-icon-filled" />
                   ) : (
-                    <TickIcon width={20} className="tick-icon-not-filled" />
+                    <div className="tick-icon-not-filled"></div>
                   )}
                   <span className="section-header-text">{section.name}</span>
                 </div>

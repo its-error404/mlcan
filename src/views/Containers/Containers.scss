@@ -344,9 +344,12 @@ input,select {
 }
 
 .container-filter-menu.visible  > .filter-header__first-part > h4{
-    padding-top: 20px !important;
+    // padding-top: 20px !important;
 }
-  
+.container-filter-menu.visible  > .filter-header__second-part{
+    margin-top: -22px !important;
+}
+
 .container-filter-icon{
     position: absolute;
     left: 10px !important;
