@@ -144,7 +144,7 @@ const AllContainers = () => {
           setTotalEntries(data.totalEntries || 0);
           setDisplayedEntries(data.totalEntries || 0);
         }
-      } catch (e) {} finally {
+      } catch (e) {console.log(e)} finally {
         setLoading(false)
       }
     };

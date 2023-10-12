@@ -49,7 +49,7 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
           setDmgData(dmgAreaData)
           setItemsData(itemTypesData)
           setQuantityData(quantityData)
-        } catch (e){}
+        } catch (e){console.log(e)}
       }
       fetchMeta()
   },[])

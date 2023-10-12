@@ -102,7 +102,7 @@ export const fetchActivityStatus = async () => {
   try {
     const activityStatus = await axiosInstance.get(ApiRoutes.ACTIVITY_STATUS)
     return activityStatus.data.data.values
-  } catch (err) {}
+  } catch (err) {console.log(err)}
 }
 
 export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) => {
@@ -127,7 +127,7 @@ export const deleteItem = async (uniqueID: string) => {
       message: "Item Deleted !",
       className: 'custom-notification-placement'
     })
-  } catch(err) {}
+  } catch(err) {console.log(err)}
 }
 
 export const addComment = async (commentText: string) => {

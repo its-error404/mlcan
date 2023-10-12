@@ -59,7 +59,7 @@ useEffect(()=>{
       setActivityOptions(activityStatusData)
       setYardOptions(contYardsData)
       setCustomers(customerNames)
-    }catch (err) {}
+    }catch (err) {console.log(err)}
   }
 fetchOptions()
 },[])
