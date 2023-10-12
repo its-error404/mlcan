@@ -3,20 +3,25 @@ import "./Containers.scss";
 import Sidebar from "../../shared/components/Sidebar/index";
 import { ReactComponent as PlusIcon } from "../../assets/single color icons - SVG/add.svg";
 import { ReactComponent as SearchIcon } from "../../assets/single color icons - SVG/search.svg";
-import { ReactComponent as FilterIcon } from "../../assets/single color icons - SVG/filter.svg";
-import { Button, Table } from "antd";
+import { ReactComponent as ToggleIcon } from "../../assets/Multicolor icons - SVG/sort default.svg";
+import { ReactComponent as AscToggleIcon } from "../../assets/Multicolor icons - SVG/sort asc.svg";
+import { ReactComponent as FilterIcon } from '../../assets/single color icons - SVG/filter.svg'
+import { format } from "date-fns";
+import '../../styles/_@antOverrides.scss'
+import 'antd/dist/antd.css';
+import { Button, DatePicker, Table } from "antd";
 import { getContainersData } from "../../services/ContainersService/containers.service";
 import { Link } from "react-router-dom";
 import "../../styles/_@antOverrides.scss";
 import { AllContainersData,ContainersData,} from "../../models/Containers.model";
 import { formatDate } from "../../shared/utils/formatDate";
+import moment from "moment";
 import ExportMenu from "../../shared/components/ExportMenu";
 import FilterMenu from "../../shared/components/ContainerFilterMenu";
 import ApproveBox from "../../shared/components/ApproveBox";
 import AddContainer from "./AddContainer/index";
 
 const AllContainers = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [searchResults, setSearchResults] = useState<ContainersData[]>([]);
   const [searchData, setSearchData] = useState("");
   const [sectionIndex, setSectionIndex] = useState<number>(0);
@@ -43,6 +48,8 @@ const AllContainers = () => {
     },
   };
 
+
+  
   useEffect(() => {
     refreshData();
   }, []);
@@ -53,28 +60,38 @@ const AllContainers = () => {
     }
 
     const containers = allContainersData.docs as ContainersData[];
+    
+    let filteredData = [] as ContainersData[];
+  switch (section) {
+    case "All":
+      filteredData = containers;
+      break;
+    case "Draft":
+      filteredData = containers.filter((doc) => doc.activityStatus === "draft");
+      break;
+    case "Admin Review Pending":
+      filteredData = containers.filter((doc) => doc.activityStatus === "billing");
+      break;
+    case "Pending Customer Approval":
+      filteredData = containers.filter((doc) => doc.activityStatus === "pending");
+      break;
+    case "Quotes Approved by Customers":
+      filteredData = containers.filter((doc) => doc.activityStatus === "approved");
+      break;
+    default:
+      filteredData = [];
+  }
 
-    let filteredData = containers.filter((doc) => {
-      const searchMatches = doc.uid?.toLowerCase().includes(searchQuery.toLowerCase());
+  filteredData = filteredData.filter((doc) =>
+  {
+  if(doc.uid) {
+    doc.uid.toLowerCase().includes(searchQuery.toLowerCase())
+  }
+}
+  );
 
-      switch (section) {
-        case "All":
-          return searchMatches;
-        case "Draft":
-          return doc.activityStatus === "draft" && searchMatches;
-        case "Admin Review Pending":
-          return doc.activityStatus === "billing" && searchMatches;
-        case "Pending Customer Approval":
-          return doc.activityStatus === "pending" && searchMatches;
-        case "Quotes Approved by Customers":
-          return doc.activityStatus === "approved" && searchMatches;
-        default:
-          return false;
-      }
-    });
-
-    return filteredData;
-  };
+  return filteredData;
+}
 
   const handleSectionClick = (section: string) => {
     const newIndex = sections.indexOf(section);
@@ -86,10 +103,11 @@ const AllContainers = () => {
     setShowActivityUidColumn(section === "Draft");
   };
 
+
   const getRowClassName = (record: ContainersData, index: number) => {
     return index % 2 === 0 ? "even-row" : "odd-row";
   };
-  const startIndex = Math.min(displayedEntries, totalEntries);
+  const startIndex = Math.min(displayedEntries, totalEntries) > 0 ? 1 : 0;
   const endIndex = Math.min(displayedEntries, totalEntries);
 
   const applyFilters = () => {
@@ -135,12 +153,8 @@ const AllContainers = () => {
         const data = await getContainersData();
         if (data) {
           setContainersData(data.deserializedData);
-          setSearchResults(
-            (data.deserializedData.docs || []) as ContainersData[]
-          );
-          setFilteredEntries(
-            (data.deserializedData.docs || []) as ContainersData[]
-          );
+          setSearchResults((data.deserializedData.docs || []) as ContainersData[]);
+          setFilteredEntries((data.deserializedData.docs || []) as ContainersData[]);
           setTotalEntries(data.totalEntries || 0);
           setDisplayedEntries(data.totalEntries || 0);
         }
@@ -163,7 +177,11 @@ const AllContainers = () => {
       ),
     },
     {
-      title: <div className="sort-column">Yard</div>,
+      title: (
+        <div className="sort-column">
+          Yard
+        </div>
+      ),
       dataIndex: "yard",
       key: "yard",
       className: 'container-yard-colmun',
@@ -171,14 +189,22 @@ const AllContainers = () => {
       sorter: (a:ContainersData, b:ContainersData) => (a?.yard || '').localeCompare(b?.yard || '')
     },
     {
-      title: <div className="sort-column">Customer</div>,
+      title: (
+        <div className="sort-column">
+          Customer
+        </div>
+      ),
       dataIndex: "customerName",
       key: "customerName",
       render: (text: string) => text || "N/A",
       sorter: (a:ContainersData, b:ContainersData) => (a?.customerName || '').localeCompare(b?.customerName || '')
     },
     {
-      title: <div className="sort-column">Owner Name</div>,
+      title: (
+        <div className="sort-column">
+          Owner Name
+        </div>
+      ),
       dataIndex: "owner",
       key: "owner",
       render: (text: string) => text || "N/A",
@@ -198,15 +224,38 @@ const AllContainers = () => {
           : "N/A",
           sorter: (a:ContainersData, b:ContainersData) => (a?.activityType || '').localeCompare(b?.activityType || '')
     },
+    sectionIndex === 1
+    ? {
+        title: (
+          <div className="sort-column">Activity ID</div>
+        ),
+        dataIndex: "activityUid",
+        key: "activityUid",
+        render: (text: string) =>
+          showActivityUidColumn ? text || "N/A" : null,
+        sorter: (a: ContainersData, b: ContainersData) =>
+          a.activityUid.length - b.activityUid.length,
+        sortOrder: sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
+        ellipsis: true,
+      }
+    : null,
     {
-      title: <div className="sort-column">Activity Date</div>,
+      title: (
+        <div className="sort-column">
+          Activity Date
+        </div>
+      ),
       dataIndex: "activityDate",
       key: "activityDate",
       render: (text: string | undefined) => (text ? formatDate(text) : "N/A"),
       sorter: (a:ContainersData, b:ContainersData) => (a?.activityDate || '').localeCompare(b?.activityDate || '')
     },
     {
-      title: <div className="sort-column">Status</div>,
+      title: (
+        <div className="sort-column">
+          Status
+        </div>
+      ),
       dataIndex: "activityStatus",
       key: "activityStatus",
       render: (text: string) => {
@@ -219,13 +268,12 @@ const AllContainers = () => {
 
         return (
           <div
-            className={`activity-text ${
-              text === "billing"
-                ? "billing-style"
-                : text === "draft"
+            className={`activity-text ${text === "billing"
+              ? "billing-style"
+              : text === "draft"
                 ? "draft-style"
                 : "default-style"
-            }`}
+              }`}
           >
             {displayedText}
           </div>
@@ -258,7 +306,7 @@ const AllContainers = () => {
     const filteredSearchData = filteredData.filter((doc) =>
       doc.uid?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setSearchResults(filteredSearchData);
+    setSearchResults(filteredSearchData)
     setFilteredEntries(filteredSearchData);
     setDisplayedEntries(filteredSearchData.length);
 
@@ -318,13 +366,7 @@ const AllContainers = () => {
               <span className="search-icon">
                 <SearchIcon width={17} />
               </span>
-              <input
-                type="text"
-                className="search-box"
-                placeholder="Search container by number"
-                onChange={SearchChange}
-                value={searchData}
-              ></input>
+              <input type="text" className="search-box" placeholder="Search container by number" onChange={SearchChange} value={searchData}></input>
               {searchData && (
                 <Button className="clear-search" onClick={handleClearSearch}>
                   Clear

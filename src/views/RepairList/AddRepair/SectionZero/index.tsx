@@ -18,7 +18,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
   const [dmgAreaOptions, setDmgAreaOptions] = useState<string[]>([]);
   const [repairTypeOptions, setRepairTypeOptions] = useState<string[]>([]);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchCont = async () => {
       try {
         const metaData = await RepairFormMeta();
@@ -34,6 +34,7 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
     };
     fetchCont();
   }, []);
+  
   return (
     <div className='section-zero'>
       <div className="repair-details__first-col">

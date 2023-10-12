@@ -19,7 +19,5 @@ export class ItemData {
     @serializable(alias('id', primitive()))
     id?: string
 
-    // @serializable(alias('items', list(singleItemData)))
-    // items?: list
 }
 

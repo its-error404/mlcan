@@ -85,6 +85,13 @@ export const toggleExpandRepairCard = async (uniqueID: string) => {
   }
 };
 
+export const toggleExpandedQuoteCard = async (uniqueID: string) => {
+  try {
+    const response = await axiosInstance.get(`${ApiRoutes.QUOTE_FORM}/&${uniqueID}`)
+    return response.data.data.form
+  } catch (err) {}
+}
+
 export const containerItemsMeta = async () => {
   try {
     const [ repArea, dmgArea, itemTypes, quantity ] = await Promise.all([axiosInstance.get(ApiRoutes.LENGTH), axiosInstance.get(ApiRoutes.HEIGHT), axiosInstance.get(ApiRoutes.YARDS), axiosInstance.get(ApiRoutes.CON_TYPES), axiosInstance.get(ApiRoutes.CUSTOMERS)])
@@ -105,29 +112,56 @@ export const fetchActivityStatus = async () => {
   } catch (err) {}
 }
 
+export const addComment = async (commentText: string) => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.COMMENTS, {comment: commentText});
+    notification.success({
+      message: "Comment Added Successfully",
+      description: "Comment",
+      className: "custom-notification-placement",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    throw error;
+  }
+};
+
 export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) => {
   try {
-    await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
-      option: selectedOption,
-    });
-    notification.success({
-      message: "updated Successfully !",
-      className: "custom-notification-placement",
-    });  
-  }catch (err) { notification.error({
-    message: "update failed !",
-    className: "custom-notification-placement",
-  });}
-}
+    const response = await axiosInstance.post(
+      `${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`,
+      {
+        option: selectedOption,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
-export const deleteItem = async (uniqueID: string) => {
+export const handleConfirm = async (UniqueID:string, selectedOption:string, setShowConfirmation:any) => {
   try {
-    await axiosInstance.delete(`${ApiRoutes.REPAIR_ITEMS}/${uniqueID}`)
-    notification.success({
-      message: "Item Deleted !",
-      className: 'custom-notification-placement'
-    })
-  } catch(err) {}
-}
+    
+    const response = await upgradeRepairForm(UniqueID, selectedOption);
 
-// export const editItem = astnc
+    notification.success({
+      message: "Updated Successfully!",
+      className: "custom-notification-placement",
+    });
+
+    setShowConfirmation(false);
+
+    return response;
+  } catch (error) {
+    setShowConfirmation(false);
+    notification.error({
+      message: "Update Failed!",
+      className: "custom-notification-placement",
+    });
+    console.error("Error updating status:", error);
+
+    throw error;
+  }
+};
