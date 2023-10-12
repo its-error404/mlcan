@@ -60,6 +60,10 @@
     border-left: 2px solid $blue-bg; 
   }
 
+  .dropdown-user-info p:nth-child(2){
+    padding-top: 10px;
+  }
+
 .icon-background.lightpurple {
     background-color: $light-purple;
 }
@@ -145,4 +149,42 @@
     top:30%;
     left: 8%;
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(153deg) brightness(103%) contrast(102%);
+}
+
+.expanded-content > .overlay > .overlay-box {
+    width: 500px !important;
+}
+
+.activity-card-icon {
+    margin-left: 170px;
+}
+
+.update-text  {
+    gap: 35px !important;
+}
+
+.update-status-buttons-container button {
+    width: 220px;
+    height: 40px;
+    border: 1px solid $cancel-bg;
+    border-radius: 12px;
+}
+.update-status-buttons-container button:first-child {
+    background-color: $cancel-bg;
+    font-weight: 500 ;
+    font-size: 16px;
+}
+
+.update-status-buttons-container button:last-child {
+    color: $white-bg;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+
+.update-status-buttons-container {
+    margin-left: 35px;
+    margin-top: 30px !important;
+    display: flex;
+    gap: 20px;
 }

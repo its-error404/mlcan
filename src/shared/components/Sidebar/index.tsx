@@ -120,17 +120,19 @@ const Sidebar = () => {
                 {dropDown && (
                     <div className="user-dropdown">
                         <div className="user-dropdown-info">
-                            <p className="initial">JR</p>
+                            <p className="initial">U</p>
 
                             <div className="user-information-dropdown">
-                                <p>Jeremy Roberts</p>
+                                <p>User</p>
                                 <div className="designation-flex">
                                     <p className="user-role">{data.is_admin}</p>
                                     <div className="dot">.</div>
                                     <p>{data.uid}</p>
                                 </div>
+                                
                                 <div className="align-left">
                                 <div className="user-contact">
+                                    
                                     <div className="mail-container">
                                         <EmailIcon width={15} className="mail-icon" />
                                         <p className="user-email">{data.email}</p>

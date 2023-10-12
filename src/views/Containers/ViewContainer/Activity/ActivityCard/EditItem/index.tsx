@@ -62,7 +62,7 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <Space direction="vertical" size={20}>
+          <Space direction="vertical" size={10}>
             <label>Repair Code</label>
             <Input
               className="container-input"

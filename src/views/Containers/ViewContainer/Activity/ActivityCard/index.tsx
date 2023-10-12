@@ -22,6 +22,8 @@ import DeleteModal from "../../../../../shared/components/DeleteModal";
 import EditItem from "./EditItem";
 import CommentModal from "../../../../../shared/components/CommentModal";
 import PhotoModal from "../../../../../shared/components/PhotoModal";
+import { getUserInfo } from "../../../../../services/AuthService/authToken";
+
 
 interface RepairFormData {
   uid: string;
@@ -162,6 +164,8 @@ const ActivityCard: React.FC<{
         ),
       },
   ];
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
 
   const [activityStatuses, setActivityStatuses] = useState([]);
 
@@ -282,9 +286,9 @@ const ActivityCard: React.FC<{
               {timeline && <TimeLine timelineDate={date}/>}
               </div>
               <div className="dropdown-user-info">
-                <p>Current User</p>
-                <p>
-                  James Vasanth{" "}
+              <p>Current User</p>
+                <p>{userID}{' '}
+
                   <span
                     className="dropdown-lock-icon"
                     onMouseEnter={handleMouseEnter}
@@ -345,21 +349,19 @@ const ActivityCard: React.FC<{
       )}
 
       {showConfirmation && (
-        <OverlayBox maxWidth="400px" minHeight="330px" onClose={() => { }}>
+        <OverlayBox minHeight="330px" onClose={() => { }}>
           <div className="overlay-box-update">
             <div className="delete-confirmation-box">
               <div className="delete-text-icon update-text">
-                <UpdateIcon />
+                <UpdateIcon className="activity-card-icon" />
                 <p>Are you sure to change the status?</p>
-                {expandedRepairFormData?.uid && (
                   <p>
-                    {formType} - {expandedRepairFormData.uid} will be moved to{" "}
+                    {formType} - {expandedRepairFormData?.uid} will be moved to{" "}
                     <span className="update-activity-text">
                       {updateActivityStatus}
                     </span>{" "}
                     status
                   </p>
-                )}
               </div>
               <div className="delete-confirmation-buttons update-status-buttons-container">
                 <button onClick={handleCancel}>Cancel</button>

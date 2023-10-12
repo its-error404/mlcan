@@ -3,7 +3,7 @@
 .delete-confirmation-box {
     background-color: $white-bg;
     width: 536px;
-    height: 345px;
+    min-height: 320px;
     border: 1px solid transparent;
     border-radius: 10px;
 }
@@ -25,6 +25,7 @@
     height: 40px !important;
     border: 1px solid transparent;
     border-radius: 10px;
+    font-weight: 600;
 }
 
 .approve-buttons button:first-child{
@@ -46,6 +47,7 @@
     margin-top: -20px;
     margin-left: 25px;
     font-size: 16px;
+    color: $text-gray;
 }
 
 .delete-text-icon {
@@ -54,6 +56,5 @@
     margin-left: 50px !important;
     flex-flow: column nowrap;
     margin-left: 40px;
-    gap: 50px;
-    max-width: 500px;
+    gap: 35px;
 }

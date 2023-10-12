@@ -68,11 +68,11 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
           <h2>Edit Container</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
-        <form onSubmit={formik.handleSubmit}>
-          <Space direction='vertical' size={20}>
+        <form className='add-container-form' onSubmit={formik.handleSubmit}>
+          <Space direction='vertical' size={1}>
             <label>Yard Name</label>
             <Select
-            value={formik.values.yardName}
+            value={formik.values.yard}
             onChange={formik.handleChange}
             className='container-select'
             options={yardNames.map(option => ({
@@ -126,6 +126,8 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
           />
             <label>Comments</label>
             <Input className='container-input comments-add-input' placeholder='Enter' onChange={formik.handleChange}></Input>
+            </Space>
+            <Space direction='vertical' size={20}>
             <label>Door photo including container number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <label>Left side photo</label>
@@ -143,7 +145,7 @@ const EditContainer: React.FC<EditContainerProps> = ({ onclose, id, data }) => {
             <label>CSC Plate Number</label>
             <PhotoDragger onFileUpload={() => { }} className='ant-upload-dragger' />
             <button type="submit" className='submit-button'>Edit Container</button>
-          </Space>
+            </Space>
         </form>
       </div>
     </div>

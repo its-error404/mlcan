@@ -420,6 +420,7 @@ const RepairList = () => {
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
                     >
+                      <option value=''>Select</option>
                      {dmgAreaOptions.map(option => (
                   <option key={option} value={option}>
                     {option}
@@ -435,6 +436,7 @@ const RepairList = () => {
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}
                   >
+                    <option value=''>Select</option>
                    {typeOptions.map(option => (
                   <option key={option} value={option}>
                     {option}
