@@ -9,7 +9,7 @@ export interface QuoteData {
     }>;
 }
 
-export interface RepairData {
+export interface RepairDataActivity {
     docs: Array<{
         id: string;
         uid: string;
