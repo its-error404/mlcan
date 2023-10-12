@@ -11,8 +11,6 @@ import "../../styles/_@antOverrides.scss";
 import { AllContainersData,ContainersData,} from "../../models/Containers.model";
 import { formatDate } from "../../shared/utils/formatDate";
 import ExportMenu from "../../shared/components/ExportMenu";
-import { TableProps } from "antd/lib/table";
-import { SorterResult } from "antd/lib/table/interface";
 import FilterMenu from "../../shared/components/ContainerFilterMenu";
 import ApproveBox from "../../shared/components/ApproveBox";
 import AddContainer from "./AddContainer/index";
@@ -36,29 +34,7 @@ const AllContainers = () => {
   const [totalEntries, setTotalEntries] = useState<number>(0);
   const [displayedEntries, setDisplayedEntries] = useState<number>(totalEntries ?? 0);
   const [showActivityUidColumn, setShowActivityUidColumn] = useState(false);
-  const [sortedInfo, setSortedInfo] = useState<SorterResult<ContainersData>>({});
-
-  const handleChange: TableProps<ContainersData>["onChange"] = (
-    pagination,
-    filters,
-    sorter
-  ) => {
-    if (Array.isArray(sorter)) {
-    } else if (sorter?.field) {
-      setSortedInfo(sorter as SorterResult<ContainersData>);
-      const newFilteredData = [...filteredEntries];
-      newFilteredData.sort((a, b) => {
-        const fieldA = a[sorter.field as keyof ContainersData] as string;
-        const fieldB = b[sorter.field as keyof ContainersData] as string;
-        if (sorter.order === "ascend") {
-          return fieldA.localeCompare(fieldB);
-        } else {
-          return fieldB.localeCompare(fieldA);
-        }
-      });
-      setFilteredEntries(newFilteredData);
-    }
-  };
+  const [loading, setLoading] = useState<boolean>(false);
 
   const rowSelection = {
     selectedRowKeys,
@@ -155,6 +131,7 @@ const AllContainers = () => {
   const refreshData = () => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         const data = await getContainersData();
         if (data) {
           setContainersData(data.deserializedData);
@@ -167,7 +144,9 @@ const AllContainers = () => {
           setTotalEntries(data.totalEntries || 0);
           setDisplayedEntries(data.totalEntries || 0);
         }
-      } catch (e) {}
+      } catch (e) {} finally {
+        setLoading(false)
+      }
     };
     fetchData();
   };
@@ -178,6 +157,7 @@ const AllContainers = () => {
       title: "Container Number",
       dataIndex: "uid",
       key: "uid",
+      className: 'container-number-colmun',
       render: (text: string, record: ContainersData) => (
         <Link to={`/containers/${record.id}`}>{text}</Link>
       ),
@@ -186,42 +166,23 @@ const AllContainers = () => {
       title: <div className="sort-column">Yard</div>,
       dataIndex: "yard",
       key: "yard",
+      className: 'container-yard-colmun',
       render: (text: string) => text || 'N/A',
-      sorter: (a: ContainersData, b: ContainersData) => {
-        if (a.yard && b.yard) {
-          return a.yard.length - b.yard.length;
-        }
-        return 0;
-      },
-      sortOrder: sortedInfo.columnKey === "yard" ? sortedInfo.order : null,
+      sorter: (a:ContainersData, b:ContainersData) => (a?.yard || '').localeCompare(b?.yard || '')
     },
     {
       title: <div className="sort-column">Customer</div>,
       dataIndex: "customerName",
       key: "customerName",
       render: (text: string) => text || "N/A",
-      sorter: (a: ContainersData, b: ContainersData) => {
-        if (a.customerName && b.customerName) {
-          return a.customerName.length - b.customerName.length;
-        }
-        return 0;
-      },
-      sortOrder:
-        sortedInfo.columnKey === "customerName" ? sortedInfo.order : null,
+      sorter: (a:ContainersData, b:ContainersData) => (a?.customerName || '').localeCompare(b?.customerName || '')
     },
     {
       title: <div className="sort-column">Owner Name</div>,
       dataIndex: "owner",
       key: "owner",
       render: (text: string) => text || "N/A",
-      sorter: (a: ContainersData, b: ContainersData) => {
-        if (a.owner && b.owner) {
-          return a.owner.length - b.owner.length;
-        }
-        return 0;
-      },
-      sortOrder: sortedInfo.columnKey === "owner" ? sortedInfo.order : null,
-      ellipsis: true,
+      sorter: (a:ContainersData, b:ContainersData) => (a?.owner || '').localeCompare(b?.owner || '')
     },
     {
       title: (
@@ -235,28 +196,14 @@ const AllContainers = () => {
         text
           ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
           : "N/A",
-      sorter: (a: ContainersData, b: ContainersData) => {
-        const activityTypeA = a.activityType || "";
-        const activityTypeB = b.activityType || "";
-        return activityTypeA.localeCompare(activityTypeB);
-      },
-      sortOrder:
-        sortedInfo.columnKey === "activityType" ? sortedInfo.order : null,
-      ellipsis: true,
+          sorter: (a:ContainersData, b:ContainersData) => (a?.activityType || '').localeCompare(b?.activityType || '')
     },
     {
       title: <div className="sort-column">Activity Date</div>,
       dataIndex: "activityDate",
       key: "activityDate",
       render: (text: string | undefined) => (text ? formatDate(text) : "N/A"),
-      sorter: (a: ContainersData, b: ContainersData) => {
-        const activityDateA = a.activityDate || "";
-        const activityDateB = b.activityDate || "";
-        return activityDateA.localeCompare(activityDateB)
-      },
-      sortOrder:
-        sortedInfo.columnKey === "activityDate" ? sortedInfo.order : null,
-      ellipsis: true,
+      sorter: (a:ContainersData, b:ContainersData) => (a?.activityDate || '').localeCompare(b?.activityDate || '')
     },
     {
       title: <div className="sort-column">Status</div>,
@@ -284,13 +231,7 @@ const AllContainers = () => {
           </div>
         );
       },
-      sorter: (a: ContainersData, b: ContainersData) => {
-        const activityStatusA = a.activityStatus || "";
-        const activityStatusB = b.activityStatus || "";
-        return activityStatusA.localeCompare(activityStatusB);
-      },
-      sortOrder:
-        sortedInfo.columnKey === "activityStatus" ? sortedInfo.order : null,
+      sorter: (a:ContainersData, b:ContainersData) => (a?.activityStatus || '').localeCompare(b?.activityStatus || '')
     },
   ];
 
@@ -302,15 +243,7 @@ const AllContainers = () => {
       dataIndex: "activityUid",
       key: "activityUid",
       render: (text: string) => (showActivityUidColumn ? text || "N/A": ''),
-      sorter: (a: ContainersData, b: ContainersData) => {
-        if (a.activityUid && b.activityUid) {
-          return a.activityUid.length - b.activityUid.length;
-        }
-        return 0;
-      },
-      sortOrder:
-        sortedInfo.columnKey === "activityUid" ? sortedInfo.order : null,
-      ellipsis: true,
+      sorter: (a:ContainersData, b:ContainersData) => (a?.activityUid || '').localeCompare(b?.activityUid || '')
     });
   }
   baseColumns.splice(5, 0, ...dynamicColumns);
@@ -444,7 +377,6 @@ const AllContainers = () => {
               </div>
             </div>
           )}
-
               {activeSection === "Pending Customer Approval" && (
                 <div>
                 <div className="container-export-menu">
@@ -464,7 +396,7 @@ const AllContainers = () => {
                 className="container-table"
                 rowClassName={getRowClassName}
                 pagination={false}
-                onChange={handleChange}
+                loading={loading}
                 {...(sectionIndex === 3 ? { rowSelection } : {})}
               />
             </div>

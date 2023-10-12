@@ -13,27 +13,52 @@ interface CustomTimelineProps {
   timelineDate: string;
 }
 
+interface TimelineItem {
+  icon: JSX.Element;
+  label: string;
+  editable: boolean;
+}
+
+const timelineItems: TimelineItem[] = [
+  {
+    icon: <QuoteIcon width={10} />,
+    label: "Quote Date",
+    editable: true,
+  },
+  {
+    icon: <QuoteAccepted width={10} />,
+    label: "Quote Accepted",
+    editable: false,
+  },
+  {
+    icon: <QuoteApproved width={12} />,
+    label: "Quote Approved",
+    editable: false,
+  },
+  {
+    icon: <RepairIcon width={12} />,
+    label: "Repair Date",
+    editable: true,
+  },
+  {
+    icon: <RepairApproved width={12} />,
+    label: "Repair Approved",
+    editable: false,
+  },
+  {
+    icon: <BilledIcon width={12} />,
+    label: "Billed",
+    editable: false,
+  },
+];
+
 const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<{
-    label: string;
-    date: string;
-    editable: boolean;
-  } | null>(null);
+  const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
 
-  const [itemStatuses, setItemStatuses] = useState(['completed', 
-    'completed',
-    'completed', 
-    'on-going', 
-    'not-started', 
-    'not-started', 
-  ]);
+  const [itemStatuses, setItemStatuses] = useState(["completed", "completed", "completed", "on-going", "not-started", "not-started"]);
 
-  const handleEditClick = (item: {
-    label: string;
-    date: string;
-    editable: boolean;
-  }) => {
+  const handleEditClick = (item: TimelineItem) => {
     setSelectedItem(item);
     setModalVisible(true);
   };
@@ -48,21 +73,23 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
 
   const handleItemCompletion = (index: number) => {
     const updatedStatuses = [...itemStatuses];
-    if (updatedStatuses[index] === 'not-started') {
-      updatedStatuses[index] = 'on-going';
-    } else if (updatedStatuses[index] === 'on-going') {
-      updatedStatuses[index] = 'completed';
-    } else {
-      updatedStatuses[index] = 'not-started';
+    switch (updatedStatuses[index]) {
+      case "not-started":
+        updatedStatuses[index] = "on-going";
+        break;
+      case "on-going":
+        updatedStatuses[index] = "completed";
+        break;
+      default:
+        updatedStatuses[index] = "not-started";
+        break;
     }
     setItemStatuses(updatedStatuses);
   };
-  
-  
 
   return (
     <div>
-      <Timeline >
+      <Timeline>
         {itemStatuses.map((status, index) => (
           <div
             key={index}
@@ -70,38 +97,20 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
             onClick={() => handleItemCompletion(index)}
           >
             <div className="quote-icon-bg">
-              {index === 0 ? <QuoteIcon width={10} /> : null}
-              {index === 1 ? <QuoteAccepted width={10} /> : null}
-              {index === 2 ? <QuoteApproved width={12} /> : null}
-              {index === 3 ? <RepairIcon width={12} /> : null}
-              {index === 4 ? <RepairApproved width={12} /> : null}
-              {index === 5 ? <BilledIcon width={12} /> : null}
+              {timelineItems[index].icon}
             </div>
-            <div>
-              {index === 0 ? 'Quote Date' : null}
-              {index === 1 ? 'Quote Accepted' : null}
-              {index === 2 ? 'Quote Approved' : null}
-              {index === 3 ? 'Repair Date' : null}
-              {index === 4 ? 'Repair Approved' : null}
-              {index === 5 ? 'Billed' : null}
-            </div>
-            {index === 0 || index === 3 ? (
+            <div>{timelineItems[index].label}</div>
+            {timelineItems[index].editable ? (
               <div>
                 <EditOutlined
                   rev=""
-                  onClick={() =>
-                    handleEditClick({
-                      label: index === 0 ? 'Quote Date' : 'Repair Date',
-                      date: timelineDate,
-                      editable: true,
-                    })
-                  }
+                  onClick={() => handleEditClick(timelineItems[index])}
                 />
               </div>
             ) : null}
-           {index === 0 || index === 1 || index === 2 ? ( 
-      <div>{timelineDate}</div>
-    ) : null}
+            {index >= 0 && index <= 2 ? (
+              <div>{timelineDate}</div>
+            ) : null}
           </div>
         ))}
       </Timeline>
