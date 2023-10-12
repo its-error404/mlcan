@@ -4,9 +4,8 @@ import { ReactComponent as QuoteIcon } from '../../../../assets/single color ico
 import { ReactComponent as RepairIcon } from '../../../../assets/single color icons - SVG/repair.svg'
 import { ReactComponent as InspectionIcon } from '../../../../assets/single color icons - SVG/inspection.svg'
 import { Space, Spin } from "antd";
-import { fetchActivityData, toggleExpandRepairCard, toggleExpandedQuoteCard } from "../../../../services/ContainersService/viewcontainer.service";
+import { fetchActivityData } from "../../../../services/ContainersService/viewcontainer.service";
 import ActivityCard from "./ActivityCard";
-import 'antd/dist/antd.css';
 import { QuoteData, RepairDataActivity } from "../../../../shared/types/formTypes";
 import { formatDate } from "../../../../shared/utils/formatDate";
 

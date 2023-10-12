@@ -11,7 +11,7 @@ const ApproveBox:React.FC<ApproveBoxProps> = ({onclose}) => {
     <div>
        <div className="delete-confirmation-box">
               <div className="delete-text-icon">
-                <UpdateIcon/>
+                <UpdateIcon className='update-icon-approve-box'/>
                <p>Are you sure to approve all the quotes?</p>
                <p>Selected quotes will be moved to quote approved status</p>
               </div>

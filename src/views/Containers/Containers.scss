@@ -114,7 +114,7 @@ label {
 
 .container-details {
     line-height: 20px;
-    margin-top: -43px;
+    margin-top: -30px;
     background-color: $input-bg;
     width: 84.3vw;
     height: 84vh;
@@ -214,9 +214,8 @@ label {
     font-weight: 600;
 }
 
-.filter-header__first-part h4:first-child:not(.filter-header__second-part h4) {
-    margin-top: 40px;
-    font-weight: 500 !important;
+.filter-header__first-part h4 {
+    font-weight: 600 !important;
     font-size: 18px !important;
 }
 
@@ -282,7 +281,7 @@ label {
 
 .container-filter-second-part {
     gap: 20px !important;
-    margin-top: -20px !important;
+    margin-top: -50px !important;
 }
 
 input,select {
@@ -338,6 +337,14 @@ input,select {
 
 .ant-table-tbody > tr {
     max-height: 20px !important;
+}
+
+.container-filter-container > button > span{
+    left: 15%;
+}
+
+.container-filter-menu.visible  > .filter-header__first-part > h4{
+    padding-top: 20px !important;
 }
   
 .container-filter-icon{
@@ -481,6 +488,11 @@ input,select {
 .container-export-menu {
     display: flex;
     align-items: center;
+}
+
+.export-menu-box.visible p{
+    font-size: 14px;
+font-weight: 600;
 }
 
 .container-export-menu > button{
