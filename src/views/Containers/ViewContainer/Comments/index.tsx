@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { addComment, fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
 import "./Comments.scss";
 import { CommentsData } from "../../../../models/comments.model";
-import { Button, Input, Pagination } from "antd";
+import { Button, Input, Pagination, Spin } from "antd";
 const CommentsComponent = () => {
   const [commentsData, setCommentsData] = useState<CommentsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -86,7 +86,7 @@ const CommentsComponent = () => {
         <Button className="comments-add" onClick={handleAddComment}>Add Comment</Button>
       </div>
       {isLoading ? (
-        <p>Loading comments...</p>
+        <div className="loader-icon-activity"><Spin size="large"/><p>Loading Data....</p></div>
       ) : commentsData && commentsData.docs && commentsData.docs.length > 0 ? (
         <div>
           
