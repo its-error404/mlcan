@@ -9,11 +9,6 @@ import { ReactComponent as RepairIcon } from "../../../assets/single color icons
 import { ReactComponent as RepairApproved } from "../../../assets/single color icons - SVG/repair approved.svg";
 import { ReactComponent as BilledIcon } from "../../../assets/single color icons - SVG/invoice.svg";
 import dayjs, { Dayjs } from "dayjs";
-
-interface CustomTimelineProps {
-  timelineDate: string;
-}
-
 interface TimelineItem {
   icon: JSX.Element;
   label: string;
@@ -53,14 +48,15 @@ const timelineItems: TimelineItem[] = [
   },
 ];
 
-const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
+const TimeLine = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
   const [selectedQuoteDate, setSelectedQuoteDate] = useState('');
   const [selectedRepairDate, setSelectedRepairDate] = useState('');
   const [itemStatuses, setItemStatuses] = useState(["completed", "completed", "completed", "on-going", "not-started", "not-started"]);
+  const [displayDate, setDisplayDate] = useState(false)
 
-  const handleQuoteDateChange = (date: Dayjs | null, dateString: string) => {
+  const handleQuoteDateChange = (date: Dayjs | null) => {
     if (date !== null) {
       if (setSelectedQuoteDate) {
         setSelectedQuoteDate(date.format('DD MMM YYYY'));
@@ -72,7 +68,7 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
     }
   };
 
-  const handleRepairDateChange = (date: Dayjs | null, datestring: string) => {
+  const handleRepairDateChange = (date: Dayjs | null) => {
     if (date !== null) {
       if (setSelectedRepairDate) {
         setSelectedRepairDate(date.format('DD MMM YYYY'))
@@ -96,6 +92,7 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
       setSelectedRepairDate(selectedRepairDate);
     }
     setModalVisible(false);
+    setDisplayDate(true)
   };
 
   const handleModalCancel = () => {
@@ -139,10 +136,10 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
               </div>
             ) : null
             }
-            {timelineItems[index].label === "Quote Date" && (
+            {displayDate && timelineItems[index].label === "Quote Date" &&(
               <div>{selectedQuoteDate}</div>
             )}
-            {timelineItems[index].label === "Repair Date" && (
+            {displayDate && timelineItems[index].label === "Repair Date" && (
               <div>{selectedRepairDate}</div>
             )}
           </div>

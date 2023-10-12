@@ -135,6 +135,8 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
               onChange={formik.handleChange}
               value={formik.values.comments}
             />
+            </Space>
+           <Space direction='vertical' size={20}>
             <label>Damaged Area Photo</label>
             <PhotoDragger
               onFileUpload={() =>{}}
@@ -148,7 +150,7 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
             <button type="submit" className='submit-button'>
               Add Item
             </button>
-          </Space>
+            </Space>
         </form>
       </div>
     </div>

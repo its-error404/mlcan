@@ -148,7 +148,7 @@ const ActivityCard: React.FC<{
         title: "Options",
         dataIndex: "options",
         key: "options",
-        render: (_: any, record: any) => (
+        render: () => (
           <EllipsisMenu
             onDelete={() => {
              setDeleteModalVisible(true)
@@ -283,7 +283,7 @@ const ActivityCard: React.FC<{
               <div className="timeline-button-container">
               <CalendarOutlined rev='' className="calender-icon-timeline"/>
               <Button onClick={()=>setTimeline(!timeline)}>View Timeline</Button>
-              {timeline && <TimeLine timelineDate={date}/>}
+              {timeline && <TimeLine/>}
               </div>
               <div className="dropdown-user-info">
               <p>Current User</p>
