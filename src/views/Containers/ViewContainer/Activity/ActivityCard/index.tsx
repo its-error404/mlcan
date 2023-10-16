@@ -397,7 +397,7 @@ const ActivityCard: React.FC<{
       {isDeleteModalVisible && (<DeleteModal onOk={()=>{deleteItem(expandedRepairFormData?.id || ''); setDeleteModalVisible(false)}} onCancel={()=>setDeleteModalVisible(false)}/>)}
       {editItem && (<div className="overlay"><div className="overlay-content"><EditItem onclose={()=>setEditItem(false)}/></div></div>)}
       {commentModal && (<CommentModal commentData="" id={expandedRepairFormData?.uid} repairArea={expandedRepairFormData?.repairArea}  centered onCancel={()=>{setCommentModal(false)}}/>)}
-      {photoModal && (<PhotoModal centered onCancel={()=>{setPhotoModal(false)}}/>)}
+      {photoModal && (<PhotoModal centered onCancel={()=>{setPhotoModal(false)}} onOk={()=>setPhotoModal(false)} title="" />)}
     </div>
   );
 };

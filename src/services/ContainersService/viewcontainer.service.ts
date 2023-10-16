@@ -105,9 +105,9 @@ export const fetchActivityStatus = async () => {
   } catch (err) {console.log(err)}
 }
 
-export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) => {
+export const upgradeRepairForm = async (uniqueID:string, selectedOption:string) => {
   try {
-    await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${UniqueID}`, {
+    await axiosInstance.post(`${ApiRoutes.REPAIR_FORM}/upgrade/${uniqueID}`, {
       option: selectedOption,
     });
     notification.success({
@@ -122,7 +122,7 @@ export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) 
 
 export const deleteItem = async (uniqueID: string) => {
   try {
-    await axiosInstance.delete(`${ApiRoutes.REPAIR_ITEMS}/${uniqueID}`)
+    await axiosInstance.delete(`${ApiRoutes.DELETE_ITEM}/${uniqueID}`)
     notification.success({
       message: "Item Deleted !",
       className: 'custom-notification-placement'

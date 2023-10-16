@@ -1,10 +1,10 @@
 import React, { ChangeEvent, FocusEvent } from 'react';
 
 interface InputProps {
-  label?: string;
-  name?: string;
-  id?: string;
-  value?: string;
+  label: string;
+  name: string;
+  id: string;
+  value: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   placeholder?: string;

@@ -25,5 +25,6 @@ export const ApiRoutes = {
     CON_TYPES: "/meta/container_types",
     CUSTOMERS: "/customers",
     ACTIVITY_STATUS: '/meta/activity_statuses',
-    REPAIR_ITEMS: '/repair_items'
+    REPAIR_ITEMS: '/repair_items',
+    DELETE_ITEM: '/repair_items'
 }

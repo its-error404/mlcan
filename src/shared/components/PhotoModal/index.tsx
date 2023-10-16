@@ -7,11 +7,11 @@ import { ReactComponent as NextIcon } from '../../../assets/Multicolor icons - S
 
 type ModalProps = {
     children?: React.ReactNode;
-    title?: string;
-    centered?: boolean;
+    title: string;
+    centered: boolean;
     visible?: boolean;
-    onOk?: () => void;
-    onCancel?: () => void;
+    onOk: () => void;
+    onCancel: () => void;
   }
 
 const PhotoModal:React.FC<ModalProps> = ({onCancel, onOk}) => {
