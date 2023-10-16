@@ -285,10 +285,26 @@
   left: 50%;
 }
 
-.repairs-section .ant-table-cell .ant-table-column-sorters .ant-table-column-sorter-full:nth-child(2) {
+.repairs-section .ant-table-cell:nth-child(1) .ant-table-column-sorters .ant-table-column-sorter-full:nth-child(2) {
+  position: absolute !important;
+  left: 50% !important;
+}
+
+.repairs-section .ant-table-cell:nth-child(2) .ant-table-column-sorters .ant-table-column-sorter-full:nth-child(2) {
   position: absolute !important;
   left: 55% !important;
 }
+
+.repairs-section .ant-table-cell:nth-child(3) .ant-table-column-sorters .ant-table-column-sorter-full:nth-child(2) {
+  position: absolute !important;
+  left: 70% !important;
+}
+
+.repairs-section .ant-table-cell:nth-child(4) .ant-table-column-sorters .ant-table-column-sorter-full:nth-child(2) {
+  position: absolute !important;
+  left: 40% !important;
+}
+
 
 .container-date-picker{
 

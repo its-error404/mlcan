@@ -12,10 +12,18 @@
     width: 100vw !important;
 }
 
+select {
+    text-transform: capitalize;
+}
+
 .active-section {
     color: $turkish-green;
     padding-bottom: 10px;
     border-bottom: 2px solid $turkish-green;
+}
+
+.capitalize-options {
+    text-transform: capitalize;
 }
 
 .sort-column {

@@ -87,9 +87,11 @@ const RepairList = () => {
           onClick: () => handleRowClick(record),
         };
       },
+      width: 180,
       sorter: (a:Repair, b:Repair) => (a?.uid || '').localeCompare(b?.uid || '')
     },
     {
+      width: 180,
       title: <div className="sort-column">Repair Area</div>,
       dataIndex: "repArea",
       key: "repArea",
@@ -104,9 +106,11 @@ const RepairList = () => {
       ),
       dataIndex: "dmgArea",
       key: "dmgArea",
+      width:180,
       sorter: (a:Repair, b:Repair) => (a?.dmgArea || '').localeCompare(b?.dmgArea || '')
     },
     {
+      className: 'repair-type-column',
       title: "Type",
       dataIndex: "type",
       key: "type",
@@ -116,9 +120,12 @@ const RepairList = () => {
         }
         return text;
       },
+      width: 150,
       sorter: (a:Repair, b:Repair) => (a?.type || '').localeCompare(b?.type || '')
     },
     {
+      align: 'center',
+      className: 'repair-non-maersk-hours',
       title: (
         <>
           Non-Maersk
@@ -128,14 +135,18 @@ const RepairList = () => {
       ),
       dataIndex: "nonMaerskHours",
       key: "nonMaerskHours",
+      width: 180,
       render: (text: string, record: Repair) => {
         const nonMaerskHours = record.nonMaerskHours;
         return nonMaerskHours !== undefined && nonMaerskHours !== null
           ? nonMaerskHours
           : "-";
       }
+      
     },
     {
+      width: 180,
+      align: 'center',
       title: (
         <>
           Non-Maersk
@@ -153,6 +164,8 @@ const RepairList = () => {
       },
     },
     {
+      align: 'center',
+      width: 180,
       title: (
         <>
           &emsp;&emsp;Merc+
@@ -168,6 +181,8 @@ const RepairList = () => {
       },
     },
     {
+      align: 'right',
+      width: 180,
       title: (
         <>
           &emsp;&emsp;&emsp;Merc+ <br /> mat.cost/unit
@@ -177,7 +192,7 @@ const RepairList = () => {
       key: "MaxMatCost",
       render: (text: string, record: Repair) => {
         const maxMatCost = record.merc?.maxMatCost;
-        return maxMatCost || "-";
+        return maxMatCost ? `${maxMatCost}$` : "-";
       },
     },
     {
@@ -420,6 +435,7 @@ const RepairList = () => {
                       value={damagedAreaData}
                       onChange={(e) => setDamagedAreaData(e.target.value)}
                     >
+                      <option value=''>Select</option>
                      {dmgAreaOptions.map(option => (
                   <option key={option} value={option}>
                     {option}
@@ -435,6 +451,7 @@ const RepairList = () => {
                     value={typeData}
                     onChange={(e) => setTypeData(e.target.value)}
                   >
+                    <option value=''>Select</option>
                    {typeOptions.map(option => (
                   <option key={option} value={option}>
                     {option}
@@ -489,7 +506,7 @@ const RepairList = () => {
         </div>
 
         {showDeleteConfirmation && (
-          <OverlayBox onClose={() => setShowDeleteConfirmation(false)}>
+          <OverlayBox onClose={() => setShowDeleteConfirmation(false)} minWidth="536px" minHeight="345px">
             <div className="delete-confirmation-box">
               <div className="delete-text-icon-repair">
                 <DeleteIcon width={45} />

@@ -650,7 +650,6 @@ label {
     display: flex;
     flex-flow: row nowrap;
     gap: 40px;
-    margin-left: 90px;
     margin-top: 50px;
     justify-content: center;
 
@@ -658,14 +657,14 @@ label {
 
 .delete-confirmation-buttons-repair button {
     min-height: 35px;
-    min-width: 250px;
+    min-width: 220px;
 }
 
 .delete-confirmation-buttons-repair button:first-child {
     background-color: $cancel-button;
     border: 1px solid transparent;
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .delete-confirmation-buttons-repair button:last-child {
@@ -673,7 +672,7 @@ label {
     color: $white-bg;
     border: 1px solid transparent;
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .delete-confirmation-box span {
@@ -682,7 +681,7 @@ label {
 
 .delete-text-icon-repair {
     margin-top: 30px;
-    margin-left: 100px;
+    margin-left: 50px;
     display: flex;
     flex-flow: column nowrap;
     gap: 20px;
@@ -690,7 +689,7 @@ label {
     max-width: 450px;
 }
 
-.delete-text-icon p {
+.delete-text-icon-repair p {
     color: $text-gray;
     font-weight: 500;
 }
