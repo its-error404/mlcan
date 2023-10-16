@@ -1,6 +1,7 @@
 import { Modal } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 import './UnlockModal.scss'
+import { getUserInfo } from '../../../services/AuthService/authToken'
 import {ReactComponent as LockIcon} from '../../../assets/single color icons - SVG/lock.svg'
 
 
@@ -14,6 +15,9 @@ type ModalProps = {
   }
 
 const UnlockModal:React.FC<ModalProps> = ({onCancel, onOk}) => {
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
+
   return (
     <div>
       <Modal
@@ -28,7 +32,7 @@ const UnlockModal:React.FC<ModalProps> = ({onCancel, onOk}) => {
         <div className='text-container'>
         <LockIcon/>
         <p>Are you sure to unlock the user?</p>
-        <p>Changes made by James will be discarded</p>
+        <p>Changes made by {userID} will be discarded</p>
         </div>
       </Modal>
     </div>

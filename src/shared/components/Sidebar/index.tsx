@@ -128,8 +128,10 @@ const Sidebar = () => {
                                     <div className="dot">.</div>
                                     <p>{data.uid}</p>
                                 </div>
+                                
                                 <div className="align-left">
                                 <div className="user-contact">
+                                    
                                     <div className="mail-container">
                                         <EmailIcon width={15} className="mail-icon" />
                                         <p className="user-email">{data.email}</p>

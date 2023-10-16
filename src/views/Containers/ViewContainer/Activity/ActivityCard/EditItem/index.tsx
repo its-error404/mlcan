@@ -49,7 +49,7 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
           setDmgData(dmgAreaData)
           setItemsData(itemTypesData)
           setQuantityData(quantityData)
-        } catch (e){}
+        } catch (e){console.log(e)}
       }
       fetchMeta()
   },[])
@@ -62,7 +62,7 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <Space direction="vertical" size={20}>
+          <Space direction="vertical" size={10}>
             <label>Repair Code</label>
             <Input
               className="container-input"
@@ -135,6 +135,8 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
               onChange={formik.handleChange}
               value={formik.values.comments}
             />
+            </Space>
+           <Space direction='vertical' size={20}>
             <label>Damaged Area Photo</label>
             <PhotoDragger
               onFileUpload={() =>{}}
@@ -148,7 +150,7 @@ const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
             <button type="submit" className='submit-button'>
               Add Item
             </button>
-          </Space>
+            </Space>
         </form>
       </div>
     </div>

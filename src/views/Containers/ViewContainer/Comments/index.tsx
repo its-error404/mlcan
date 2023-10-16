@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
+import { addComment, fetchCommentsData } from "../../../../services/ContainersService/viewcontainer.service";
 import "./Comments.scss";
 import { CommentsData } from "../../../../models/comments.model";
-import { Button, Input, Pagination, notification } from "antd";
-import axiosInstance from "../../../../interceptor/axiosInstance";
-import { ApiRoutes } from "../../../../routes/routeConstants/apiRoutes";
+import { Button, Input, Pagination, Spin } from "antd";
 const CommentsComponent = () => {
   const [commentsData, setCommentsData] = useState<CommentsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -25,14 +23,31 @@ const CommentsComponent = () => {
   }, []);
 
   const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    const colors = ["#F7E4C9", "#C7E3F9", "#DBCDE3"];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
   };
 
+  const getRandomBackground = () => {
+    const backgrounds = ["#1C99F9", "#F99F1C", "#773195"];
+    const randomIndex = Math.floor(Math.random() * backgrounds.length);
+    return backgrounds[randomIndex];
+  };
+
+  const getRandomColorAndBackground = () => {
+    const colors = ["#F7E4C9", "#C7E3F9", "#DBCDE3"];
+    const backgrounds = ["#1C99F9", "#F99F1C", "#773195"];
+    
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    
+    return {
+      color: colors[randomIndex],
+      background: backgrounds[randomIndex]
+    };
+  };
+
+  const { color, background } = getRandomColorAndBackground();
+  
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -49,27 +64,13 @@ const CommentsComponent = () => {
   const handleAddComment = async () => {
     const inputElement = document.querySelector(".comments-input") as HTMLInputElement;
     const commentText = inputElement.value;
-
-    if (commentText) {
       try {
-        
-        const response = await axiosInstance.post(`${ApiRoutes.COMMENTS}`, {
-          comment: commentText,
-        });     
-          const updatedData = await fetchCommentsData();
-          setCommentsData(updatedData as CommentsData | null);
-          notification.success({
-            message: "Comment added Successfully !",
-            className: "custom-notification-placement",
-          });
-          setTimeout(() => {
-            notification.destroy();
-          }, 3000);
-  
+        await addComment(commentText);
+        const updatedData = await fetchCommentsData();
+        setCommentsData(updatedData as CommentsData | null);
       } catch (error) {
         console.error("Error adding comment:", error);
       }
-    }
   };
 
   return (
@@ -85,7 +86,7 @@ const CommentsComponent = () => {
         <Button className="comments-add" onClick={handleAddComment}>Add Comment</Button>
       </div>
       {isLoading ? (
-        <p>Loading comments...</p>
+        <div className="loader-icon-activity"><Spin size="large"/><p>Loading Data....</p></div>
       ) : commentsData && commentsData.docs && commentsData.docs.length > 0 ? (
         <div>
           
@@ -96,7 +97,7 @@ const CommentsComponent = () => {
                 
                 <div
                   className="comment-initials"
-                  style={{ backgroundColor: getRandomColor() }}
+                  style={{ backgroundColor: getRandomColor() , color: getRandomBackground()}}
                 >
                   
                   {comment.commenter?.name

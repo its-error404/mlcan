@@ -102,7 +102,7 @@ export const fetchActivityStatus = async () => {
   try {
     const activityStatus = await axiosInstance.get(ApiRoutes.ACTIVITY_STATUS)
     return activityStatus.data.data.values
-  } catch (err) {}
+  } catch (err) {console.log(err)}
 }
 
 export const upgradeRepairForm = async (UniqueID:string, selectedOption:string) => {
@@ -127,7 +127,21 @@ export const deleteItem = async (uniqueID: string) => {
       message: "Item Deleted !",
       className: 'custom-notification-placement'
     })
-  } catch(err) {}
+  } catch(err) {console.log(err)}
 }
 
-// export const editItem = astnc
+export const addComment = async (commentText: string) => {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.COMMENTS, {comment: commentText});
+    notification.success({
+      message: "Comment Added Successfully",
+      description: "Comment",
+      className: "custom-notification-placement",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    throw error;
+  }
+};
+

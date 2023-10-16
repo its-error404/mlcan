@@ -10,19 +10,20 @@ import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import "./Dropdown.scss";
 import { CalendarOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { Button, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
 import {deleteItem, fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import TimeLine from "../../../../../shared/components/Timeline";
-import { EllipsisOutlined } from "@ant-design/icons";
 import EllipsisMenu from "../../../../../shared/components/EllipsisMenu";
 import DeleteModal from "../../../../../shared/components/DeleteModal";
 import EditItem from "./EditItem";
 import CommentModal from "../../../../../shared/components/CommentModal";
 import PhotoModal from "../../../../../shared/components/PhotoModal";
+import { getUserInfo } from "../../../../../services/AuthService/authToken";
+
 
 interface RepairFormData {
   uid: string;
@@ -37,12 +38,6 @@ interface RepairFormData {
   totalCost: number;
   id: string;
   items: []
-}
-
-interface OptionMenuProps {
-  onDelete: () => void;
-  onUpdateComment: () => void;
-  onUpdatePhoto: () => void;
 }
 
 const ActivityCard: React.FC<{
@@ -153,7 +148,7 @@ const ActivityCard: React.FC<{
         title: "Options",
         dataIndex: "options",
         key: "options",
-        render: (_: any, record: any) => (
+        render: () => (
           <EllipsisMenu
             onDelete={() => {
              setDeleteModalVisible(true)
@@ -169,6 +164,8 @@ const ActivityCard: React.FC<{
         ),
       },
   ];
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
 
   const [activityStatuses, setActivityStatuses] = useState([]);
 
@@ -177,7 +174,7 @@ const ActivityCard: React.FC<{
       try {
         const activitystatues = await fetchActivityStatus();
         setActivityStatuses(activitystatues);
-      } catch (err) { console.log(err)}
+      } catch (err) { }
     };
     fetchData();
   }, []);
@@ -286,12 +283,12 @@ const ActivityCard: React.FC<{
               <div className="timeline-button-container">
               <CalendarOutlined rev='' className="calender-icon-timeline"/>
               <Button onClick={()=>setTimeline(!timeline)}>View Timeline</Button>
-              {timeline && <TimeLine timelineDate={date}/>}
+              {timeline && <TimeLine/>}
               </div>
               <div className="dropdown-user-info">
-                <p>Current User</p>
-                <p>
-                  James Vasanth{" "}
+              <p>Current User</p>
+                <p>{userID}{' '}
+
                   <span
                     className="dropdown-lock-icon"
                     onMouseEnter={handleMouseEnter}
@@ -352,21 +349,19 @@ const ActivityCard: React.FC<{
       )}
 
       {showConfirmation && (
-        <OverlayBox maxWidth="400px" minHeight="330px" onClose={() => { }}>
+        <OverlayBox minHeight="330px" onClose={() => { }}>
           <div className="overlay-box-update">
             <div className="delete-confirmation-box">
               <div className="delete-text-icon update-text">
-                <UpdateIcon />
+                <UpdateIcon className="activity-card-icon" />
                 <p>Are you sure to change the status?</p>
-                {expandedRepairFormData?.uid && (
                   <p>
-                    {formType} - {expandedRepairFormData.uid} will be moved to{" "}
+                    {formType} - {expandedRepairFormData?.uid} will be moved to{" "}
                     <span className="update-activity-text">
                       {updateActivityStatus}
                     </span>{" "}
                     status
                   </p>
-                )}
               </div>
               <div className="delete-confirmation-buttons update-status-buttons-container">
                 <button onClick={handleCancel}>Cancel</button>

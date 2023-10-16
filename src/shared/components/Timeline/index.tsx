@@ -8,11 +8,7 @@ import { ReactComponent as QuoteApproved } from "../../../assets/single color ic
 import { ReactComponent as RepairIcon } from "../../../assets/single color icons - SVG/repair.svg";
 import { ReactComponent as RepairApproved } from "../../../assets/single color icons - SVG/repair approved.svg";
 import { ReactComponent as BilledIcon } from "../../../assets/single color icons - SVG/invoice.svg";
-
-interface CustomTimelineProps {
-  timelineDate: string;
-}
-
+import dayjs, { Dayjs } from "dayjs";
 interface TimelineItem {
   icon: JSX.Element;
   label: string;
@@ -52,11 +48,37 @@ const timelineItems: TimelineItem[] = [
   },
 ];
 
-const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
+const TimeLine = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
-
+  const [selectedQuoteDate, setSelectedQuoteDate] = useState('');
+  const [selectedRepairDate, setSelectedRepairDate] = useState('');
   const [itemStatuses, setItemStatuses] = useState(["completed", "completed", "completed", "on-going", "not-started", "not-started"]);
+  const [displayDate, setDisplayDate] = useState(false)
+
+  const handleQuoteDateChange = (date: Dayjs | null) => {
+    if (date !== null) {
+      if (setSelectedQuoteDate) {
+        setSelectedQuoteDate(date.format('DD MMM YYYY'));
+      }
+    } else {
+      if (setSelectedQuoteDate) {
+        setSelectedQuoteDate('');
+      }
+    }
+  };
+
+  const handleRepairDateChange = (date: Dayjs | null) => {
+    if (date !== null) {
+      if (setSelectedRepairDate) {
+        setSelectedRepairDate(date.format('DD MMM YYYY'))
+      }
+    } else {
+      if (setSelectedRepairDate) {
+        setSelectedRepairDate('')
+      }
+    }
+  }
 
   const handleEditClick = (item: TimelineItem) => {
     setSelectedItem(item);
@@ -64,7 +86,13 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
   };
 
   const handleModalOk = () => {
+    if (selectedItem?.label === "Quote Date") {
+      setSelectedQuoteDate(selectedQuoteDate); 
+    } else if (selectedItem?.label === "Repair Date") {
+      setSelectedRepairDate(selectedRepairDate);
+    }
     setModalVisible(false);
+    setDisplayDate(true)
   };
 
   const handleModalCancel = () => {
@@ -94,7 +122,6 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
           <div
             key={index}
             className={`timeline-item ${status}`}
-            onClick={() => handleItemCompletion(index)}
           >
             <div className="quote-icon-bg">
               {timelineItems[index].icon}
@@ -107,26 +134,57 @@ const TimeLine: React.FC<CustomTimelineProps> = ({ timelineDate }) => {
                   onClick={() => handleEditClick(timelineItems[index])}
                 />
               </div>
-            ) : null}
-            {index >= 0 && index <= 2 ? (
-              <div>{timelineDate}</div>
-            ) : null}
+            ) : null
+            }
+            {displayDate && timelineItems[index].label === "Quote Date" &&(
+              <div>{selectedQuoteDate}</div>
+            )}
+            {displayDate && timelineItems[index].label === "Repair Date" && (
+              <div>{selectedRepairDate}</div>
+            )}
           </div>
         ))}
       </Timeline>
-      <Modal
-        className="date-modal"
-        title={`Edit ${selectedItem?.label}`}
-        open={modalVisible}
-        onOk={handleModalOk}
-        okText="Update"
-        onCancel={handleModalCancel}
-      >
-        <label>{selectedItem?.label}</label>
-        <DatePicker className="timeline-datepicker" placeholder="Enter" />
-      </Modal>
+      {selectedItem?.label === "Quote Date" && (
+        <Modal
+          className="date-modal"
+          title={`Edit Quote Date`}
+          open={modalVisible}
+          onOk={handleModalOk}
+          okText="Update"
+          onCancel={handleModalCancel}
+        >
+          <label>Quote Date</label>
+          <DatePicker
+            className="timeline-datepicker"
+            value={selectedRepairDate !== "" ? dayjs(selectedRepairDate, "DD MMM YYYY") : null}
+            onChange={handleQuoteDateChange}
+            placeholder="Enter Quote Date"
+          />
+        </Modal>
+      )}
+
+      {selectedItem?.label === "Repair Date" && (
+        <Modal
+          className="date-modal"
+          title={`Edit Repair Date`}
+          open={modalVisible}
+          onOk={handleModalOk}
+          okText="Update"
+          onCancel={handleModalCancel}
+        >
+          <label>Repair Date</label>
+          <DatePicker
+            className="timeline-datepicker"
+            value={selectedRepairDate !== "" ? dayjs(selectedRepairDate, "DD MMM YYYY") : null}
+            onChange={handleRepairDateChange}
+            placeholder="Enter Repair Date"
+          />
+        </Modal>
+      )}
+
     </div>
   );
 };
 
-export default TimeLine;
+export default TimeLine

@@ -99,17 +99,17 @@
 }
 
 .ant-timeline-item-content > div:last-child{
-    margin-left: 40px;
     font-weight: 700;
 }
 
 .timeline-item.on-going > .ant-timeline-item-content > div:nth-child(3){
-    margin-left: 10px;
+    
     font-weight: 700;
 }
 
 .timeline-item.completed > .ant-timeline-item-content > div:nth-child(3), .timeline-item.on-going > .ant-timeline-item-content > div:nth-child(4)
 {
+    margin-left: 20px;
     font-weight: 700;
 }
 

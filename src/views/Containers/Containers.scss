@@ -208,7 +208,6 @@ label {
     flex-flow: column;
     border-radius: 6px;
     z-index: 100;
-    z-index: 100;
 }
 
 .filter-header__first-part {
@@ -222,9 +221,8 @@ label {
     font-weight: 600;
 }
 
-.filter-header__first-part h4:first-child:not(.filter-header__second-part h4) {
-    margin-top: 40px;
-    font-weight: 500 !important;
+.filter-header__first-part h4 {
+    font-weight: 600 !important;
     font-size: 18px !important;
 }
 
@@ -290,7 +288,7 @@ label {
 
 .container-filter-second-part {
     gap: 20px !important;
-    margin-top: -20px !important;
+    margin-top: -50px !important;
 }
 
 input,select {
@@ -347,7 +345,15 @@ input,select {
 .ant-table-tbody > tr {
     max-height: 20px !important;
 }
-  
+
+.container-filter-container > button > span{
+    left: 15%;
+}
+
+.container-filter-menu.visible  > .filter-header__second-part{
+    margin-top: -22px !important;
+}
+
 .container-filter-icon{
     position: absolute;
     left: 10px !important;
@@ -357,14 +363,27 @@ input,select {
     opacity: 1;
   }
 
-  .repair-filter-button.change-button{
-    background-color: $turkish-green !important;
-    color: $white-bg !important;
+  .container-filter-button.change-button {
+    background-color: $turkish-green;
+    color: $white-bg;
   }
 
   .repair-filter-button.change-button span {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(340deg) brightness(105%) contrast(101%);
   }
+
+.ant-picker-content  {
+    max-width: 100px;
+}
+
+.ant-picker-content {
+    width: 100%
+}
+
+.ant-picker-content td {
+    padding-left: 10px;
+    color: #000;
+}
 
 .filter-menu__options p:nth-child(2) {
     color: $turkish-green;
@@ -476,6 +495,11 @@ input,select {
 .container-export-menu {
     display: flex;
     align-items: center;
+}
+
+.export-menu-box.visible p{
+    font-size: 14px;
+font-weight: 600;
 }
 
 .container-export-menu > button{

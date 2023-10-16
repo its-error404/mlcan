@@ -35,6 +35,9 @@
   }
 
   .tick-icon-not-filled {
-    border: 1.5px solid $text-gray;
-    border-radius: 50%;
+    display: inline-flex;
+    border: 2px solid $text-gray !important;
+    border-radius: 50% !important;
+    width: 18px;
+    height: 18px;
   }
