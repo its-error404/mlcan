@@ -24,10 +24,6 @@ export const fetchActivityData = async () => {
       const inspectionJsonData = inspectionFormResponse.data.data
       const quoteJsonData = quoteFormResponse.data.data
       const repairFormJsonData = repairFormResponse.data.data
-
-      // const deserializedRFData = deserialize(RepairFormResponseData, repairFormJsonData)
-      // console.log(deserializedRFData)
-
       return {photoJsonData, inspectionJsonData, quoteJsonData, repairFormJsonData}
 
   } else {
