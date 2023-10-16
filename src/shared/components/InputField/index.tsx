@@ -5,9 +5,9 @@ interface InputProps {
   name: string;
   id: string;
   value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: FocusEvent<HTMLInputElement>) => void;
-  placeholder: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 }
 
 const CustomInput: React.FC<InputProps> = ({

@@ -6,15 +6,14 @@ import '../../../../../../styles/_@antOverrides.scss';
 import '../../../../AddContainer/AddContainer.scss';
 import PhotoDragger from '../../../../../../shared/components/Dragger';
 import '../../../../../../styles/_variables.scss';
-import './AddItem.scss'
 import { addItemRequest } from '../../../../../../services/ContainersService/containers.service';
 import { containerItemsMeta } from '../../../../../../services/ContainersService/viewcontainer.service';
 
-interface AddItemProps {
+interface EditItemProps {
   onclose: () => void;
 }
 
-const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
+const AddItem: React.FC<EditItemProps> = ({ onclose }) => {
   const formik = useFormik({
     initialValues: {
       repairCode: '',
@@ -59,11 +58,11 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
     <div className="container-details-form">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Add Item</h2>
+          <h2>Edit Item</h2>
           <CloseIcon width={15} onClick={onclose} />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <Space direction="vertical" size={1}>
+          <Space direction="vertical" size={10}>
             <label>Repair Code</label>
             <Input
               className="container-input"
@@ -136,8 +135,8 @@ const AddItem: React.FC<AddItemProps> = ({ onclose }) => {
               onChange={formik.handleChange}
               value={formik.values.comments}
             />
-             </Space>
-             <Space direction='vertical' size={20}>
+            </Space>
+           <Space direction='vertical' size={20}>
             <label>Damaged Area Photo</label>
             <PhotoDragger
               onFileUpload={() =>{}}

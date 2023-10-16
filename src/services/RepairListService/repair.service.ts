@@ -29,8 +29,8 @@ export const deleteRepairEntry = async (id: string) => {
   try {
     await axiosInstance.delete(`${ApiRoutes.ALL_REPAIRS}/${id}`);
     notification.open({ message: `Repair Entry with ID ${id} Deleted`, description: 'Deleted' });
-  } catch (error: any) {
-
+  } catch (error) {
+    console.log(error)
   }
   notification.open({ message: `Repair Entry with ID ${id} Deleted`, description: 'cannot be Deleted' })
 };

@@ -11,7 +11,6 @@
 .page-content {
     margin-top: 50px;
     width: 100%;
-
 }
 
 .go-to-containers {
@@ -22,6 +21,7 @@
 .go-to-containers a {
     text-decoration: none;
     color: $draft-text;
+    font-family: 'SFProDisplay', sans-serif;
     font-size: 14px;
     font-weight: 500;
 }
@@ -74,11 +74,11 @@
 }
 
 .container-data p:nth-child(4) {
-    margin-left: -30px;
+    margin-left: -35px;
 }
 
 .container-data p:nth-child(5) {
-    margin-left: 85px;
+    margin-left: 70px;
 }
 
 .container-data p:nth-child(6) {
@@ -94,12 +94,14 @@
 }
 
 .container-options {
-    margin-top: 20px !important;
+    margin-top: 40px !important;
     margin-left: 0px !important;
+    font-weight: 700 !important;
 }
 
 .section-content {
     position: relative;
+    min-height: 70.6vh;
     max-height: 70.6vh;
     overflow-y: auto;
     margin-left: -30px;

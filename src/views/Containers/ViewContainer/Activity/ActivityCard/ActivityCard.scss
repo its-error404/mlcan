@@ -5,6 +5,7 @@
     margin-left: 30px;
     min-height: 80px;
     min-width: 80vw;
+    
     background-color: $white-bg;
     transition: max-height 0.3s ease-in-out;
 }
@@ -21,12 +22,13 @@
     border: 1px solid transparent;
     border-radius: 0; 
     padding: 5px;
+    font-weight: 500;
     margin-left: 1050px; 
     
     &.draft {
       background-color: $draft-grey-bg;
       color: $draft-grey-text;
-      font-weight: 500 !important;
+      font-weight: 600 !important;
       border-radius: 10px;
       font-size: 13px;
     }
@@ -47,15 +49,19 @@
 }
 
 .activity-card.form-type-quote {
-    border-left: 2px solid $purple-bg; 
+    border-left: 2px solid $border-purple; 
   }
   
   .activity-card.form-type-repair {
-    border-left: 2px solid $yellow-bg; 
+    border-left: 2px solid $border-yellow; 
   }
   
   .activity-card.form-type-inspection {
     border-left: 2px solid $blue-bg; 
+  }
+
+  .dropdown-user-info p:nth-child(2){
+    padding-top: 10px;
   }
 
 .icon-background.lightpurple {
@@ -97,18 +103,22 @@
 }
 
 .form-type {
+    font-weight: 300;
     font-size: 12px;
     color: $draft-text;
 }
 
 .date {
     margin-left: 10px;
-    color: $draft-text;
+    padding-top: 15px;
+    font-style: italic;
+    color: $unlock-bg;
 }
 
 .form-id {
     font-size: 18px;
-    font-weight: 500;
+    padding-top: 5px;
+    font-weight: 600;
 }
 
 .dropdown-icon {
@@ -139,4 +149,42 @@
     top:30%;
     left: 8%;
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(153deg) brightness(103%) contrast(102%);
+}
+
+.expanded-content > .overlay > .overlay-box {
+    width: 500px !important;
+}
+
+.activity-card-icon {
+    margin-left: 170px;
+}
+
+.update-text  {
+    gap: 35px !important;
+}
+
+.update-status-buttons-container button {
+    width: 220px;
+    height: 40px;
+    border: 1px solid $cancel-bg;
+    border-radius: 12px;
+}
+.update-status-buttons-container button:first-child {
+    background-color: $cancel-bg;
+    font-weight: 500 ;
+    font-size: 16px;
+}
+
+.update-status-buttons-container button:last-child {
+    color: $white-bg;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+
+.update-status-buttons-container {
+    margin-left: 35px;
+    margin-top: 30px !important;
+    display: flex;
+    gap: 20px;
 }

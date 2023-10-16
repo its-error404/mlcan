@@ -1,18 +1,25 @@
-@import '../../../styles/variables';
+@import "../../../styles/variables";
 
-.delete-confirmation-box {
+.delete-confirmation-box-approve-box {
     background-color: $white-bg;
     width: 536px;
-    height: 345px;
+    height: 316px;
     border: 1px solid transparent;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
 }
 
-.approve-buttons{
+.approve-buttons {
     display: flex;
     gap: 30px;
     margin-top: 25px;
-    margin-left: 10px;
+    margin-left: 30px;
+}
+
+.update-icon-approve-box {
+   margin-left: 180px;
 }
 
 .approve-buttons button {
@@ -21,29 +28,86 @@
     height: 40px !important;
     border: 1px solid transparent;
     border-radius: 10px;
+    font-weight: 600;
 }
 
-.approve-buttons button:first-child{
+.approve-buttons button:first-child {
     color: $text-black;
 }
 
-.approve-buttons button:last-child{
-    color: $white-bg
+.approve-buttons button:last-child {
+    color: $white-bg;
 }
 
 .delete-text-icon p:nth-child(2) {
     margin-top: 10px;
     font-size: 24px;
     color: $text-black;
-    font-weight: 600;
+    font-weight: 700 !important;
 }
 
-.delete-text-icon p:nth-child(3){
+.delete-text-icon p:nth-child(3) {
     margin-top: -20px;
+    margin-left: 25px;
     font-size: 16px;
+    color: $text-gray;
 }
 
 .delete-text-icon {
+    display: flex;
+    margin-top: 30px;
+    margin-left: 50px !important;
+    flex-flow: column nowrap;
     margin-left: 40px;
     max-width: 500px;
+}
+
+.update-icon-approve-box {
+    margin-top: 40px;
+    margin-left: 180px;
+}
+
+.delete-text-icon-approve-box {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 40px;
+}
+
+.delete-text-icon-approve-box p:nth-child(2) {
+    font-size: 24px !important;
+    font-weight: 700;
+    text-align: center;
+}
+
+.delete-text-icon-approve-box p:nth-child(3) {
+    font-size: 16px;
+    color: $text-gray;
+    text-align: center;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.delete-confirmation-buttons-approve-box {
+    display: flex;
+    margin-top: 20px;
+    gap: 30px;
+}
+
+.delete-confirmation-buttons-approve-box button {
+    width: 220px;
+    height: 40px;
+    border-radius: 10px;
+    border: 0.5px solid transparent;
+}
+
+.delete-confirmation-buttons-approve-box button:first-child {
+    background-color: $cancel-bg;
+    font-weight: 600;
+}
+
+.delete-confirmation-buttons-approve-box button:last-child {
+    background-color: $turkish-green;
+    font-weight: 600;
+    color: $white-bg;
 }

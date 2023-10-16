@@ -1,0 +1,79 @@
+@import '../../../styles/variables';
+
+.comment-modal > .ant-modal-content {
+    width: 594px;
+    height: 349px;
+    border: 1px solid transparent !important;
+    border-radius: 20px !important;
+}
+
+.text-container {
+    margin-top: 20px !important;
+    margin-right: auto;
+    margin-left: auto;
+    width: 500px;
+}
+
+.comment-modal-text p:first-child{
+    margin-left: -10px;
+    margin-top: 20px !important;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+
+.text-container svg 
+{
+    margin-left: 230px;
+}
+
+.comment-modal > .ant-modal-content > .ant-modal-header {
+    border: 1px solid transparent !important;
+    border-radius: 15px !important;
+}
+
+.comment-modal > .ant-modal-content > .ant-modal-footer  {
+    display: flex;
+    margin-top: 25px;
+    margin-left: 20px;
+    gap: 10px;
+}
+
+.comment-modal > .ant-modal-content > .ant-modal-body > .input__repair-id label {
+    display: block !important;
+    margin-top: 20px !important;
+    margin-left: 15px;
+}
+
+.comment-modal > .ant-modal-content > .ant-modal-body > .input__repair-id input {
+    border: 1px solid $cancel-bg;
+    border-radius: 10px;
+    width: 517px;
+    height: 123px;
+    margin-top: 15px !important;
+    margin-left: 15px;
+}
+
+.comment-modal > .ant-modal-content > .ant-modal-footer button:first-child{
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    background-color: $cancel-bg;
+    border-radius: 10px;
+    color: $text-black;
+}
+
+.comment-modal > .ant-modal-content > .ant-modal-footer button:last-child{
+    background-color: $turkish-green;
+    width: 220px;
+    height: 40px;
+    border: 1px solid transparent;
+    color: $white-bg;
+    border-radius: 10px;
+}
+
+.comment-modal > .ant-modal-content > button > span {
+    display: none;
+}
+

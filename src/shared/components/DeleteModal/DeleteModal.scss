@@ -1,6 +1,6 @@
 @import '../../../styles/variables';
 
-.unlock-modal > .ant-modal-content {
+.delete-modal > .ant-modal-content {
     height: 316px !important;
     width: 536px !important;
     border: 1px solid transparent !important;
@@ -8,16 +8,23 @@
 }
 
 .text-container {
+    margin-top: 20px !important;
     margin-right: auto;
     margin-left: auto;
     width: 500px;
+}
+
+.delete-modal-text p:nth-child(3) {
+    margin-top: 10px !important;
+    text-align: center;
+    margin-left: -20px !important;
 }
 
 .text-container p:nth-child(2){
     font-size: 24px;
     color: $text-black;
     font-weight: 600;
-    margin-top: 230px;
+    margin-top: 20px;
     margin-left: 50px;
 }
 
@@ -25,6 +32,7 @@
     font-size: 16px;
     font-weight: 500;
     color: $text-gray;
+    margin-top: -10px;
     margin-left: 80px;
 }
 
@@ -33,18 +41,19 @@
     margin-left: 230px;
 }
 
-.unlock-modal > .ant-modal-content > .ant-modal-header {
+.delete-modal > .ant-modal-content > .ant-modal-header {
     border: 1px solid transparent !important;
     border-radius: 15px !important;
 }
 
-.unlock-modal > .ant-modal-content > .ant-modal-footer  {
+.delete-modal > .ant-modal-content > .ant-modal-footer  {
     display: flex;
+    margin-top: 30px;
     margin-left: 20px;
     gap: 10px;
 }
 
-.unlock-modal > .ant-modal-content > .ant-modal-footer button:first-child{
+.delete-modal > .ant-modal-content > .ant-modal-footer button:first-child{
     width: 220px;
     height: 40px;
     border: 1px solid transparent;
@@ -53,8 +62,8 @@
     color: $text-black;
 }
 
-.unlock-modal > .ant-modal-content > .ant-modal-footer button:last-child{
-    background-color: $unlock-bg;
+.delete-modal > .ant-modal-content > .ant-modal-footer button:last-child{
+    background-color: $delete-button-bg;
     width: 220px;
     height: 40px;
     border: 1px solid transparent;
@@ -62,7 +71,7 @@
     border-radius: 10px;
 }
 
-.unlock-modal > .ant-modal-content > button > span {
+.delete-modal > .ant-modal-content > button > span {
     display: none;
 }
 

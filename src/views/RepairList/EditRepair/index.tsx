@@ -10,7 +10,7 @@ import SectionTwo from "./SectionTwo/";
 import { editRepairEntry } from "../../../services/RepairListService/repair.service";
 
 interface EditRepairProps {
-  editedData: Repair;
+  data: any;
   onClose: () => void;
   repairId: string;
   overlayOpen?: boolean;
@@ -34,6 +34,7 @@ const EditRepair: React.FC<EditRepairProps> = ({
   const EditValues = {
     ...data,
   };
+
   const [sectionIndex, setSectionIndex] = useState<number | null>(0);
 
   const sections = [
@@ -94,9 +95,9 @@ const EditRepair: React.FC<EditRepairProps> = ({
               >
                  <div className="section-title">
                   {sectionCompleted[index] ? (
-                    <TickIcon width={20} className="tick-icon-filled" />
+                    <TickIcon width={18} className="tick-icon-filled" />
                   ) : (
-                    <TickIcon width={20} className="tick-icon-not-filled" />
+                    <div className="tick-icon-not-filled"></div>
                   )}
                   <span className="section-header-text">{section.name}</span>
                 </div>
@@ -125,7 +126,6 @@ const EditRepair: React.FC<EditRepairProps> = ({
       <SectionTwo
         formik={formik}
         onclose={onClose}
-
         sectionCompleted={sectionCompleted[2]}
       />
     )}

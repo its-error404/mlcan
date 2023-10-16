@@ -4,6 +4,8 @@ export interface QuoteData {
         uid: string;
         date: string;
         activitystatus: string;
+        currStatus: string
+        createdAt:string
     }>;
 }
 
@@ -13,5 +15,7 @@ export interface RepairDataActivity {
         uid: string;
         date: string;
         activitystatus: string;
+        currStatus: string
+        createdAt:string
     }>;
 }

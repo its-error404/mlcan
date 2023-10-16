@@ -59,7 +59,7 @@ useEffect(()=>{
       setActivityOptions(activityStatusData)
       setYardOptions(contYardsData)
       setCustomers(customerNames)
-    }catch (err) {}
+    }catch (err) {console.log(err)}
   }
 fetchOptions()
 },[])
@@ -108,7 +108,7 @@ fetchOptions()
               onChange={(e) => setActivityData(e.target.value)}>
               <option value=''>Select</option>
                 {activityOptions.map(option => (
-                  <option key={option} value={option}>
+                  <option key={option} value={option} className="capitalize-options">
                     {option}
                   </option>
                 ))}

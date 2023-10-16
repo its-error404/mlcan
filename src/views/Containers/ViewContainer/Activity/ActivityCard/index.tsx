@@ -10,16 +10,20 @@ import "./ActivityCard.scss";
 import "../../../../RepairList/RepairList.scss";
 import "./Dropdown.scss";
 import { CalendarOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Menu, Select, Table } from "antd";
+import { Button, Select, Table } from "antd";
 import AddItem from "./AddItem";
 import OverlayBox from "../../../../../shared/components/overlayBox";
 import { ContainerData } from "../../../../../models/singlecontainer.model";
-import {fetchActivityStatus, handleConfirm, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
+import {deleteItem, fetchActivityStatus, toggleExpandRepairCard, upgradeRepairForm } from "../../../../../services/ContainersService/viewcontainer.service";
 import UnlockModal from "../../../../../shared/components/UnlockModal";
 import TimeLine from "../../../../../shared/components/Timeline";
-import { USER_ID, getUserInfo } from "../../../../../services/AuthService/authToken";
 import EllipsisMenu from "../../../../../shared/components/EllipsisMenu";
-import { ItemData } from "../../../../../models/containeritems.model";
+import DeleteModal from "../../../../../shared/components/DeleteModal";
+import EditItem from "./EditItem";
+import CommentModal from "../../../../../shared/components/CommentModal";
+import PhotoModal from "../../../../../shared/components/PhotoModal";
+import { getUserInfo } from "../../../../../services/AuthService/authToken";
+
 
 interface RepairFormData {
   uid: string;
@@ -33,12 +37,7 @@ interface RepairFormData {
   materialCost: number;
   totalCost: number;
   id: string;
-}
-
-interface OptionMenuProps {
-  onDelete: () => void;
-  onUpdateComment: () => void;
-  onUpdatePhoto: () => void;
+  items: []
 }
 
 const ActivityCard: React.FC<{
@@ -61,9 +60,10 @@ const ActivityCard: React.FC<{
   const [showTooltip, setShowTooltip] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [timeline, setTimeline] = useState(false)
-
-  const userInfo = getUserInfo()
-  const userID = userInfo.uid
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editItem, setEditItem] = useState(false)
+  const [commentModal, setCommentModal] = useState(false)
+  const [photoModal, setPhotoModal] = useState(false)
 
   const handleMouseEnter = () => {
     setShowTooltip(true);
@@ -148,19 +148,24 @@ const ActivityCard: React.FC<{
         title: "Options",
         dataIndex: "options",
         key: "options",
-        render: (_: any, record: ItemData) => (
+        render: () => (
           <EllipsisMenu
             onDelete={() => {
+             setDeleteModalVisible(true)
             }}
             onUpdateComment={() => {
-            
+              setCommentModal(true)
             }}
             onUpdatePhoto={() => {
+              setPhotoModal(true)
             }}
+            onEditItem={()=>{setEditItem(true)}}
           />
         ),
       },
   ];
+  const userInfo = getUserInfo()
+  const userID = userInfo.uid
 
   const [activityStatuses, setActivityStatuses] = useState([]);
 
@@ -169,7 +174,7 @@ const ActivityCard: React.FC<{
       try {
         const activitystatues = await fetchActivityStatus();
         setActivityStatuses(activitystatues);
-      } catch (err) {console.log(err) }
+      } catch (err) { }
     };
     fetchData();
   }, []);
@@ -211,25 +216,27 @@ const ActivityCard: React.FC<{
 
   const toggleExpandCard = () => {
     setIsExpanded(!isExpanded);
-    toggleExpandRepairCard(UniqueID)
-    toggleExpandedQuoteCard(UniqueID)
-    .then((response)=> {
-      setExpandedRepairFormData(response)
-      setExpandedQuoteFormData(response)
-
-    })
+    toggleExpandRepairCard(UniqueID).then((response) => {
+      setExpandedRepairFormData(response);
+    });
   };
 
   const toggleAddItem = () => {
     setAddItem(!addItem);
   };
 
-const confirmHandler = async () => {
-  try {
-    await handleConfirm(UniqueID, selectedOption, setShowConfirmation);
-  } catch (error) {
-  }
-};
+  const handleConfirm = async (
+    id: string,
+    option: string,
+    uniqueID: string
+  ) => {
+    try {
+      upgradeRepairForm(id, option);
+      setShowConfirmation(false);
+    } catch (error) {
+      setShowConfirmation(false);
+    }
+  };
 
   const handleCancel = () => {
     setShowConfirmation(false);
@@ -276,22 +283,25 @@ const confirmHandler = async () => {
               <div className="timeline-button-container">
               <CalendarOutlined rev='' className="calender-icon-timeline"/>
               <Button onClick={()=>setTimeline(!timeline)}>View Timeline</Button>
-              {timeline && <TimeLine timelineDate={date}/>}
+              {timeline && <TimeLine/>}
               </div>
               <div className="dropdown-user-info">
-                <p>Current User</p>
+              <p>Current User</p>
                 <p>{userID}{' '}
-                <span
-        className="dropdown-lock-icon"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={()=>{setShowModal(true)}}
-      >
-        &nbsp;
-        <LockIcon width={10} />
-        {showTooltip && <span>Unlock</span>}
-      </span>
-    </p>
+
+                  <span
+                    className="dropdown-lock-icon"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                  >
+                    &nbsp;
+                    <LockIcon width={10} />
+                    {showTooltip && <span>Unlock</span>}
+                  </span>
+                </p>
               </div>
               {showModal && (
                 <UnlockModal
@@ -339,26 +349,33 @@ const confirmHandler = async () => {
       )}
 
       {showConfirmation && (
-        <OverlayBox maxWidth="400px" minHeight="330px" onClose={() => { }}>
+        <OverlayBox minHeight="330px" onClose={() => { }}>
           <div className="overlay-box-update">
             <div className="delete-confirmation-box">
               <div className="delete-text-icon update-text">
-                <UpdateIcon />
+                <UpdateIcon className="activity-card-icon" />
                 <p>Are you sure to change the status?</p>
-                {expandedRepairFormData?.uid && (
                   <p>
-                    {formType} - {expandedRepairFormData.uid} will be moved to{" "}
+                    {formType} - {expandedRepairFormData?.uid} will be moved to{" "}
                     <span className="update-activity-text">
                       {updateActivityStatus}
                     </span>{" "}
                     status
                   </p>
-                )}
               </div>
-              <div className="delete-confirmation-buttons">
-              <button onClick={()=>confirmHandler}>Confirm</button>
-              <button onClick={handleCancel}>Cancel</button>
-              <button onClick={()=>handleConfirm(expandedRepairFormData?.id || '', updateActivityStatus, expandedRepairFormData?.uid || '')}>Confirm</button>
+              <div className="delete-confirmation-buttons update-status-buttons-container">
+                <button onClick={handleCancel}>Cancel</button>
+                <button
+                  onClick={() =>
+                    handleConfirm(
+                      expandedRepairFormData?.id || "",
+                      updateActivityStatus,
+                      expandedRepairFormData?.uid || ""
+                    )
+                  }
+                >
+                  Confirm
+                </button>
               </div>
             </div>
           </div>
@@ -376,6 +393,11 @@ const confirmHandler = async () => {
           </div>
         </div>
       )}
+
+      {isDeleteModalVisible && (<DeleteModal onOk={()=>{deleteItem(expandedRepairFormData?.id || ''); setDeleteModalVisible(false)}} onCancel={()=>setDeleteModalVisible(false)}/>)}
+      {editItem && (<div className="overlay"><div className="overlay-content"><EditItem onclose={()=>setEditItem(false)}/></div></div>)}
+      {commentModal && (<CommentModal commentData="" id={expandedRepairFormData?.uid} repairArea={expandedRepairFormData?.repairArea}  centered onCancel={()=>{setCommentModal(false)}}/>)}
+      {photoModal && (<PhotoModal centered onCancel={()=>{setPhotoModal(false)}} onOk={()=>setPhotoModal(false)} title="" />)}
     </div>
   );
 };

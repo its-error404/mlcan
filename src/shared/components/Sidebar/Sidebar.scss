@@ -12,8 +12,8 @@
 
 .side-active{
     border: 1px transparent;
-    border-left: solid $turkish-green;
-    border-width: 6px;
+    border-left: solid $initials-text;
+    border-width: 3px;
     background-color: $sidebar-active-bg;
     font-size: 16px;
     padding-top: 25px;
@@ -27,10 +27,6 @@
 .user-information p:first-child {
     font-size: 14px;
     font-weight: 700;
-}
-
-.user-information p:nth-child(2){
-    margin-top: -10px !important;
 }
 
 .user-info{
@@ -76,6 +72,7 @@
     display: flex;
     flex-flow: column nowrap;
     text-decoration: none;
+    font-size: 15px;
 }
 
 .side-bar__options-text a:hover {
@@ -83,7 +80,7 @@
 }
 
 .side-bar__options-text a:hover > span {
-    filter: brightness(0) saturate(100%) invert(46%) sepia(11%) saturate(4524%) hue-rotate(127deg) brightness(99%) contrast(62%);
+    filter: brightness(0) saturate(100%) invert(68%) sepia(65%) saturate(367%) hue-rotate(119deg) brightness(89%) contrast(92%);
 }
 
 .side-bar__options-text a{
@@ -93,29 +90,33 @@
     padding-bottom: 25px;
     padding-left: 40px;
     align-items: center;
+    font-weight: 600;
     justify-items: center;
+    margin-top: 2px;
 
     &.side-active {
         color: $sidebar-active-text;
-        font-weight: 500;
+        font-weight: 600;
     }
+}
+.side-bar__options-text a > :not(span){
+    display: none !important;
 }
 
 .side-bar__options-text span{
     margin-right: 24px;
 }
 
-.logout-icon {
-    margin-top: -15px;
-}
-
-.customer-icon, .logout-icon{
+.logout-icon{
     filter: $icon-background;
 }
 
 .user-arrow{
-    margin-top: 10px;
-    margin-left: 20px;
+    position: absolute;
+    top: 40%;
+    right: 10%;
+    cursor: pointer;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(1%) hue-rotate(351deg) brightness(101%) contrast(101%);
     transition: transform 0.3s ease-in-out;
 }
 
@@ -136,10 +137,11 @@
     position: absolute;
     border: 1px solid transparent;
     border-radius: 8px;
+    left: 0;
     bottom: 90px;
-    right: -50px;
-    width: 300px;
-    height: 260px;
+    width: 270px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, transform 0.5s ease-in-out, margin-left 0.5s ease-in-out;
     background-color: $user-dropdown-bg;
     z-index: 100;
 }
@@ -155,20 +157,24 @@
 }
 
 .drop-active {
+    max-height: 245px;
     transform: rotate(180deg);
     margin-left: 20px;
-    transition: transform 0.5ms ease-in;
+
+    &.user-dropdown{
+        min-height: 245px;
+        transition: min-height 0.5s ease-in-out, transform 0.5s;
+    }
 }
 
 .designation-flex {
     display: flex;
     gap: 10px;
-    padding-top: 10px;
+    margin-top: 30px;
 }
 
 .designation-flex p {
-    margin-top: -22px;
-    color: $user-info-child-secondary !important;
+    color: $text-gray !important;
     font-size: 12px !important;
     font-weight: 400 !important;
 }
@@ -177,47 +183,43 @@
     border: 1px solid transparent;
     border-radius: 50%;
     font-size: 40px !important;
-    margin-top: -55px;
+    margin-top: -28px;
     color: $user-info-child-secondary;
 }
 
 .user-email {
     color: $user-info-child-tertiary !important;
-    font-size: 15px !important;
+    font-size: 15px;
     margin-top: -2px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
 }
 
 .mail-container, .number-container {
     display: flex;
+    margin-top: 10px;
     align-items: center;
     gap: 13px;
-    justify-items: center;
+    margin-bottom: 20px;
 }
 
-.mail-icon {
-    margin-top: -15px;
-}
-
-.call-icon {
-    margin-top: -20px;
-}
 .user-contact {
+    margin-top: 40px;
     border-top: 1px solid $user-contact-border;
     margin-top: 5px;
-    padding-top: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-bottom: 1px solid $user-contact-border;
 }
 
 .number-container{
-    margin-top: 12px;
+    margin-top: 20px;
 }
 
 .user-number {
     color: $user-info-child-tertiary !important;
-    font-size: 16px !important;
+    font-size: 15px;
     margin-top: -5px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
 }
 
 .logout-container {
@@ -234,19 +236,20 @@
 }
 
 .align-left {
+    margin-top: 20px;
     margin-left: -40px !important;
+    margin-top: 10px;
 }
 
 .initial {
-    width: 35px; 
-    height: 35px;
+    width: 43px;
+    height: 43px;
     background-color: $initials;
     border-radius: 50%; 
     display: flex;
     justify-content: center;
     align-items: center; 
-    font-size: 14px; 
-    padding-left: 5px;
+    font-size: 16px; 
     font-weight: 900;
-    color: $turkish-green !important; 
+    color: $initials-text !important; 
 }

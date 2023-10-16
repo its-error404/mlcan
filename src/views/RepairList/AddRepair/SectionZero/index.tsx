@@ -47,26 +47,20 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
         </div>
         <div className="container-damaged-area field-2 container-repair-area">
 
-          <CustomSelect
-            className='select-choices'
-            label="Repair Area"
-            name="repArea"
-            id="repArea"
-            placeholder='Enter'
-            onBlur={formik.handleBlur}
-            value={formik.values.repArea}
-            onChange={formik.handleChange}
-            options={repAreaOptions.map((option) => (
-              { label: option, value: option }
-            ))}
-          >
-            <option value="">Select</option>
-            {repAreaOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </CustomSelect>
+        <CustomSelect
+  className='select-choices'
+  label="Repair Area"
+  name="repArea"
+  id="repArea"
+  placeholder='Enter'
+  onBlur={formik.handleBlur}
+  value={formik.values.repArea}
+  onChange={formik.handleChange}
+  options={[
+    { label: 'Select', value: '' },
+    ...repAreaOptions.map((option) => ({ label: option, value: option })),
+  ]}
+/>
           {formik.touched.repArea && formik.errors.repArea ? (
             <div className="field-2-error-message">{formik.errors.repArea}</div>
           ) : null}
@@ -78,26 +72,20 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
       <div className="repair-details__second-col ">
         <div className="input__repair-id field-3 container-repair-area">
 
-          <CustomSelect
-            className='select-choices'
-            label="Container Damaged Area"
-            name="dmgArea"
-            id="dmgArea"
-            placeholder='Enter'
-            onBlur={formik.handleBlur}
-            value={formik.values.dmgArea}
-            onChange={formik.handleChange}
-            options={dmgAreaOptions.map((option) => (
-              { label: option, value: option }
-            ))}
-          >
-            <option value="">Select</option>
-            {repAreaOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </CustomSelect>
+        <CustomSelect
+  className='select-choices'
+  label="Container Damaged Area"
+  name="dmgArea"
+  id="dmgArea"
+  placeholder='Enter'
+  onBlur={formik.handleBlur}
+  value={formik.values.dmgArea}
+  onChange={formik.handleChange}
+  options={[
+    { label: 'Select', value: '' },
+    ...dmgAreaOptions.map((option) => ({ label: option, value: option })),
+  ]}
+/>
           {formik.touched.dmgArea && formik.errors.dmgArea ? (<div className="field-3-error-message">{formik.errors.dmgArea}</div>) : null}
         </div>
 
@@ -112,16 +100,11 @@ const SectionZero: React.FC<SectionZeroProps> = ({ onclose, formik, onNextSectio
             onBlur={formik.handleBlur}
             value={formik.values.type}
             onChange={formik.handleChange}
-            options={repairTypeOptions.map((option) => (
+            options={[{label: 'Select', value: ''},...repairTypeOptions.map((option) => (
               { label: option, value: option }
-            ))}
+            ))]}
           >
             <option value="">Select</option>
-            {repairTypeOptions.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
           </CustomSelect>
           {formik.touched.type && formik.errors.type ? (<div className="field-4-error-message">{formik.errors.type}</div>) : null}
         </div>

@@ -125,7 +125,7 @@ export const fetchEditContainerMeta = async () => {
     const contTypesData = contTypes.data.data.values
     const contYardsData = contYards.data.data.values
     const customersData = customers.data.data.docs
-    const customerNames = customersData.map(entry => entry.name);
+    const customerNames = customersData.map((entry: { name: string; }) => entry.name);
     const activityStatusData = activityStatus.data.data.values
     return { contLengthData, contHeightsData, contTypesData, contYardsData, customerNames, activityStatusData }
   } catch (err) {throw err}

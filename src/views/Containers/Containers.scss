@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import '../../styles/@antOverrides';
 
 .main {
     width: 100vw !important;
@@ -11,9 +12,18 @@
     width: 100vw !important;
 }
 
+select {
+    text-transform: capitalize;
+}
+
 .active-section {
+    color: $turkish-green;
     padding-bottom: 10px;
     border-bottom: 2px solid $turkish-green;
+}
+
+.capitalize-options {
+    text-transform: capitalize;
 }
 
 .sort-column {
@@ -59,7 +69,7 @@ label {
     flex-flow: row nowrap;
     gap: 50px;
     color: $container-options;
-    margin-top: -10px;
+    margin-top: 5px;
     font-weight: 400;
     font-size: 15px;
 }
@@ -70,7 +80,7 @@ label {
 }
 
 .container-table tr > th {
-    font-weight: 500 !important;
+    font-weight: 600 !important;
 }
 
 .container-table td > a {
@@ -111,10 +121,10 @@ label {
 
 .container-details {
     line-height: 20px;
-    margin-top: -43px;
+    margin-top: -30px;
     background-color: $input-bg;
     width: 84.3vw;
-    height: 83vh;
+    height: 84vh;
     border-top: 1px solid $container-border-top;
 }
 
@@ -211,9 +221,8 @@ label {
     font-weight: 600;
 }
 
-.filter-header__first-part h4:first-child:not(.filter-header__second-part h4) {
-    margin-top: 40px;
-    font-weight: 500 !important;
+.filter-header__first-part h4 {
+    font-weight: 600 !important;
     font-size: 18px !important;
 }
 
@@ -278,13 +287,17 @@ label {
 }
 
 .container-filter-second-part {
-    margin-top: -20px !important;
+    gap: 20px !important;
+    margin-top: -50px !important;
 }
 
 input,select {
     border-radius: 8px !important;
 }
 
+.ant-pagination {
+    margin-top: 165px;
+}
 .option-yard {
     margin-left: 10px;
     margin-bottom: -30px !important;
@@ -332,7 +345,15 @@ input,select {
 .ant-table-tbody > tr {
     max-height: 20px !important;
 }
-  
+
+.container-filter-container > button > span{
+    left: 15%;
+}
+
+.container-filter-menu.visible  > .filter-header__second-part{
+    margin-top: -22px !important;
+}
+
 .container-filter-icon{
     position: absolute;
     left: 10px !important;
@@ -440,14 +461,16 @@ input,select {
 .activity-text {
     border: 1px solid transparent;
     border-radius: 20px;
-    color: red;
+    text-align: center;
+    font-weight: 500;
     padding-left: 5px;
-    max-width: 120px;
+    font-size: 13px;
+    max-width: 130px;
 }
 
 .billing-style {
     background-color: $billing-bg;
-    color: $billing-text;
+    color: $activity-pink-text;
     text-transform: capitalize;
 }
 
@@ -472,6 +495,11 @@ input,select {
 .container-export-menu {
     display: flex;
     align-items: center;
+}
+
+.export-menu-box.visible p{
+    font-size: 14px;
+font-weight: 600;
 }
 
 .container-export-menu > button{

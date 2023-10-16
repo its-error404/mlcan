@@ -185,7 +185,6 @@ label {
   padding-left: 20px;
 }
 
-
 .repair-list-filters {
   position: absolute;
   display: flex;
@@ -198,6 +197,13 @@ label {
   width: 30vw;
   background-color: $filter-menu-bg;
 }
+
+
+
+.repair-list-filters > div:first-child > h4 {
+  margin-top: 50px !important;
+}
+
 
 ::placeholder {
   color: $text-gray;
@@ -244,10 +250,10 @@ label {
   height: 17.3vh !important;
   width: 12vw !important;
   line-height: 30px;
-  font-weight: 500;
+  font-weight: 600;
   font-weight: 15px;
   border-radius: 15px !important;
-  border: 1px solid $light-border;
+  border: 1px solid $cancel-bg;
   z-index: 4;
 }
 
@@ -278,15 +284,15 @@ label {
 
 .repair-filter-icon {
   position: absolute;
-  top: 23%;
-  left: 10% !important;
+  top: 30%;
+  left: 15% !important;
 }
 
 .version-menu-box p:first-child {
   margin-top: -10px;
   font-size: 15px;
   color: $turkish-green;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .repair-filter-column-2 {
@@ -362,7 +368,7 @@ label {
   border-radius: 10px !important;
   border: 1px solid transparent !important;
   color: $white-bg !important;
-  font-weight: 500;
+  font-weight: 600;
   right: 0;
   font-size: 14px;
 }
@@ -469,7 +475,7 @@ label {
 }
 
 .total-records {
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 30px;
 }
 
@@ -494,7 +500,8 @@ label {
   display: flex;
   gap: 60px;
   font-size: 18px;
-  font-weight: 550;
+  font-weight: 500;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 2rem;
 }
 
@@ -536,8 +543,8 @@ label {
   display: flex;
   flex-flow: row nowrap;
   gap: 30px;
-  border: 1px solid $row-color-first;
-  border-radius: 6px;
+  border: 0.5px solid $cancel-bg;
+  border-radius: 10px;
 }
 
 .repair-details__headings {
@@ -569,7 +576,7 @@ label {
   gap: 100px;
   width: 550px;
   background-color: $row-color-first;
-  border: 1px solid transparent;
+  border: 1px solid $cancel-bg;
   border-radius: 8px;
   margin-top: 30px;
   margin-left: 35px;
@@ -581,7 +588,7 @@ label {
   gap: 92px;
   width: 550px;
   background-color: $row-color-first;
-  border: 1px solid $row-color-first;
+  border: 1px solid $cancel-bg;
   border-radius: 8px;
   margin-top: 30px;
   font-weight: 500;
@@ -623,7 +630,7 @@ label {
   width: 550px;
   margin-left: 30px;
   background-color: $row-color-first;
-  border: 1px solid $row-color-first;
+  border: 1px solid $cancel-bg;
   border-radius: 8px;
   margin-top: 30px;
   margin-bottom: 30px;
@@ -651,7 +658,6 @@ label {
     display: flex;
     flex-flow: row nowrap;
     gap: 40px;
-    margin-left: 90px;
     margin-top: 50px;
     justify-content: center;
 
@@ -659,14 +665,14 @@ label {
 
 .delete-confirmation-buttons-repair button {
     min-height: 35px;
-    min-width: 250px;
+    min-width: 220px;
 }
 
 .delete-confirmation-buttons-repair button:first-child {
     background-color: $cancel-button;
     border: 1px solid transparent;
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .delete-confirmation-buttons-repair button:last-child {
@@ -674,7 +680,7 @@ label {
     color: $white-bg;
     border: 1px solid transparent;
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .delete-confirmation-box span {
@@ -683,15 +689,25 @@ label {
 
 .delete-text-icon-repair {
     margin-top: 30px;
-    margin-left: 100px;
+    margin-left: 50px;
     display: flex;
     flex-flow: column nowrap;
     gap: 20px;
     align-items: center;
     max-width: 450px;
+
+    h2 {
+      font-weight: 800 !important;
+      line-height: 32px;
+    }
+
+    p {
+      color: $text-gray;
+      font-weight: 600;
+    }
 }
 
-.delete-text-icon p {
+.delete-text-icon-repair p {
     color: $text-gray;
     font-weight: 500;
 }

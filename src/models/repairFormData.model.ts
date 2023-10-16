@@ -1,4 +1,5 @@
-import { alias, list, object, serializable } from "serializr";
+import { alias, list, object, raw, serializable } from "serializr";
+import { string } from "yup";
 
 class Status {
   @serializable(alias("status"))
@@ -12,7 +13,7 @@ class DocItem {
   @serializable(alias("container"))
   container?: string;
 
-  @serializable(alias("items"))
+  @serializable(alias("items", raw()))
   items?: string[];
 
   @serializable(alias("deleted"))
@@ -33,7 +34,7 @@ class DocItem {
   @serializable(alias("curr_status"))
   currStatus?: string;
 
-  @serializable(alias("nextStatus"))
+  @serializable(alias("next_status"))
   nextStatus?: string;
 
   @serializable(alias("active"))
@@ -43,7 +44,7 @@ class DocItem {
   id?: string;
 }
 
-export class RepairResponseData {
+export class RepairFormResponseData {
   @serializable(alias("docs", list(object(DocItem))))
   docs?: DocItem[];
 

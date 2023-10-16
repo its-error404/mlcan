@@ -90,16 +90,19 @@ const ViewContainer: React.FC = () => {
               <>
                
                 <h1>{containerData.container.uid}</h1>
-                <EditIcon width={15} onClick={() => handleEditClick(containerData.container)} />
-                
+                <EditIcon width={15} onClick={() => {
+                  if (containerData.container) {
+                    handleEditClick(containerData.container);
+                  }
+                }} />
               </>
             )}
           </div>
           <div className="container-header__second">
 
             <p>1 of 94 </p>
-            <PrevIcon width={30} />
-            <NextIcon width={30} />
+            <PrevIcon width={30} className="prev-icon" />
+            <NextIcon width={30} className="next-icon"/>
           </div>
         </div>
       
@@ -114,34 +117,34 @@ const ViewContainer: React.FC = () => {
           <p>Manufacture Year</p>
         </div>
         <div className="container-data" >
-        {loading ? (
-          <p></p>
-        ) : (
-          containerData && containerData.container && (
-            <>
-              <p>{containerData.container.yard}</p>
-              <p>{containerData.container.customer?.name}</p>
-              <p> {containerData.container.owner}</p>
-              <p>{containerData.container.submitter}</p>
-              <p>{containerData.container.length}</p>
-              <p>{containerData.container.height}</p>
-              <p>{containerData.container.type}</p>
-              <p> {containerData.container.year}</p>
-            </>
-          )
+          {loading ? (
+            <p></p>
+          ) : (
+            containerData && containerData.container && (
+              <>
+                <p>{containerData.container.yard}</p>
+                <p>{containerData.container.customer?.name}</p>
+                <p> {containerData.container.owner}</p>
+                <p>{containerData.container.submitter}</p>
+                <p>{containerData.container.length}</p>
+                <p>{containerData.container.height}</p>
+                <p>{containerData.container.type}</p>
+                <p> {containerData.container.year}</p>
+              </>
+            )
+          )}
+        </div>
+        {editContainerVisible && (
+          <div className="overlay">
+            <div className="overlay-content">
+              <EditContainer
+                data={editContainer}
+                id={id || ''}
+                onclose={() => setEditContainerVisible(false)}
+              />
+            </div>
+          </div>
         )}
-      </div>
-    {editContainerVisible && (
-      <div className="overlay">
-      <div className="overlay-content">
-        <EditContainer
-          data={editContainer}
-          id={id || ''} 
-          onclose={() => setEditContainerVisible(false)}
-        />
-        </div>
-        </div>
-      )}
 
         <div className="options container-options">
           {sections.map((section, index) => (
