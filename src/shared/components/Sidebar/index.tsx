@@ -65,10 +65,7 @@ const Sidebar = () => {
             <img src={Logo} alt="" width={200} className="logo" />
             <div className="side-bar__options">
                 <div className="side-bar__options-text">
-                    <Link
-                        to="/containers"
-                        className={splitLocation[1] === "containers" ? "side-active" : ""}
-                    >
+                    <Link to="/containers" className={splitLocation[1] === "containers" ? "side-active" : ""}>
                         <span>
                             <ContainerIcon width={20} />
                         </span>

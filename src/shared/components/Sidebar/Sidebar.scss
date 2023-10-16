@@ -12,8 +12,8 @@
 
 .side-active{
     border: 1px transparent;
-    border-left: solid $turkish-green;
-    border-width: 6px;
+    border-left: solid $initials-text;
+    border-width: 3px;
     background-color: $sidebar-active-bg;
     font-size: 16px;
     padding-top: 25px;
@@ -80,7 +80,7 @@
 }
 
 .side-bar__options-text a:hover > span {
-    filter: brightness(0) saturate(100%) invert(46%) sepia(11%) saturate(4524%) hue-rotate(127deg) brightness(99%) contrast(62%);
+    filter: brightness(0) saturate(100%) invert(68%) sepia(65%) saturate(367%) hue-rotate(119deg) brightness(89%) contrast(92%);
 }
 
 .side-bar__options-text a{
@@ -92,11 +92,15 @@
     align-items: center;
     font-weight: 600;
     justify-items: center;
+    margin-top: 2px;
 
     &.side-active {
         color: $sidebar-active-text;
         font-weight: 600;
     }
+}
+.side-bar__options-text a > :not(span){
+    display: none !important;
 }
 
 .side-bar__options-text span{
