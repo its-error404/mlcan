@@ -6,7 +6,7 @@ import { ReactComponent as ContainerIcon } from "../../../assets/single color ic
 import { ReactComponent as CustomersIcon } from "../../../assets/single color icons - SVG/customer.svg";
 import { ReactComponent as RepairListIcon } from "../../../assets/single color icons - SVG/repair list.svg";
 import { ReactComponent as UsersIcon } from "../../../assets/single color icons - SVG/user management.svg";
-import { ReactComponent as CustomerIcon } from "../../../assets/single color icons - SVG/customer.svg";
+import { ReactComponent as CustomerIcon } from "../../../assets/Multicolor icons - SVG/customer.svg";
 import { ReactComponent as AccordingOpenIcon } from "../../../assets/single color icons - SVG/accordion open.svg";
 import { ReactComponent as EmailIcon } from "../../../assets/single color icons - SVG/mail.svg";
 import { ReactComponent as PhoneIcon } from '../../../assets/single color icons - SVG/call.svg'
@@ -105,10 +105,10 @@ const Sidebar = () => {
             </div>
 
             <div className="user-info">
-                <CustomerIcon width={30} className="customer-icon" />
+                <CustomerIcon width={40}/>
 
                 <div className="user-information">
-                    <p>Richard Williams</p>
+                    <p>{data.uid}</p>
                     <p>{data.is_admin}</p>
                 </div>
 
@@ -120,10 +120,9 @@ const Sidebar = () => {
                 {dropDown && (
                     <div className="user-dropdown">
                         <div className="user-dropdown-info">
-                            <p className="initial">JR</p>
-
+                        <p className="initial">{data.uid && data.uid.substring(0, 2)}</p>
                             <div className="user-information-dropdown">
-                                <p>Jeremy Roberts</p>
+                                <p>{data.uid}</p>
                                 <div className="designation-flex">
                                     <p className="user-role">{data.is_admin}</p>
                                     <div className="dot">.</div>
