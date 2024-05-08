@@ -130,7 +130,6 @@ const TimeLine = () => {
             {timelineItems[index].editable ? (
               <div>
                 <EditOutlined
-                  rev=""
                   onClick={() => handleEditClick(timelineItems[index])}
                 />
               </div>

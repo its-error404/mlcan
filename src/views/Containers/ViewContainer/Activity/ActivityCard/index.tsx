@@ -281,7 +281,7 @@ const ActivityCard: React.FC<{
           <div className="expanded-header">
             <div className="header_first">
               <div className="timeline-button-container">
-              <CalendarOutlined rev='' className="calender-icon-timeline"/>
+              <CalendarOutlined className="calender-icon-timeline"/>
               <Button onClick={()=>setTimeline(!timeline)}>View Timeline</Button>
               {timeline && <TimeLine/>}
               </div>

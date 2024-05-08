@@ -37,7 +37,7 @@ const EllipsisMenu: React.FC<EllipsisMenuProps> = ({
   return (
     <div className="custom-dropdown-container"
     >
-      <Button icon={<EllipsisOutlined  rev/>} className="custom-dropdown-button" />
+      <Button icon={<EllipsisOutlined/>} className="custom-dropdown-button" />
         <div className="custom-dropdown-menu">
         <div className="menu-item" onClick={handleDelete}>
           <Icon icon="material-symbols:delete"  color="#949ea9" width={20} />
